@@ -74,6 +74,8 @@ with lib;
       Defaults  env_keep += "BORG_KEYS_DIR"
     '';
   };
+  services.openssh.passwordAuthentication = mkDefault false;
+  services.openssh.challengeResponseAuthentication = mkDefault false;
 
   ########################################
   # Services
