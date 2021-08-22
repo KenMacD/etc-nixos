@@ -26,10 +26,11 @@ in
   ########################################
   networking = {
     hostName = "cubie";
+    domain = "local";
     hostId = "f5a3f353";
     firewall = {
       # grafana, nzbget, test, minidlna, portainer
-      allowedTCPPorts = [ 3000 6789 8080 8200 9000 ];
+      allowedTCPPorts = [ 80 3000 6789 8080 8200 9000 ];
       # upnp
       allowedUDPPorts = [ 1900 ];
     };
@@ -78,7 +79,24 @@ in
   # Grafana
   services.grafana = {
     enable = true;
-    addr = ip;
+    rootUrl = "http://${config.networking.fqdn}/grafana/";
+  };
+
+  # nginx
+  services.nginx = {
+    enable = true;
+
+    recommendedOptimisation = true;
+    recommendedGzipSettings = true;
+    recommendedProxySettings = true;
+
+    virtualHosts."${config.networking.fqdn}" = {
+      locations = {
+        "/grafana/" = {
+          proxyPass = "http://127.0.0.1:${toString config.services.grafana.port}/";
+        };
+      };
+    };
   };
 
   # Minidlna
