@@ -9,8 +9,6 @@
   nixpkgs.config = {
     allowUnfree = true;
     packageOverrides = pkgs: {
-
-      vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
       gnupg = pkgs.gnupg.override { libusb1 = pkgs.libusb1; };
 
       # Allow unstable.PackageName
@@ -40,19 +38,18 @@
     opengl = {
       enable = true;
       driSupport = true; # for vulkan
+      driSupport32Bit = true;
       extraPackages = with pkgs; [
         intel-compute-runtime
         # LIBVA_DRIVER_NAME=iHD (newer)
         intel-media-driver
-        # LIBVA_DRIVER_NAME=i965
-        vaapiIntel
         vaapiVdpau
       ];
     };
   };
   # Force intel vulkan driver to prevent software rendering:
   environment.variables.VK_ICD_FILENAMES =
-    "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json";
+    "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json:/run/opengl-driver-32/share/vulkan/icd.d/intel_icd.i686.json";
 
   ########################################
   # Locale
