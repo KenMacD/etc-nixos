@@ -137,6 +137,7 @@ in
   environment.systemPackages = with pkgs; [
     btrfs-progs
     dhcpcd
+    git
     htop
     kitty  # for term info only
     ncdu
