@@ -4,10 +4,8 @@
   ########################################
   # Nix
   ########################################
-  system.stateVersion = "20.09";
-  nix.autoOptimiseStore = true;
+  nix.useSandbox = true;
   nixpkgs.config = {
-    allowUnfree = true;
     packageOverrides = pkgs: {
       gnupg = pkgs.gnupg.override { libusb1 = pkgs.libusb1; };
 
@@ -16,16 +14,6 @@
     };
   };
 
-  # Include current config:
-  environment.etc.current-nixos-config.source = ./.;
-
-  # Include a full list of installed packages
-  environment.etc.current-system-packages.text = let
-    packages = builtins.map (p: "${p.name}") config.environment.systemPackages;
-    sortedUnique = builtins.sort builtins.lessThan (pkgs.lib.unique packages);
-    formatted = builtins.concatStringsSep "\n" sortedUnique;
-  in formatted;
-
   # Allow edit of /etc/host for temporary mitm:
   environment.etc.hosts.mode = "0644";
 
@@ -33,7 +21,6 @@
   # Hardware
   ########################################
   hardware = {
-    cpu.intel.updateMicrocode = true;
     firmware = with pkgs; [ wireless-regdb ];
     opengl = {
       enable = true;
@@ -51,18 +38,6 @@
   environment.variables.VK_ICD_FILENAMES =
     "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json:/run/opengl-driver-32/share/vulkan/icd.d/intel_icd.i686.json";
 
-  ########################################
-  # Locale
-  ########################################
-  time.timeZone = "America/Halifax";
-  i18n.defaultLocale = "en_CA.UTF-8";
-
-  ########################################
-  # Boot
-  ########################################
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.zfs.enableUnstable = true;
@@ -70,8 +45,6 @@
   boot.kernelParams =
     [ "workqueue.power_efficient=1" "battery.cache_time=10000" ];
   powerManagement.enable = true;
-
-  boot.tmpOnTmpfs = true;
 
   ########################################
   # ZFS
@@ -90,17 +63,11 @@
       enable = true;
       connectionConfig = { "connection.llmnr" = 0; };
     };
-    usePredictableInterfaceNames = false;
-    useDHCP = false; # deprecated
     wireless.enable = false;
   };
   systemd.services."systemd-networkd-wait-online".enable = false;
   services.unbound.enable = true;
   services.resolved.enable = false;
-  services.avahi = {
-    enable = true;
-    nssmdns = true;
-  };
 
   ########################################
   # Sound
@@ -189,8 +156,6 @@
   programs.fish.enable = true;
   programs.vim.defaultEditor = true;
   users.users.kenny = {
-    isNormalUser = true;
-    shell = pkgs.fish;
     extraGroups = [ "docker" "libvirtd" "networkmanager" "wheel" ];
   };
 
