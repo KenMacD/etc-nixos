@@ -85,15 +85,18 @@
   networking = {
     hostName = "dn";
     hostId = "822380ad";
+    useNetworkd = true;
     networkmanager = {
       enable = true;
-      wifi.backend = "iwd";
+      connectionConfig = { "connection.llmnr" = 0; };
     };
     usePredictableInterfaceNames = false;
     useDHCP = false; # deprecated
     wireless.enable = false;
-    wireless.iwd.enable = true;
   };
+  systemd.services."systemd-networkd-wait-online".enable = false;
+  services.unbound.enable = true;
+  services.resolved.enable = false;
   services.avahi = {
     enable = true;
     nssmdns = true;
