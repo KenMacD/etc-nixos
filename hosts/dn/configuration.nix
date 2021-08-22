@@ -191,7 +191,7 @@
   users.users.kenny = {
     isNormalUser = true;
     shell = pkgs.fish;
-    extraGroups = [ "docker" "networkmanager" "wheel" ];
+    extraGroups = [ "docker" "libvirtd" "networkmanager" "wheel" ];
   };
 
   ########################################
@@ -214,7 +214,6 @@
   ########################################
   # Security
   ########################################
-  programs.browserpass.enable = true;
   programs.firejail = {
     enable = true;
     wrappedBinaries = { teams = "${pkgs.lib.getBin pkgs.teams}/bin/teams"; };
@@ -223,6 +222,7 @@
   ########################################
   # Packages
   ########################################
+  programs.steam.enable = true;
   services.lorri.enable = true;
 
   environment.systemPackages = with pkgs;
@@ -241,12 +241,13 @@
       htop
       httpie
       kitty
+      libreoffice
       libusb1
       libva-utils
       p7zip
-      plocate
       python3
       tmux
+      unzip
       xdg-utils
 
       # Password management
@@ -257,36 +258,49 @@
       qtpass
       yubikey-manager
       yubikey-personalization
-
-      # Sound
-      cmus
-      pavucontrol
-      pamixer
-      pulseeffects-pw
+      yubioath-desktop
 
       # Video
       intel-gpu-tools
+      mpv
       v4l_utils
+      vlc
 
       # Graphics
       glxinfo
       mesa_glu
 
       # System management
+      acpid
       bcc
-      polkit_gnome
+      dig
+      fwupd
+      intel-speed-select
       iotop
       killall
-      fwupd
+      lxqt.lxqt-policykit
+      ncdu # disk usage with file count
       nixfmt
+      nvme-cli
+      pciutils
       powertop
+      power-profiles-daemon
       pstree
+      usbutils
       turbostat
+      x86_energy_perf_policy
 
       # Networking
       openconnect
 
+      # Wireless
+      iw
+      wavemon
+      wirelesstools
+      aircrack-ng
+
       # Communication
+      discord
       irssi
       signal-desktop
       slack
@@ -295,15 +309,7 @@
         configure = { availablePlugins, ... }: {
           plugins = with availablePlugins; [ python ];
           scripts = with pkgs.weechatScripts; [
-            (weechat-matrix.overridePythonAttrs (oldAttrs: rec {
-              version = "d67821ae50dbfc86e9aa03709aa2a752aee705f6";
-              src = fetchFromGitHub {
-                owner = "poljar";
-                repo = "weechat-matrix";
-                rev = "d67821ae50dbfc86e9aa03709aa2a752aee705f6";
-                sha256 = "01zisps5fx4i3vkrir8k04arcqf0n5i84a4nf0m9c2k48312dzf6";
-              };
-            }))
+            weechat-matrix
             (wee-slack.overrideAttrs (oldAttrs: rec {
               version = "2.7.0";
               src = fetchFromGitHub {
@@ -328,10 +334,26 @@
       w3m
       urlview
 
+      # Android
+      abootimg
+      android-tools
+      heimdall
+      brotli
+
+      # Games
+      wine
+      winetricks
+
+      # General/Unsorted
+      magic-wormhole
+      sshfs
+
+      # Virtualization
+      virt-manager
+
       # Development
-      any-nix-shell
+      amazon-ecs-cli
       aws-adfs
-      awscli2
       bintools
       clang
       direnv
