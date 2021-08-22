@@ -50,6 +50,11 @@ in
   services.unbound.enable = true;
 
   ########################################
+  # Users
+  ########################################
+  users.groups.media.members = [ "minidlna" "nzbget" ];
+
+  ########################################
   # Services
   ########################################
   services = {
@@ -95,8 +100,16 @@ in
         "/grafana/" = {
           proxyPass = "http://127.0.0.1:${toString config.services.grafana.port}/";
         };
+        "/nzbget/" = {
+          proxyPass = "http://127.0.0.1:6789/";
+        };
       };
     };
+  };
+
+  # TODO: backup nzbget config
+  services.nzbget = {
+    enable = true;
   };
 
   # Minidlna
