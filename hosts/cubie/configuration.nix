@@ -2,8 +2,11 @@
 
 let
   ip = "172.27.0.3";
+  secrets = import ./secrets.nix;
 in
 {
+  imports = [ ./influxdb2.nix ];  # Remove once 21.11
+
   ########################################
   # Boot
   ########################################
@@ -32,11 +35,15 @@ in
       # grafana, nzbget, test, minidlna, portainer
       allowedTCPPorts = [
         80
+        8086  # influxdb
         8200  # minidlna
         9000  # portainer
       ];
       # upnp
-      allowedUDPPorts = [ 1900 ];
+      allowedUDPPorts = [
+        1900  # UPnP
+        8089  # telegraf thermostat
+      ];
     };
     interfaces.wlan0.useDHCP = false;
     interfaces.eth0.ipv4.addresses = [{
@@ -59,7 +66,7 @@ in
   users.groups.media.members = [ "minidlna" "nzbget" ];
 
   ########################################
-  # Services
+  # Simple Services
   ########################################
   services = {
     openssh.enable = true;
@@ -82,7 +89,7 @@ in
   };
 
   ########################################
-  # Services
+  # Complex Services
   ########################################
   # Grafana
   services.grafana = {
@@ -132,6 +139,46 @@ in
     extraConfig = ''
       network_interface=eth0
     '';
+  };
+
+  services.influxdb2 = {
+    enable = true;
+    settings = {
+      log-level = "error";
+    };
+  };
+
+  services.telegraf = {
+    enable = true;
+    extraConfig = {
+      outputs.influxdb_v2 = {
+        namepass = [ "heat" "thermostat" "weather" ];
+        urls = [ "http://127.0.0.1:8086" ];
+        token = secrets.INFLUX_HVAC_WRITE;
+        organization = "macdermid";
+        bucket = "hvac";
+      };
+      inputs.socket_listener = {
+        service_address = "udp://:8089";
+        data_format = "influx";
+      };
+      inputs.http = {
+        interval = "5m";
+        name_override = "weather";
+        urls = [
+          "https://api.darksky.net/forecast/${secrets.DARK_SKY_API_KEY}/${secrets.DARK_SKY_API_LOCATION}?exclude=alerts%2Cdaily%2Chourly%2Cminutely%2Cflag&units=ca"
+        ];
+        data_format = "json";
+        json_query = "currently";
+        json_string_fields = [
+          "icon"
+          "precipType"
+          "summary"
+        ];
+        json_time_key = "time";
+        json_time_format = "unix";
+      };
+    };
   };
 
   ########################################
