@@ -59,6 +59,7 @@ in
     addresses = true;
   };
   services.unbound.enable = true;
+  services.fwupd.enable = true;
 
   ########################################
   # Users
@@ -188,6 +189,7 @@ in
     btrfs-progs
     dhcpcd
     git
+    fwupd
     htop
     kitty  # for term info only
     ncdu
