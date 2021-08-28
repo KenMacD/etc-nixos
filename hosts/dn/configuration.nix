@@ -153,10 +153,8 @@
   ########################################
   # User
   ########################################
-  programs.fish.enable = true;
-  programs.vim.defaultEditor = true;
   users.users.kenny = {
-    extraGroups = [ "docker" "libvirtd" "networkmanager" "wheel" ];
+    extraGroups = [ "docker" "libvirtd" "networkmanager" ];
   };
 
   ########################################
