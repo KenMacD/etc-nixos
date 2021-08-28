@@ -30,7 +30,11 @@ in
     hostId = "f5a3f353";
     firewall = {
       # grafana, nzbget, test, minidlna, portainer
-      allowedTCPPorts = [ 80 3000 6789 8080 8200 9000 ];
+      allowedTCPPorts = [
+        80
+        8200  # minidlna
+        9000  # portainer
+      ];
       # upnp
       allowedUDPPorts = [ 1900 ];
     };
