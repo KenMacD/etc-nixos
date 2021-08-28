@@ -54,6 +54,7 @@ with lib;
   # User
   ########################################
   programs.fish.enable = true;
+  programs.vim.defaultEditor = true;
   users.users.kenny = {
     isNormalUser = true;
     uid = 1000;

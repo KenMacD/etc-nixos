@@ -65,9 +65,8 @@ in
   ########################################
   # User
   ########################################
-  programs.vim.defaultEditor = true;
   users.users.kenny = {
-    extraGroups = [ "docker" ];
+    extraGroups = [ "media" "docker"];
   };
 
   ########################################
