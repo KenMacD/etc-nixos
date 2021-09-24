@@ -126,6 +126,11 @@
     zerotierone.enable = true;
   };
 
+  systemd.services.zerotierone.serviceConfig = {
+    KillMode = lib.mkForce "control-group";
+    TimeoutStopFailureMode = "kill";
+  };
+
   ########################################
   # Systemd
   ########################################
