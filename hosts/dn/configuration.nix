@@ -102,6 +102,8 @@
       xwayland
       wdisplays
 
+      polkit-kde-agent
+
       gtk-engine-murrine
       gtk_engines
       gsettings-desktop-schemas
@@ -109,6 +111,7 @@
       gnome3.adwaita-icon-theme
     ];
   };
+  environment.pathsToLink = [ "/libexec" ];  # Required for sway/polkit
   programs.waybar.enable = true;
   xdg.icons.enable = true;
 
