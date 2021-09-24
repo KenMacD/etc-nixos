@@ -162,7 +162,12 @@
   # User
   ########################################
   users.users.kenny = {
-    extraGroups = [ "docker" "libvirtd" "networkmanager" ];
+    extraGroups = [
+      "docker"
+      "libvirtd"
+      "networkmanager"
+      "dialout"
+    ];
   };
 
   ########################################
