@@ -331,7 +331,7 @@
       parallel
       perf
       direnv
-      git
+      gitFull
       ripgrep
       rustup
       vscode-fhs # TODO: build with extensions
