@@ -205,7 +205,6 @@
       google-chrome
       htop
       httpie
-      kitty
       libreoffice
       libusb1
       libva-utils
@@ -214,6 +213,10 @@
       tmux
       unzip
       xdg-utils
+
+      # Terminal related
+      kitty
+      mdcat
 
       # Password management
       (pass.override {
