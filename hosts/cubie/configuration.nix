@@ -141,6 +141,11 @@ in
   services.nzbget = {
     enable = true;
   };
+  systemd.services.nzbget.path = with pkgs; [
+    unrar
+    p7zip
+    python2
+  ];
 
   # Minidlna
   services.minidlna = {
