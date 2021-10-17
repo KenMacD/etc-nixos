@@ -1,6 +1,8 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, nixpkgs, ... }: {
+  imports = [
+    ./audio.nix
+  ];
 
-{
   ########################################
   # Nix
   ########################################
@@ -68,19 +70,6 @@
   systemd.services."systemd-networkd-wait-online".enable = false;
   services.unbound.enable = true;
   services.resolved.enable = false;
-
-  ########################################
-  # Sound
-  ########################################
-  # Enable sound.
-  sound.enable = true;
-  security.rtkit.enable = true; # for pipewire
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-  };
 
   ########################################
   # Desktop Environment
