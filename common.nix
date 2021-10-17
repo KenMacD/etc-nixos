@@ -39,6 +39,13 @@ with lib;
   boot.loader.efi.canTouchEfiVariables = mkDefault true;
   boot.tmpOnTmpfs = mkDefault true;
 
+  # ZFS doesn't like hibernate apparently. See:
+  #  * https://nixos.wiki/wiki/NixOS_on_ZFS#Known_issues
+  #  * https://github.com/openzfs/zfs/issues/260
+  boot.kernelParams = mkIf config.boot.zfs.enabled [
+    "nohibernate"
+  ];
+
   ########################################
   # Network
   ########################################
