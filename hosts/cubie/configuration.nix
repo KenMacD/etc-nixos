@@ -69,10 +69,18 @@ in
   services.unbound.enable = true;
   services.fwupd.enable = true;
 
+#  services.mysql = {
+#    enable = true;
+#    bind = "127.0.0.1";
+#  };
+
   ########################################
   # Users
   ########################################
-  users.groups.media.members = [ "minidlna" "nzbget" ];
+  users.groups.media.members = with config.systemd.services; [
+    minidlna.serviceConfig.User
+    nzbget.serviceConfig.User
+  ];
 
   ########################################
   # Simple Services
