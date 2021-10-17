@@ -94,7 +94,7 @@ in
   # User
   ########################################
   users.users.kenny = {
-    extraGroups = [ "media" "docker"];
+    extraGroups = [ "media" "docker" "dialout"];
   };
 
   ########################################
