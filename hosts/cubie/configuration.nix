@@ -58,6 +58,14 @@ in
     enable = true;
     addresses = true;
   };
+  services.avahi-alias = {
+    enable = true;
+    names = [
+      "grafana"
+      "influxdb"
+      "nzbget"
+    ];
+  };
   services.unbound.enable = true;
   services.fwupd.enable = true;
 
@@ -93,9 +101,10 @@ in
   # Complex Services
   ########################################
   # Grafana
-  services.grafana = {
+  services.grafana = rec {
     enable = true;
-    rootUrl = "http://${config.networking.fqdn}/grafana/";
+    rootUrl = "http://${config.services.grafana.domain}/";
+    domain = "grafana.local";
   };
 
   # nginx
@@ -106,15 +115,17 @@ in
     recommendedGzipSettings = true;
     recommendedProxySettings = true;
 
-    virtualHosts."${config.networking.fqdn}" = {
-      locations = {
-        "/grafana/" = {
-          proxyPass = "http://127.0.0.1:${toString config.services.grafana.port}/";
-        };
-        "/nzbget/" = {
-          proxyPass = "http://127.0.0.1:6789/";
-        };
+    virtualHosts = let
+      base = locations: {
+        inherit locations;
       };
+      proxy = port: base {
+        "/".proxyPass = "http://127.0.0.1:${toString port}/";
+      };
+    in {
+      "grafana.local" = proxy config.services.grafana.port;
+      "influxdb.local" = proxy 8086;
+      "nzbget.local" = proxy 6789;
     };
   };
 
