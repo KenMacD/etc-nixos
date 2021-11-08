@@ -3,6 +3,7 @@
     ./audio.nix
     ../modules/email.nix
 #    ./larger-coredumps.nix
+#    ./sway-dbg.nix
   ];
 
   ########################################
