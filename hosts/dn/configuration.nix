@@ -101,6 +101,10 @@
   };
   environment.pathsToLink = [ "/libexec" ];  # Required for sway/polkit
   programs.waybar.enable = true;
+  programs.wireshark = {
+    enable = true;
+    package = pkgs.wireshark;  # Install gui pkg
+  };
   xdg.icons.enable = true;
 
   ########################################
@@ -155,6 +159,7 @@
       "libvirtd"
       "networkmanager"
       "dialout"
+      config.security.wrappers.dumpcap.group
     ];
   };
 
