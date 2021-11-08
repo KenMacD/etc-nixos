@@ -203,7 +203,8 @@
       borgbackup
       brightnessctl
       chromium
-      (firefox.override { forceWayland = true; })
+      fd
+      firefox-wayland
       fzf
       google-chrome
       htop
@@ -211,6 +212,7 @@
       libreoffice
       libusb1
       libva-utils
+      lsd  # ls, but better
       p7zip
       python3
       tmux
@@ -251,7 +253,6 @@
       killall
       lxqt.lxqt-policykit
       ncdu # disk usage with file count
-      nixfmt
       nvme-cli
       pciutils
       powertop
@@ -263,6 +264,10 @@
 
       # Networking
       openconnect
+
+      # Nix
+      nixfmt
+      nixpkgs-fmt
 
       # Wireless
       iw
@@ -301,9 +306,14 @@
       })
 
       # Email
-      mutt
-      w3m
+      fdm  # fetch mail from imap
+      msmtp  # simple smtp clipent
+      neomutt
+      notmuch  # search
+      python3Packages.icalendar  # ical view
       urlview
+      w3m
+      #maildrop  # for making Maildir and folders
 
       # Android
       abootimg
@@ -321,6 +331,10 @@
 
       # Virtualization
       virt-manager
+      docker
+      docker-compose
+      nixos-generators
+      bubblewrap
 
       # Development
       amazon-ecs-cli
@@ -331,6 +345,7 @@
       file
       gdb
       gh
+      github-desktop
       gnumake
       hotspot
       jq
