@@ -42,10 +42,9 @@
 
   boot.kernelPackages = pkgs.linuxPackages_xanmod;
   boot.zfs.enableUnstable = true;
-  boot.extraModulePackages = with config.boot.kernelPackages; [ turbostat ];
-  boot.kernelParams =
-    [ "workqueue.power_efficient=1" "battery.cache_time=10000" ];
-  powerManagement.enable = true;
+  boot.kernel.sysctl = {
+    "kernel.sysrq" = 1;
+  };
 
   ########################################
   # ZFS
