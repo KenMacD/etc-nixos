@@ -2,6 +2,7 @@
   imports = [
     ./audio.nix
     ../modules/email.nix
+#    ./larger-coredumps.nix
   ];
 
   ########################################
@@ -122,22 +123,6 @@
     KillMode = lib.mkForce "control-group";
     TimeoutStopFailureMode = "kill";
   };
-
-  ########################################
-  # Systemd
-  ########################################
-  # Allow larger coredumps
-  systemd.coredump.extraConfig = ''
-    #Storage=external
-    #Compress=yes
-    #ProcessSizeMax=2G
-    ProcessSizeMax=10G
-    #ExternalSizeMax=2G
-    ExternalSizeMax=10G
-    #JournalSizeMax=767M
-    #MaxUse=
-    #KeepFree=
-  '';
 
   ########################################
   # Fonts
