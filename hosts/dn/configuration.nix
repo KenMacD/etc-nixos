@@ -1,6 +1,7 @@
 { config, lib, pkgs, nixpkgs, ... }: {
   imports = [
     ./audio.nix
+    ../modules/email.nix
   ];
 
   ########################################
