@@ -8,7 +8,10 @@
   ########################################
   # Nix
   ########################################
-  nix.useSandbox = true;
+  nix.settings = {
+    sandbox = true;
+  };
+
   nixpkgs.config = {
     packageOverrides = pkgs: {
       gnupg = pkgs.gnupg.override { libusb1 = pkgs.libusb1; };
