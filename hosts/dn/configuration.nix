@@ -197,7 +197,6 @@
       fd
       firefox-wayland
       fzf
-      google-chrome
       htop
       httpie
       libreoffice
@@ -206,9 +205,12 @@
       lsd  # ls, but better
       p7zip
       python3
+      python3Packages.poetry
+      rlwrap
       tmux
       unzip
       xdg-utils
+      yt-dlp
 
       # Terminal related
       kitty
@@ -219,6 +221,8 @@
         x11Support = false;
         waylandSupport = true;
       })
+      gopass  # replacement for pass, has -o option
+      gopass-jsonapi
       qtpass
       yubikey-manager
       yubikey-personalization
@@ -239,6 +243,7 @@
       bcc
       dig
       fwupd
+      fwupd-efi
       intel-speed-select
       iotop
       killall
@@ -302,26 +307,23 @@
       neomutt
       notmuch  # search
       python3Packages.icalendar  # ical view
+      urlscan
       urlview
-      w3m
+      lynx
       #maildrop  # for making Maildir and folders
 
       # Android
       abootimg
-      android-tools
-      heimdall
       brotli
 
       # Games
-      wine
-      winetricks
 
       # General/Unsorted
       magic-wormhole
+      patchelf
       sshfs
 
       # Virtualization
-      virt-manager
       docker
       docker-compose
       nixos-generators
@@ -329,27 +331,31 @@
 
       # Development
       amazon-ecs-cli
+      android-tools
       aws-adfs
+      awscli2
       bintools
       clang
       direnv
       file
       gdb
       gh
+      gitFull
       github-desktop
       gnumake
       hotspot
       jq
       llvm
-      manpages
+      man-pages
+      mold
       nix-direnv
       parallel
       perf
-      direnv
-      gitFull
+      pgcli
       ripgrep
       rustup
-      vscode-fhs # TODO: build with extensions
+      tio
+      vscodium-fhs # TODO: build with extensions
 
       # My Packages
       (rustPlatform.buildRustPackage rec {
