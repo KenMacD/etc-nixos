@@ -10,6 +10,9 @@
   ########################################
   nix.settings = {
     sandbox = true;
+    substituters = [
+      "https://aseipp-nix-cache.global.ssl.fastly.net"
+    ];
   };
 
   nixpkgs.config = {
