@@ -34,7 +34,7 @@
     };
 
   fileSystems."/var/lib/docker" =
-    { device = "/dev/disk/by-uuid/b7ca404f-c697-4f87-aefd-fd15c1c35f4f";
+    { device = "/dev/disk/by-uuid/dd1e3bd2-9548-4bbe-899f-3482f0346bc6";
       fsType = "ext4";
     };
 
