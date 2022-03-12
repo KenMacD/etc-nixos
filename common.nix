@@ -90,7 +90,7 @@ with lib;
     '';
   };
   services.openssh.passwordAuthentication = mkDefault false;
-  services.openssh.challengeResponseAuthentication = mkDefault false;
+  services.openssh.kbdInteractiveAuthentication = mkDefault false;
 
   ########################################
   # Services
