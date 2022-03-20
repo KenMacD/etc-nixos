@@ -18,6 +18,7 @@
       overlay-master = final: prev: {
         master = nixpkgs-master.legacyPackages.${prev.system};
       };
+      overlay-sway = import ./overlays/sway-dbg;
     in {
       packages.x86_64-linux = import ./pkgs {
           # TODO: pkgs need overlays?
@@ -33,6 +34,7 @@
                 overlay-staging-next
                 overlay-local
                 overlay-master
+                (import ./overlays/sway-dbg.nix)
               ];
             })
             # Add to regsitry so nixpkgs commands use system versions
