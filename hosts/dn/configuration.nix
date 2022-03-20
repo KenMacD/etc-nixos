@@ -2,7 +2,6 @@
   imports = [
     ./audio.nix
 #    ./larger-coredumps.nix
-#    ./sway-dbg.nix
   ];
 
   ########################################
