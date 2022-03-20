@@ -1,11 +1,21 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib,  ... }:
 
 let
   ip = "172.27.0.3";
   secrets = import ./secrets.nix;
 in
 {
-  imports = [ ./influxdb2.nix ];  # Remove once 21.11
+  nix = {
+    package = pkgs.nixFlakes;
+    extraOptions = ''
+      experimental-features = nix-command flakes
+    '';
+   };
+
+  system.autoUpgrade.enable = true;
+  nixpkgs.config.packageOverrides = pkgs: {
+    focalboard = pkgs.callPackage ../../pkgs/focalboard/default.nix {};
+  };
 
   ########################################
   # Boot
@@ -29,15 +39,14 @@ in
   ########################################
   networking = {
     hostName = "cubie";
-    domain = "local";
+    domain = "home.macdermid.ca";
     hostId = "f5a3f353";
     firewall = {
       # grafana, nzbget, test, minidlna, portainer
       allowedTCPPorts = [
         80
-        8086  # influxdb
+        443
         8200  # minidlna
-        9000  # portainer
       ];
       # upnp
       allowedUDPPorts = [
@@ -57,22 +66,10 @@ in
   services.avahi.publish = {
     enable = true;
     addresses = true;
-  };
-  services.avahi-alias = {
-    enable = true;
-    names = [
-      "grafana"
-      "influxdb"
-      "nzbget"
-    ];
+    userServices = true;
   };
   services.unbound.enable = true;
   services.fwupd.enable = true;
-
-#  services.mysql = {
-#    enable = true;
-#    bind = "127.0.0.1";
-#  };
 
   ########################################
   # Users
@@ -86,7 +83,9 @@ in
   # Simple Services
   ########################################
   services = {
-    openssh.enable = true;
+    openssh = {
+      enable = true;
+    };
     logind.lidSwitch = "ignore";
   };
 
@@ -112,28 +111,95 @@ in
   services.grafana = rec {
     enable = true;
     rootUrl = "http://${config.services.grafana.domain}/";
-    domain = "grafana.local";
+    domain = "grafana.home.macdermid.ca";
+    auth = {
+      anonymous = {
+        enable = true;
+        org_name = "MacDermid";
+        org_role = "Editor";
+      };
+    };
+    extraOptions = {
+      auth_basic_enabled = "false";
+      auth_disable_login_form = "true";
+    };
   };
 
   # nginx
+  environment.etc = {
+    nginx-cert = {
+      text = secrets.NGINX_CERT;
+      mode = "0444";
+      user = config.systemd.services.nginx.serviceConfig.User;
+      group= config.systemd.services.nginx.serviceConfig.Group;
+    };
+    nginx-cert-key = {
+      text = secrets.NGINX_CERT_KEY;
+      mode = "0400";
+      user = config.systemd.services.nginx.serviceConfig.User;
+      group= config.systemd.services.nginx.serviceConfig.Group;
+    };
+  };
   services.nginx = {
     enable = true;
 
     recommendedOptimisation = true;
     recommendedGzipSettings = true;
     recommendedProxySettings = true;
+    recommendedTlsSettings = true;
+
+    commonHttpConfig = ''
+      # Add HSTS header with preloading to HTTPS requests.
+      # Adding this header to HTTP requests is discouraged
+      map $scheme $hsts_header {
+          https   "max-age=31536000; includeSubdomains; preload";
+      }
+      add_header Strict-Transport-Security $hsts_header;
+
+      # Enable CSP for your services.
+      #add_header Content-Security-Policy "script-src 'self'; object-src 'none'; base-uri 'none';" always;
+
+      # Minimize information leaked to other domains
+      add_header 'Referrer-Policy' 'origin-when-cross-origin';
+
+      # Disable embedding as a frame
+      add_header X-Frame-Options DENY;
+
+      # Prevent injection of code in other mime types (XSS Attacks)
+      add_header X-Content-Type-Options nosniff;
+
+      # Enable XSS protection of the browser.
+      # May be unnecessary when CSP is configured properly (see above)
+      add_header X-XSS-Protection "1; mode=block";
+
+      # This might create errors
+      proxy_cookie_path / "/; secure; HttpOnly; SameSite=strict";
+    '';
 
     virtualHosts = let
       base = locations: {
         inherit locations;
+        forceSSL = true;
+        sslCertificate = "/etc/nginx-cert";
+        sslCertificateKey = "/etc/nginx-cert-key";
       };
       proxy = port: base {
         "/".proxyPass = "http://127.0.0.1:${toString port}/";
       };
+      proxywss = port: base {
+        "/".proxyPass = "http://127.0.0.1:${toString port}/";
+        "/".proxyWebsockets = true;
+      };
     in {
-      "grafana.local" = proxy config.services.grafana.port;
-      "influxdb.local" = proxy 8086;
-      "nzbget.local" = proxy 6789;
+      "www.home.macdermid.ca" =  base  {
+        "/".root = "/etc/nixos/hosts/cubie/www/";
+      };
+      "grafana.home.macdermid.ca" = proxywss config.services.grafana.port;
+      "influxdb.home.macdermid.ca" = proxy 8086;
+      "nzbget.home.macdermid.ca" = proxy 6789;
+      "hedgedoc.home.macdermid.ca" = proxy config.services.hedgedoc.configuration.port;
+      "matrix.home.macdermid.ca" = proxy config.services.dendrite.httpPort;
+      "focalboard.home.macdermid.ca" = proxywss 18000;
     };
   };
 
@@ -206,6 +272,31 @@ in
     };
   };
 
+  services.hedgedoc = {
+    enable = true;
+    configuration = {
+      domain = "hedgedoc.home.macdermid.ca";
+      host = "127.0.0.1";
+      port = 8090;
+      protocolUseSSL = true;
+      db = {
+        dialect = "sqlite";
+        storage = "/var/lib/hedgedoc/db.hedgedoc.sqlite";
+      };
+      sessionSecret = secrets.HEDGEDOC_SESSION_SECRET;
+    };
+  };
+
+  services.dendrite = {
+    enable = true;
+    settings.global = {
+      server_name = "matrix.home.macdermid.ca";
+      private_key = "/var/lib/dendrite/matrix_key.pem";
+      trusted_third_party_id_servers = [];
+      disable_federation = true;
+
+    };
+  };
   ########################################
   # Packages
   ########################################
