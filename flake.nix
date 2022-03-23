@@ -44,6 +44,7 @@
                 overlay-local
                 overlay-staging-next
                 overlay-master
+                (import ./overlays/broken-zfs.nix)
                 (import ./overlays/sway-dbg.nix)
               ];
             })
