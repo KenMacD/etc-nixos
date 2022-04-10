@@ -43,12 +43,12 @@
       ];
     };
   };
+  services.hardware.bolt.enable = true;
   # Force intel vulkan driver to prevent software rendering:
   environment.variables.VK_ICD_FILENAMES =
     "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json:/run/opengl-driver-32/share/vulkan/icd.d/intel_icd.i686.json";
 
-  boot.kernelPackages = pkgs.linuxPackages_xanmod;
-  boot.zfs.enableUnstable = true;
+  boot.kernelPackages = pkgs.linuxPackages_zen;
   boot.kernel.sysctl = {
     "kernel.sysrq" = 1;
   };
