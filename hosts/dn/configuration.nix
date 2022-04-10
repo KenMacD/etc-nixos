@@ -152,6 +152,7 @@
     extraGroups = [
       "docker"
       "libvirtd"
+      "lxd"
       "networkmanager"
       "dialout"
       config.security.wrappers.dumpcap.group
@@ -170,8 +171,14 @@
   ########################################
   # Containers
   ########################################
-  virtualisation.docker = {
-    enable = true;
+  virtualisation = {
+    docker.enable = true;
+    lxc = {
+      enable = true;
+      lxcfs.enable = true;
+    };
+    lxd.enable = true;
+    waydroid.enable = true;
   };
 
   ########################################
