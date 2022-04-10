@@ -3,6 +3,12 @@
 with lib;
 
 {
+  security.apparmor.enable = mkDefault true;
+  security.sudo.execWheelOnly = mkDefault true;
+
+  # environment.memoryAllocator.provider = mkDefault "scudo";
+  # environment.variables.SCUDO_OPTIONS = mkDefault "ZeroContents=1";
+
   # set up other allocators for use with LD_PRELOAD
   environment.variables = {
     MALLOC_HARDENED = "${pkgs.graphene-hardened-malloc}/lib/libhardened_malloc.so";
@@ -12,6 +18,8 @@ with lib;
   };
 
   # Some configs pulled from modules/profiles/hardened
+  # Also see https://github.com/torvalds/linux/blob/master/security/Kconfig.hardening
+  # and https://github.com/a13xp0p0v/kconfig-hardened-check/blob/2b5bf3548b6a7edbf7cd74278d570b658f9ab34a/kconfig_hardened_check/__init__.py#L13-L21
   boot.blacklistedKernelModules = [
     # Obscure network protocols
     "ax25"
