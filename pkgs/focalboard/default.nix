@@ -2,11 +2,11 @@
 
 stdenv.mkDerivation rec {
   pname = "focalboard";
-  version = "0.12.1";
+  version = "0.15.0";
 
   src = fetchzip {
     url = "https://github.com/mattermost/focalboard/releases/download/v${version}/focalboard-server-linux-amd64.tar.gz";
-    sha256 = "sha256-hvouCps54qApr7LXN2dou5WVRoTrSGd54nqBh5Hle7Q=";
+    sha256 = "1xbigsh4y09l5axxvzq7gx6cng8xmz7vdwbwv2rl4kbcy72j4pbc";
   };
 
   nativeBuildInputs = [
