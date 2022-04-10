@@ -20,9 +20,8 @@
       };
       overlay-sway = import ./overlays/sway-dbg;
     in {
-      packages.x86_64-linux = import nixpkgs {
-        inherit system;
-        overlays = [ overlay-local ];
+      packages.x86_64-linux = import ./pkgs {
+        pkgs = nixpkgs.legacyPackages.${system};
       };
 
       nixosConfigurations = {
