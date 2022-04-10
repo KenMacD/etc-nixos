@@ -184,10 +184,6 @@
   ########################################
   # Security
   ########################################
-  programs.firejail = {
-    enable = true;
-    wrappedBinaries = { teams = "${pkgs.lib.getBin pkgs.teams}/bin/teams"; };
-  };
 
   ########################################
   # Packages
@@ -223,15 +219,16 @@
       xdg-utils
       yt-dlp
 
+      # System performance
+      htop
+      stress-ng
+      s-tui
+
       # Terminal related
       kitty
       mdcat
 
       # Password management
-      (pass.override {
-        x11Support = false;
-        waylandSupport = true;
-      })
       gopass  # replacement for pass, has -o option
       gopass-jsonapi
       qtpass
@@ -287,12 +284,10 @@
       irssi
       signal-desktop
       slack
-      # teams -- Included in firejail
       (weechat.override {
         configure = { availablePlugins, ... }: {
           plugins = with availablePlugins; [ python ];
           scripts = with pkgs.weechatScripts; [
-            weechat-matrix
             (wee-slack.overrideAttrs (oldAttrs: rec {
               version = "2.7.0";
               src = fetchFromGitHub {
@@ -302,12 +297,6 @@
                 sha256 = "19aizpn1qfar05jqgx2kmjjwml6a8gnhi570fxyqc1zpcy12wjqk";
               };
             }))
-            weechat-autosort
-            weechat-notify-send
-          ];
-          extraBuildInputs = [
-            availablePlugins.python.withPackages
-            (_: [ pkgs.weechat-matrix ])
           ];
         };
       })
@@ -317,7 +306,9 @@
       msmtp  # simple smtp clipent
       neomutt
       notmuch  # search
+      pdfminer # pdf
       python3Packages.icalendar  # ical view
+      khal  # ical view
       urlscan
       urlview
       lynx
@@ -326,6 +317,19 @@
       # Android
       abootimg
       brotli
+      dtc
+      heimdall
+      meson-tools
+
+      # Unsorted
+      delta
+      most
+      mindforger
+      ffmpeg
+      binwalk
+      screen
+      qalculate-gtk
+      mitmproxy
 
       # Games
 
@@ -335,6 +339,8 @@
       sshfs
 
       # Virtualization
+      virt-manager
+      lxd
       docker
       docker-compose
       nixos-generators
@@ -346,7 +352,6 @@
       aws-adfs
       awscli2
       bintools
-      clang
       direnv
       file
       gdb
