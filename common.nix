@@ -6,7 +6,7 @@ with lib;
   ########################################
   # Nix
   ########################################
-  system.stateVersion = "20.09";
+  system.stateVersion = "21.03";
   nix.settings.auto-optimise-store = mkDefault true;
   nixpkgs.config.allowUnfree = true;
 
