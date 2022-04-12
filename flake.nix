@@ -55,6 +55,7 @@
             })
             ./common.nix
             ./modules/nrf52.nix
+            ./modules/wpantund.nix
             ./hosts/dn/configuration.nix
             ./hosts/dn/hardware.nix
             ./modules/hardened.nix
