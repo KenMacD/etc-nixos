@@ -8,6 +8,8 @@
 
   inputs.flake-utils.url = "github:numtide/flake-utils";
 
+  inputs.sops-nix.url = github:Mic92/sops-nix;
+
   outputs =
     { self
     , nixpkgs
@@ -15,6 +17,7 @@
     , nixpkgs-master
     , nixpkgs-stable
     , flake-utils
+    , sops-nix
     }@inputs:
 
     let
@@ -69,6 +72,7 @@
             ./hosts/dn/configuration.nix
             ./hosts/dn/hardware.nix
             ./modules/hardened.nix
+            sops-nix.nixosModules.sops
           ];
         };
       };
