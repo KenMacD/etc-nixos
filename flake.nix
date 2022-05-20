@@ -4,10 +4,18 @@
   inputs.nixpkgs.url = "nixpkgs/nixos-unstable";
   inputs.nixpkgs-staging-next.url = "nixpkgs/staging-next";
   inputs.nixpkgs-master.url = "nixpkgs/master";
+  inputs.nixpkgs-stable.url = "nixpkgs/nixos-21.11";
 
   inputs.flake-utils.url = "github:numtide/flake-utils";
 
-  outputs = inputs@{ self, nixpkgs, nixpkgs-staging-next, nixpkgs-master, flake-utils }:
+  outputs =
+    { self
+    , nixpkgs
+    , nixpkgs-staging-next
+    , nixpkgs-master
+    , nixpkgs-stable
+    , flake-utils
+    }@inputs:
 
     let
       system = "x86_64-linux";
@@ -18,11 +26,13 @@
       overlay-master = final: prev: {
         master = nixpkgs-master.legacyPackages.${prev.system};
       };
-      overlay-sway = import ./overlays/sway-dbg;
-    in {
-      packages.x86_64-linux = import ./pkgs {
-        pkgs = nixpkgs.legacyPackages.${system};
+      overlay-stable = final: prev: {
+        stable = nixpkgs-stable.legacyPackages.${prev.system};
       };
+    in
+    {
+      packages.x86_64-linux =
+        import ./pkgs { pkgs = nixpkgs.legacyPackages.${system}; };
 
       nixosConfigurations = {
         cubie = nixpkgs.lib.nixosSystem {
@@ -43,13 +53,15 @@
                 overlay-staging-next
                 overlay-master
                 (import ./overlays/broken-zfs.nix)
+                overlay-stable
                 (import ./overlays/sway-dbg.nix)
               ];
             })
             # Add to regsitry so nixpkgs commands use system versions
             ({ pkgs, ... }: {
-              nix.registry.nixpkgs.flake = inputs.nixpkgs;
-              nix.registry.nixpkgs-master.flake = inputs.nixpkgs-master;
+              nix.registry.nixpkgs.flake = nixpkgs;
+              nix.registry.nixpkgs-master.flake = nixpkgs-master;
+              nix.registry.nixpkgs-stable.flake = nixpkgs-stable;
               nix.registry.local.flake = self;
             })
             ./common.nix
