@@ -29,7 +29,6 @@
           inherit system;
           modules = [
             ./common.nix
-            ./modules/avahi-alias.nix
             ./hosts/cubie/configuration.nix
             ./hosts/cubie/hardware.nix
             ./modules/hardened.nix
