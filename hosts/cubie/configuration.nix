@@ -28,13 +28,6 @@ in
   powerManagement.enable = true;
 
   ########################################
-  # ZFS
-  ########################################
-  boot.supportedFilesystems = [ "zfs" ];
-  services.zfs.trim.enable = true;
-  services.zfs.autoSnapshot.enable = true;
-
-  ########################################
   # Networking
   ########################################
   networking = {
