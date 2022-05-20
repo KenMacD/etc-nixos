@@ -49,20 +49,11 @@
     "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json:/run/opengl-driver-32/share/vulkan/icd.d/intel_icd.i686.json";
 
   boot.kernelPackages = pkgs.linuxPackages_zen;
-  # Set ZFS to keep 3G free, otherwise firefox unloads tabs
-  # too frequently. Re-examine when/if issue fixed.
   boot.extraModprobeConfig = ''
-    options zfs zfs_arc_sys_free=3221225472
   '';
   boot.kernel.sysctl = {
     "kernel.sysrq" = 1;
   };
-
-  ########################################
-  # ZFS
-  ########################################
-  boot.supportedFilesystems = [ "zfs" ];
-  services.zfs.autoSnapshot.enable = true;
 
   ########################################
   # Network

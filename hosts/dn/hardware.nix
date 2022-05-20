@@ -4,43 +4,69 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
-  imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
-    ];
+  imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "nvme" "usbhid" "rtsx_pci_sdmmc" ];
-  boot.initrd.kernelModules = [ ];
+  boot.initrd.availableKernelModules = [
+    "usb_storage"
+    "sd_mod"
+    "nvme"
+    "vmd"
+    "thunderbolt"
+    "rtsx_pci_sdmmc"
+    "xhci_pci"
+  ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" =
-    { device = "zroot/nixos/root";
-      fsType = "zfs";
-    };
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/11903e46-6df3-4135-a6fb-b5bf4cdbbf25";
+    fsType = "btrfs";
+    options = [ "subvol=root" "noatime" ];
+  };
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/E032-D07D";
-      fsType = "vfat";
-    };
+  fileSystems."/home" = {
+    device = "/dev/disk/by-uuid/11903e46-6df3-4135-a6fb-b5bf4cdbbf25";
+    fsType = "btrfs";
+    options = [ "subvol=home" "noatime" ];
+  };
 
-  fileSystems."/home" =
-    { device = "zroot/home";
-      fsType = "zfs";
-    };
+  # Nocow for qcow2 files
+  fileSystems."/home/kenny/VirtualMachines" = {
+    device = "/dev/disk/by-uuid/11903e46-6df3-4135-a6fb-b5bf4cdbbf25";
+    fsType = "btrfs";
+    options = [ "subvol=home_kenny_VirtualMachines" "noatime" ];
+  };
 
-  fileSystems."/nix" =
-    { device = "zroot/nixos/nix";
-      fsType = "zfs";
-    };
+  fileSystems."/home/kenny/.local/share/containers" = {
+    device = "/dev/disk/by-uuid/11903e46-6df3-4135-a6fb-b5bf4cdbbf25";
+    fsType = "btrfs";
+    options = [ "subvol=home_kenny_.local_share_containers" "noatime" ];
+  };
 
-  fileSystems."/var/lib/docker" =
-    { device = "/dev/disk/by-uuid/dd1e3bd2-9548-4bbe-899f-3482f0346bc6";
-      fsType = "ext4";
-    };
+  fileSystems."/nix" = {
+    device = "/dev/disk/by-uuid/11903e46-6df3-4135-a6fb-b5bf4cdbbf25";
+    fsType = "btrfs";
+    options = [ "subvol=nix" "noatime" ];
+  };
 
-  swapDevices =
-    [ { device = "/dev/disk/by-uuid/fc5d5289-62bc-4cea-b4cc-4b729a98f9c7"; }
-    ];
+  fileSystems."/var/lib/docker" = {
+    device = "/dev/disk/by-uuid/11903e46-6df3-4135-a6fb-b5bf4cdbbf25";
+    fsType = "btrfs";
+    options = [ "subvol=var_lib_docker" "noatime" ];
+  };
+
+  fileSystems."/tmp" = {
+    device = "/dev/disk/by-uuid/11903e46-6df3-4135-a6fb-b5bf4cdbbf25";
+    fsType = "btrfs";
+    options = [ "subvol=tmp" "relatime" ];
+  };
+
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/E032-D07D";
+    fsType = "vfat";
+  };
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
+  hardware.cpu.intel.updateMicrocode =
+    lib.mkDefault config.hardware.enableRedistributableFirmware;
 }
