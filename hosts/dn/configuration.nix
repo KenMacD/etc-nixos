@@ -1,6 +1,7 @@
 { config, lib, pkgs, nixpkgs, ... }: {
   imports = [
     ./audio.nix
+    ./virt.nix
 #    ./larger-coredumps.nix
   ];
 
@@ -147,7 +148,6 @@
   ########################################
   users.users.kenny = {
     extraGroups = [
-      "docker"
       "libvirtd"
       "lxd"
       "networkmanager"
@@ -163,19 +163,6 @@
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
-  };
-
-  ########################################
-  # Containers
-  ########################################
-  virtualisation = {
-    docker.enable = true;
-    lxc = {
-      enable = true;
-      lxcfs.enable = true;
-    };
-    lxd.enable = true;
-    waydroid.enable = true;
   };
 
   ########################################
