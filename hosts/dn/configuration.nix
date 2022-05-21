@@ -10,9 +10,7 @@
   ########################################
   nix.settings = {
     sandbox = true;
-    substituters = [
-      "https://aseipp-nix-cache.global.ssl.fastly.net"
-    ];
+    substituters = [ "https://aseipp-nix-cache.global.ssl.fastly.net" ];
   };
 
   nixpkgs.config = {
@@ -50,11 +48,15 @@
     "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json:/run/opengl-driver-32/share/vulkan/icd.d/intel_icd.i686.json";
 
   boot.kernelPackages = pkgs.linuxPackages_zen;
+  boot.extraModulePackages = with config.boot.kernelPackages; [
+    intel-speed-select
+    turbostat
+    x86_energy_perf_policy
+  ];
   boot.extraModprobeConfig = ''
   '';
-  boot.kernel.sysctl = {
-    "kernel.sysrq" = 1;
-  };
+
+  boot.kernel.sysctl = { "kernel.sysrq" = 1; };
 
   ########################################
   # Network
@@ -70,19 +72,21 @@
     wireless.enable = false;
   };
   systemd.services."systemd-networkd-wait-online".enable = false;
-  services.unbound.enable = true;
+
   services.resolved.enable = false;
 
   ########################################
   # Desktop Environment
   ########################################
   programs.qt5ct.enable = true;
+  programs.xwayland.enable = false;
   programs.sway = {
     enable = true;
     extraPackages = with pkgs; [
+      cmst
       grim # screenshot
       libinput
-      networkmanagerapplet
+      mako # notifications (tiramisu?)
       papirus-icon-theme
       slurp # select area for screenshot
       swayidle
@@ -92,6 +96,14 @@
       wofi
       xwayland
       wdisplays
+      networkmanagerapplet
+
+      # Screensharing
+      xdg-desktop-portal-wlr
+
+      glfw-wayland
+      glew
+      qt5.qtwayland
 
       polkit-kde-agent
 
@@ -100,15 +112,31 @@
       gsettings-desktop-schemas
       lxappearance
       gnome3.adwaita-icon-theme
+
+      # Display profiles
+      kanshi
     ];
+    extraSessionCommands = ''
+      export SDL_VIDEODRIVER="wayland"
+      export QT_QPA_PLATFORM="wayland"
+      export QT_WAYLAND_DISABLE_WINDOWDECORATIONS="1"
+      export _JAVA_AWT_WM_NONREPARENTING="1"
+    '';
+    wrapperFeatures = {
+      base = true;
+      gtk = true;
+    };
   };
-  environment.pathsToLink = [ "/libexec" ];  # Required for sway/polkit
+  environment.pathsToLink = [ "/libexec" ]; # Required for sway/polkit
+  environment.shellAliases = { "ls" = "lsd"; };
   programs.waybar.enable = true;
   programs.wireshark = {
     enable = true;
-    package = pkgs.wireshark;  # Install gui pkg
+    package = pkgs.wireshark; # Install gui pkg
   };
+  gtk.iconCache.enable = true;
   xdg.icons.enable = true;
+  xdg.portal.wlr.enable = true; # Screensharing
 
   ########################################
   # Services
@@ -126,6 +154,8 @@
     };
     zerotierone.enable = true;
   };
+
+  zramSwap.enable = true;
 
   systemd.services.zerotierone.serviceConfig = {
     KillMode = lib.mkForce "control-group";
@@ -154,10 +184,15 @@
   ########################################
   users.users.kenny = {
     extraGroups = [
+      "dialout"
       "libvirtd"
       "lxd"
       "networkmanager"
-      "dialout"
+      "video"
+
+      "scanner"
+      "lp"
+
       config.security.wrappers.dumpcap.group
     ];
   };
@@ -177,11 +212,22 @@
   ########################################
   # Security
   ########################################
+  security.tpm2 = {
+    enable = true;
+    abrmd.enable = true;
+  };
 
   ########################################
   # Packages
   ########################################
-  programs.steam.enable = true;
+  nixpkgs.overlays = [ ];
+  programs.bcc.enable = true;
+  programs.sysdig.enable = true;
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true;
+  };
+
   services.lorri.enable = true;
 
   environment.systemPackages = with pkgs;
@@ -195,14 +241,13 @@
       brightnessctl
       chromium
       fd
-      firefox-wayland
+      firefox-bin
       fzf
-      htop
       httpie
       libreoffice
       libusb1
       libva-utils
-      lsd  # ls, but better
+      lsd # ls, but better
       p7zip
       python3
       python3Packages.poetry
@@ -222,7 +267,7 @@
       mdcat
 
       # Password management
-      gopass  # replacement for pass, has -o option
+      gopass # replacement for pass, has -o option
       gopass-jsonapi
       qtpass
       yubikey-manager
@@ -280,28 +325,46 @@
       (weechat.override {
         configure = { availablePlugins, ... }: {
           plugins = with availablePlugins; [ python ];
-          scripts = with pkgs.weechatScripts; [
-            (wee-slack.overrideAttrs (oldAttrs: rec {
-              version = "2.7.0";
-              src = fetchFromGitHub {
-                repo = "wee-slack";
-                owner = "KenMacD";
-                rev = "bed1747daeca0151d3b5d1543f8e2529b4e423e8";
-                sha256 = "19aizpn1qfar05jqgx2kmjjwml6a8gnhi570fxyqc1zpcy12wjqk";
-              };
-            }))
-          ];
+          scripts = with pkgs.weechatScripts;
+            [
+              (wee-slack.overrideAttrs (oldAttrs: rec {
+                version = "2.7.0";
+                src = fetchFromGitHub {
+                  repo = "wee-slack";
+                  owner = "KenMacD";
+                  rev = "bed1747daeca0151d3b5d1543f8e2529b4e423e8";
+                  sha256 =
+                    "19aizpn1qfar05jqgx2kmjjwml6a8gnhi570fxyqc1zpcy12wjqk";
+                };
+              }))
+            ];
         };
       })
 
       # Email
-      fdm  # fetch mail from imap
-      msmtp  # simple smtp clipent
+      # fetch mail from imap
+      # Override fdm because 2.0 version does not have XOAUTH2 support
+      ((fdm.override { openssl = libressl; }).overrideAttrs (old: {
+        version = "cf19f51f5b33c5a05fe41bd4a614063a9b706693";
+        src = fetchFromGitHub {
+          owner = "nicm";
+          repo = "fdm";
+          rev = "cf19f51f5b33c5a05fe41bd4a614063a9b706693";
+          sha256 = "0x0ich0cl0h7y6zsg7s9agj0plgw976i1a4zrqz6kpbldfg1r63q";
+        };
+        configureFlags = (super.configureFlags or [ ])
+          ++ [ "--with-tls=libtls" ];
+      }))
+      # simple smtp client
+      ((msmtp.override { gnutls = null; }).overrideAttrs (old: {
+        buildInputs = (old.buildInputs or [ ]) ++ [ libressl ];
+        configureFlags = (old.configureFlags or [ ]) ++ [ "--with-tls=libtls" ];
+      }))
       neomutt
-      notmuch  # search
+      notmuch # search
       pdfminer # pdf
-      python3Packages.icalendar  # ical view
-      khal  # ical view
+      python3Packages.icalendar # ical view
+      khal # ical view
       urlscan
       urlview
       lynx
@@ -317,8 +380,10 @@
       # Unsorted
       delta
       most
+      steam-run
       mindforger
       ffmpeg
+      taskwarrior
       binwalk
       screen
       qalculate-gtk
@@ -333,9 +398,6 @@
 
       # Virtualization
       virt-manager
-      lxd
-      docker
-      docker-compose
       nixos-generators
       bubblewrap
 
