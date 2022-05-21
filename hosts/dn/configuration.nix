@@ -161,6 +161,9 @@
       config.security.wrappers.dumpcap.group
     ];
   };
+  security.sudo.extraConfig = ''
+    Defaults  env_keep += "DISPLAY"
+  '';
 
   ########################################
   # Crypto
