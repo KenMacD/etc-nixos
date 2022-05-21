@@ -82,6 +82,16 @@
             sops-nix.nixosModules.sops
           ];
         };
+        x1 = nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = [
+            ./common.nix
+            ./hosts/x1/configuration.nix
+            ./hosts/x1/hardware.nix
+            ./modules/hardened.nix
+          ];
+        };
+
       };
     };
 }
