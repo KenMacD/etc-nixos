@@ -117,7 +117,13 @@
     fwupd.enable = true;
     openssh.enable = false;
     pcscd.enable = true;
-    udev.packages = [ pkgs.yubikey-personalization ];
+    udev = {
+      packages = [ pkgs.yubikey-personalization ];
+      # Amlogic:
+      extraRules = ''
+        SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="1b8e", ATTR{idProduct}=="c003", MODE:="0666", SYMLINK+="worldcup"
+      '';
+    };
     zerotierone.enable = true;
   };
 
