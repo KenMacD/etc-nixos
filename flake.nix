@@ -74,7 +74,6 @@
               nix.registry.local.flake = self;
             })
             ./common.nix
-            ./modules/nrf52.nix
             ./modules/wpantund.nix
             ./modules/nix-alien.nix
             ./hosts/dn/configuration.nix
