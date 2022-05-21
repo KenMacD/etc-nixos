@@ -10,6 +10,11 @@
 
   inputs.sops-nix.url = github:Mic92/sops-nix;
 
+  inputs.nix-alien = {
+    url = "github:thiagokokada/nix-alien";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+
   outputs =
     { self
     , nixpkgs
@@ -18,6 +23,7 @@
     , nixpkgs-stable
     , flake-utils
     , sops-nix
+    , nix-alien
     }@inputs:
 
     let
@@ -49,6 +55,7 @@
         };
         dn = nixpkgs.lib.nixosSystem {
           inherit system;
+          specialArgs = inputs;
           modules = [
             ({ config, pkgs, ... }: {
               nixpkgs.overlays = [
@@ -69,6 +76,7 @@
             ./common.nix
             ./modules/nrf52.nix
             ./modules/wpantund.nix
+            ./modules/nix-alien.nix
             ./hosts/dn/configuration.nix
             ./hosts/dn/hardware.nix
             ./modules/hardened.nix
