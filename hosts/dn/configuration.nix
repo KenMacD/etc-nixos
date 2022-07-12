@@ -49,7 +49,7 @@
 
   boot.kernelPackages = pkgs.linuxPackages_zen;
   boot.extraModulePackages = with config.boot.kernelPackages; [
-    intel-speed-select
+    #intel-speed-select
     turbostat
     x86_energy_perf_policy
   ];
@@ -297,7 +297,7 @@
       dig
       fwupd
       fwupd-efi
-      intel-speed-select
+      # Marked broken in 5.18, needs libnl: intel-speed-select
       iotop
       killall
       lxqt.lxqt-policykit
