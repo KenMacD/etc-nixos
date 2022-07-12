@@ -144,9 +144,15 @@
   # Services
   ########################################
   services = {
+    ananicy = {
+      enable = true;
+      package = pkgs.ananicy-cpp;
+    };
     fwupd.enable = true;
+    lorri.enable = true;
     openssh.enable = false;
     pcscd.enable = true;
+    thermald.enable = true;
     udev = {
       packages = [ pkgs.yubikey-personalization ];
       # Amlogic:
@@ -230,7 +236,6 @@
     remotePlay.openFirewall = true;
   };
 
-  services.lorri.enable = true;
 
   environment.systemPackages = with pkgs;
     with config.boot.kernelPackages; [
