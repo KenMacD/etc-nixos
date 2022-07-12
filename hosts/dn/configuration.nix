@@ -78,7 +78,6 @@
   ########################################
   # Desktop Environment
   ########################################
-  programs.qt5ct.enable = true;
   programs.xwayland.enable = false;
   programs.sway = {
     enable = true;
@@ -137,6 +136,7 @@
   gtk.iconCache.enable = true;
   xdg.icons.enable = true;
   xdg.portal.wlr.enable = true; # Screensharing
+  qt5.platformTheme = "qt5ct";
 
   ########################################
   # Services
