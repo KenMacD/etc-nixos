@@ -12,27 +12,35 @@
   # Containers
   ########################################
   virtualisation = {
-    # docker = {
-    #   enable = true;
-    #   storageDriver = "overlay2";
-    # };
     kvmgt.enable = true;
     libvirtd = {
       enable = true;
-      qemu.ovmf.package = pkgs.OVMFFull;
+      # Only care about host arch:
+      qemu.package = pkgs.qemu_kvm;
     };
-    # Also user USB redirection... for now.
-    spiceUSBRedirection.enable = true;
-    lxc = {
-      enable = true;
-      lxcfs.enable = true;
-    };
+
+    # Add when user USB redirection retuired:
+    # spiceUSBRedirection.enable = true;
+
     podman = {
       enable = true;
       dockerCompat = true;
+      defaultNetwork.dnsname.enable = true;
     };
-    lxd.enable = true;
+
     waydroid.enable = true;
-    # virtualbox.host.enable = true;
   };
+
+  # kind on rootless podman requires:
+  systemd.enableUnifiedCgroupHierarchy = true;
+  systemd.services."user@".serviceConfig = { Delegate = "yes"; };
+
+  environment.systemPackages = with pkgs; [
+    podman-compose
+
+    # Kubernetes stuff
+    kubectl
+    kind
+    kubernetes-helm
+  ];
 }
