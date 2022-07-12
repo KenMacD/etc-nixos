@@ -29,7 +29,7 @@
   # Hardware
   ########################################
   hardware = {
-    firmware = with pkgs; [ wireless-regdb ];
+    enableAllFirmware = true;
     opengl = {
       enable = true;
       driSupport = true; # for vulkan
