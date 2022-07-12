@@ -126,6 +126,8 @@
       gtk = true;
     };
   };
+  # Use Wayland for Electron apps
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
   environment.pathsToLink = [ "/libexec" ]; # Required for sway/polkit
   environment.shellAliases = { "ls" = "lsd"; };
   programs.waybar.enable = true;
