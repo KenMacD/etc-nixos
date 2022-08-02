@@ -3,12 +3,13 @@ self: super:
 let
   overridePackage = package: override: overrideAttrs:
     (package.override override).overrideAttrs overrideAttrs;
-  swayCommit = "8f036b6f788e45a36d3126a661913dd38008cc41";
+  swayCommit = "9e879242fd1f1230d34337984cca565d84b932bb";
   swayHash =
-    "sha256-FfLHD/hhel/42mUz47k5VuXp+Sr6V/tPYM+XZgMn3oI="; # super.lib.fakeSha256;
-  wlrootsCommit = "2e14bed9f790c29146b0eee70eab7d8c704876e9";
+    "sha256-CxfEz8Iaot8ShlNqf9aBdVnxnmlN3aUauYqGQsqpkXI=";
+  #  https://gitlab.freedesktop.org/wlroots/wlroots
+  wlrootsCommit = "30bf8a4303bc5df3cb87b7e6555592dbf8d95cf1";
   wlrootsHash =
-    "sha256-FlxBo7wgvLryC+OcvIBiKyk7i0O1/WyVs5UZdU6iXfE="; # super.lib.fakeSha256;
+    "sha256-0sDD52ARoHUPPA690cJ9ctCOel4TRAn6Yr/IK7euWJc=";
   stdenvDebug = super.stdenvAdapters.keepDebugInfo super.pkgs.clang13Stdenv;
   mesonFlags = [ ];
   #  mesonFlags = [
@@ -54,7 +55,8 @@ in {
       rev = swayCommit;
       sha256 = swayHash;
     };
-    buildInputs = old.buildInputs ++ [ super.pkgs.pcre2 ];
+    buildInputs = old.buildInputs
+      ++ [ super.pkgs.pcre2 super.pkgs.xorg.xcbutilwm ];
     mesonBuildType = "debug";
     mesonFlags = old.mesonFlags or [ ] ++ mesonFlags;
   });
