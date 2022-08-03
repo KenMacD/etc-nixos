@@ -1,5 +1,5 @@
 { config, lib, pkgs, nixpkgs, ... }: {
-  imports = [ ./android.nix ./audio.nix ./virt.nix ];
+  imports = [ ./android.nix ./audio.nix ./firewall.nix ./virt.nix ];
 
   ########################################
   # Nix
