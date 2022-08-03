@@ -82,6 +82,7 @@
   systemd.services."systemd-networkd-wait-online".enable = false;
 
   services.resolved.enable = false;
+  services.tlp.enable = true;
 
   ########################################
   # Desktop Environment
