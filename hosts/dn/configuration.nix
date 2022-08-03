@@ -45,11 +45,23 @@
 
   boot.kernelPackages = pkgs.linuxPackages_zen;
   boot.extraModulePackages = with config.boot.kernelPackages; [
-    #intel-speed-select
     turbostat
     x86_energy_perf_policy
+    # Wifi - Alfa USB
+    (rtl8812au.overrideAttrs (old: {
+      version = "7de980d325ff7a40a67866bb6cf294f327e36fa2";
+      src = pkgs.fetchFromGitHub {
+        owner = "morrownr";
+        repo = "8812au-20210629";
+        rev = "7de980d325ff7a40a67866bb6cf294f327e36fa2";
+        sha256 = "sha256-n2P++2cK/2f9hCjXqz99zDcxlKrv/pMXy+r6uNy+AFc=";
+      };
+      meta.broken = false;
+    }))
+    rtl8821au
   ];
   boot.extraModprobeConfig = ''
+    options cfg80211 ieee80211_regdom=CA
   '';
 
   boot.kernel.sysctl = { "kernel.sysrq" = 1; };
