@@ -8,18 +8,18 @@
     sandbox = true;
     substituters = [ "https://aseipp-nix-cache.global.ssl.fastly.net" ];
   };
+  nix.settings.trusted-users = [ "root" "kenny" ];
+  nix.extraOptions = ''
+    binary-caches-parallel-connections = 12
+    warn-dirty = false
+    experimental-features = ca-derivations
+  '';
 
-  nixpkgs.config = {
-    packageOverrides = pkgs: {
-      gnupg = pkgs.gnupg.override { libusb1 = pkgs.libusb1; };
-
-      # Allow unstable.PackageName
-      unstable = import <nixos-unstable> { config = config.nixpkgs.config; };
-    };
-  };
+  nixpkgs.config = { };
 
   # Allow edit of /etc/host for temporary mitm:
   environment.etc.hosts.mode = "0644";
+  environment.enableDebugInfo = true;
 
   ########################################
   # Hardware
@@ -30,6 +30,7 @@
       enable = true;
       driSupport = true; # for vulkan
       driSupport32Bit = true;
+      setLdLibraryPath = true;
       extraPackages = with pkgs; [
         intel-compute-runtime
         # LIBVA_DRIVER_NAME=iHD (newer)
@@ -39,14 +40,18 @@
     };
   };
   services.hardware.bolt.enable = true;
+  services.avahi.enable = true;  # For Chromecast
+
   # Force intel vulkan driver to prevent software rendering:
   environment.variables.VK_ICD_FILENAMES =
     "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json:/run/opengl-driver-32/share/vulkan/icd.d/intel_icd.i686.json";
 
   boot.kernelPackages = pkgs.linuxPackages_zen;
+  boot.kernel.sysctl = { "dev.i915.perf_stream_paranoid" = 0; };
   boot.extraModulePackages = with config.boot.kernelPackages; [
     turbostat
     x86_energy_perf_policy
+
     # Wifi - Alfa USB
     (rtl8812au.overrideAttrs (old: {
       version = "7de980d325ff7a40a67866bb6cf294f327e36fa2";
@@ -60,6 +65,7 @@
     }))
     rtl8821au
   ];
+
   boot.extraModprobeConfig = ''
     options cfg80211 ieee80211_regdom=CA
   '';
@@ -211,8 +217,10 @@
       config.security.wrappers.dumpcap.group
     ];
   };
+  security.doas.enable = true;
   security.sudo.extraConfig = ''
     Defaults  env_keep += "DISPLAY"
+    Defaults  env_keep += "PYTHONPATH"
   '';
 
   ########################################
@@ -254,13 +262,14 @@
       brightnessctl
       chromium
       fd
-      firefox-bin
+      firefox
       fzf
       httpie
       libreoffice
       libusb1
       libva-utils
       lsd # ls, but better
+      most
       p7zip
       python3
       python3Packages.poetry
@@ -303,7 +312,6 @@
       dig
       fwupd
       fwupd-efi
-      # Marked broken in 5.18, needs libnl: intel-speed-select
       iotop
       killall
       lxqt.lxqt-policykit
@@ -356,18 +364,7 @@
 
       # Email
       # fetch mail from imap
-      # Override fdm because 2.0 version does not have XOAUTH2 support
-      ((fdm.override { openssl = libressl; }).overrideAttrs (old: {
-        version = "cf19f51f5b33c5a05fe41bd4a614063a9b706693";
-        src = fetchFromGitHub {
-          owner = "nicm";
-          repo = "fdm";
-          rev = "cf19f51f5b33c5a05fe41bd4a614063a9b706693";
-          sha256 = "0x0ich0cl0h7y6zsg7s9agj0plgw976i1a4zrqz6kpbldfg1r63q";
-        };
-        configureFlags = (super.configureFlags or [ ])
-          ++ [ "--with-tls=libtls" ];
-      }))
+      fdm
       # simple smtp client
       ((msmtp.override { gnutls = null; }).overrideAttrs (old: {
         buildInputs = (old.buildInputs or [ ]) ++ [ libressl ];
@@ -381,12 +378,7 @@
       urlscan
       urlview
       lynx
-      #maildrop  # for making Maildir and folders
 
-
-      # Unsorted
-      delta
-      most
       steam-run
       mindforger
       ffmpeg
@@ -395,8 +387,6 @@
       screen
       qalculate-gtk
       mitmproxy
-
-      # Games
 
       # General/Unsorted
       magic-wormhole
@@ -414,6 +404,7 @@
       aws-adfs
       awscli2
       bintools
+      delta
       direnv
       dtc
       file
@@ -431,7 +422,8 @@
       nix-direnv
       parallel
       perf
-      pgcli
+      pkgconf
+      stable.pgcli
       ripgrep
       rustup
       tio

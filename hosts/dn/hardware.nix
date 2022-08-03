@@ -55,6 +55,7 @@
     options = [ "subvol=var_lib_docker" "noatime" ];
   };
 
+  # Also using overlay tmpfs... but keep in case need more room
   fileSystems."/tmp" = {
     device = "/dev/disk/by-uuid/11903e46-6df3-4135-a6fb-b5bf4cdbbf25";
     fsType = "btrfs";
