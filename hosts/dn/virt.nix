@@ -8,6 +8,11 @@
     # "intel_iommu=on"
   ];
 
+  users.users.kenny.extraGroups = [
+    "kvm"
+    "libvirtd"
+  ];
+
   ########################################
   # Containers
   ########################################

@@ -201,8 +201,6 @@
   users.users.kenny = {
     extraGroups = [
       "dialout"
-      "libvirtd"
-      "lxd"
       "networkmanager"
       "video"
 
