@@ -1,9 +1,5 @@
 { config, lib, pkgs, nixpkgs, ... }: {
-  imports = [
-    ./audio.nix
-    ./virt.nix
-#    ./larger-coredumps.nix
-  ];
+  imports = [ ./android.nix ./audio.nix ./virt.nix ];
 
   ########################################
   # Nix
@@ -236,7 +232,6 @@
     remotePlay.openFirewall = true;
   };
 
-
   environment.systemPackages = with pkgs;
     with config.boot.kernelPackages; [
       # General
@@ -377,12 +372,6 @@
       lynx
       #maildrop  # for making Maildir and folders
 
-      # Android
-      abootimg
-      brotli
-      dtc
-      heimdall
-      meson-tools
 
       # Unsorted
       delta
@@ -415,6 +404,7 @@
       awscli2
       bintools
       direnv
+      dtc
       file
       gdb
       gh
@@ -425,6 +415,7 @@
       jq
       llvm
       man-pages
+      meson-tools
       mold
       nix-direnv
       parallel
