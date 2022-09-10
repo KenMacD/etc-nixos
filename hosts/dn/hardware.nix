@@ -49,6 +49,7 @@
     options = [ "subvol=nix" "noatime" ];
   };
 
+  # Using rootless podman, but was:
   fileSystems."/var/lib/docker" = {
     device = "/dev/disk/by-uuid/11903e46-6df3-4135-a6fb-b5bf4cdbbf25";
     fsType = "btrfs";
