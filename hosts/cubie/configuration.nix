@@ -348,5 +348,23 @@ in
     pstree
     tmux
     wpa_supplicant
+    yt-dlp
+
+    # for nzbget
+    unrar
+    p7zip
+    python3
+
+    screen
+    focalboard
+
+    aspell
+    aspellDicts.en
+    aspellDicts.en-computers
+    (weechat.override {
+      configure = { availablePlugins, ... }: {
+        plugins = with availablePlugins; [ python ];
+      };
+    })
   ];
 }
