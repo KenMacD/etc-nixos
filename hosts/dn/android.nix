@@ -7,7 +7,9 @@
   environment.systemPackages = with pkgs; [
     abootimg
     android-tools
-    apk-tools
+    apktool
+    genymotion
     heimdall
+    scrcpy
   ];
 }
