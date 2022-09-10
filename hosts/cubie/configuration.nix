@@ -250,16 +250,17 @@ in
   services.minidlna = {
     enable = true;
 
-    announceInterval = 60;
-    friendlyName = "Cubie";
-    loglevel = "info";
-    mediaDirs = [
-     "V,/mnt/multimedia/incoming"
-     "V,/mnt/multimedia/films"
-     "V,/mnt/multimedia/tv"
-    ];
-    rootContainer = "V";
-
+    settings = {
+      notify_interval = 60;
+      friendly_name = "Cubie";
+      log_level = "info";
+      media_dir = [
+       "V,/mnt/multimedia/incoming"
+       "V,/mnt/multimedia/films"
+       "V,/mnt/multimedia/tv"
+      ];
+      root_container = "V";
+    };
     extraConfig = ''
       network_interface=eth0
     '';
