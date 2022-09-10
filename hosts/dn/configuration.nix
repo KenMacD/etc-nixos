@@ -366,10 +366,7 @@
       # fetch mail from imap
       fdm
       # simple smtp client
-      ((msmtp.override { gnutls = null; }).overrideAttrs (old: {
-        buildInputs = (old.buildInputs or [ ]) ++ [ libressl ];
-        configureFlags = (old.configureFlags or [ ]) ++ [ "--with-tls=libtls" ];
-      }))
+      msmtp
       neomutt
       notmuch # search
       pdfminer # pdf
