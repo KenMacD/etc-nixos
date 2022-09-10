@@ -139,6 +139,21 @@ in
       };
     };
   };
+
+  security.acme = {
+    acceptTerms = true;
+    defaults = {
+      email = "kenny@macdermid.ca";
+      dnsProvider = "cloudflare";
+      # TODO: fix
+      credentialsFile = ./. + "/cloudflare.env";
+      dnsResolver = "1.1.1.1:53";
+    };
+    certs."home.macdermid.ca" = {
+      domain = "*.home.macdermid.ca";
+    };
+  };
+
   # nginx
   environment.etc = {
     nginx-cert = {
@@ -194,8 +209,7 @@ in
       base = locations: {
         inherit locations;
         forceSSL = true;
-        sslCertificate = "/etc/nginx-cert";
-        sslCertificateKey = "/etc/nginx-cert-key";
+        useACMEHost = "home.macdermid.ca";
       };
       proxy = port: base {
         "/".proxyPass = "http://127.0.0.1:${toString port}/";
@@ -205,6 +219,10 @@ in
         "/".proxyWebsockets = true;
       };
     in {
+      "home.macdermid.ca" = {
+         enableACME = true;
+         acmeRoot = null;
+      };
       "www.home.macdermid.ca" =  base  {
         "/".root = "/etc/nixos/hosts/cubie/www/";
       };
