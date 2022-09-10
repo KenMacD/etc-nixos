@@ -118,6 +118,28 @@ in
     };
   };
 
+  services.gitea = {
+    enable = true;
+    rootUrl = "https://${config.services.gitea.domain}/";
+    domain = "git.home.macdermid.ca";
+    httpAddress = "127.0.0.1";
+    httpPort = 3001;
+    cookieSecure = true;
+    disableRegistration = true;  # After creating my account
+
+    log.level = "Warn";
+    settings = {
+      "git.timeout" = {
+        DEFAULT = 50000;
+        MIGRATE = 50000;
+        MIRROR = 50000;
+        CLONE = 50000;
+        PULL = 50000;
+        GC = 50000;
+#        MIGRATE = 2400;
+      };
+    };
+  };
   # nginx
   environment.etc = {
     nginx-cert = {
@@ -192,6 +214,7 @@ in
       "nzbget.home.macdermid.ca" = proxy 6789;
       "hedgedoc.home.macdermid.ca" = proxy config.services.hedgedoc.configuration.port;
       "matrix.home.macdermid.ca" = proxy config.services.dendrite.httpPort;
+      "git.home.macdermid.ca" = proxy config.services.gitea.httpPort;
       "focalboard.home.macdermid.ca" = proxywss 18000;
     };
   };
@@ -308,4 +331,3 @@ in
     wpa_supplicant
   ];
 }
-
