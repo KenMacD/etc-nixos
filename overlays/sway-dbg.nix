@@ -3,13 +3,13 @@ self: super:
 let
   overridePackage = package: override: overrideAttrs:
     (package.override override).overrideAttrs overrideAttrs;
-  swayCommit = "9e879242fd1f1230d34337984cca565d84b932bb";
+  swayCommit = "07bfeb2abcb46b5f1472d53963478fa0714fb5b1";
   swayHash =
-    "sha256-CxfEz8Iaot8ShlNqf9aBdVnxnmlN3aUauYqGQsqpkXI=";
+    "sha256-JfN0t7ZemuopN+JoPCVuLZUBwAlGdFEIRvqqB6lZQSQ=";   
   #  https://gitlab.freedesktop.org/wlroots/wlroots
-  wlrootsCommit = "30bf8a4303bc5df3cb87b7e6555592dbf8d95cf1";
+  wlrootsCommit = "fd0b0276c9ecc159549acff48b932b83ec3b4f12";
   wlrootsHash =
-    "sha256-0sDD52ARoHUPPA690cJ9ctCOel4TRAn6Yr/IK7euWJc=";
+    "sha256-Kw0MG4rXdTnbndVLLCNwkXDmNszwdQZmm7pwI1R3Kds=";
   stdenvDebug = super.stdenvAdapters.keepDebugInfo super.pkgs.clang13Stdenv;
   mesonFlags = [ ];
   #  mesonFlags = [
@@ -43,6 +43,13 @@ in let
     mesonFlags = old.mesonFlags or [ ] ++ mesonFlags;
   });
 in {
+  swaylock = overridePackage super.swaylock {
+    stdenv = stdenvDebug;
+    wayland = waylandDbgFrm super;
+  } (old: {
+    mesonBuildType = "debug";
+    mesonFlags = (old.mesonFlags or [ ]) ++ mesonFlags;
+  });
   sway-unwrapped = overridePackage super.sway-unwrapped {
     stdenv = stdenvDebug;
     wayland = waylandDbgFrm super;
@@ -58,6 +65,6 @@ in {
     buildInputs = old.buildInputs
       ++ [ super.pkgs.pcre2 super.pkgs.xorg.xcbutilwm ];
     mesonBuildType = "debug";
-    mesonFlags = old.mesonFlags or [ ] ++ mesonFlags;
+    mesonFlags = (old.mesonFlags or [ ]) ++ mesonFlags;
   });
 }
