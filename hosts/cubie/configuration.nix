@@ -53,7 +53,7 @@ in
       prefixLength = 24;
     }];
     defaultGateway = "172.27.0.1";
-    nameservers = [ "1.0.0.1" "1.1.1.1" ];
+    nameservers = [ "45.90.28.215" "45.90.30.215" ];
   };
 
   services.avahi.publish = {
@@ -61,7 +61,6 @@ in
     addresses = true;
     userServices = true;
   };
-  services.unbound.enable = true;
   services.fwupd.enable = true;
 
   ########################################
