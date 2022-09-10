@@ -162,6 +162,7 @@
         SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="1b8e", ATTR{idProduct}=="c003", MODE:="0666", SYMLINK+="worldcup"
       '';
     };
+    udisks2.enable = true;
     zerotierone.enable = true;
   };
 
@@ -309,6 +310,7 @@
       powertop
       power-profiles-daemon
       pstree
+      remmina
       usbutils
       turbostat
       x86_energy_perf_policy
@@ -389,6 +391,7 @@
       aws-adfs
       awscli2
       bintools
+      clang-tools
       delta
       direnv
       dtc
@@ -402,6 +405,7 @@
       jq
       llvm
       man-pages
+      meld
       meson-tools
       mold
       nix-direnv
@@ -411,6 +415,7 @@
       stable.pgcli
       ripgrep
       rustup
+      rust-analyzer
       tio
       vscodium-fhs # TODO: build with extensions
 
