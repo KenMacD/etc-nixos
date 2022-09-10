@@ -229,7 +229,7 @@ in
       "grafana.home.macdermid.ca" = proxywss config.services.grafana.port;
       "influxdb.home.macdermid.ca" = proxy 8086;
       "nzbget.home.macdermid.ca" = proxy 6789;
-      "hedgedoc.home.macdermid.ca" = proxy config.services.hedgedoc.configuration.port;
+      "hedgedoc.home.macdermid.ca" = proxy config.services.hedgedoc.settings.port;
       "matrix.home.macdermid.ca" = proxy config.services.dendrite.httpPort;
       "git.home.macdermid.ca" = proxy config.services.gitea.httpPort;
       "focalboard.home.macdermid.ca" = proxywss 18000;
@@ -307,8 +307,9 @@ in
 
   services.hedgedoc = {
     enable = true;
-    configuration = {
+    settings= {
       domain = "hedgedoc.home.macdermid.ca";
+#      path = "/var/run/hedgedoc.sock";
       host = "127.0.0.1";
       port = 8090;
       protocolUseSSL = true;
