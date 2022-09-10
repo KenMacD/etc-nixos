@@ -102,7 +102,7 @@ in
   # Grafana
   services.grafana = rec {
     enable = true;
-    rootUrl = "http://${config.services.grafana.domain}/";
+    rootUrl = "https://${config.services.grafana.domain}/";
     domain = "grafana.home.macdermid.ca";
     auth = {
       anonymous = {
