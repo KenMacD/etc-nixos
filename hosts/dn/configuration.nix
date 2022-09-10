@@ -183,8 +183,9 @@
   ########################################
   fonts = {
     fonts = with pkgs; [
-      (nerdfonts.override { fonts = [ "FiraCode" ]; })
+      (nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; })
       font-awesome # Used by waybar
+      fira-code
     ];
     fontconfig = { defaultFonts = { monospace = [ "Fira Code" ]; }; };
   };
