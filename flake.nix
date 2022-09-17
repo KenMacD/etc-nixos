@@ -86,6 +86,10 @@
               nix.registry.nixpkgs-stable.flake = nixpkgs-stable;
               nix.registry.local.flake = self;
             })
+            ({ ... }: {
+              # Use the flakes' nixpkgs for commands
+              nix.nixPath = let path = toString ./.; in [ "repl=${path}/repl.nix" "nixpkgs=${inputs.nixpkgs}" ];
+            })
             ./common.nix
             ./modules/wpantund.nix
             ./modules/nix-alien.nix
