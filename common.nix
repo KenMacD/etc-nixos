@@ -46,9 +46,9 @@ with lib;
   ########################################
   # Network
   ########################################
-  networking.firewall.enable = true;
-  networking.useDHCP = false; # deprecated
-  networking.usePredictableInterfaceNames = false;
+  networking.firewall.enable = mkDefault true;
+  networking.useDHCP = false;  # deprecated
+  networking.usePredictableInterfaceNames = mkDefault false;
 
   ########################################
   # User
