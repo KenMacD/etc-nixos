@@ -84,8 +84,12 @@ in
   # Users
   ########################################
   users.groups.media.members = with config.systemd.services; [
+    jellyfin.serviceConfig.User
     minidlna.serviceConfig.User
     nzbget.serviceConfig.User
+  ];
+  users.groups.render.members = with config.systemd.services; [
+    jellyfin.serviceConfig.User
   ];
 
   ########################################
@@ -156,6 +160,12 @@ in
       session.COOKIE_SECURE = true;
     };
   };
+
+  services.jellyfin = {
+    enable = true;
+    openFirewall = true;
+  };
+  systemd.services.jellyfin.environment."JELLYFIN_PublishedServerUrl" = "https://jellyfin.home.macdermid.ca";
 
   security.acme = {
     acceptTerms = true;
@@ -243,13 +253,14 @@ in
       "www.home.macdermid.ca" =  base  {
         "/".root = "/etc/nixos/hosts/cubie/www/";
       };
-      "grafana.home.macdermid.ca" = proxywss config.services.grafana.port;
-      "influxdb.home.macdermid.ca" = proxy 8086;
-      "nzbget.home.macdermid.ca" = proxy 6789;
-      "hedgedoc.home.macdermid.ca" = proxy config.services.hedgedoc.settings.port;
-      "matrix.home.macdermid.ca" = proxy config.services.dendrite.httpPort;
-      "git.home.macdermid.ca" = proxy config.services.gitea.httpPort;
       "focalboard.home.macdermid.ca" = proxywss 18000;
+      "git.home.macdermid.ca" = proxy config.services.gitea.httpPort;
+      "grafana.home.macdermid.ca" = proxywss config.services.grafana.port;
+      "hedgedoc.home.macdermid.ca" = proxy config.services.hedgedoc.settings.port;
+      "influxdb.home.macdermid.ca" = proxy 8086;
+      "jellyfin.home.macdermid.ca" = proxywss 8096;
+      "matrix.home.macdermid.ca" = proxy config.services.dendrite.httpPort;
+      "nzbget.home.macdermid.ca" = proxy 6789;
     };
   };
 
