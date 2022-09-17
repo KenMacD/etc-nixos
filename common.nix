@@ -10,6 +10,9 @@ with lib;
   nix.settings.auto-optimise-store = mkDefault true;
   nixpkgs.config.allowUnfree = true;
 
+  # Disable command-not-found until proper Flake solution
+  programs.command-not-found.enable = mkDefault false;
+
   # Include current config:
   environment.etc.current-nixos-config.source = ./.;
 
