@@ -13,6 +13,23 @@ in
    };
 
   system.autoUpgrade.enable = true;
+  hardware = {
+    bluetooth.enable = true;
+    opengl = {
+      enable = true;
+      driSupport = true; # for vulkan
+      driSupport32Bit = true;
+      setLdLibraryPath = true;
+      extraPackages = with pkgs; [
+        intel-media-driver
+        vaapiIntel
+        vaapiVdpau
+        libvdpau-va-gl
+        intel-compute-runtime  # OpenCL filter support (hardware tonemapping and subtitle burn-in)
+      ];
+    };
+  };
+
   nixpkgs.config.packageOverrides = pkgs: {
     focalboard = pkgs.callPackage ../../pkgs/focalboard/default.nix {};
   };
