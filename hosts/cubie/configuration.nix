@@ -140,10 +140,7 @@ in
     domain = "git.home.macdermid.ca";
     httpAddress = "127.0.0.1";
     httpPort = 3001;
-    cookieSecure = true;
-    disableRegistration = true;  # After creating my account
 
-    log.level = "Warn";
     settings = {
       "git.timeout" = {
         DEFAULT = 50000;
@@ -154,6 +151,9 @@ in
         GC = 50000;
 #        MIGRATE = 2400;
       };
+      log.LEVEL = "Warn";
+      service.DISABLE_REGISTRATION = true;  # After creating my account
+      session.COOKIE_SECURE = true;
     };
   };
 
