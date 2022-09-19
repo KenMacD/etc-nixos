@@ -203,20 +203,6 @@ in
   };
 
   # nginx
-  environment.etc = {
-    nginx-cert = {
-      text = secrets.NGINX_CERT;
-      mode = "0444";
-      user = config.systemd.services.nginx.serviceConfig.User;
-      group= config.systemd.services.nginx.serviceConfig.Group;
-    };
-    nginx-cert-key = {
-      text = secrets.NGINX_CERT_KEY;
-      mode = "0400";
-      user = config.systemd.services.nginx.serviceConfig.User;
-      group= config.systemd.services.nginx.serviceConfig.Group;
-    };
-  };
   services.nginx = {
     enable = true;
 
