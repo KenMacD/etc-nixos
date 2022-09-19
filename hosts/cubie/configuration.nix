@@ -196,6 +196,12 @@ in
     };
   };
 
+  services.zerotierone.enable = true;
+  systemd.services.zerotierone.serviceConfig = {
+    KillMode = lib.mkForce "control-group";
+    TimeoutStopFailureMode = "kill";
+  };
+
   # nginx
   environment.etc = {
     nginx-cert = {
