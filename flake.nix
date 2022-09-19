@@ -1,14 +1,19 @@
 {
   description = "NixOS configuration";
 
-  inputs.nixpkgs.url = "nixpkgs/nixos-unstable";
-  inputs.nixpkgs-staging-next.url = "nixpkgs/staging-next";
-  inputs.nixpkgs-master.url = "nixpkgs/master";
-  inputs.nixpkgs-stable.url = "nixpkgs/nixos-21.11";
+  inputs.nixpkgs.url = "https://git.home.macdermid.ca/mirror/nixpkgs/archive/nixos-unstable.tar.gz";
+  inputs.nixpkgs-staging-next.url = "https://git.home.macdermid.ca/mirror/nixpkgs/archive/staging-next.tar.gz";
+  inputs.nixpkgs-master.url = "https://git.home.macdermid.ca/mirror/nixpkgs/archive/master.tar.gz";
+  inputs.nixpkgs-22_05.url = "https://git.home.macdermid.ca/mirror/nixpkgs/archive/nixos-22.05.tar.gz";
+  inputs.nixpkgs-stable.follows = "nixpkgs-22_05";
 
   inputs.flake-utils.url = "github:numtide/flake-utils";
 
-  inputs.sops-nix.url = github:Mic92/sops-nix;
+  inputs.sops-nix = {
+    url = github:Mic92/sops-nix;
+    inputs.nixpkgs.follows = "nixpkgs";
+    inputs.nixpkgs-22_05.follows = "nixpkgs-22_05";
+  };
 
   inputs.nix-alien = {
     url = "github:thiagokokada/nix-alien";
@@ -30,6 +35,7 @@
     , sops-nix
     , nix-alien
     , microvm
+    , ...
     }@inputs:
 
     let
