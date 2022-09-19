@@ -15,6 +15,11 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
+  inputs.microvm = {
+    url = "github:astro/microvm.nix";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+
   outputs =
     { self
     , nixpkgs
@@ -24,6 +29,7 @@
     , flake-utils
     , sops-nix
     , nix-alien
+    , microvm
     }@inputs:
 
     let
@@ -96,6 +102,7 @@
             ./hosts/dn/configuration.nix
             ./hosts/dn/hardware.nix
             ./modules/hardened.nix
+            microvm.nixosModules.host
             sops-nix.nixosModules.sops
           ];
         };
