@@ -295,10 +295,8 @@ in
        "V,/mnt/multimedia/tv"
       ];
       root_container = "V";
+      network_interface = "eth0";
     };
-    extraConfig = ''
-      network_interface=eth0
-    '';
   };
 
   services.influxdb2 = {
