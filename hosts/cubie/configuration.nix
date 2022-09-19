@@ -184,6 +184,17 @@ in
       domain = "*.home.macdermid.ca";
     };
   };
+  services.matrix-conduit = {
+    enable = true;
+    settings = {
+      global = {
+        address = "127.0.0.1";
+        allow_registration = true;
+        server_name = "macdermid.ca";
+        allow_federation = false;
+      };
+    };
+  };
 
   # nginx
   environment.etc = {
@@ -263,7 +274,7 @@ in
       "hedgedoc.home.macdermid.ca" = proxy config.services.hedgedoc.settings.port;
       "influxdb.home.macdermid.ca" = proxy 8086;
       "jellyfin.home.macdermid.ca" = proxywss 8096;
-      "matrix.home.macdermid.ca" = proxy config.services.dendrite.httpPort;
+      "matrix.home.macdermid.ca" = proxy config.services.matrix-conduit.settings.global.port;
       "nzbget.home.macdermid.ca" = proxy 6789;
     };
   };
@@ -354,16 +365,6 @@ in
     };
   };
 
-  services.dendrite = {
-    enable = true;
-    settings.global = {
-      server_name = "matrix.home.macdermid.ca";
-      private_key = "/var/lib/dendrite/matrix_key.pem";
-      trusted_third_party_id_servers = [];
-      disable_federation = true;
-
-    };
-  };
   ########################################
   # Packages
   ########################################
