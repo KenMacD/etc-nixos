@@ -41,6 +41,7 @@ in
   boot.loader.efi.canTouchEfiVariables = true;
   boot.tmpOnTmpfs = true;
   boot.kernel.sysctl."fs.inotify.max_user_watches" = 524288;
+  boot.kernelPackages = pkgs.linuxPackages_5_19;
 
   powerManagement.enable = true;
 
@@ -100,6 +101,9 @@ in
       enable = true;
     };
     logind.lidSwitch = "ignore";
+    thermald.enable = true;
+    udisks2.enable = true;
+    upower.enable = true;
   };
 
   ########################################
