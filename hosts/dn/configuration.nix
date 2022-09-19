@@ -154,6 +154,14 @@
     lorri.enable = true;
     openssh.enable = false;
     pcscd.enable = true;
+    snapper.configs.home = {
+      subvolume = "/home";
+      extraConfig = ''
+        ALLOW_USERS="kenny"
+        TIMELINE_CREATE=yes
+        TIMELINE_CLEANUP=yes
+      '';
+    };
     thermald.enable = true;
     udev = {
       packages = [ pkgs.yubikey-personalization ];
