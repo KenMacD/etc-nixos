@@ -11,6 +11,7 @@
 
   inputs.sops-nix.url = github:Mic92/sops-nix;
   inputs.nix-alien.url = "github:thiagokokada/nix-alien";
+  inputs.nix-bubblewrap.url = "sourcehut:~fgaz/nix-bubblewrap";
   inputs.microvm.url = "github:astro/microvm.nix";
 
   outputs =
@@ -22,6 +23,7 @@
     , flake-utils
     , sops-nix
     , nix-alien
+    , nix-bubblewrap
     , microvm
     , ...
     }@inputs:
@@ -37,6 +39,9 @@
       };
       overlay-stable = final: prev: {
         stable = nixpkgs-stable.legacyPackages.${prev.system};
+      };
+      overlay-nix-bubblewrap = final: prev: {
+        nix-bubblewrap = nix-bubblewrap.packages.${prev.system}.default;
       };
     in
     {
@@ -64,6 +69,7 @@
                 overlay-master
                 overlay-stable
                 (import ./overlays/sway-dbg.nix)
+                overlay-nix-bubblewrap
                 (final: prev: {
                   kubernetes = (prev.kubernetes.override {
                     buildGoModule = prev.buildGo118Module;
