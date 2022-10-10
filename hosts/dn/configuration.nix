@@ -99,6 +99,7 @@
       slurp # select area for screenshot
       swayidle
       swaylock
+      tofi
       waybar
       wl-clipboard
       wofi
@@ -284,6 +285,7 @@
       yt-dlp
 
       # System performance
+      glances
       htop
       stress-ng
       s-tui
@@ -414,7 +416,7 @@
       gdb
       gh
       gitFull
-      github-desktop
+      gitui
       gnumake
       hotspot
       jq
