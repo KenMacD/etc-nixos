@@ -44,6 +44,7 @@
     podman-compose
 
     # Kubernetes stuff
+    k9s
     kubectl
     kind
     kubernetes-helm
