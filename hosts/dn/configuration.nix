@@ -57,7 +57,8 @@
     options cfg80211 ieee80211_regdom=CA
   '';
 
-  boot.kernel.sysctl = { "kernel.sysrq" = 1; };
+  # reboot + signals + sync
+  boot.kernel.sysctl = { "kernel.sysrq" = 128 + 64 + 16; };
 
   ########################################
   # Network
