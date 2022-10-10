@@ -46,6 +46,10 @@ with lib;
   boot.loader.efi.canTouchEfiVariables = mkDefault true;
   boot.tmpOnTmpfs = mkDefault true;
 
+  ########################################
+  # Disk
+  ########################################
+  services.fstrim.enable = mkDefault true;
 
   ########################################
   # Network
