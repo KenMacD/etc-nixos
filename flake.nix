@@ -9,21 +9,9 @@
 
   inputs.flake-utils.url = "github:numtide/flake-utils";
 
-  inputs.sops-nix = {
-    url = github:Mic92/sops-nix;
-    inputs.nixpkgs.follows = "nixpkgs";
-    inputs.nixpkgs-22_05.follows = "nixpkgs-22_05";
-  };
-
-  inputs.nix-alien = {
-    url = "github:thiagokokada/nix-alien";
-    inputs.nixpkgs.follows = "nixpkgs";
-  };
-
-  inputs.microvm = {
-    url = "github:astro/microvm.nix";
-    inputs.nixpkgs.follows = "nixpkgs";
-  };
+  inputs.sops-nix.url = github:Mic92/sops-nix;
+  inputs.nix-alien.url = "github:thiagokokada/nix-alien";
+  inputs.microvm.url = "github:astro/microvm.nix";
 
   outputs =
     { self
