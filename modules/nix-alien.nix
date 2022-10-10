@@ -3,14 +3,10 @@
 with lib;
 
 {
-  nixpkgs.overlays = [
-    nix-alien.overlay
-  ];
-
   programs.nix-ld.enable = true;
-  environment.systemPackages = [
-    pkgs.nix-alien
-    pkgs.nix-index
-    pkgs.nix-index-update
+  environment.systemPackages =  with pkgs; with nix-alien.packages.${system}; [
+    nix-alien
+    nix-index
+    nix-index-update
   ];
 }
