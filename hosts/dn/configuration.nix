@@ -113,7 +113,7 @@
       gtk_engines
       gsettings-desktop-schemas
       lxappearance
-      gnome3.adwaita-icon-theme
+      gnome.adwaita-icon-theme
 
       # Display profiles
       kanshi
