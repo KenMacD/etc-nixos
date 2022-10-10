@@ -3,6 +3,10 @@
 with lib;
 
 {
+  imports = [
+    modules/fish.nix  # Remove when https://github.com/NixOS/nixpkgs/pull/176886
+  ];
+
   ########################################
   # Nix
   ########################################
