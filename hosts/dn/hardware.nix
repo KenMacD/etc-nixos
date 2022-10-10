@@ -21,46 +21,52 @@
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/11903e46-6df3-4135-a6fb-b5bf4cdbbf25";
     fsType = "btrfs";
-    options = [ "subvol=root" "noatime" ];
+    options = [ "subvol=root" "noatime" "user_subvol_rm_allowed"];
   };
 
   fileSystems."/home" = {
     device = "/dev/disk/by-uuid/11903e46-6df3-4135-a6fb-b5bf4cdbbf25";
     fsType = "btrfs";
-    options = [ "subvol=home" "noatime" ];
+    options = [ "subvol=home" "noatime" "user_subvol_rm_allowed" ];
   };
 
   # Nocow for qcow2 files
   fileSystems."/home/kenny/VirtualMachines" = {
     device = "/dev/disk/by-uuid/11903e46-6df3-4135-a6fb-b5bf4cdbbf25";
     fsType = "btrfs";
-    options = [ "subvol=home_kenny_VirtualMachines" "noatime" ];
+    options = [ "subvol=home_kenny_VirtualMachines" "noatime" "user_subvol_rm_allowed" ];
   };
 
   fileSystems."/home/kenny/.local/share/containers" = {
     device = "/dev/disk/by-uuid/11903e46-6df3-4135-a6fb-b5bf4cdbbf25";
     fsType = "btrfs";
-    options = [ "subvol=home_kenny_.local_share_containers" "noatime" ];
+    options = [ "subvol=home_kenny_.local_share_containers" "noatime" "user_subvol_rm_allowed" ];
+  };
+
+  fileSystems."/home/kenny/.local/share/lxc" = {
+    device = "/dev/disk/by-uuid/11903e46-6df3-4135-a6fb-b5bf4cdbbf25";
+    fsType = "btrfs";
+    options = [ "subvol=home_kenny_.local_share_lxc" "noatime" "user_subvol_rm_allowed" ];
   };
 
   fileSystems."/nix" = {
     device = "/dev/disk/by-uuid/11903e46-6df3-4135-a6fb-b5bf4cdbbf25";
     fsType = "btrfs";
-    options = [ "subvol=nix" "noatime" ];
+    options = [ "subvol=nix" "noatime" "user_subvol_rm_allowed" ];
   };
 
   # Using rootless podman, but was:
   fileSystems."/var/lib/docker" = {
     device = "/dev/disk/by-uuid/11903e46-6df3-4135-a6fb-b5bf4cdbbf25";
     fsType = "btrfs";
-    options = [ "subvol=var_lib_docker" "noatime" ];
+    options = [ "subvol=var_lib_docker" "noatime" "user_subvol_rm_allowed" ];
   };
 
   # Also using overlay tmpfs... but keep in case need more room
   fileSystems."/tmp" = {
     device = "/dev/disk/by-uuid/11903e46-6df3-4135-a6fb-b5bf4cdbbf25";
     fsType = "btrfs";
-    options = [ "subvol=tmp" "relatime" ];
+    options = [ "subvol=tmp" "noatime" "user_subvol_rm_allowed" ];
   };
 
   fileSystems."/boot" = {
