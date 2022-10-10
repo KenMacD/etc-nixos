@@ -297,7 +297,7 @@
       # Video
       intel-gpu-tools
       mpv
-      v4l_utils
+      v4l-utils
       vlc
 
       # Graphics
