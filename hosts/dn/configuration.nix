@@ -1,5 +1,11 @@
 { config, lib, pkgs, nixpkgs, ... }: {
-  imports = [ ./android.nix ./audio.nix ./firewall.nix ./virt.nix ];
+  imports = [
+    ./android.nix
+    ./audio.nix
+    ./firewall.nix
+    ./virt.nix
+    ./vscode.nix
+  ];
 
   ########################################
   # Nix
@@ -426,7 +432,6 @@
       rustup
       rust-analyzer
       tio
-      vscodium-fhs # TODO: build with extensions
 
       # My Packages
       fre
