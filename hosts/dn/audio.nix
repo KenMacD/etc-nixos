@@ -61,7 +61,7 @@
       pavucontrol
       pamixer
       pulseaudio
-      pulseeffects-pw
+      easyeffects
       pulsemixer
 
       # Sound Plugins
