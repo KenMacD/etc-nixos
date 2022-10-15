@@ -3,6 +3,7 @@
     ./android.nix
     ./audio.nix
     ./firewall.nix
+    ./sboot.nix
     ./virt.nix
     ./vscode.nix
   ];
