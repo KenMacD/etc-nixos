@@ -90,10 +90,7 @@ with lib;
   # Services
   ########################################
   # NTP
-  services.chrony = {
-    enable = true;
-    enableNTS = true;
-  };
+  services.timesyncd.enable = true;
   networking.timeServers = [ "time.cloudflare.com" ];
 
   ########################################
