@@ -68,7 +68,6 @@
                 overlay-staging-next
                 overlay-master
                 overlay-stable
-                (import ./overlays/sway-dbg.nix)
                 overlay-nix-bubblewrap
                 (final: prev: {
                   kubernetes = (prev.kubernetes.override {
