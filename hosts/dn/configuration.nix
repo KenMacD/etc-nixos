@@ -32,7 +32,7 @@
   # Hardware
   ########################################
   hardware = {
-    enableAllFirmware = true;
+    enableRedistributableFirmware = true;
     opengl = {
       enable = true;
       driSupport = true; # for vulkan
