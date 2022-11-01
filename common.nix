@@ -11,7 +11,12 @@ with lib;
   # Nix
   ########################################
   system.stateVersion = "22.05";
-  nix.settings.auto-optimise-store = mkDefault true;
+  nix = {
+    settings.auto-optimise-store = mkDefault true;
+    extraOptions = ''
+      keep-going = true
+    '';
+  };
   nixpkgs.config.allowUnfree = true;
 
   # Disable command-not-found until proper Flake solution
