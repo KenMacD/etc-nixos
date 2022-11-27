@@ -69,19 +69,6 @@
                 overlay-master
                 overlay-stable
                 overlay-nix-bubblewrap
-                (final: prev: {
-                  kubernetes = (prev.kubernetes.override {
-                    buildGoModule = prev.buildGo118Module;
-                  }).overrideAttrs (oldAttrs: rec {
-                    version = "1.24.3";
-                    src = prev.fetchFromGitHub {
-                      owner = "kubernetes";
-                      repo = "kubernetes";
-                      rev = "v${version}";
-                      sha256 = "sha256-O/wZv8plaUKLJXVBKCms8joeoY/Abje5mZ1+wBKOQG8=";
-                    };
-                  });
-                })
               ];
             })
             # Add to regsitry so nixpkgs commands use system versions
