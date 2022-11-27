@@ -40,7 +40,7 @@ in
   boot.loader.efi.canTouchEfiVariables = true;
   boot.tmpOnTmpfs = true;
   boot.kernel.sysctl."fs.inotify.max_user_watches" = 524288;
-  boot.kernelPackages = pkgs.linuxPackages_5_19;
+  boot.kernelPackages = pkgs.linuxPackages_6_0;
 
   powerManagement.enable = true;
 
