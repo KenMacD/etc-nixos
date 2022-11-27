@@ -169,6 +169,19 @@ in
   };
   systemd.services.jellyfin.environment."JELLYFIN_PublishedServerUrl" = "https://jellyfin.home.macdermid.ca";
 
+  services.vaultwarden = {
+    enable = true;
+    config = {
+      DOMAIN = "https://bitwarden.home.macdermid.ca";
+      SIGNUPS_ALLOWED = true;
+
+      ROCKET_ADDRESS = "127.0.0.1";
+      ROCKET_PORT = 8222;
+
+      ROCKET_LOG = "critical";
+
+    };
+  };
   security.acme = {
     acceptTerms = true;
     defaults = {
@@ -224,7 +237,7 @@ in
       add_header 'Referrer-Policy' 'origin-when-cross-origin';
 
       # Disable embedding as a frame
-      add_header X-Frame-Options DENY;
+      add_header X-Frame-Options SAMEORIGIN;
 
       # Prevent injection of code in other mime types (XSS Attacks)
       add_header X-Content-Type-Options nosniff;
@@ -258,6 +271,7 @@ in
       "www.home.macdermid.ca" =  base  {
         "/".root = "/etc/nixos/hosts/cubie/www/";
       };
+      "bitwarden.home.macdermid.ca" = proxywss config.services.vaultwarden.config.ROCKET_PORT;
       "focalboard.home.macdermid.ca" = proxywss 18000;
       "git.home.macdermid.ca" = proxy config.services.gitea.httpPort;
       "grafana.home.macdermid.ca" = proxywss config.services.grafana.settings.server.http_port;
