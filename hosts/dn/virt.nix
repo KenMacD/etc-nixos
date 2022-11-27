@@ -42,11 +42,29 @@
 
   environment.systemPackages = with pkgs; [
     podman-compose
+    podman-tui
+
+    # Testing gvisor runtime
+    gvisor
+
+    # Testing firecracker
+    firecracker
+    firectl
+    ignite
+    # firecracker-containerd (doesn't exist)
 
     # Kubernetes stuff
     k9s
-    kubectl
     kind
+    krew  # kubectl plugin manager
+    kubectl
+    kubecolor  # kubectl with color output
     kubernetes-helm
+
+    # Kubenetes testing:
+    kubectx  # kubectx & kubens
+    kubeswitch
+    stern  # multi-pod tail
+    minikube
   ];
 }
