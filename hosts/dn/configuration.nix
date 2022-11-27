@@ -88,6 +88,16 @@
   ########################################
   # Desktop Environment
   ########################################
+  boot.kernelParams = [ "console=tty2" ];
+  services.greetd = {
+    enable = true;
+    settings = {
+      default_session = {
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd ${pkgs.sway}/bin/sway";
+        user = "greeter";
+      };
+    };
+  };
   programs.xwayland.enable = false;
   programs.sway = {
     enable = true;
