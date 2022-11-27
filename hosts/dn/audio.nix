@@ -70,16 +70,27 @@
       distrho
       swh_lv2
       calf
+
+      # Bluetooth audio
+      bluez
     ];
 
-  environment.variables =
-    (with lib;
-    listToAttrs (
-      map
-        (
-          type: nameValuePair "${toUpper type}_PATH"
-            ([ "$HOME/.${type}" "$HOME/.nix-profile/lib/${type}" "/run/current-system/sw/lib/${type}" ])
-        )
-        [ "dssi" "ladspa" "lv2" "lxvst" "vst" "vst3" ]
-    ));
+  hardware.bluetooth = {
+    enable = true;
+    package = pkgs.bluez5-experimental;
+    settings = {
+      # Experimental D-Bus interface (e.g.: integration with UPower).
+      General.Experimental = true;
+      # To save some power.
+      Policy.AutoEnable = false;
+    };
+  };
+
+  environment.variables = (with lib;
+    listToAttrs (map (type:
+      nameValuePair "${toUpper type}_PATH" ([
+        "$HOME/.${type}"
+        "$HOME/.nix-profile/lib/${type}"
+        "/run/current-system/sw/lib/${type}"
+      ])) [ "dssi" "ladspa" "lv2" "lxvst" "vst" "vst3" ]));
 }
