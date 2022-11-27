@@ -125,20 +125,18 @@ in
   # Complex Services
   ########################################
   # Grafana
-  services.grafana = rec {
+  services.grafana = {
     enable = true;
-    rootUrl = "https://${config.services.grafana.domain}/";
-    domain = "grafana.home.macdermid.ca";
-    auth = {
-      anonymous = {
+    settings = {
+      server.rootUrl = "https://grafana.home.macdermid.ca/";
+      server.domain = "grafana.home.macdermid.ca";
+      "auth.anonymous" = {
         enable = true;
         org_name = "MacDermid";
         org_role = "Editor";
       };
-    };
-    extraOptions = {
-      auth_basic_enabled = "false";
-      auth_disable_login_form = "true";
+      "auth.basic".enabled = "false";
+      auth.disable_login_form = "true";
     };
   };
 
@@ -262,7 +260,7 @@ in
       };
       "focalboard.home.macdermid.ca" = proxywss 18000;
       "git.home.macdermid.ca" = proxy config.services.gitea.httpPort;
-      "grafana.home.macdermid.ca" = proxywss config.services.grafana.port;
+      "grafana.home.macdermid.ca" = proxywss config.services.grafana.settings.server.http_port;
       "hedgedoc.home.macdermid.ca" = proxy config.services.hedgedoc.settings.port;
       "influxdb.home.macdermid.ca" = proxy 8086;
       "jellyfin.home.macdermid.ca" = proxywss 8096;
