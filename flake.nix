@@ -60,7 +60,7 @@
         };
         dn = nixpkgs.lib.nixosSystem {
           inherit system;
-          specialArgs = inputs;
+          specialArgs = { inherit inputs; };
           modules = [
             ({ config, pkgs, ... }: {
               nixpkgs.overlays = [
