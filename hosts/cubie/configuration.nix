@@ -109,15 +109,16 @@ in
   # User
   ########################################
   users.users.kenny = {
-    extraGroups = [ "media" "docker" "dialout"];
+    extraGroups = [ "media" "podman" "dialout"];
   };
 
   ########################################
   # Containers
   ########################################
-  virtualisation.docker = {
+  virtualisation.podman = {
     enable = true;
-    liveRestore = false;  # using swarm
+    dockerCompat = true;
+    defaultNetwork.dnsname.enable = true;
   };
 
   ########################################
