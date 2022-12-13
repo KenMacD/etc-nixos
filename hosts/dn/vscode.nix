@@ -9,6 +9,7 @@
           alefragnani.project-manager
           arrterian.nix-env-selector
           asciidoctor.asciidoctor-vscode
+          asvetliakov.vscode-neovim
           brettm12345.nixfmt-vscode
           dbaeumer.vscode-eslint
           eamodio.gitlens
