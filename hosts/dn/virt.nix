@@ -20,6 +20,9 @@
     kvmgt.enable = true;
     libvirtd = {
       enable = true;
+      qemu.ovmf = {
+        enable = true;
+      };
       # Only care about host arch:
       qemu.package = pkgs.qemu_kvm;
     };
@@ -40,9 +43,15 @@
   systemd.enableUnifiedCgroupHierarchy = true;
   systemd.services."user@".serviceConfig = { Delegate = "yes"; };
 
+  # Raised to test yugabyte db in kind
+  security.pam.loginLimits = [
+    { domain = "*"; type = "hard"; item = "nofile"; value = "1048576"; }
+  ];
+
   environment.systemPackages = with pkgs; [
     podman-compose
     podman-tui
+    cri-tools
 
     # Testing gvisor runtime
     gvisor
@@ -59,6 +68,7 @@
     krew  # kubectl plugin manager
     kubectl
     kubecolor  # kubectl with color output
+    kubernetes  # kubeadm
     kubernetes-helm
 
     # Kubenetes testing:
@@ -66,5 +76,6 @@
     kubeswitch
     stern  # multi-pod tail
     minikube
+    docker-machine-kvm2  # kvm2 driver for minikube
   ];
 }
