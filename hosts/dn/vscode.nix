@@ -10,6 +10,7 @@
           arrterian.nix-env-selector
           asciidoctor.asciidoctor-vscode
           asvetliakov.vscode-neovim
+          bmalehorn.vscode-fish
           brettm12345.nixfmt-vscode
           dbaeumer.vscode-eslint
           eamodio.gitlens
@@ -22,10 +23,12 @@
           llvm-vs-code-extensions.vscode-clangd
           mikestead.dotenv
           ms-azuretools.vscode-docker
+          ms-kubernetes-tools.vscode-kubernetes-tools
           ms-python.python
           ms-toolsai.jupyter
           ms-vscode-remote.remote-ssh
           ms-vscode.cpptools
+          redhat.vscode-yaml
           rust-lang.rust-analyzer
           serayuzgur.crates
           shardulm94.trailing-spaces
