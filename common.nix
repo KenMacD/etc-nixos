@@ -10,7 +10,7 @@ with lib;
   ########################################
   # Nix
   ########################################
-  system.stateVersion = "22.05";
+  system.stateVersion = "22.11";
   nix = {
     settings.auto-optimise-store = mkDefault true;
     extraOptions = ''
