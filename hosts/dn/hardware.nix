@@ -7,64 +7,72 @@
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
   boot.initrd.availableKernelModules = [
-    "usb_storage"
-    "sd_mod"
+    "cryptd"
+    "aesni_intel"
     "nvme"
-    "vmd"
-    "thunderbolt"
     "rtsx_pci_sdmmc"
+    "sd_mod"
+    "thunderbolt"
+    "usb_storage"
+    "vmd"
     "xhci_pci"
   ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
+  boot.initrd.luks.devices = {
+    root = {
+      device = "/dev/disk/by-uuid/cafc8704-c41f-49fc-a7bf-a1fbe4baf03b";
+      preLVM = false;
+    };
+  };
 
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/11903e46-6df3-4135-a6fb-b5bf4cdbbf25";
+    device = "/dev/mapper/root";
     fsType = "btrfs";
     options = [ "subvol=root" "noatime" "user_subvol_rm_allowed"];
   };
 
   fileSystems."/home" = {
-    device = "/dev/disk/by-uuid/11903e46-6df3-4135-a6fb-b5bf4cdbbf25";
+    device = "/dev/mapper/root";
     fsType = "btrfs";
     options = [ "subvol=home" "noatime" "user_subvol_rm_allowed" ];
   };
 
   # Nocow for qcow2 files
   fileSystems."/home/kenny/VirtualMachines" = {
-    device = "/dev/disk/by-uuid/11903e46-6df3-4135-a6fb-b5bf4cdbbf25";
+    device = "/dev/mapper/root";
     fsType = "btrfs";
     options = [ "subvol=home_kenny_VirtualMachines" "noatime" "user_subvol_rm_allowed" ];
   };
 
   fileSystems."/home/kenny/.local/share/containers" = {
-    device = "/dev/disk/by-uuid/11903e46-6df3-4135-a6fb-b5bf4cdbbf25";
+    device = "/dev/mapper/root";
     fsType = "btrfs";
     options = [ "subvol=home_kenny_.local_share_containers" "noatime" "user_subvol_rm_allowed" ];
   };
 
-  fileSystems."/home/kenny/.local/share/lxc" = {
-    device = "/dev/disk/by-uuid/11903e46-6df3-4135-a6fb-b5bf4cdbbf25";
+  fileSystems."/home/kenny/go/pkg" = {
+    device = "/dev/mapper/root";
     fsType = "btrfs";
-    options = [ "subvol=home_kenny_.local_share_lxc" "noatime" "user_subvol_rm_allowed" ];
+    options = [ "subvol=home_kenny_go_pkg" "noatime" "user_subvol_rm_allowed" ];
   };
 
   fileSystems."/nix" = {
-    device = "/dev/disk/by-uuid/11903e46-6df3-4135-a6fb-b5bf4cdbbf25";
+    device = "/dev/mapper/root";
     fsType = "btrfs";
     options = [ "subvol=nix" "noatime" "user_subvol_rm_allowed" ];
   };
 
   # Using rootless podman, but was:
   fileSystems."/var/lib/docker" = {
-    device = "/dev/disk/by-uuid/11903e46-6df3-4135-a6fb-b5bf4cdbbf25";
+    device = "/dev/mapper/root";
     fsType = "btrfs";
     options = [ "subvol=var_lib_docker" "noatime" "user_subvol_rm_allowed" ];
   };
 
   # Also using overlay tmpfs... but keep in case need more room
   fileSystems."/tmp" = {
-    device = "/dev/disk/by-uuid/11903e46-6df3-4135-a6fb-b5bf4cdbbf25";
+    device = "/dev/mapper/root";
     fsType = "btrfs";
     options = [ "subvol=tmp" "noatime" "user_subvol_rm_allowed" ];
   };
