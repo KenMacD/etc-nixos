@@ -16,6 +16,9 @@ with lib;
     extraOptions = ''
       keep-going = true
     '';
+
+    daemonCPUSchedPolicy = "idle";
+    daemonIOSchedClass = "idle";
   };
   nixpkgs.config.allowUnfree = true;
 
