@@ -6,6 +6,8 @@
     ./sboot.nix
     ./virt.nix
     ./vscode.nix
+
+    ./networkd.nix
   ];
 
   ########################################
@@ -74,13 +76,9 @@
     hostName = "dn";
     hostId = "822380ad";
     useNetworkd = true;
-    networkmanager = {
-      enable = true;
-      connectionConfig = { "connection.llmnr" = 0; };
-    };
-    wireless.enable = false;
+    networkmanager.enable = false;
   };
-  systemd.services."systemd-networkd-wait-online".enable = false;
+  systemd.services."systemd-networkd-wait-online".enable = lib.mkForce false;
 
   services.resolved.enable = false;
   services.tlp.enable = true;
