@@ -76,6 +76,7 @@
               nix.registry.nixpkgs.flake = nixpkgs;
               nix.registry.nixpkgs-master.flake = nixpkgs-master;
               nix.registry.nixpkgs-stable.flake = nixpkgs-stable;
+              nix.registry.microvm.flake = microvm;
               nix.registry.local.flake = self;
             })
             ({ pkgs, ... }: {
