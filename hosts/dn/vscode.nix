@@ -41,10 +41,16 @@
             yzhang.markdown-all-in-one
           ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
             {
+              name = "remote-containers";
+              publisher = "ms-vscode-remote";
+              version = "0.278.0";
+              sha256 = "sha256-FRh3h8Jscnz1/nP+GkhaR9+r6B+5NvCKvoAvjcJvYRU=";
+            }
+            {
               name = "nrf-connect";
               publisher = "nordic-semiconductor";
-              version = "2022.11.140";
-              sha256 = "sha256-ASopWDv76xnDlVfD9up9HXSC5c90ubcUgSuSJYRXzWA=";
+              version = "2023.1.44";
+              sha256 = "sha256-j0jjJD6cAgkPs+dIgApYCvJ9eIiVrbblyEX63wBv4wM=";
             }
             {
               name = "nrf-terminal";
