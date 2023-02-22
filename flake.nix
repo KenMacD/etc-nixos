@@ -6,9 +6,6 @@
   inputs.nixpkgs-master.url = "https://git.home.macdermid.ca/mirror/nixpkgs/archive/master.tar.gz";
   inputs.nixpkgs-22_11.url = "https://git.home.macdermid.ca/mirror/nixpkgs/archive/nixos-22.11.tar.gz";
   inputs.nixpkgs-stable.follows = "nixpkgs-22_11";
-  inputs.nixpkgs-pr199965 = {
-    url = "tarball+https://api.github.com/repos/NixOS/nixpkgs/tarball/pull/199965/head";
-  };
 
   inputs.flake-utils.url = "github:numtide/flake-utils";
 
@@ -23,7 +20,6 @@
     , nixpkgs-staging-next
     , nixpkgs-master
     , nixpkgs-stable
-    , nixpkgs-pr199965
     , flake-utils
     , sops-nix
     , nix-alien
@@ -80,24 +76,12 @@
               nix.registry.nixpkgs.flake = nixpkgs;
               nix.registry.nixpkgs-master.flake = nixpkgs-master;
               nix.registry.nixpkgs-stable.flake = nixpkgs-stable;
-              nix.registry.nixpkgs-pr199965.flake = nixpkgs-pr199965;
               nix.registry.local.flake = self;
             })
             ({ pkgs, ... }: {
               virtualisation.podman.enable = true;
               virtualisation.podman.defaultNetwork.settings.dns_enabled = true;
               networking.firewall.allowedUDPPorts = [ 53 ];
-              imports = [
-                "${nixpkgs-pr199965}/nixos/modules/virtualisation/podman/default.nix"
-              ];
-              disabledModules = [
-                "virtualisation/podman/default.nix"
-              ];
-              nixpkgs.overlays = [
-                (self: super: {
-                  podman = nixpkgs-pr199965.legacyPackages.${super.system}.podman;
-                })
-              ];
             })
             ({ ... }: {
               # Use the flakes' nixpkgs for commands
