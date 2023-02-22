@@ -43,9 +43,13 @@
   systemd.enableUnifiedCgroupHierarchy = true;
   systemd.services."user@".serviceConfig = { Delegate = "yes"; };
 
-  # Raised to test yugabyte db in kind
   security.pam.loginLimits = [
+    # Raised to test yugabyte db in kind
     { domain = "*"; type = "hard"; item = "nofile"; value = "1048576"; }
+
+    # Podman seems to want more processes to start?
+    # crun: setrlimit `RLIMIT_NPROC`: Operation not permitted: OCI permission denied
+    { domain = "*"; type = "hard"; item = "nproc"; value = "1048576"; }
   ];
 
   environment.systemPackages = with pkgs; [
