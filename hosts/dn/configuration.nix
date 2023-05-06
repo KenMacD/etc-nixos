@@ -148,7 +148,10 @@
   # Use Wayland for Electron apps
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
   environment.pathsToLink = [ "/libexec" ]; # Required for sway/polkit
-  environment.shellAliases = { "ls" = "lsd"; };
+  environment.shellAliases = {
+    "ls" = "lsd";
+    "ta" = "task add rc.context=none";
+  };
   programs.waybar.enable = true;
   programs.wireshark = {
     enable = true;
@@ -395,11 +398,16 @@
       steam-run
       mindforger
       ffmpeg
-      taskwarrior
       binwalk
       screen
       qalculate-gtk
       mitmproxy
+
+      # Task management
+      taskwarrior
+      taskwarrior-tui
+      taskopen
+      vit
 
       # General/Unsorted
       magic-wormhole
