@@ -37,6 +37,11 @@
     };
 
     waydroid.enable = true;
+
+    appvm = {
+      enable = true;
+      user = "kenny";
+    };
   };
 
   # kind on rootless podman requires:
@@ -53,9 +58,15 @@
   ];
 
   environment.systemPackages = with pkgs; [
+    buildah
+    distrobox
     podman-compose
     podman-tui
     cri-tools
+
+    dive # A tool for exploring a docker image
+
+    trivy  # vuln scanner
 
     # Testing gvisor runtime
     gvisor
@@ -80,6 +91,27 @@
     kubeswitch
     stern  # multi-pod tail
     minikube
-    docker-machine-kvm2  # kvm2 driver for minikube
+    # Broken 20230202 docker-machine-kvm2  # kvm2 driver for minikube
+    # awscli-local
+    google-cloud-sdk
+    skopeo  # inspect information on images
+
+    kwok  # k8 king of like kind, but without kubelet
+
+    nerdctl
+    rootlesskit  # maybe for nerdctl/containerd
+
+    kubectl-doctor  # doctor?
+    trivy  #  Aqua Security - security scanner
+
+    kubescape  # Kubescape vuln scanner?
+
+    # libkrun work? (with overlay)
+    crun
+    libkrun
+    libkrunfw
+    gvisor
+    youki
+    openlens
   ];
 }

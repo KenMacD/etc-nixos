@@ -7,7 +7,6 @@
         vscode = pkgs.vscodium;
         vscodeExtensions = with pkgs.vscode-extensions;
           [
-            _4ops.terraform
             alefragnani.project-manager
             arrterian.nix-env-selector
             asciidoctor.asciidoctor-vscode
@@ -18,7 +17,6 @@
             eamodio.gitlens
             emmanuelbeziat.vscode-great-icons
             esbenp.prettier-vscode
-            file-icons.file-icons
             foam.foam-vscode
             formulahendry.code-runner
             golang.go
@@ -41,16 +39,56 @@
             yzhang.markdown-all-in-one
           ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
             {
+              # Needed for cortex-debug
+              name = "debug-tracker-vscode";
+              publisher = "mcu-debug";
+              version = "0.0.15";
+              sha256 = "sha256-2u4Moixrf94vDLBQzz57dToLbqzz7OenQL6G9BMCn3I=";
+            }
+            {
+              # Needed for cortex-debug
+              name = "memory-view";
+              publisher = "mcu-debug";
+              version = "0.0.20";
+              sha256 = "sha256-tPlYF6qqJTVOKjBkBzdaQduRSXmN1bbMtwgvn+RI+K0=";
+            }
+            {
+              # Needed for cortex-debug
+              name = "rtos-views";
+              publisher = "mcu-debug";
+              version = "0.0.6";
+              sha256 = "sha256-23ANnrPpFzIIRoUekkonzTzJAQhkiXqUVXil6wacJdI=";
+            }
+            {
+              # Needed for cortex-debug
+              name = "peripheral-viewer";
+              publisher = "mcu-debug";
+              version = "1.4.5";
+              sha256 = "sha256-6k83lmHLetadg1nAE2Iwwt2paO81gBmvn1R5GaDjR/I=";
+            }
+            {
+              name = "cortex-debug";
+              publisher = "marus25";
+              version = "1.11.1";
+              sha256 = "sha256-zcBHr0cKWAbgQarDb3OCFohRuCPhHbazzFgqvNE4lP0=";
+            }
+                   {
+              name = "probe-rs-debugger";
+              publisher = "probe-rs";
+              version = "0.17.4";
+              sha256 = "sha256-GRZgXFyzVOtb4KikJqu5QNxJe51TkN0Qa7lU9Tgt4sM=";
+            }
+            {
               name = "remote-containers";
               publisher = "ms-vscode-remote";
-              version = "0.278.0";
-              sha256 = "sha256-FRh3h8Jscnz1/nP+GkhaR9+r6B+5NvCKvoAvjcJvYRU=";
+              version = "0.289.0";
+              sha256 = "sha256-U7gilVJx8c+nmh6YVGVLoRKjC2n71Vih6aALWkcQw0I=";
             }
             {
               name = "nrf-connect";
               publisher = "nordic-semiconductor";
-              version = "2023.1.44";
-              sha256 = "sha256-j0jjJD6cAgkPs+dIgApYCvJ9eIiVrbblyEX63wBv4wM=";
+              version = "2023.2.56";
+              sha256 = "sha256-RdgB8+wnxLUwkwEU5VmCIJIKqr44bEWLk9/KGRQCmQw=";
             }
             {
               name = "nrf-terminal";
@@ -61,8 +99,8 @@
             {
               name = "nrf-devicetree";
               publisher = "nordic-semiconductor";
-              version = "2022.11.153";
-              sha256 = "sha256-gE7SAIKOXzgbqVLcJGTgbQhriz3I74s6vPKh5DrPIyQ=";
+              version = "2023.4.1";
+              sha256 = "sha256-LnqT25uZ6M/CZVYdjF31Fd+4VtcgLkVCRLCH4+idrqI=";
             }
             {
               name = "nrf-kconfig";
