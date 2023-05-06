@@ -2,6 +2,7 @@
   imports = [
     ./android.nix
     ./audio.nix
+    ../../modules/hp-printer.nix
     ./firewall.nix
     ./sboot.nix
     ./virt.nix
@@ -22,6 +23,12 @@
     binary-caches-parallel-connections = 12
     warn-dirty = false
     experimental-features = ca-derivations
+
+    extra-experimental-features = auto-allocate-uids
+    auto-allocate-uids = true
+
+    extra-experimental-features = cgroups
+    use-cgroups = true
   '';
 
   nixpkgs.config = { };
@@ -40,6 +47,10 @@
       driSupport = true; # for vulkan
       driSupport32Bit = true;
       setLdLibraryPath = true;
+      extraPackages32 = with pkgs.pkgsi686Linux; [
+        libva
+        pipewire
+      ];
       extraPackages = with pkgs; [
         intel-compute-runtime
         # LIBVA_DRIVER_NAME=iHD (newer)
@@ -50,12 +61,14 @@
   };
   services.hardware.bolt.enable = true;
   services.avahi.enable = true;  # For Chromecast
+  services.upower.enable = true;
 
   # Force intel vulkan driver to prevent software rendering:
   environment.variables.VK_ICD_FILENAMES =
     "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json:/run/opengl-driver-32/share/vulkan/icd.d/intel_icd.i686.json";
+  environment.variables.LIBVA_DRIVER_NAME= "iHD";
 
-  boot.kernelPackages = pkgs.linuxPackages_6_2;
+  boot.kernelPackages = pkgs.linuxPackages_6_3;
   boot.kernel.sysctl = { "dev.i915.perf_stream_paranoid" = 0; };
   boot.extraModulePackages = with config.boot.kernelPackages; [
     turbostat
@@ -80,7 +93,9 @@
   };
   systemd.services."systemd-networkd-wait-online".enable = lib.mkForce false;
 
-  services.resolved.enable = false;
+  services.resolved = {
+    enable = true;
+  };
   services.tlp.enable = true;
 
   ########################################
@@ -160,16 +175,13 @@
   gtk.iconCache.enable = true;
   xdg.icons.enable = true;
   xdg.portal.wlr.enable = true; # Screensharing
-  qt5.platformTheme = "qt5ct";
+  qt.platformTheme = "qt5ct";
 
   ########################################
   # Services
   ########################################
   services = {
-    ananicy = {
-      enable = true;
-      package = pkgs.ananicy-cpp;
-    };
+    flatpak.enable = true;
     fwupd.enable = true;
     lorri.enable = true;
     openssh.enable = false;
@@ -287,10 +299,11 @@
       libva-utils
       lsd # ls, but better
       most
+      (nnn.override {withNerdIcons=true;})
       p7zip
       python3
-      python3Packages.poetry
       rlwrap
+      rmlint
       tmux
       unzip
       xdg-utils
@@ -307,12 +320,14 @@
       mdcat
 
       # Password management
+      age-plugin-yubikey
       gopass # replacement for pass, has -o option
       gopass-jsonapi
       qtpass
+      rage
       yubikey-manager
       yubikey-personalization
-      yubioath-desktop
+      yubioath-flutter
 
       # Video
       intel-gpu-tools
@@ -367,16 +382,10 @@
           plugins = with availablePlugins; [ python ];
           scripts = with pkgs.weechatScripts;
             [
-              (wee-slack.overrideAttrs (oldAttrs: rec {
-                version = "2.7.0";
-                src = fetchFromGitHub {
-                  repo = "wee-slack";
-                  owner = "KenMacD";
-                  rev = "bed1747daeca0151d3b5d1543f8e2529b4e423e8";
-                  sha256 =
-                    "19aizpn1qfar05jqgx2kmjjwml6a8gnhi570fxyqc1zpcy12wjqk";
-                };
-              }))
+              buffer_autoset
+              wee-slack
+              weechat-autosort
+              weechat-go
             ];
         };
       })
@@ -442,7 +451,9 @@
       meld
       meson-tools
       mold
+      nix-bubblewrap
       nix-direnv
+      nix-tree
       parallel
       perf
       pkgconf

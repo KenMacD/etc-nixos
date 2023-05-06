@@ -6,6 +6,7 @@ with lib;
   imports = [
     modules/fish.nix  # Remove when https://github.com/NixOS/nixpkgs/pull/176886
     modules/env.nix # Set XDG/config vars
+    modules/unfree.nix # Allow steam
   ];
 
   ########################################
@@ -15,6 +16,8 @@ with lib;
   nix = {
     settings.auto-optimise-store = mkDefault true;
     extraOptions = ''
+      keep-outputs = true
+      keep-derivations = true
       keep-going = true
     '';
 
