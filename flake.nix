@@ -52,6 +52,9 @@
         cubie = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
+            ({ ... }: {
+              nix.nixPath = let path = toString ./.; in [ "repl=${path}/repl.nix" "nixpkgs=${inputs.nixpkgs}" ];
+            })
             ./common.nix
             ./hosts/cubie/configuration.nix
             ./hosts/cubie/hardware.nix
