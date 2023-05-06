@@ -48,7 +48,7 @@ with lib;
   # Limit previous generations to avoid /boot filling up
   boot.loader.systemd-boot.configurationLimit = mkDefault 10;
   boot.loader.efi.canTouchEfiVariables = mkDefault true;
-  boot.tmpOnTmpfs = mkDefault true;
+  boot.tmp.useTmpfs = mkDefault true;
 
   ########################################
   # Disk
