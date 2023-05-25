@@ -45,12 +45,6 @@
     options = [ "subvol=home_kenny_VirtualMachines" "noatime" "user_subvol_rm_allowed" ];
   };
 
-  fileSystems."/home/kenny/.local/share/containers" = {
-    device = "/dev/mapper/root";
-    fsType = "btrfs";
-    options = [ "subvol=home_kenny_.local_share_containers" "noatime" "user_subvol_rm_allowed" ];
-  };
-
   fileSystems."/home/kenny/.local/share/go/pkg" = {
     device = "/dev/mapper/root";
     fsType = "btrfs";
