@@ -38,9 +38,8 @@ in
   ########################################
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.tmpOnTmpfs = true;
   boot.kernel.sysctl."fs.inotify.max_user_watches" = 524288;
-  boot.kernelPackages = pkgs.linuxPackages_6_0;
+  boot.kernelPackages = pkgs.linuxPackages_6_2;
 
   powerManagement.enable = true;
 
@@ -48,7 +47,7 @@ in
   # Networking
   ########################################
   networking = {
-    hostName = "cubie";
+    hostName = "yoga";
     domain = "home.macdermid.ca";
     hostId = "f5a3f353";
     firewall = {
@@ -73,6 +72,15 @@ in
     nameservers = [ "45.90.28.215" "45.90.30.215" ];
   };
 
+  services.miniflux = {
+    enable = true;
+    adminCredentialsFile = "/etc/nixos/miniflux-admin-credentials";
+    config = {
+      DEBUG = "off";
+      LISTEN_ADDR = "127.0.0.1:35001";
+      BASE_URL = "https://miniflux.home.macdermid.ca";
+    };
+  };
   services.avahi.publish = {
     enable = true;
     addresses = true;
@@ -118,7 +126,7 @@ in
   virtualisation.podman = {
     enable = true;
     dockerCompat = true;
-    defaultNetwork.dnsname.enable = true;
+    defaultNetwork.settings.dns_enabled.enable = true;
   };
 
   ########################################
@@ -142,10 +150,6 @@ in
 
   services.gitea = {
     enable = true;
-    rootUrl = "https://${config.services.gitea.domain}/";
-    domain = "git.home.macdermid.ca";
-    httpAddress = "127.0.0.1";
-    httpPort = 3001;
 
     settings = {
       "git.timeout" = {
@@ -156,6 +160,12 @@ in
         PULL = 50000;
         GC = 50000;
 #        MIGRATE = 2400;
+      };
+      server = {
+        DOMAIN = "git.home.macdermid.ca";
+        HTTP_PORT = 3001;
+        HTTP_ADDRESS = "127.0.0.1";
+        ROOT_URL = "https://git.home.macdermid.ca/";
       };
       log.LEVEL = "Warn";
       service.DISABLE_REGISTRATION = true;  # After creating my account
@@ -273,13 +283,14 @@ in
       };
       "bitwarden.home.macdermid.ca" = proxywss config.services.vaultwarden.config.ROCKET_PORT;
       "focalboard.home.macdermid.ca" = proxywss 18000;
-      "git.home.macdermid.ca" = proxy config.services.gitea.httpPort;
+      "git.home.macdermid.ca" = {http2=true;} //proxy config.services.gitea.settings.server.HTTP_PORT;
       "grafana.home.macdermid.ca" = proxywss config.services.grafana.settings.server.http_port;
       "hedgedoc.home.macdermid.ca" = proxy config.services.hedgedoc.settings.port;
       "influxdb.home.macdermid.ca" = proxy 8086;
       "jellyfin.home.macdermid.ca" = proxywss 8096;
       "matrix.home.macdermid.ca" = proxy config.services.matrix-conduit.settings.global.port;
       "nzbget.home.macdermid.ca" = proxy 6789;
+      "miniflux.home.macdermid.ca" = proxy 35001;
     };
   };
 
@@ -290,7 +301,7 @@ in
   systemd.services.nzbget.path = with pkgs; [
     unrar
     p7zip
-    python2
+    python3
   ];
 
   # Minidlna
@@ -355,7 +366,6 @@ in
     enable = true;
     settings= {
       domain = "hedgedoc.home.macdermid.ca";
-#      path = "/var/run/hedgedoc.sock";
       host = "127.0.0.1";
       port = 8090;
       protocolUseSSL = true;
@@ -363,6 +373,7 @@ in
         dialect = "sqlite";
         storage = "/var/lib/hedgedoc/db.hedgedoc.sqlite";
       };
+      defaultPermission = "private";
       sessionSecret = secrets.HEDGEDOC_SESSION_SECRET;
     };
   };
