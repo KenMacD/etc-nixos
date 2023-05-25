@@ -1,6 +1,17 @@
 { config, lib, pkgs, ... }:
 
+# To make copilot work in vscodium follow:
+# https://github.com/VSCodium/vscodium/discussions/1487
+#
+# curl https://github.com/login/device/code -X POST -d 'client_id=01ab8ac9400c4e429b23&scope=user:email'
+# https://github.com/login/device/
+# curl https://github.com/login/oauth/access_token -X POST -d 'client_id=01ab8ac9400c4e429b23&scope=user:email&device_code=YOUR_DEVICE_ID&grant_type=urn:ietf:params:oauth:grant-type:device_code'
+# use access_token
+
 {
+  # secret service needed to store API key
+  services.passSecretService.enable = true;
+
   environment.systemPackages = with pkgs;
     [
       (vscode-with-extensions.override {
@@ -38,6 +49,12 @@
             twxs.cmake
             yzhang.markdown-all-in-one
           ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+            {
+              name = "copilot";
+              publisher = "github";
+              version = "1.86.82";
+              sha256 = "sha256-isaqjrAmu/08gnNKQPeMV4Xc8u0Hx8gB2c78WE54kYQ=";
+            }
             {
               # Needed for cortex-debug
               name = "debug-tracker-vscode";
