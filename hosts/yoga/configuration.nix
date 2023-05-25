@@ -39,7 +39,6 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernel.sysctl."fs.inotify.max_user_watches" = 524288;
-  boot.kernelPackages = pkgs.linuxPackages_6_2;
 
   powerManagement.enable = true;
 
