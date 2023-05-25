@@ -72,6 +72,7 @@
                 overlay-master
                 overlay-stable
                 overlay-nix-bubblewrap
+                (import ./overlays/testing.nix)
               ];
             })
             # Add to regsitry so nixpkgs commands use system versions
