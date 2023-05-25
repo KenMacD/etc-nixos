@@ -6,7 +6,7 @@ with lib;
   imports = [
     modules/fish.nix  # Remove when https://github.com/NixOS/nixpkgs/pull/176886
     modules/env.nix # Set XDG/config vars
-    modules/unfree.nix # Allow steam
+    modules/unfree.nix
   ];
 
   ########################################
@@ -24,7 +24,6 @@ with lib;
     daemonCPUSchedPolicy = "idle";
     daemonIOSchedClass = "idle";
   };
-  nixpkgs.config.allowUnfree = true;
 
   # Disable command-not-found until proper Flake solution
   programs.command-not-found.enable = mkDefault false;
