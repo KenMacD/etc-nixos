@@ -47,6 +47,10 @@ with lib;
   ########################################
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = mkDefault true;
+
+  # Use the latest released kernel
+  boot.kernelPackages = mkDefault pkgs.linuxPackages_latest;
+
   # Limit previous generations to avoid /boot filling up
   boot.loader.systemd-boot.configurationLimit = mkDefault 10;
   boot.loader.efi.canTouchEfiVariables = mkDefault true;

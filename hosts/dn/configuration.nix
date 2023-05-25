@@ -69,7 +69,6 @@
     "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json:/run/opengl-driver-32/share/vulkan/icd.d/intel_icd.i686.json";
   environment.variables.LIBVA_DRIVER_NAME= "iHD";
 
-  boot.kernelPackages = pkgs.linuxPackages_6_3;
   boot.kernel.sysctl = { "dev.i915.perf_stream_paranoid" = 0; };
   boot.extraModulePackages = with config.boot.kernelPackages; [
     turbostat
