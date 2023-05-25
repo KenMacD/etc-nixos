@@ -187,12 +187,10 @@
     openssh.enable = false;
     pcscd.enable = true;
     snapper.configs.home = {
-      subvolume = "/home";
-      extraConfig = ''
-        ALLOW_USERS="kenny"
-        TIMELINE_CREATE=yes
-        TIMELINE_CLEANUP=yes
-      '';
+      ALLOW_USERS = ["kenny"];
+      SUBVOLUME = "/home";
+      TIMELINE_CREATE = true;
+      TIMELINE_CLEANUP = true;
     };
     thermald.enable = true;
     udev = {
