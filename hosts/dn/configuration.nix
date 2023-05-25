@@ -4,6 +4,7 @@
     ./audio.nix
     ../../modules/hp-printer.nix
     ./firewall.nix
+    ./re.nix
     ./sboot.nix
     ./virt.nix
     ./vscode.nix
