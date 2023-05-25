@@ -49,15 +49,15 @@
         import ./pkgs { pkgs = nixpkgs.legacyPackages.${system}; };
 
       nixosConfigurations = {
-        cubie = nixpkgs.lib.nixosSystem {
+        yoga = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
             ({ ... }: {
               nix.nixPath = let path = toString ./.; in [ "repl=${path}/repl.nix" "nixpkgs=${inputs.nixpkgs}" ];
             })
             ./common.nix
-            ./hosts/cubie/configuration.nix
-            ./hosts/cubie/hardware.nix
+            ./hosts/yoga/configuration.nix
+            ./hosts/yoga/hardware.nix
             ./modules/hardened.nix
           ];
         };

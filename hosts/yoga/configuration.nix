@@ -279,7 +279,7 @@ in
          acmeRoot = null;
       };
       "www.home.macdermid.ca" =  base  {
-        "/".root = "/etc/nixos/hosts/cubie/www/";
+        "/".root = "/etc/nixos/hosts/yoga/www/";
       };
       "bitwarden.home.macdermid.ca" = proxywss config.services.vaultwarden.config.ROCKET_PORT;
       "focalboard.home.macdermid.ca" = proxywss 18000;
