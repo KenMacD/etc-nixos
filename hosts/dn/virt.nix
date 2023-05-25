@@ -11,13 +11,13 @@
   users.users.kenny.extraGroups = [
     "kvm"
     "libvirtd"
+    "lxd"
   ];
 
   ########################################
   # Containers
   ########################################
   virtualisation = {
-    kvmgt.enable = true;
     libvirtd = {
       enable = true;
       qemu.ovmf = {
@@ -33,8 +33,14 @@
     podman = {
       enable = true;
       dockerCompat = true;
-      defaultNetwork.dnsname.enable = true;
+      defaultNetwork.settings.dns_enabled = true;
     };
+
+    # If lxd is removed then the values from the modules sysctl should
+    # probably be copied to avoid issues like kind-in-podman from running
+    # out of files.
+    lxd.enable = true;
+    lxd.recommendedSysctlSettings = true;
 
     waydroid.enable = true;
 
@@ -45,7 +51,8 @@
   };
 
   # kind on rootless podman requires:
-  systemd.enableUnifiedCgroupHierarchy = true;
+  # Need to force this because lxd disables it
+  systemd.enableUnifiedCgroupHierarchy = lib.mkForce true;
   systemd.services."user@".serviceConfig = { Delegate = "yes"; };
 
   security.pam.loginLimits = [
