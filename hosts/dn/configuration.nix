@@ -272,7 +272,8 @@
   ########################################
   nixpkgs.overlays = [ ];
   programs.bcc.enable = true;
-  programs.sysdig.enable = true;
+  # broken 2023-02-21 & 2023-05-25 programs.sysdig.enable = true;
+
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true;
