@@ -1,0 +1,12 @@
+diff --git a/tools/config/__init__.py b/tools/config/__init__.py
+index 2ec77dc..53f57fa 100644
+--- a/tools/config/__init__.py
++++ b/tools/config/__init__.py
+@@ -45,6 +45,7 @@ defaults = {
+     "system_datetime": "0",
+     "vendor_datetime": "0",
+     "preinstalled_images_paths": [
++        "/home/kenny/.local/share/waydroid/images",
+         "/etc/waydroid-extra/images",
+         "/usr/share/waydroid-extra/images",
+     ],
