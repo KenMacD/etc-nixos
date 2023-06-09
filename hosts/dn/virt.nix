@@ -117,8 +117,6 @@
     google-cloud-sdk
     skopeo # inspect information on images
 
-    kwok # k8 king of like kind, but without kubelet
-
     nerdctl
     rootlesskit # maybe for nerdctl/containerd
 
