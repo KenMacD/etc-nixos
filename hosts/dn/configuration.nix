@@ -111,7 +111,7 @@
     enable = true;
     settings = {
       default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd ${pkgs.sway}/bin/sway";
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --user-menu --cmd ${pkgs.sway}/bin/sway";
         user = "greeter";
       };
     };
