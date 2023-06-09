@@ -4,8 +4,8 @@
   inputs.nixpkgs.url = "https://git.home.macdermid.ca/mirror/nixpkgs/archive/nixos-unstable.tar.gz";
   inputs.nixpkgs-staging-next.url = "https://git.home.macdermid.ca/mirror/nixpkgs/archive/staging-next.tar.gz";
   inputs.nixpkgs-master.url = "https://git.home.macdermid.ca/mirror/nixpkgs/archive/master.tar.gz";
-  inputs.nixpkgs-22_11.url = "https://git.home.macdermid.ca/mirror/nixpkgs/archive/nixos-22.11.tar.gz";
-  inputs.nixpkgs-stable.follows = "nixpkgs-22_11";
+  inputs.nixpkgs-23_05.url = "https://git.home.macdermid.ca/mirror/nixpkgs/archive/nixos-23.05.tar.gz";
+  inputs.nixpkgs-stable.follows = "nixpkgs-23_05";
 
   inputs.flake-utils.url = "github:numtide/flake-utils";
 
