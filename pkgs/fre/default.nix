@@ -1,5 +1,9 @@
-{ lib, stdenv, fetchFromGitHub, rustPlatform }:
-
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  rustPlatform,
+}:
 rustPlatform.buildRustPackage rec {
   pname = "fre";
   version = "0.3.1";
@@ -17,6 +21,6 @@ rustPlatform.buildRustPackage rec {
     description = "Command line frecency tracking";
     homepage = "https://github.com/camdencheek/fre/";
     license = licenses.mit;
-    maintainers = [ ];
+    maintainers = [];
   };
 }

@@ -1,5 +1,9 @@
-{ config, lib, pkgs, ... }: {
-
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   boot.postBootCommands = ''
     echo "always" > /sys/kernel/mm/transparent_hugepage/enabled
     echo "defer+madvise" > /sys/kernel/mm/transparent_hugepage/defrag
@@ -53,15 +57,25 @@
   # kind on rootless podman requires:
   # Need to force this because lxd disables it
   systemd.enableUnifiedCgroupHierarchy = lib.mkForce true;
-  systemd.services."user@".serviceConfig = { Delegate = "yes"; };
+  systemd.services."user@".serviceConfig = {Delegate = "yes";};
 
   security.pam.loginLimits = [
     # Raised to test yugabyte db in kind
-    { domain = "*"; type = "hard"; item = "nofile"; value = "1048576"; }
+    {
+      domain = "*";
+      type = "hard";
+      item = "nofile";
+      value = "1048576";
+    }
 
     # Podman seems to want more processes to start?
     # crun: setrlimit `RLIMIT_NPROC`: Operation not permitted: OCI permission denied
-    { domain = "*"; type = "hard"; item = "nproc"; value = "1048576"; }
+    {
+      domain = "*";
+      type = "hard";
+      item = "nproc";
+      value = "1048576";
+    }
   ];
 
   environment.systemPackages = with pkgs; [
@@ -73,7 +87,7 @@
 
     dive # A tool for exploring a docker image
 
-    trivy  # vuln scanner
+    trivy # vuln scanner
 
     # Testing gvisor runtime
     gvisor
@@ -87,31 +101,31 @@
     # Kubernetes stuff
     k9s
     kind
-    krew  # kubectl plugin manager
+    krew # kubectl plugin manager
     kubectl
-    kubecolor  # kubectl with color output
-    kubernetes  # kubeadm
+    kubecolor # kubectl with color output
+    kubernetes # kubeadm
     kubernetes-helm
 
     # Kubenetes testing:
-    kubectx  # kubectx & kubens
+    kubectx # kubectx & kubens
     kubeswitch
-    stern  # multi-pod tail
+    stern # multi-pod tail
     minikube
     # Broken 20230202 docker-machine-kvm2  # kvm2 driver for minikube
     # awscli-local
     google-cloud-sdk
-    skopeo  # inspect information on images
+    skopeo # inspect information on images
 
-    kwok  # k8 king of like kind, but without kubelet
+    kwok # k8 king of like kind, but without kubelet
 
     nerdctl
-    rootlesskit  # maybe for nerdctl/containerd
+    rootlesskit # maybe for nerdctl/containerd
 
-    kubectl-doctor  # doctor?
-    trivy  #  Aqua Security - security scanner
+    kubectl-doctor # doctor?
+    trivy #  Aqua Security - security scanner
 
-    kubescape  # Kubescape vuln scanner?
+    kubescape # Kubescape vuln scanner?
 
     # libkrun work? (with overlay)
     crun

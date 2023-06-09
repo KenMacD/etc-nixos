@@ -1,13 +1,13 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
   cfg = config.services.wpantund;
   package = pkgs.wpantund;
-
-in
-{
+in {
   options.services.wpantund = {
     enable = mkEnableOption "Whether to run the wpantund daemon.";
 
@@ -22,7 +22,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    environment.systemPackages = [ package ];
+    environment.systemPackages = [package];
 
     environment.etc."wpantund.conf".text = ''
       Config:NCP:SocketPath "${cfg.socketPath}"
@@ -31,7 +31,7 @@ in
     systemd.services.wpantund = {
       description = "wpantund";
 
-      path = [ pkgs.wpantund ];
+      path = [pkgs.wpantund];
 
       serviceConfig = {
         BusName = "com.nestlabs.WPANTunnelDriver";
@@ -41,8 +41,8 @@ in
     };
 
     services.dbus.enable = true;
-    services.dbus.packages = [ package ];
+    services.dbus.packages = [package];
 
-    systemd.packages = [ package ];
+    systemd.packages = [package];
   };
 }

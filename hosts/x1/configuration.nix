@@ -1,5 +1,9 @@
-{ config, pkgs, ... }: {
-  imports = [ ];
+{
+  config,
+  pkgs,
+  ...
+}: {
+  imports = [];
 
   ########################################
   # Nix
@@ -28,11 +32,10 @@
     };
     sane = {
       enable = true;
-      extraBackends = [ pkgs.hplipWithPlugin ];
+      extraBackends = [pkgs.hplipWithPlugin];
     };
   };
-  environment.variables.VK_ICD_FILENAMES =
-    "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json";
+  environment.variables.VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json";
 
   ########################################
   # Boot
@@ -51,7 +54,7 @@
   ########################################
   # ZFS
   ########################################
-  boot.supportedFilesystems = [ "zfs" ];
+  boot.supportedFilesystems = ["zfs"];
   boot.zfs.enableUnstable = true;
   services.zfs.autoSnapshot.enable = true;
   services.zfs.trim.enable = true;
@@ -81,7 +84,7 @@
     enable = true;
     desktopManager.plasma5.enable = true;
     layout = "us";
-    displayManager = { sddm.enable = true; };
+    displayManager = {sddm.enable = true;};
     libinput = {
       enable = true;
       touchpad = {
@@ -104,7 +107,7 @@
   # Services
   ########################################
   services.printing.enable = true;
-  services.printing.drivers = [ pkgs.hplipWithPlugin ];
+  services.printing.drivers = [pkgs.hplipWithPlugin];
   services.fwupd.enable = true;
 
   ########################################
@@ -113,7 +116,7 @@
 
   users.users.angela = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "scanner" "lp" ];
+    extraGroups = ["wheel" "networkmanager" "scanner" "lp"];
   };
 
   ########################################
@@ -140,4 +143,3 @@
     soundkonverter
   ];
 }
-

@@ -1,8 +1,10 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; {
   security.apparmor.enable = mkDefault true;
   security.sudo.execWheelOnly = mkDefault true;
 
@@ -10,7 +12,7 @@ with lib;
 
   # environment.memoryAllocator.provider = mkDefault "scudo";
   # environment.variables.SCUDO_OPTIONS = mkDefault "ZeroContents=1";
-  
+
   # environment.memoryAllocator.provider = mkDefault "graphene-hardened";
 
   # set up other allocators for use with LD_PRELOAD
