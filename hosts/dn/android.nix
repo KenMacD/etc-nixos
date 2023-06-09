@@ -1,8 +1,12 @@
-{ config, lib, pkgs, ... }: {
-
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   programs.adb.enable = true;
 
-  users.users.kenny.extraGroups = [ "adbusers" ];
+  users.users.kenny.extraGroups = ["adbusers"];
 
   environment.systemPackages = with pkgs; [
     abootimg

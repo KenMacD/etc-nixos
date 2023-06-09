@@ -1,15 +1,17 @@
-{ config, pkgs, lib,  ... }:
-
-let
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
   ip = "172.27.0.3";
   secrets = import ./secrets.nix;
-in
-{
+in {
   nix = {
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
-   };
+  };
 
   system.autoUpgrade.enable = true;
   hardware = {
@@ -24,7 +26,7 @@ in
         vaapiIntel
         vaapiVdpau
         libvdpau-va-gl
-        intel-compute-runtime  # OpenCL filter support (hardware tonemapping and subtitle burn-in)
+        intel-compute-runtime # OpenCL filter support (hardware tonemapping and subtitle burn-in)
       ];
     };
   };
@@ -54,21 +56,23 @@ in
       allowedTCPPorts = [
         80
         443
-        8200  # minidlna
+        8200 # minidlna
       ];
       # upnp
       allowedUDPPorts = [
-        1900  # UPnP
-        8089  # telegraf thermostat
+        1900 # UPnP
+        8089 # telegraf thermostat
       ];
     };
     interfaces.wlan0.useDHCP = false;
-    interfaces.eth0.ipv4.addresses = [{
-      address = ip;
-      prefixLength = 24;
-    }];
+    interfaces.eth0.ipv4.addresses = [
+      {
+        address = ip;
+        prefixLength = 24;
+      }
+    ];
     defaultGateway = "172.27.0.1";
-    nameservers = [ "45.90.28.215" "45.90.30.215" ];
+    nameservers = ["45.90.28.215" "45.90.30.215"];
   };
 
   services.miniflux = {
@@ -116,7 +120,7 @@ in
   # User
   ########################################
   users.users.kenny = {
-    extraGroups = [ "media" "podman" "dialout"];
+    extraGroups = ["media" "podman" "dialout"];
   };
 
   ########################################
@@ -158,7 +162,7 @@ in
         CLONE = 50000;
         PULL = 50000;
         GC = 50000;
-#        MIGRATE = 2400;
+        #        MIGRATE = 2400;
       };
       server = {
         DOMAIN = "git.home.macdermid.ca";
@@ -167,7 +171,7 @@ in
         ROOT_URL = "https://git.home.macdermid.ca/";
       };
       log.LEVEL = "Warn";
-      service.DISABLE_REGISTRATION = true;  # After creating my account
+      service.DISABLE_REGISTRATION = true; # After creating my account
       session.COOKIE_SECURE = true;
     };
   };
@@ -188,7 +192,6 @@ in
       ROCKET_PORT = 8222;
 
       ROCKET_LOG = "critical";
-
     };
   };
   security.acme = {
@@ -265,24 +268,26 @@ in
         forceSSL = true;
         useACMEHost = "home.macdermid.ca";
       };
-      proxy = port: base {
-        "/".proxyPass = "http://127.0.0.1:${toString port}/";
-      };
-      proxywss = port: base {
-        "/".proxyPass = "http://127.0.0.1:${toString port}/";
-        "/".proxyWebsockets = true;
-      };
+      proxy = port:
+        base {
+          "/".proxyPass = "http://127.0.0.1:${toString port}/";
+        };
+      proxywss = port:
+        base {
+          "/".proxyPass = "http://127.0.0.1:${toString port}/";
+          "/".proxyWebsockets = true;
+        };
     in {
       "home.macdermid.ca" = {
-         enableACME = true;
-         acmeRoot = null;
+        enableACME = true;
+        acmeRoot = null;
       };
-      "www.home.macdermid.ca" =  base  {
+      "www.home.macdermid.ca" = base {
         "/".root = "/etc/nixos/hosts/yoga/www/";
       };
       "bitwarden.home.macdermid.ca" = proxywss config.services.vaultwarden.config.ROCKET_PORT;
       "focalboard.home.macdermid.ca" = proxywss 18000;
-      "git.home.macdermid.ca" = {http2=true;} //proxy config.services.gitea.settings.server.HTTP_PORT;
+      "git.home.macdermid.ca" = {http2 = true;} // proxy config.services.gitea.settings.server.HTTP_PORT;
       "grafana.home.macdermid.ca" = proxywss config.services.grafana.settings.server.http_port;
       "hedgedoc.home.macdermid.ca" = proxy config.services.hedgedoc.settings.port;
       "influxdb.home.macdermid.ca" = proxy 8086;
@@ -312,9 +317,9 @@ in
       friendly_name = "Cubie";
       log_level = "info";
       media_dir = [
-       "V,/mnt/multimedia/incoming"
-       "V,/mnt/multimedia/films"
-       "V,/mnt/multimedia/tv"
+        "V,/mnt/multimedia/incoming"
+        "V,/mnt/multimedia/films"
+        "V,/mnt/multimedia/tv"
       ];
       root_container = "V";
       network_interface = "eth0";
@@ -332,8 +337,8 @@ in
     enable = true;
     extraConfig = {
       outputs.influxdb_v2 = {
-        namepass = [ "heat" "thermostat" "weather" ];
-        urls = [ "http://127.0.0.1:8086" ];
+        namepass = ["heat" "thermostat" "weather"];
+        urls = ["http://127.0.0.1:8086"];
         token = secrets.INFLUX_HVAC_WRITE;
         organization = "macdermid";
         bucket = "hvac";
@@ -363,7 +368,7 @@ in
 
   services.hedgedoc = {
     enable = true;
-    settings= {
+    settings = {
       domain = "hedgedoc.home.macdermid.ca";
       host = "127.0.0.1";
       port = 8090;
@@ -386,7 +391,7 @@ in
     git
     fwupd
     htop
-    kitty  # for term info only
+    kitty # for term info only
     ncdu
     nixfmt
     powertop
@@ -407,8 +412,8 @@ in
     aspellDicts.en
     aspellDicts.en-computers
     (weechat.override {
-      configure = { availablePlugins, ... }: {
-        plugins = with availablePlugins; [ python ];
+      configure = {availablePlugins, ...}: {
+        plugins = with availablePlugins; [python];
       };
     })
   ];

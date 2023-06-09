@@ -1,8 +1,9 @@
-{ lib, nixpkgs, ... }:
-
-with lib;
-
 {
+  lib,
+  nixpkgs,
+  ...
+}:
+with lib; {
   nixpkgs.config.permittedInsecurePackages = [
     "openssl-1.1.1t"
   ];
@@ -26,4 +27,3 @@ with lib;
       "zerotierone"
     ];
 }
-

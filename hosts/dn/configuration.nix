@@ -1,4 +1,10 @@
-{ config, lib, pkgs, nixpkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  nixpkgs,
+  ...
+}: {
   imports = [
     ./android.nix
     ./audio.nix
@@ -17,9 +23,9 @@
   ########################################
   nix.settings = {
     sandbox = true;
-    substituters = [ "https://aseipp-nix-cache.global.ssl.fastly.net" ];
+    substituters = ["https://aseipp-nix-cache.global.ssl.fastly.net"];
   };
-  nix.settings.trusted-users = [ "root" "kenny" ];
+  nix.settings.trusted-users = ["root" "kenny"];
   nix.extraOptions = ''
     binary-caches-parallel-connections = 12
     warn-dirty = false
@@ -32,7 +38,7 @@
     use-cgroups = true
   '';
 
-  nixpkgs.config = { };
+  nixpkgs.config = {};
 
   # Allow edit of /etc/host for temporary mitm:
   environment.etc.hosts.mode = "0644";
@@ -61,15 +67,14 @@
     };
   };
   services.hardware.bolt.enable = true;
-  services.avahi.enable = true;  # For Chromecast
+  services.avahi.enable = true; # For Chromecast
   services.upower.enable = true;
 
   # Force intel vulkan driver to prevent software rendering:
-  environment.variables.VK_ICD_FILENAMES =
-    "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json:/run/opengl-driver-32/share/vulkan/icd.d/intel_icd.i686.json";
-  environment.variables.LIBVA_DRIVER_NAME= "iHD";
+  environment.variables.VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json:/run/opengl-driver-32/share/vulkan/icd.d/intel_icd.i686.json";
+  environment.variables.LIBVA_DRIVER_NAME = "iHD";
 
-  boot.kernel.sysctl = { "dev.i915.perf_stream_paranoid" = 0; };
+  boot.kernel.sysctl = {"dev.i915.perf_stream_paranoid" = 0;};
   boot.extraModulePackages = with config.boot.kernelPackages; [
     turbostat
     x86_energy_perf_policy
@@ -80,7 +85,7 @@
   '';
 
   # reboot + signals + sync
-  boot.kernel.sysctl = { "kernel.sysrq" = 128 + 64 + 16; };
+  boot.kernel.sysctl = {"kernel.sysrq" = 128 + 64 + 16;};
 
   ########################################
   # Network
@@ -101,7 +106,7 @@
   ########################################
   # Desktop Environment
   ########################################
-  boot.kernelParams = [ "console=tty2" ];
+  boot.kernelParams = ["console=tty2"];
   services.greetd = {
     enable = true;
     settings = {
@@ -162,7 +167,7 @@
   };
   # Use Wayland for Electron apps
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
-  environment.pathsToLink = [ "/libexec" ]; # Required for sway/polkit
+  environment.pathsToLink = ["/libexec"]; # Required for sway/polkit
   environment.shellAliases = {
     "ls" = "lsd";
     "ta" = "task add rc.context=none";
@@ -194,7 +199,7 @@
     };
     thermald.enable = true;
     udev = {
-      packages = [ pkgs.yubikey-personalization ];
+      packages = [pkgs.yubikey-personalization];
       # Amlogic:
       extraRules = ''
         SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="1b8e", ATTR{idProduct}=="c003", MODE:="0666", SYMLINK+="worldcup"
@@ -222,11 +227,11 @@
   ########################################
   fonts = {
     fonts = with pkgs; [
-      (nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; })
+      (nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
       font-awesome # Used by waybar
       fira-code
     ];
-    fontconfig = { defaultFonts = { monospace = [ "Fira Code" ]; }; };
+    fontconfig = {defaultFonts = {monospace = ["Fira Code"];};};
   };
 
   ########################################
@@ -270,7 +275,7 @@
   ########################################
   # Packages
   ########################################
-  nixpkgs.overlays = [ ];
+  nixpkgs.overlays = [];
   programs.bcc.enable = true;
   # broken 2023-02-21 & 2023-05-25 programs.sysdig.enable = true;
 
@@ -280,189 +285,188 @@
   };
 
   environment.systemPackages = with pkgs;
-    with config.boot.kernelPackages; [
-      # General
-      aspell
-      aspellDicts.en
-      aspellDicts.en-computers
-      bc
-      borgbackup
-      brightnessctl
-      chromium
-      fd
-      firefox
-      fzf
-      httpie
-      libreoffice
-      libusb1
-      libva-utils
-      lsd # ls, but better
-      most
-      (nnn.override {withNerdIcons=true;})
-      p7zip
-      python3
-      rlwrap
-      rmlint
-      tmux
-      unzip
-      xdg-utils
-      yt-dlp
+  with config.boot.kernelPackages; [
+    # General
+    aspell
+    aspellDicts.en
+    aspellDicts.en-computers
+    bc
+    borgbackup
+    brightnessctl
+    chromium
+    fd
+    firefox
+    fzf
+    httpie
+    libreoffice
+    libusb1
+    libva-utils
+    lsd # ls, but better
+    most
+    (nnn.override {withNerdIcons = true;})
+    p7zip
+    python3
+    rlwrap
+    rmlint
+    tmux
+    unzip
+    xdg-utils
+    yt-dlp
 
-      # System performance
-      glances
-      htop
-      stress-ng
-      s-tui
+    # System performance
+    glances
+    htop
+    stress-ng
+    s-tui
 
-      # Terminal related
-      kitty
-      mdcat
+    # Terminal related
+    kitty
+    mdcat
 
-      # Password management
-      age-plugin-yubikey
-      gopass # replacement for pass, has -o option
-      gopass-jsonapi
-      qtpass
-      rage
-      yubikey-manager
-      yubikey-personalization
-      yubioath-flutter
+    # Password management
+    age-plugin-yubikey
+    gopass # replacement for pass, has -o option
+    gopass-jsonapi
+    qtpass
+    rage
+    yubikey-manager
+    yubikey-personalization
+    yubioath-flutter
 
-      # Video
-      intel-gpu-tools
-      mpv
-      v4l-utils
-      vlc
+    # Video
+    intel-gpu-tools
+    mpv
+    v4l-utils
+    vlc
 
-      # Graphics
-      glxinfo
-      mesa_glu
+    # Graphics
+    glxinfo
+    mesa_glu
 
-      # System management
-      acpid
-      bcc
-      dig
-      fwupd
-      fwupd-efi
-      iotop
-      killall
-      lxqt.lxqt-policykit
-      ncdu # disk usage with file count
-      nvme-cli
-      pciutils
-      powertop
-      power-profiles-daemon
-      pstree
-      remmina
-      usbutils
-      turbostat
-      x86_energy_perf_policy
+    # System management
+    acpid
+    bcc
+    dig
+    fwupd
+    fwupd-efi
+    iotop
+    killall
+    lxqt.lxqt-policykit
+    ncdu # disk usage with file count
+    nvme-cli
+    pciutils
+    powertop
+    power-profiles-daemon
+    pstree
+    remmina
+    usbutils
+    turbostat
+    x86_energy_perf_policy
 
-      # Networking
-      openconnect
+    # Networking
+    openconnect
 
-      # Nix
-      nixfmt
-      nixpkgs-fmt
+    # Nix
+    nixfmt
+    nixpkgs-fmt
 
-      # Wireless
-      iw
-      wavemon
-      wirelesstools
-      aircrack-ng
+    # Wireless
+    iw
+    wavemon
+    wirelesstools
+    aircrack-ng
 
-      # Communication
-      discord
-      irssi
-      signal-desktop
-      slack
-      (weechat.override {
-        configure = { availablePlugins, ... }: {
-          plugins = with availablePlugins; [ python ];
-          scripts = with pkgs.weechatScripts;
-            [
-              buffer_autoset
-              wee-slack
-              weechat-autosort
-              weechat-go
-            ];
-        };
-      })
+    # Communication
+    discord
+    irssi
+    signal-desktop
+    slack
+    (weechat.override {
+      configure = {availablePlugins, ...}: {
+        plugins = with availablePlugins; [python];
+        scripts = with pkgs.weechatScripts; [
+          buffer_autoset
+          wee-slack
+          weechat-autosort
+          weechat-go
+        ];
+      };
+    })
 
-      # Email
-      # fetch mail from imap
-      fdm
-      # simple smtp client
-      msmtp
-      neomutt
-      notmuch # search
-      pdfminer # pdf
-      python3Packages.icalendar # ical view
-      khal # ical view
-      urlscan
-      urlview
-      lynx
+    # Email
+    # fetch mail from imap
+    fdm
+    # simple smtp client
+    msmtp
+    neomutt
+    notmuch # search
+    pdfminer # pdf
+    python3Packages.icalendar # ical view
+    khal # ical view
+    urlscan
+    urlview
+    lynx
 
-      steam-run
-      mindforger
-      ffmpeg
-      binwalk
-      screen
-      qalculate-gtk
-      mitmproxy
+    steam-run
+    mindforger
+    ffmpeg
+    binwalk
+    screen
+    qalculate-gtk
+    mitmproxy
 
-      # Task management
-      taskwarrior
-      taskwarrior-tui
-      taskopen
-      vit
+    # Task management
+    taskwarrior
+    taskwarrior-tui
+    taskopen
+    vit
 
-      # General/Unsorted
-      magic-wormhole
-      patchelf
-      sshfs
+    # General/Unsorted
+    magic-wormhole
+    patchelf
+    sshfs
 
-      # Virtualization
-      virt-manager
-      nixos-generators
-      bubblewrap
+    # Virtualization
+    virt-manager
+    nixos-generators
+    bubblewrap
 
-      # Development
-      amazon-ecs-cli
-      android-tools
-      aws-adfs
-      awscli2
-      bintools
-      clang-tools
-      delta
-      direnv
-      dtc
-      file
-      gdb
-      gh
-      gitFull
-      gitui
-      gnumake
-      hotspot
-      jq
-      llvm
-      man-pages
-      meld
-      meson-tools
-      mold
-      nix-bubblewrap
-      nix-direnv
-      nix-tree
-      parallel
-      perf
-      pkgconf
-      stable.pgcli
-      ripgrep
-      rustup
-      rust-analyzer
-      tio
+    # Development
+    amazon-ecs-cli
+    android-tools
+    aws-adfs
+    awscli2
+    bintools
+    clang-tools
+    delta
+    direnv
+    dtc
+    file
+    gdb
+    gh
+    gitFull
+    gitui
+    gnumake
+    hotspot
+    jq
+    llvm
+    man-pages
+    meld
+    meson-tools
+    mold
+    nix-bubblewrap
+    nix-direnv
+    nix-tree
+    parallel
+    perf
+    pkgconf
+    stable.pgcli
+    ripgrep
+    rustup
+    rust-analyzer
+    tio
 
-      # My Packages
-      fre
-    ];
+    # My Packages
+    fre
+  ];
 }

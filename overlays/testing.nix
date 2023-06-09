@@ -1,30 +1,37 @@
 self: super:
-
 # This overlay contains hopefully temporary patches.
 rec {
   # Runnin copilot in vscodium, see bug: https://github.com/VSCodium/vscodium/issues/888
   vscodium = super.vscodium.overrideAttrs (old: rec {
-    postInstall = (old.postInstall or "") + ''
-      substituteInPlace $out/lib/vscode/resources/app/product.json \
-        --replace '"GitHub.copilot": ["inlineCompletionsAdditions"],' \
-	          '"GitHub.copilot": ["inlineCompletions","inlineCompletionsNew","inlineCompletionsAdditions","textDocumentNotebook","interactive","terminalDataWriteEvent"],' \
-        --replace '"GitHub.copilot-nightly": ["inlineCompletionsAdditions"],' \
-	          '"GitHub.copilot-nightly": ["inlineCompletions","inlineCompletionsNew","inlineCompletionsAdditions","textDocumentNotebook","interactive","terminalDataWriteEvent"],' \
-    '';
+    postInstall =
+      (old.postInstall or "")
+      + ''
+        substituteInPlace $out/lib/vscode/resources/app/product.json \
+          --replace '"GitHub.copilot": ["inlineCompletionsAdditions"],' \
+             '"GitHub.copilot": ["inlineCompletions","inlineCompletionsNew","inlineCompletionsAdditions","textDocumentNotebook","interactive","terminalDataWriteEvent"],' \
+          --replace '"GitHub.copilot-nightly": ["inlineCompletionsAdditions"],' \
+             '"GitHub.copilot-nightly": ["inlineCompletions","inlineCompletionsNew","inlineCompletionsAdditions","textDocumentNotebook","interactive","terminalDataWriteEvent"],' \
+      '';
   });
 
   # Enable experimental libkrun in crun
   crun = super.crun.overrideAttrs (old: {
-    buildInputs = (old.buildInputs or []) ++ [
-      super.libkrun
-    ];
-    configureFlags = (old.configureFlags or []) ++ [
-      "--with-libkrun"
-    ];
-    postFixup = (old.postFixup or "" ) + ''
-      ln -s $out/bin/crun $out/bin/krun
-      patchelf --set-rpath "$(patchelf --print-rpath $out/bin/crun):${super.libkrun.out}/lib" $out/bin/crun
-    '';
+    buildInputs =
+      (old.buildInputs or [])
+      ++ [
+        super.libkrun
+      ];
+    configureFlags =
+      (old.configureFlags or [])
+      ++ [
+        "--with-libkrun"
+      ];
+    postFixup =
+      (old.postFixup or "")
+      + ''
+        ln -s $out/bin/crun $out/bin/krun
+        patchelf --set-rpath "$(patchelf --print-rpath $out/bin/crun):${super.libkrun.out}/lib" $out/bin/crun
+      '';
   });
 
   # Allow waydroid to install from a local android image

@@ -1,6 +1,9 @@
-{ config, pkgs, lib, ... }:
-
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
   networking.usePredictableInterfaceNames = true;
   networking.wireless.interfaces = [
     "wlp0s20f3"

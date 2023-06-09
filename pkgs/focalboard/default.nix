@@ -1,5 +1,9 @@
-{ stdenv, lib, fetchzip, autoPatchelfHook }:
-
+{
+  stdenv,
+  lib,
+  fetchzip,
+  autoPatchelfHook,
+}:
 stdenv.mkDerivation rec {
   pname = "focalboard";
   version = "0.15.0";

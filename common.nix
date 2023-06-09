@@ -1,10 +1,12 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; {
   imports = [
-    modules/fish.nix  # Remove when https://github.com/NixOS/nixpkgs/pull/176886
+    modules/fish.nix # Remove when https://github.com/NixOS/nixpkgs/pull/176886
     modules/env.nix # Set XDG/config vars
     modules/unfree.nix
   ];
@@ -65,7 +67,7 @@ with lib;
   # Network
   ########################################
   networking.firewall.enable = mkDefault true;
-  networking.useDHCP = false;  # deprecated
+  networking.useDHCP = false; # deprecated
   networking.usePredictableInterfaceNames = mkDefault false;
 
   ########################################
@@ -79,8 +81,8 @@ with lib;
     vimAlias = true;
     configure = {
       packages.myPlugins = with pkgs.vimPlugins; {
-        start = [ nvim-treesitter.withAllGrammars nvim-lastplace vim-gnupg ];
-        opt = [ ];
+        start = [nvim-treesitter.withAllGrammars nvim-lastplace vim-gnupg];
+        opt = [];
       };
       customRC = ''
         " ignore case in search unless set
@@ -124,7 +126,7 @@ with lib;
     uid = 1000;
     createHome = true;
     shell = pkgs.fish;
-    extraGroups = [ "wheel" ];
+    extraGroups = ["wheel"];
     openssh.authorizedKeys.keys = [
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCxdqQrcKwakfrGvXCRQ2mNM3c5CkbwSEMuUufIcO0Op0xJJkdb59v2iqkztZMNpJFbS61ymsyzeRCwDQ5xptUNrjvbnppL+tBzErKMdilHzadpLeGffUCJg9GcIVJxQzFVbt0tIGwPsBcVHb1WITmzQCoZ/O0p1NSFRovwU8TXCOhnuObDUisFiJyA2e3C8tNvlm0Rvgb7bIH0T+/W4VIc+7ZZWwP/UMCnBHE4azZAcDJ4e9XO+ZJwg6iUXu7lk5X+34ACeHkPu133cGesz8BMl7yoXT058RcEW5bfcN6Dpl/IODNjxbDeQ/dYiVNnSExUWOrCo1sN1RYUQrKCzCzqCZ+29A07czYJDPjUt8pZdBQV3z261zYqyeP/IOgdHp3LZobIm48XF/+Abp/tTu8e99TP1y3L+8XuAMeu1THwHdcnQLJgv4nGExXijlvI/NlPEWhDqs991hhD7eHkg9w7QfuTjxRvZIjAkeK7ByWqMTULMrQBeHSS095b0gdHG3PEGz9BW9J4gHxW/s/pa5Cya3AOv7DJPDAEgxjqhB4wAuzvNnuxNXZCBwrNr8rRr860eNsOOe1rilSKRojF5s2DRin5OzXxJGQkHb1lndxya6E2U5i/+PzGuuPxNmoRDMZ43z7FZWIFej6Vb6Xd1bc1Q8Izbg5M2ZXVgDVoUrY02Q=="
     ];
@@ -147,11 +149,10 @@ with lib;
   ########################################
   # NTP
   services.timesyncd.enable = true;
-  networking.timeServers = [ "time.cloudflare.com" ];
+  networking.timeServers = ["time.cloudflare.com"];
 
   ########################################
   # Packages
   ########################################
-  environment.systemPackages = with pkgs; [ ];
-
+  environment.systemPackages = with pkgs; [];
 }
