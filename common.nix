@@ -17,6 +17,11 @@ with lib; {
   system.stateVersion = "22.11";
   nix = {
     settings.auto-optimise-store = mkDefault true;
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
     extraOptions = ''
       keep-outputs = true
       keep-derivations = true
