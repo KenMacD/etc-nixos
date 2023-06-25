@@ -205,6 +205,7 @@ in {
     };
     certs."home.macdermid.ca" = {
       domain = "*.home.macdermid.ca";
+      extraDomainNames = ["home.macdermid.ca"];
     };
   };
   services.matrix-conduit = {
