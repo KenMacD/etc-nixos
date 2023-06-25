@@ -14,6 +14,17 @@ rec {
       '';
   });
 
+  notmuch = super.notmuch.overrideAttrs (old: {
+    buildInputs =
+      (old.buildInputs or [])
+      ++ [
+        super.sfsexp
+      ];
+    preCheck = (old.preCheck or "") + ''
+      rm test/T850-git.sh
+    '';
+  });
+
   # Enable experimental libkrun in crun
   crun = super.crun.overrideAttrs (old: {
     buildInputs =
