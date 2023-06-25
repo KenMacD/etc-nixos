@@ -227,47 +227,60 @@ in {
   };
 
   # nginx
+  systemd.services.nginx.serviceConfig.SupplementaryGroups = "acme";
   services.nginx = {
     enable = true;
 
     recommendedOptimisation = true;
     recommendedGzipSettings = true;
     recommendedProxySettings = true;
-    recommendedTlsSettings = true;
 
+    # recommendedTlsSettings = true;
+    sslProtocols = "TLSv1.3";
+
+    # See recommendedTlsSettings, but set session tickets because nginx is newer
+    # See https://github.com/mozilla/server-side-tls/issues/284
+    # See https://webdock.io/en/docs/how-guides/security-guides/how-to-configure-security-headers-in-nginx-and-apache
     commonHttpConfig = ''
-      # Add HSTS header with preloading to HTTPS requests.
-      # Adding this header to HTTP requests is discouraged
-      map $scheme $hsts_header {
-          https   "max-age=31536000; includeSubdomains; preload";
-      }
-      add_header Strict-Transport-Security $hsts_header;
+      ########################################
+      ssl_session_timeout 1d;
+      ssl_prefer_server_ciphers off;
+
+      # OCSP stapling
+      ssl_stapling on;
+      ssl_stapling_verify on;
+
+      ########################################
+      # https://github.com/MidAutumnMoon/Nuran/blob/fbf3f38169c70eadbd72aaec4e07db3c8ea485be/nixos/web/server/nginx/configfile.nix#L116
+      more_clear_headers Server;
+      more_clear_headers X-Powered-By;
+      more_clear_headers X-Application-Version;
+      more_set_headers 'X-Content-Type-Options: nosniff';
+      more_set_headers 'X-XSS-Protection: 1; mode=block';
+      more_set_headers 'Strict-Transport-Security: max-age=31536000; includeSubDomains; preload';
+      more_set_headers 'X-Frame-Options: SAMEORIGIN';
+      more_set_headers 'Referrer-Policy: strict-origin';
 
       # Enable CSP for your services.
       #add_header Content-Security-Policy "script-src 'self'; object-src 'none'; base-uri 'none';" always;
 
-      # Minimize information leaked to other domains
-      add_header 'Referrer-Policy' 'origin-when-cross-origin';
-
-      # Disable embedding as a frame
-      add_header X-Frame-Options SAMEORIGIN;
-
-      # Prevent injection of code in other mime types (XSS Attacks)
-      add_header X-Content-Type-Options nosniff;
-
-      # Enable XSS protection of the browser.
-      # May be unnecessary when CSP is configured properly (see above)
-      add_header X-XSS-Protection "1; mode=block";
-
       # This might create errors
-      proxy_cookie_path / "/; secure; HttpOnly; SameSite=strict";
+      # proxy_cookie_path / "/; secure; HttpOnly; SameSite=strict";
     '';
 
     virtualHosts = let
-      base = locations: {
+      base = locations: let
+        inherit (config.security.acme) certs;
+        certName = "home.macdermid.ca";
+      in {
         inherit locations;
-        forceSSL = true;
-        useACMEHost = "home.macdermid.ca";
+        onlySSL = true;
+
+        # Copied from nginx/default.nix to avoid having a
+        # .well-known/acme-challenge/ entry in the nginx config.
+        sslCertificate = "${certs.${certName}.directory}/fullchain.pem";
+        sslCertificateKey = "${certs.${certName}.directory}/key.pem";
+        sslTrustedCertificate = "${certs.${certName}.directory}/chain.pem";
       };
       proxy = port:
         base {
@@ -278,14 +291,21 @@ in {
           "/".proxyPass = "http://127.0.0.1:${toString port}/";
           "/".proxyWebsockets = true;
         };
+      proxytls = port:
+        base {
+          "/".proxyPass = "https://127.0.0.1:${toString port}/";
+        };
     in {
-      "home.macdermid.ca" = {
-        enableACME = true;
-        acmeRoot = null;
-      };
-      "www.home.macdermid.ca" = base {
-        "/".root = "/etc/nixos/hosts/yoga/www/";
-      };
+      "_" =
+        {default = true;}
+        // base {
+          "/".return = "444";
+        };
+      "www.home.macdermid.ca" =
+        base {
+          "/".root = "/etc/nixos/hosts/yoga/www/";
+        }
+        // {serverAliases = ["home.macdermid.ca"];};
       "bitwarden.home.macdermid.ca" = proxywss config.services.vaultwarden.config.ROCKET_PORT;
       "focalboard.home.macdermid.ca" = proxywss 18000;
       "git.home.macdermid.ca" = {http2 = true;} // proxy config.services.gitea.settings.server.HTTP_PORT;
