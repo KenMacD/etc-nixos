@@ -1,0 +1,12 @@
+--- a/package.json
++++ b/package.json
+@@ -1,6 +1,9 @@
+ {
+   "name": "immich-web",
+   "version": "1.0.0",
++  "bin": {
++    "immich-web": "build/index.js"
++  },
+   "scripts": {
+     "dev": "vite dev --host 0.0.0.0 --port 3000",
+     "build": "vite build",
