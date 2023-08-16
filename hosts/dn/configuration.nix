@@ -71,6 +71,7 @@
   services.hardware.bolt.enable = true;
   services.avahi.enable = true; # For Chromecast
   services.upower.enable = true;
+  services.power-profiles-daemon.enable = true;
 
   # Force intel vulkan driver to prevent software rendering:
   environment.variables.VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json:/run/opengl-driver-32/share/vulkan/icd.d/intel_icd.i686.json";
@@ -108,7 +109,6 @@
   # Workaround https://github.com/NixOS/nixpkgs/issues/231191
   environment.etc."resolv.conf".mode = "direct-symlink";
 
-  services.tlp.enable = true;
 
   ########################################
   # Desktop Environment
