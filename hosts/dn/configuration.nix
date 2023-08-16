@@ -3,6 +3,8 @@
   lib,
   pkgs,
   nixpkgs,
+  inputs,
+  system,
   ...
 }: {
   imports = [
