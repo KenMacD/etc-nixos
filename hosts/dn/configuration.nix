@@ -103,6 +103,11 @@
   services.resolved = {
     enable = true;
   };
+
+  # Make resolv.conf a direct symlink
+  # Workaround https://github.com/NixOS/nixpkgs/issues/231191
+  environment.etc."resolv.conf".mode = "direct-symlink";
+
   services.tlp.enable = true;
 
   ########################################
