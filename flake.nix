@@ -13,6 +13,7 @@
   inputs.nix-alien.url = "github:thiagokokada/nix-alien";
   inputs.nix-bubblewrap.url = "sourcehut:~fgaz/nix-bubblewrap";
   inputs.microvm.url = "github:astro/microvm.nix";
+  inputs.nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
 
   outputs = {
     self,
@@ -60,7 +61,7 @@
       };
       dn = nixpkgs.lib.nixosSystem {
         inherit system;
-        specialArgs = {inherit inputs;};
+        specialArgs = {inherit system inputs;};
         modules = [
           ({
             config,
