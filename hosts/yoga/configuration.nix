@@ -82,6 +82,7 @@ in {
       DEBUG = "off";
       LISTEN_ADDR = "127.0.0.1:35001";
       BASE_URL = "https://miniflux.home.macdermid.ca";
+      AUTH_PROXY_HEADER = "X-Email";
     };
   };
   services.avahi.publish = {
@@ -90,6 +91,64 @@ in {
     userServices = true;
   };
   services.fwupd.enable = true;
+
+  systemd.services.kanidm.serviceConfig.SupplementaryGroups = "acme";
+  services.kanidm = {
+    enableServer = true;
+    serverSettings = {
+      bindaddress = "127.0.0.1:9001";
+      ldapbindaddress = "127.0.0.1:636";
+      origin = "https://auth.home.macdermid.ca";
+      domain = "auth.home.macdermid.ca";
+      tls_chain = "/var/lib/acme/home.macdermid.ca/fullchain.pem";
+      tls_key = "/var/lib/acme/home.macdermid.ca/key.pem";
+    };
+    enableClient = true;
+    clientSettings = {
+      uri = "${config.services.kanidm.serverSettings.origin}";
+    };
+  };
+
+  systemd.services.oauth2_proxy = {
+    after = ["nginx.service" "kanidm.service"];
+    requires = ["nginx.service" "kanidm.service"];
+  };
+
+  services.oauth2_proxy = let
+    clientId = "miniflux";
+  in {
+    enable = true;
+    provider = "oidc";
+    scope = "openid email";
+    cookie.domain = ".home.macdermid.ca";
+
+    loginURL = "${config.services.kanidm.serverSettings.origin}/ui/oauth2";
+    redeemURL = "${config.services.kanidm.serverSettings.origin}/oauth2/token";
+    validateURL = "${config.services.kanidm.serverSettings.origin}/oauth2/openid/${clientId}/userinfo";
+
+    clientID = clientId;
+    clientSecret = secrets.OAUTH2_PROXY_CLIENT_SECRET;
+    cookie.secret = secrets.OAUTH2_PROXY_COOKIE_SECRET;
+    email.domains = ["*"];
+    reverseProxy = true;
+    passAccessToken = true;
+    setXauthrequest = true;
+
+    nginx = {
+      proxy = "http://127.0.0.1:4180";
+      virtualHosts = [
+        "miniflux.home.macdermid.ca"
+      ];
+    };
+
+    extraConfig = {
+      whitelist-domain = ".home.macdermid.ca";
+      oidc-issuer-url = "${config.services.kanidm.serverSettings.origin}/oauth2/openid/${clientId}";
+      provider-display-name = "Kanidm";
+      skip-provider-button = true;
+      code-challenge-method = "S256";
+    };
+  };
 
   ########################################
   # Users
@@ -311,6 +370,7 @@ in {
       "git.home.macdermid.ca" = {http2 = true;} // proxy config.services.gitea.settings.server.HTTP_PORT;
       "grafana.home.macdermid.ca" = proxywss config.services.grafana.settings.server.http_port;
       "hedgedoc.home.macdermid.ca" = proxy config.services.hedgedoc.settings.port;
+      "auth.home.macdermid.ca" = proxytls 9001;
       "influxdb.home.macdermid.ca" = proxy 8086;
       "jellyfin.home.macdermid.ca" = proxywss 8096;
       "matrix.home.macdermid.ca" = proxy config.services.matrix-conduit.settings.global.port;
