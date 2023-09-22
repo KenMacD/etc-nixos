@@ -75,6 +75,7 @@ in {
     nameservers = ["45.90.28.215" "45.90.30.215"];
   };
 
+  services.postgresql.package = pkgs.postgresql_15;
   services.miniflux = {
     enable = true;
     adminCredentialsFile = "/etc/nixos/miniflux-admin-credentials";
