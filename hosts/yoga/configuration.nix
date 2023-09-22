@@ -201,7 +201,7 @@ in {
       server.rootUrl = "https://grafana.home.macdermid.ca/";
       server.domain = "grafana.home.macdermid.ca";
       "auth.anonymous" = {
-        enable = true;
+        enabled = true;
         org_name = "MacDermid";
         org_role = "Editor";
       };
