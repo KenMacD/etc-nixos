@@ -13,6 +13,7 @@
     ../../modules/hp-printer.nix
     ./firewall.nix
     ./re.nix
+    ./rust.nix
     ./sboot.nix
     ./virt.nix
     ./vscode.nix
@@ -160,6 +161,8 @@
 
       # Display profiles
       kanshi
+
+      copyq
     ];
     extraSessionCommands = ''
       export SDL_VIDEODRIVER="wayland"
@@ -172,6 +175,7 @@
       gtk = true;
     };
   };
+
   # Use Wayland for Electron apps
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
   environment.pathsToLink = ["/libexec"]; # Required for sway/polkit
@@ -213,6 +217,7 @@
       '';
     };
     udisks2.enable = true;
+    ddccontrol.enable = true;
     zerotierone.enable = true;
   };
 
@@ -233,10 +238,19 @@
   # Fonts
   ########################################
   fonts = {
-    fonts = with pkgs; [
-      (nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
-      font-awesome # Used by waybar
+    fontDir.enable = true;
+    packages = with pkgs; [
+      (nerdfonts.override {
+        fonts = [
+          "NerdFontsSymbolsOnly"
+        ];
+      })
+      dosis
       fira-code
+      fira-code-symbols
+      font-awesome # Used by waybar
+      roboto
+      roboto-mono
     ];
     fontconfig = {defaultFonts = {monospace = ["Fira Code"];};};
   };
@@ -286,11 +300,33 @@
   programs.bcc.enable = true;
   # broken 2023-02-21 & 2023-05-25 programs.sysdig.enable = true;
 
+  programs.starship = {
+    enable = true;
+    settings = {
+      add_newline = true;
+      gcloud.disabled = true;
+      nix_shell.disabled = true;
+      git_status = {
+        style = "purple bold dimmed";
+        stashed = "";
+        modified = "";
+        untracked = "";
+        staged = "✓$count";
+        renamed = "🚚$count";
+        deleted = "✗$count";
+        ahead = "⇡$count";
+        diverged = "⇕⇡$ahead_count⇣$behind_count";
+        behind = "⇣$count";
+      };
+    };
+  };
+
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true;
   };
 
+  programs.thefuck.enable = true;
   environment.systemPackages = with pkgs;
   with config.boot.kernelPackages; [
     # General
@@ -329,6 +365,8 @@
     # Terminal related
     kitty
     mdcat
+    vivid # for LS_COLORS
+    yq-go # Using to switch color theme
 
     # Password management
     age-plugin-yubikey
@@ -371,9 +409,12 @@
     x86_energy_perf_policy
 
     # Networking
+    _3proxy
     openconnect
 
     # Nix
+    alejandra # Nix formatter
+    nix-tree
     nixfmt
     nixpkgs-fmt
 
@@ -410,6 +451,7 @@
     pdfminer # pdf
     python3Packages.icalendar # ical view
     khal # ical view
+    ripmime # pipe msgs to extract attachements
     urlscan
     urlview
     lynx
@@ -451,8 +493,10 @@
     file
     gdb
     gh
+    gita  # Update a group of repos
     gitFull
     gitui
+    git-filter-repo
     gnumake
     hotspot
     jq
@@ -463,14 +507,11 @@
     mold
     nix-bubblewrap
     nix-direnv
-    nix-tree
     parallel
     perf
     pkgconf
     stable.pgcli
     ripgrep
-    rustup
-    rust-analyzer
     tio
 
     # My Packages
