@@ -34,11 +34,8 @@
     pulsemixer
 
     # Sound Plugins
-    lsp-plugins
-    rnnoise-plugin
     distrho
     swh_lv2
-    calf
 
     # Bluetooth audio
     bluez

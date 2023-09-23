@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  options,
   ...
 }: {
   boot.postBootCommands = ''
@@ -31,6 +32,9 @@
       qemu.package = pkgs.qemu_kvm;
     };
 
+    # Search gcr.io as well
+    containers.registries.search = options.virtualisation.containers.registries.search.default ++ ["gcr.io"];
+
     # Add when user USB redirection retuired:
     # spiceUSBRedirection.enable = true;
 
@@ -52,6 +56,19 @@
       enable = true;
       user = "kenny";
     };
+  };
+
+  environment.etc = {
+    # Add supported upstream shortnames
+    "containers/registries.conf.d/shortnames.conf".source = pkgs.fetchurl {
+      url = "https://raw.githubusercontent.com/containers/shortnames/e580d22f8b6b63a1b87de40c62512539dfdf64f1/shortnames.conf";
+      hash = "sha256-8RIK63nXSSZNFYp7pI9a/OU5/fZKdD2+OgUtIcanBLI=";
+    };
+
+    # Block any unverified shortnames (will ask in interactive cases)
+    "containers/registries.conf.d/enforce.conf".text = ''
+      short-name-mode="enforcing"
+    '';
   };
 
   # kind on rootless podman requires:
@@ -124,6 +141,9 @@
     trivy #  Aqua Security - security scanner
 
     kubescape # Kubescape vuln scanner?
+
+    quickemu
+    quickgui
 
     # libkrun work? (with overlay)
     crun

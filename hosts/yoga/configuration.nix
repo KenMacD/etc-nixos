@@ -489,6 +489,7 @@ in {
 
     screen
     focalboard
+    jesec-rtorrent
 
     aspell
     aspellDicts.en

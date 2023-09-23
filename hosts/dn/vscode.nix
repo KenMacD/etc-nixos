@@ -66,6 +66,8 @@ in {
         serayuzgur.crates
         shardulm94.trailing-spaces
         shd101wyy.markdown-preview-enhanced
+        tamasfe.even-better-toml
+        tintinweb.graphviz-interactive-preview
         twxs.cmake
         yzhang.markdown-all-in-one
       ];
