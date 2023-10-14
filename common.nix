@@ -6,7 +6,6 @@
 }:
 with lib; {
   imports = [
-    modules/fish.nix # Remove when https://github.com/NixOS/nixpkgs/pull/176886
     modules/env.nix # Set XDG/config vars
     modules/sway-desktop.nix # My sway desktop configuration
     modules/unfree.nix
