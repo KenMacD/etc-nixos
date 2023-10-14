@@ -60,6 +60,7 @@ in {
       ];
       # upnp
       allowedUDPPorts = [
+        53 # DNS - Todo: make on podman only
         1900 # UPnP
         8089 # telegraf thermostat
       ];
@@ -72,7 +73,7 @@ in {
       }
     ];
     defaultGateway = "172.27.0.1";
-    nameservers = ["45.90.28.215" "45.90.30.215"];
+    nameservers = ["172.27.0.1"];
   };
 
   services.postgresql.package = pkgs.postgresql_15;
@@ -298,6 +299,9 @@ in {
     # recommendedTlsSettings = true;
     sslProtocols = "TLSv1.3";
 
+    # Internal only, allow immich video upload:
+    clientMaxBodySize = "10g";
+
     # See recommendedTlsSettings, but set session tickets because nginx is newer
     # See https://github.com/mozilla/server-side-tls/issues/284
     # See https://webdock.io/en/docs/how-guides/security-guides/how-to-configure-security-headers-in-nginx-and-apache
@@ -377,6 +381,19 @@ in {
       "matrix.home.macdermid.ca" = proxy config.services.matrix-conduit.settings.global.port;
       "nzbget.home.macdermid.ca" = proxy 6789;
       "miniflux.home.macdermid.ca" = proxy 35001;
+
+      "immich.home.macdermid.ca" = base {
+        "/api" = {
+          proxyPass = "http://127.0.0.1:3551/";
+          proxyWebsockets = true;
+          extraConfig = ''
+            rewrite /api/(.*) /$1 break;
+          '';
+        };
+        "/".proxyPass = "http://127.0.0.1:3550/";
+        "/".proxyWebsockets = true;
+      };
+
     };
   };
 
@@ -490,6 +507,34 @@ in {
     screen
     focalboard
     jesec-rtorrent
+
+    (let
+      # XXX specify the postgresql package you'd like to upgrade to.
+      # Do not forget to list the extensions you need.
+      newPostgres = pkgs.postgresql_15.withPackages (pp: [
+      ]);
+    in
+      pkgs.writeScriptBin "upgrade-pg-cluster" ''
+        set -eux
+        # XXX it's perhaps advisable to stop all services that depend on postgresql
+        systemctl stop postgresql
+
+        export NEWDATA="/var/lib/postgresql/${newPostgres.psqlSchema}"
+
+        export NEWBIN="${newPostgres}/bin"
+
+        export OLDDATA="${config.services.postgresql.dataDir}"
+        export OLDBIN="${config.services.postgresql.package}/bin"
+
+        install -d -m 0700 -o postgres -g postgres "$NEWDATA"
+        cd "$NEWDATA"
+        sudo -u postgres $NEWBIN/initdb -D "$NEWDATA"
+
+        sudo -u postgres $NEWBIN/pg_upgrade \
+          --old-datadir "$OLDDATA" --new-datadir "$NEWDATA" \
+          --old-bindir $OLDBIN --new-bindir $NEWBIN \
+          "$@"
+      '')
 
     aspell
     aspellDicts.en
