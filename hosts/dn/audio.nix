@@ -6,6 +6,7 @@
 }: {
   security.rtkit.enable = true; # for pipewire
   services.pipewire.wireplumber.enable = true;
+  services.blueman.enable = true;
 
   services.pipewire = {
     enable = true;
