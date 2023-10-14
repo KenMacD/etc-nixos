@@ -149,6 +149,15 @@ with lib; {
   };
   services.openssh.settings.PasswordAuthentication = mkDefault false;
   services.openssh.settings.kbdInteractiveAuthentication = mkDefault false;
+  # Allow more than the default 1024 open files
+  security.pam.loginLimits = [
+    {
+      domain = "*";
+      type = "soft";
+      item = "nofile";
+      value = "16384";
+    }
+  ];
 
   ########################################
   # Services
