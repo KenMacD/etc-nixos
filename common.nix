@@ -161,4 +161,8 @@ with lib; {
   # Packages
   ########################################
   environment.systemPackages = with pkgs; [];
+
+  # Set RCLONE_FAST_LIST to always reduce costs
+  # when sending files to B2.
+  environment.variables.RCLONE_FAST_LIST = "1";
 }
