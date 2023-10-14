@@ -125,56 +125,6 @@
     };
   };
   programs.xwayland.enable = false;
-  programs.sway = {
-    enable = true;
-    extraPackages = with pkgs; [
-      cmst
-      grim # screenshot
-      libinput
-      mako # notifications (tiramisu?)
-      papirus-icon-theme
-      slurp # select area for screenshot
-      swayidle
-      swaylock
-      tofi
-      waybar
-      wl-clipboard
-      wofi
-      xwayland
-      wdisplays
-      networkmanagerapplet
-
-      # Screensharing
-      xdg-desktop-portal-wlr
-
-      glfw-wayland
-      glew
-      qt5.qtwayland
-
-      polkit-kde-agent
-
-      gtk-engine-murrine
-      gtk_engines
-      gsettings-desktop-schemas
-      lxappearance
-      gnome.adwaita-icon-theme
-
-      # Display profiles
-      kanshi
-
-      copyq
-    ];
-    extraSessionCommands = ''
-      export SDL_VIDEODRIVER="wayland"
-      export QT_QPA_PLATFORM="wayland"
-      export QT_WAYLAND_DISABLE_WINDOWDECORATIONS="1"
-      export _JAVA_AWT_WM_NONREPARENTING="1"
-    '';
-    wrapperFeatures = {
-      base = true;
-      gtk = true;
-    };
-  };
 
   # Use Wayland for Electron apps
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
@@ -183,7 +133,7 @@
     "ls" = "lsd";
     "ta" = "task add rc.context=none";
   };
-  programs.waybar.enable = true;
+  programs.sway-desktop.enable = true;
   programs.wireshark = {
     enable = true;
     package = pkgs.wireshark; # Install gui pkg
