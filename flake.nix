@@ -57,6 +57,7 @@
           ./hosts/yoga/configuration.nix
           ./hosts/yoga/hardware.nix
           ./modules/hardened.nix
+          ./modules/immich.nix
         ];
       };
       dn = nixpkgs.lib.nixosSystem {
