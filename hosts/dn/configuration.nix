@@ -140,7 +140,11 @@
   };
   gtk.iconCache.enable = true;
   xdg.icons.enable = true;
-  xdg.portal.wlr.enable = true; # Screensharing
+  xdg.portal = {
+    enable = true;
+    wlr.enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  };
   qt.platformTheme = "qt5ct";
 
   ########################################
