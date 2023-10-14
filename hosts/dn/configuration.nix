@@ -369,9 +369,6 @@
     nixpkgs-fmt
 
     # Wireless
-    iw
-    wavemon
-    wirelesstools
     aircrack-ng
 
     # Communication
