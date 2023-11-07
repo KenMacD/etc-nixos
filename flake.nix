@@ -105,6 +105,15 @@
           sops-nix.nixosModules.sops
         ];
       };
+      atom = nixpkgs.lib.nixosSystem {
+        inherit system;
+        modules = [
+          ./common.nix
+          ./hosts/atom/configuration.nix
+          ./hosts/atom/hardware.nix
+          ./modules/hardened.nix
+        ];
+      };
       x1 = nixpkgs.lib.nixosSystem {
         inherit system;
         modules = [
