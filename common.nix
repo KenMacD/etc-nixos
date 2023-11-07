@@ -184,7 +184,9 @@ with lib; {
   ########################################
   # Packages
   ########################################
-  environment.systemPackages = with pkgs; [];
+  environment.systemPackages = with pkgs; [
+    kitty.terminfo
+  ];
 
   # Set RCLONE_FAST_LIST to always reduce costs
   # when sending files to B2.
