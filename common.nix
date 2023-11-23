@@ -14,7 +14,7 @@ with lib; {
   ########################################
   # Nix
   ########################################
-  system.stateVersion = "22.11";
+  system.stateVersion = "23.05";
   nix = {
     settings.auto-optimise-store = mkDefault true;
     gc = {
@@ -163,7 +163,7 @@ with lib; {
     '';
   };
   services.openssh.settings.PasswordAuthentication = mkDefault false;
-  services.openssh.settings.kbdInteractiveAuthentication = mkDefault false;
+  services.openssh.settings.KbdInteractiveAuthentication = mkDefault false;
   # Allow more than the default 1024 open files
   security.pam.loginLimits = [
     {

@@ -1,10 +1,16 @@
 {
   description = "NixOS configuration";
 
-  inputs.nixpkgs.url = "https://git.home.macdermid.ca/mirror/nixpkgs/archive/nixos-unstable.tar.gz";
-  inputs.nixpkgs-staging-next.url = "https://git.home.macdermid.ca/mirror/nixpkgs/archive/staging-next.tar.gz";
-  inputs.nixpkgs-master.url = "https://git.home.macdermid.ca/mirror/nixpkgs/archive/master.tar.gz";
-  inputs.nixpkgs-23_05.url = "https://git.home.macdermid.ca/mirror/nixpkgs/archive/nixos-23.05.tar.gz";
+  nixConfig = {
+    extra-experimental-features = ["nix-command" "flakes" "ca-derivations"];
+    max-jobs = "auto";
+    auto-optimise-store = "true";
+  };
+
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+  inputs.nixpkgs-staging-next.url = "github:NixOS/nixpkgs/staging-next";
+  inputs.nixpkgs-master.url = "github:NixOS/nixpkgs/master";
+  inputs.nixpkgs-23_05.url = "github:NixOS/nixpkgs/nixos-23.05";
   inputs.nixpkgs-stable.follows = "nixpkgs-23_05";
 
   inputs.flake-utils.url = "github:numtide/flake-utils";
