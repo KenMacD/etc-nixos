@@ -24,12 +24,14 @@ in {
     (vscode-with-extensions.override {
       vscode = pkgs.vscodium;
       vscodeExtensions = with vscode-extensions; [
+        adamhartford.vscode-base64
         alefragnani.project-manager
         arrterian.nix-env-selector
         asciidoctor.asciidoctor-vscode
         asvetliakov.vscode-neovim
         bmalehorn.vscode-fish
         brettm12345.nixfmt-vscode
+        crystal-lang-tools.crystal-lang
         dbaeumer.vscode-eslint
         eamodio.gitlens
         emmanuelbeziat.vscode-great-icons
@@ -40,6 +42,7 @@ in {
         github.copilot-chat
         golang.go
         hashicorp.terraform
+        jnoortheen.nix-ide
         llvm-vs-code-extensions.vscode-clangd
         marus25.cortex-debug
         mcu-debug.debug-tracker-vscode

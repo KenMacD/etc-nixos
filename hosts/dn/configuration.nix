@@ -243,8 +243,9 @@
   # Security
   ########################################
   security.tpm2 = {
+    pkcs11.enable = true;
+    tctiEnvironment.enable = true;
     enable = true;
-    abrmd.enable = true;
   };
 
   ########################################
@@ -303,6 +304,7 @@
     (nnn.override {withNerdIcons = true;})
     p7zip
     python3
+    restic
     rlwrap
     rmlint
     tmux
@@ -349,6 +351,7 @@
     fwupd
     fwupd-efi
     iotop
+    kanidm
     killall
     lxqt.lxqt-policykit
     ncdu # disk usage with file count
@@ -461,7 +464,7 @@
     parallel
     perf
     pkgconf
-    stable.pgcli
+    pgcli
     ripgrep
     tio
 

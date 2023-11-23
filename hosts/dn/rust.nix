@@ -11,5 +11,6 @@
   with config.boot.kernelPackages; [
     rustup
     cargo-crev
+    cargo-audit
   ];
 }

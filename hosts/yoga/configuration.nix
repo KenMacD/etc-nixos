@@ -291,6 +291,7 @@ in {
   systemd.services.nginx.serviceConfig.SupplementaryGroups = "acme";
   services.nginx = {
     enable = true;
+    package = pkgs.nginxQuic;
 
     recommendedOptimisation = true;
     recommendedGzipSettings = true;
@@ -339,6 +340,10 @@ in {
       in {
         inherit locations;
         onlySSL = true;
+
+        http2 = true;
+        http3 = true;
+        quic = true;
 
         # Copied from nginx/default.nix to avoid having a
         # .well-known/acme-challenge/ entry in the nginx config.
