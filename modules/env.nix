@@ -21,9 +21,6 @@ in {
 
     ANDROID_HOME = "${XDG_DATA_HOME}/android";
 
-    AWS_SHARED_CREDENTIALS_FILE = "${XDG_CONFIG_HOME}/aws/credentials";
-    AWS_CONFIG_FILE = "${XDG_CONFIG_HOME}/aws/config";
-
     CARGO_HOME = "${XDG_DATA_HOME}/cargo";
 
     DOCKER_CONFIG = "${XDG_CONFIG_HOME}/docker";

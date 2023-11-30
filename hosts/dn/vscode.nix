@@ -1,10 +1,9 @@
-{
-  config,
-  lib,
-  pkgs,
-  inputs,
-  system,
-  ...
+{ config
+, lib
+, pkgs
+, inputs
+, system
+, ...
 }:
 # To make copilot work in vscodium follow:
 # https://github.com/VSCodium/vscodium/discussions/1487
@@ -15,12 +14,15 @@
 # use access_token
 let
   vscode-extensions = inputs.nix-vscode-extensions.extensions.${system}.vscode-marketplace;
-in {
+in
+{
   # secret service needed to store API key
   services.passSecretService.enable = true;
   services.gnome.gnome-keyring.enable = true;
 
   environment.systemPackages = with pkgs; [
+    # Nix LSP for nix-ide (try nil or nixd?)
+    rnix-lsp
     (vscode-with-extensions.override {
       vscode = pkgs.vscodium;
       vscodeExtensions = with vscode-extensions; [

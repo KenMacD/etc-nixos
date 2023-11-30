@@ -19,6 +19,8 @@
     ./vscode.nix
 
     ./networkd.nix
+    ./spectrum.nix
+    ./work.nix
   ];
 
   ########################################
@@ -172,15 +174,10 @@
     };
     udisks2.enable = true;
     ddccontrol.enable = true;
-    zerotierone.enable = true;
+    zerotier-home.enable = true;
   };
 
   zramSwap.enable = true;
-
-  systemd.services.zerotierone.serviceConfig = {
-    KillMode = lib.mkForce "control-group";
-    TimeoutStopFailureMode = "kill";
-  };
 
   services.wpantund = {
     enable = true;
@@ -411,6 +408,7 @@
     lynx
 
     steam-run
+    lutris
     mindforger
     ffmpeg
     binwalk
@@ -439,6 +437,7 @@
     android-tools
     aws-adfs
     awscli2
+    aws-azure-login
     bintools
     clang-tools
     delta
