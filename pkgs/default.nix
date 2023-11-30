@@ -6,6 +6,8 @@ with pkgs; let
   packages = self: let
     callPackage = newScope self;
   in {
+    dcc = callPackage ./dcc {};
+
     fre = callPackage ./fre {};
     wpantund = callPackage ./wpantund {};
   };

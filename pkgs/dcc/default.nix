@@ -8,7 +8,7 @@
   # to support the `--rename-dynamic-symbols` option. This can be
   # switched back once stable is version 0.18+.
   patchelfUnstable,
-  openssl_1_1,
+  libressl,
 }:
 # This package is used in multiple repos. You may want to check which has
 # gotten around to updating it last:
@@ -76,7 +76,7 @@ in
     inherit version;
     pname = "dell-command-configure";
 
-    buildInputs = [openssl_1_1 stdenv.cc.cc.lib];
+    buildInputs = [libressl stdenv.cc.cc.lib];
     nativeBuildInputs = [autoPatchelfHook];
     dontConfigure = true;
 
@@ -86,8 +86,13 @@ in
       mkdir -p $out/bin $out/lib
       install -t $out/lib -m644 -v command-configure/opt/dell/dcc/libhapiintf.so
       install -t $out/lib -m644 -v command-configure/opt/dell/dcc/libsmbios_c.so.2
+
       install -t $out/bin -m755 -v command-configure/opt/dell/dcc/cctk
+      patchelf --replace-needed libcrypto.so.1.1 libcrypto.so $out/bin/cctk
+
       install -t $out/bin -m755 -v srvadmin-hapi/opt/dell/srvadmin/sbin/dchcfg
+      patchelf --replace-needed libcrypto.so.1.1 libcrypto.so $out/bin/dchcfg
+
       for lib in $(find srvadmin-hapi/opt/dell/srvadmin/lib64 -type l); do
           install -t $out/lib -m644 -v $lib
       done
