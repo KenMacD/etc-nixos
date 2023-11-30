@@ -13,25 +13,60 @@
   inputs.nixpkgs-23_05.url = "github:NixOS/nixpkgs/nixos-23.05";
   inputs.nixpkgs-stable.follows = "nixpkgs-23_05";
 
-  inputs.flake-utils.url = "github:numtide/flake-utils";
-
-  inputs.sops-nix.url = github:Mic92/sops-nix;
-  inputs.nix-alien.url = "github:thiagokokada/nix-alien";
-  inputs.nix-bubblewrap.url = "sourcehut:~fgaz/nix-bubblewrap";
-  inputs.microvm.url = "github:astro/microvm.nix";
-  inputs.nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
+  inputs.devenv = {
+    url = "github:cachix/devenv";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+  inputs.flake-utils = {
+    url = "github:numtide/flake-utils";
+  };
+  inputs.llama-cpp = {
+    url = "github:ggerganov/llama.cpp";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+  inputs.microvm = {
+    url = "github:astro/microvm.nix";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+  inputs.nix-alien = {
+    url = "github:thiagokokada/nix-alien";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+  inputs.nix-bubblewrap = {
+    url = "sourcehut:~fgaz/nix-bubblewrap";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+  inputs.nix-vscode-extensions = {
+    url = "github:nix-community/nix-vscode-extensions";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+  inputs.sops-nix = {
+    url = "github:Mic92/sops-nix";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+  # piped test
+  inputs.squalus = {
+    url = "github:squalus/flake";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
 
   outputs = {
     self,
+
     nixpkgs,
     nixpkgs-staging-next,
     nixpkgs-master,
     nixpkgs-stable,
+
+    devenv,
     flake-utils,
-    sops-nix,
+    #llama-cpp,
+    microvm,
     nix-alien,
     nix-bubblewrap,
-    microvm,
+    nix-vscode-extensions,
+    sops-nix,
+    squalus,
     ...
   } @ inputs: let
     system = "x86_64-linux";
@@ -47,6 +82,7 @@
     };
     overlay-nix-bubblewrap = final: prev: {
       nix-bubblewrap = nix-bubblewrap.packages.${prev.system}.default;
+      wrapPackage = nix-bubblewrap.lib.${prev.system}.wrapPackage;
     };
   in {
     packages.x86_64-linux =
@@ -58,6 +94,9 @@
         modules = [
           ({...}: {
             nix.nixPath = let path = toString ./.; in ["repl=${path}/repl.nix" "nixpkgs=${inputs.nixpkgs}"];
+            nixpkgs.overlays = [
+              overlay-local
+            ];
           })
           ./common.nix
           ./hosts/yoga/configuration.nix
@@ -90,6 +129,7 @@
             nix.registry.nixpkgs-master.flake = nixpkgs-master;
             nix.registry.nixpkgs-stable.flake = nixpkgs-stable;
             nix.registry.microvm.flake = microvm;
+            nix.registry.devenv.flake = devenv;
             nix.registry.local.flake = self;
           })
           ({pkgs, ...}: {

@@ -8,34 +8,33 @@
   modulesPath,
   ...
 }: {
-  imports = [(modulesPath + "/installer/scan/not-detected.nix")];
+  imports = [
+    (modulesPath + "/installer/scan/not-detected.nix")
+  ];
 
-  boot.initrd.availableKernelModules = ["xhci_pci" "nvme" "usb_storage" "sd_mod"];
+  boot.initrd.availableKernelModules = ["xhci_pci" "ahci" "sd_mod"];
   boot.initrd.kernelModules = [];
   boot.kernelModules = ["kvm-intel"];
   boot.extraModulePackages = [];
 
   fileSystems."/" = {
-    device = "zroot/nixos/root";
-    fsType = "zfs";
-  };
-
-  fileSystems."/home" = {
-    device = "zroot/home";
-    fsType = "zfs";
-  };
-
-  fileSystems."/nix" = {
-    device = "zroot/nixos/nix";
-    fsType = "zfs";
+    device = "/dev/disk/by-uuid/5dac7855-aa9d-4c52-b08f-fbdaaba172fe";
+    fsType = "btrfs";
+    options = ["subvol=@"];
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/A0C7-97DB";
+    device = "/dev/disk/by-uuid/C52D-7D33";
     fsType = "vfat";
   };
 
-  swapDevices = [{device = "/dev/disk/by-uuid/99878378-f2d5-4f7c-91ac-03dd98634838";}];
+  swapDevices = [
+    {device = "/dev/disk/by-uuid/096d29f9-0433-41ba-a148-245d8588dd59";}
+  ];
 
+  networking.useDHCP = lib.mkDefault true;
+
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
+  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

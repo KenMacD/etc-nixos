@@ -1,30 +1,57 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
+{ config
+, pkgs
+, ...
+}:
+let
+  ip = "172.27.0.5";
+  {
   imports = [
   ];
 
-  # Use the GRUB 2 boot loader.
+  ########################################
+  # Boot
+  ########################################
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda";
   boot.loader.systemd-boot.enable = false;
 
+  ########################################
+  # Networking
+  ########################################
   networking = {
     hostName = "atom";
     domain = "home.macdermid.ca";
     firewall = {
-      allowedTCPPorts = [];
+      allowedTCPPorts = [ ];
     };
-    useNetworkd = true;
-    interfaces.enp4s0.useDHCP = true;
     usePredictableInterfaceNames = true;
+    interfaces.enp4s0.ipv4.addresses = [
+      {
+        address = ip;
+        prefixLength = 24;
+      }
+    ];
+    defaultGateway = "172.27.0.1";
+    nameservers = [ "172.27.0.1" ];
   };
 
-  services.openssh.enable = true;
+  ########################################
+  # Simple Services
+  ########################################
+  services = {
+    openssh =
+      {
+        enable = true;
+        openFirewall = true;
+      };
+  };
 
-  environment.systemPackages = with pkgs; [
-    vim
-  ];
-}
+  ########################################
+  # Packages
+  ########################################
+  environment.systemPackages = with pkgs;
+    [
+      btrfs-progs
+      vim
+    ];
+  }

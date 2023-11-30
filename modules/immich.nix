@@ -1,8 +1,12 @@
-{ config, lib, pkgs, ... }:
-
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 # Ref: https://github.com/immich-app/immich/blob/main/docker/docker-compose.yml
 let
-  version = "1.81.1";
+  version = "1.88.2";
   dataDir = "/mnt/silver/immich";
   dbuser = "immich";
   dbname = "immich";
@@ -31,7 +35,7 @@ let
       TYPESENSE_ENABLED = "true";
       TYPESENSE_HOST = "immich-typesense";
 
-      LOG_LEVEL= "debug";
+      LOG_LEVEL = "debug";
 
       IMMICH_WEB_URL = "https://immich.home.macdermid.ca";
       PUBLIC_IMMICH_SERVER_URL = "https://immich.home.macdermid.ca";
@@ -42,7 +46,6 @@ let
     ];
   };
 in {
-
   # TODO: use another network, or at least keep in sync with
   # the podman default network config.
 
@@ -50,8 +53,8 @@ in {
   # For services that listen on podman0
   systemd.services.podman-wait-for-host-interface = {
     description = "Wait for podman0 to be available";
-    after = [ "network.target" ];
-    wantedBy = [ "multi-user.target" ];
+    after = ["network.target"];
+    wantedBy = ["multi-user.target"];
 
     serviceConfig = {
       Type = "oneshot";
@@ -61,7 +64,7 @@ in {
 
   virtualisation.podman.defaultNetwork.settings.dns_enabled = true;
   services.postgresql.authentication = ''
-    host immich immich 10.88.0.0/16 scram-sha-256 
+    host immich immich 10.88.0.0/16 scram-sha-256
   '';
 
   networking.firewall.interfaces.podman0 = {
@@ -74,50 +77,50 @@ in {
   services.postgresql = {
     enable = true;
     enableTCPIP = true;
-    ensureDatabases = [ dbname ];
-    ensureUsers = [{
-      name = dbuser;
-      ensureDBOwnership = true;
-    }];
+    ensureDatabases = [dbname];
+    ensureUsers = [
+      {
+        name = dbuser;
+        ensureDBOwnership = true;
+      }
+    ];
   };
 
   services.redis.servers.immich = {
     enable = true;
     port = 31640;
     bind = "10.88.0.1 172.27.0.3";
-#    user = "immich";
+    #    user = "immich";
     requirePass = "immich";
   };
-  systemd.services.redis-immich.after = [ "podman-wait-for-host-interface.service" ];
+  systemd.services.redis-immich.after = ["podman-wait-for-host-interface.service"];
 
-    ids.uids.immich = 911;
-    ids.gids.immich = 911;
+  ids.uids.immich = 911;
+  ids.gids.immich = 911;
 
-    users.users.immich = {
-      isSystemUser = true;
-      group = "immich";
-      description = "Immich daemon user";
-#      home = cfg.dataDir;
-      uid = config.ids.uids.immich;
-    };
+  users.users.immich = {
+    isSystemUser = true;
+    group = "immich";
+    description = "Immich daemon user";
+    #      home = cfg.dataDir;
+    uid = config.ids.uids.immich;
+  };
 
-    users.groups.immich = {
-      gid = config.ids.gids.immich;
-    };
+  users.groups.immich = {
+    gid = config.ids.gids.immich;
+  };
 
   systemd.services.immich-init = {
     enable = true;
     description = "Set up paths";
-    requires = [ "postgresql.service" ];
-    after = [ "postgresql.service" ];
+    requires = ["postgresql.service"];
+    after = ["postgresql.service"];
     before = [
       "${ociBackend}-immich-server.service"
       "${ociBackend}-immich-microservices.service"
       "${ociBackend}-immich-machine-learning.service"
-      "${ociBackend}-immich-web.service"
-      "${ociBackend}-immich-proxy.service"
     ];
-    wantedBy = [ "multi-user.target" ];
+    wantedBy = ["multi-user.target"];
     serviceConfig = {
       Type = "oneshot";
     };
@@ -128,67 +131,66 @@ in {
     '';
   };
   virtualisation.oci-containers.containers = {
-    immich-server = immichBase // {
-      image = "ghcr.io/immich-app/immich-server:v${version}";
-      ports = [ "3551:3001" ];
-      entrypoint = "/bin/sh";
-      cmd = [ "./start-server.sh" ];
-      # dependsOn = [ "${ociBackend}-immich-typesense" ];
-      dependsOn = [ "immich-typesense" ];
-      volumes = [ "${dataDir}:/usr/src/app/upload" ];
-    };
+    immich-server =
+      immichBase
+      // {
+        image = "ghcr.io/immich-app/immich-server:v${version}";
+        ports = ["3550:3001"];
+        entrypoint = "/bin/sh";
+        cmd = ["./start-server.sh"];
+        # dependsOn = [ "${ociBackend}-immich-typesense" ];
+        dependsOn = ["immich-typesense"];
+        volumes = ["${dataDir}:/usr/src/app/upload"];
+      };
 
-    immich-microservices = immichBase // {
-      image = "ghcr.io/immich-app/immich-server:v${version}";
-      entrypoint = "/bin/sh";
-      # dependsOn = [ "${ociBackend}-immich-typesense" ];
-      dependsOn = [ "immich-typesense" ];
-      cmd = [ "./start-microservices.sh" ];
-      volumes = [ "${dataDir}:/usr/src/app/upload" ];
-    };
+    immich-microservices =
+      immichBase
+      // {
+        image = "ghcr.io/immich-app/immich-server:v${version}";
+        entrypoint = "/bin/sh";
+        # dependsOn = [ "${ociBackend}-immich-typesense" ];
+        dependsOn = ["immich-typesense"];
+        cmd = ["./start-microservices.sh"];
+        volumes = ["${dataDir}:/usr/src/app/upload"];
+      };
 
-    immich-web = immichBase // {
-      image = "ghcr.io/immich-app/immich-web:v${version}";
-      ports = [ "3550:3000" ];
-      entrypoint = "/bin/sh";
-      cmd = [ "./entrypoint.sh" ];
-    };
-
-    immich-machine-learning = immichBase // {
-      image = "ghcr.io/immich-app/immich-machine-learning:v${version}";
-      volumes = [ "immich-machine-learning-cache:/cache" ];
-    };
+    immich-machine-learning =
+      immichBase
+      // {
+        image = "ghcr.io/immich-app/immich-machine-learning:v${version}";
+        volumes = ["immich-machine-learning-cache:/cache"];
+      };
 
     immich-typesense = {
-      image = "typesense/typesense:0.24.1@sha256:9bcff2b829f12074426ca044b56160ca9d777a0c488303469143dd9f8259d4dd";
+      image = "docker.io/typesense/typesense:0.25.1@sha256:035ccfbc3fd8fb9085ea205fdcb62de63eaefdbebd710e88e57f978a30f2090d";
 
       environment = {
         TYPESENSE_API_KEY = typesenseApiKey;
-	TYPESENSE_DATA_DIR = "/data";
+        TYPESENSE_DATA_DIR = "/data";
       };
       extraOptions = [
         "--uidmap=0:${toString config.ids.uids.immich}:1"
       ];
 
       # Map volumes to host
-      volumes = [ "immich-typesense:/data" ];
+      volumes = ["immich-typesense:/data"];
     };
   };
 
   systemd.services = {
     "${ociBackend}-immich-server" = {
-      requires = [ "postgresql.service" "redis-immich.service" ];
-      after = [ "postgresql.service" "redis-immich.service" ];
+      requires = ["postgresql.service" "redis-immich.service"];
+      after = ["postgresql.service" "redis-immich.service"];
     };
 
     "${ociBackend}-immich-microservices" = {
-      requires = [ "postgresql.service" "redis-immich.service" ];
-      after = [ "postgresql.service" "redis-immich.service" ];
+      requires = ["postgresql.service" "redis-immich.service"];
+      after = ["postgresql.service" "redis-immich.service"];
     };
 
     "${ociBackend}-immich-machine-learning" = {
-      requires = [ "postgresql.service" ];
-      after = [ "postgresql.service" ];
+      requires = ["postgresql.service"];
+      after = ["postgresql.service"];
     };
   };
 }

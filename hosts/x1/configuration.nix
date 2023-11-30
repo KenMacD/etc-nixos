@@ -3,13 +3,18 @@
   pkgs,
   ...
 }: {
-  imports = [];
+  imports = [ ];
 
   ########################################
   # Nix
   ########################################
   system.autoUpgrade.enable = true;
-  nix.autoOptimiseStore = true;
+  # nix.gc.automatic = true;
+  nixpkgs.config.packageOverrides = pkgs: {
+    old = import <nix-2105> {
+      config = config.nixpkgs.config;
+    };
+  };
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.firefox.enablePlasmaBrowserIntegration = true;
 
@@ -38,9 +43,17 @@
   environment.variables.VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json";
 
   ########################################
+  # Locale
+  ########################################
+  time.timeZone = "America/Halifax";
+  i18n.defaultLocale = "en_CA.UTF-8";
+
+  ########################################
   # Boot
   ########################################
-  boot.kernelPackages = pkgs.linuxPackages_zen;
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+  # boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelParams = [
     "i915.enable_psr=1"
     #    "pcie_aspm=off"
@@ -50,14 +63,6 @@
   boot.postBootCommands = ''
     echo "1" >/sys/devices/system/cpu/intel_pstate/no_turbo
   '';
-
-  ########################################
-  # ZFS
-  ########################################
-  boot.supportedFilesystems = ["zfs"];
-  boot.zfs.enableUnstable = true;
-  services.zfs.autoSnapshot.enable = true;
-  services.zfs.trim.enable = true;
 
   ########################################
   # Network
@@ -71,6 +76,8 @@
     networkmanager.enable = true;
   };
 
+  services.resolved.enable = true;
+
   ########################################
   # Sound
   ########################################
@@ -80,11 +87,19 @@
   ########################################
   # Desktop Environment
   ########################################
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true;
+  };
   services.xserver = {
     enable = true;
     desktopManager.plasma5.enable = true;
     layout = "us";
-    displayManager = {sddm.enable = true;};
+    displayManager = {
+      #      autoLogin.enable = true;
+      #      autoLogin.user = "anglea";
+      sddm.enable = true;
+    };
     libinput = {
       enable = true;
       touchpad = {
@@ -100,8 +115,9 @@
   # Power
   ########################################
   services.upower.enable = true;
-  services.tlp.enable = true;
   powerManagement.powertop.enable = true;
+  services.acpid.enable = true;
+  services.hardware.bolt.enable = true;
 
   ########################################
   # Services
@@ -117,6 +133,12 @@
   users.users.angela = {
     isNormalUser = true;
     extraGroups = ["wheel" "networkmanager" "scanner" "lp"];
+    uid = 1001;
+  };
+  users.users.kenny = {
+    isNormalUser = true;
+    extraGroups = ["wheel" "networkmanager" "scanner" "lp"];
+    uid = 1000;
   };
 
   ########################################
@@ -137,9 +159,21 @@
     vim
     vlc
 
+    shotwell
+    git
+    losslesscut-bin
+    fwupd
+    fwupd-efi
+
+    libreoffice-fresh
+
     # Music
     gtkpod
     ffmpeg
     soundkonverter
+
+    iw
+    wirelesstools
+    wavemon
   ];
 }

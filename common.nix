@@ -6,6 +6,7 @@
 }:
 with lib; {
   imports = [
+    modules/default.nix
     modules/env.nix # Set XDG/config vars
     modules/sway-desktop.nix # My sway desktop configuration
     modules/unfree.nix
@@ -102,7 +103,12 @@ with lib; {
     vimAlias = true;
     configure = {
       packages.myPlugins = with pkgs.vimPlugins; {
-        start = [nvim-treesitter.withAllGrammars nvim-lastplace vim-gnupg];
+        start = [
+          lazy-nvim
+          nvim-treesitter.withAllGrammars
+          nvim-lastplace
+          vim-gnupg
+        ];
         opt = [];
       };
       customRC = ''
@@ -125,13 +131,14 @@ with lib; {
           set mouse=
         endif
 
-        " Enable treesitter
+        " Enable treesitter and lazyvim
         lua << EOF
         require'nvim-treesitter.configs'.setup {
           highlight = {
             enable = true,
           },
         }
+        require("lazy").setup()
         EOF
 
         " Show nbsp characters
@@ -186,6 +193,7 @@ with lib; {
   ########################################
   environment.systemPackages = with pkgs; [
     kitty.terminfo
+    alejandra
   ];
 
   # Set RCLONE_FAST_LIST to always reduce costs
