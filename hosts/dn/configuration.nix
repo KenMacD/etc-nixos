@@ -469,5 +469,6 @@
 
     # My Packages
     fre
+    modprobed-db
   ];
 }
