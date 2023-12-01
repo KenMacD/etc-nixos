@@ -9,6 +9,8 @@ with pkgs; let
     dcc = callPackage ./dcc {};
 
     fre = callPackage ./fre {};
+
+    modprobed-db = callPackage ./modprobed-db.nix {};
     wpantund = callPackage ./wpantund {};
   };
 in
