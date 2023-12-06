@@ -293,6 +293,7 @@
     firefox
     fzf
     httpie
+    immich-go  # local
     libreoffice
     libusb1
     libva-utils
