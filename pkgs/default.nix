@@ -10,6 +10,8 @@ with pkgs; let
 
     fre = callPackage ./fre {};
 
+    immich-go = callPackage ./immich-go.nix {};
+
     modprobed-db = callPackage ./modprobed-db.nix {};
     wpantund = callPackage ./wpantund {};
   };
