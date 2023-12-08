@@ -13,6 +13,9 @@ with pkgs; let
     immich-go = callPackage ./immich-go.nix {};
 
     modprobed-db = callPackage ./modprobed-db.nix {};
+
+    pgvecto-rs = callPackage ./pgvecto-rs.nix {};
+
     wpantund = callPackage ./wpantund {};
   };
 in
