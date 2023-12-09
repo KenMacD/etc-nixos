@@ -76,7 +76,10 @@ in {
     nameservers = ["172.27.0.1"];
   };
 
-  services.postgresql.package = pkgs.postgresql_15;
+  services.postgresql = {
+    package = pkgs.postgresql_15;
+    extraPlugins = [ pkgs.pgvecto-rs ];
+  };
   services.miniflux = {
     enable = true;
     adminCredentialsFile = "/etc/nixos/miniflux-admin-credentials";
