@@ -30,6 +30,7 @@
 
   toolchain = fenix.fromToolchainFile {
     file = src + "/rust-toolchain.toml";
+    sha256 = "sha256-cbsA/sdnWRA63EBChHtJvGGcACj2CxG8FmE+M57xnl0=";
   };
 
   rustPlatform = makeRustPlatform {
