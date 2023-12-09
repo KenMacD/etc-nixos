@@ -17,6 +17,10 @@
     url = "github:cachix/devenv";
     inputs.nixpkgs.follows = "nixpkgs";
   };
+  inputs.fenix = {
+    url = "github:nix-community/fenix";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
   inputs.flake-utils = {
     url = "github:numtide/flake-utils";
   };
@@ -59,6 +63,7 @@
     nixpkgs-stable,
 
     devenv,
+    fenix,
     flake-utils,
     #llama-cpp,
     microvm,
@@ -70,7 +75,7 @@
     ...
   } @ inputs: let
     system = "x86_64-linux";
-    overlay-local = self: super: import ./pkgs {pkgs = super;};
+    overlay-local = self: super: import ./pkgs {pkgs = super; inherit inputs; };
     overlay-staging-next = final: prev: {
       staging-next = nixpkgs-staging-next.legacyPackages.${prev.system};
     };
@@ -86,7 +91,7 @@
     };
   in {
     packages.x86_64-linux =
-      import ./pkgs {pkgs = nixpkgs.legacyPackages.${system};};
+      import ./pkgs {pkgs = nixpkgs.legacyPackages.${system}; inherit inputs; };
 
     nixosConfigurations = {
       yoga = nixpkgs.lib.nixosSystem {
