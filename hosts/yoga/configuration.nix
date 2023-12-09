@@ -405,7 +405,7 @@ in {
   systemd.services.nzbget.path = with pkgs; [
     unrar
     p7zip
-    python3
+    python39  # TODO: when videosort updated, update python
   ];
 
   # Minidlna
