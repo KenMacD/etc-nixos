@@ -6,7 +6,7 @@
 }:
 # Ref: https://github.com/immich-app/immich/blob/main/docker/docker-compose.yml
 let
-  version = "1.88.2";
+  version = "1.90.2";
   dataDir = "/mnt/silver/immich";
   dbuser = "immich";
   dbname = "immich";
@@ -84,6 +84,10 @@ in {
         ensureDBOwnership = true;
       }
     ];
+
+    # For 0.91.0:
+    extraPlugins = [ pkgs.pgvecto-rs ];
+    settings = { shared_preload_libraries = "vectors"; };
   };
 
   services.redis.servers.immich = {

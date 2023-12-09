@@ -78,7 +78,6 @@ in {
 
   services.postgresql = {
     package = pkgs.postgresql_15;
-    extraPlugins = [ pkgs.pgvecto-rs ];
   };
   services.miniflux = {
     enable = true;
