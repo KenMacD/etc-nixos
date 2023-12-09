@@ -391,13 +391,6 @@ in {
       "miniflux.home.macdermid.ca" = proxy 35001;
 
       "immich.home.macdermid.ca" = base {
-        "/api" = {
-          proxyPass = "http://127.0.0.1:3551/";
-          proxyWebsockets = true;
-          extraConfig = ''
-            rewrite /api/(.*) /$1 break;
-          '';
-        };
         "/".proxyPass = "http://127.0.0.1:3550/";
         "/".proxyWebsockets = true;
       };
