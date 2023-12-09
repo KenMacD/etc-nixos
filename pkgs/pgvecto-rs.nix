@@ -1,5 +1,6 @@
 {
   lib,
+  fenix,
   makeRustPlatform,
   cargo-pgrx,
   fetchFromGitHub,
@@ -21,12 +22,6 @@
   };
 
   # TODO: use flake input if reused
-  fenix = import (fetchFromGitHub {
-    owner = "nix-community";
-    repo = "fenix";
-    rev = "9d04e9469af11e598daaafbcdbca282a3ce451c3";
-    hash = "sha256-fJmiS19tWgSC1jQm5EDGLy8XFRHcM54g6xc0p+Mek+c=";
-  }) {};
 
   toolchain = fenix.fromToolchainFile {
     file = src + "/rust-toolchain.toml";

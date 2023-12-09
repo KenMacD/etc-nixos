@@ -1,6 +1,7 @@
 {
   pkgs ? import <nixpkgs> {},
   overrides ? (self: super: {}),
+  inputs,
 }:
 with pkgs; let
   packages = self: let
@@ -14,7 +15,7 @@ with pkgs; let
 
     modprobed-db = callPackage ./modprobed-db.nix {};
 
-    pgvecto-rs = callPackage ./pgvecto-rs.nix {};
+    pgvecto-rs = callPackage ./pgvecto-rs.nix { fenix = inputs.fenix.packages.${system}; };
 
     wpantund = callPackage ./wpantund {};
   };
