@@ -11,17 +11,17 @@
   openssl,
   zlib,
   stdenv,
+  clang_16,
   darwin,
 }: let
-  version = "0.1.11";
-  src = fetchFromGitHub {
-    owner = "tensorchord";
-    repo = "pgvecto.rs";
-    rev = "v${version}";
-    hash = "sha256-GOOquwT3EJB6sE5RaaEb0BiqLmdceBW0VT7Qv8g74E8=";
-  };
+  version = "0.1.13";
 
-  # TODO: use flake input if reused
+  src = fetchFromGitHub {
+    owner = "KenMacD";
+    repo = "pgvecto.rs";
+    rev = "00a3912ffc8d59352887999d27f0b266e6ddd5c5";
+    hash = "sha256-ySbKGjSuxS25RrSBBMFB8y0xGRKyWm7A5FHEKR30+Ok=";
+  };
 
   toolchain = fenix.fromToolchainFile {
     file = src + "/rust-toolchain.toml";
@@ -37,21 +37,20 @@ in
     inherit rustPlatform;
     cargo-pgrx = cargo-pgrx.override {inherit rustPlatform;};
   } rec {
-    inherit postgresql version;
+    inherit postgresql version src;
 
     pname = "pgvecto-rs";
 
-    src = fetchFromGitHub {
-      owner = "tensorchord";
-      repo = "pgvecto.rs";
-      rev = "v${version}";
-      hash = "sha256-GOOquwT3EJB6sE5RaaEb0BiqLmdceBW0VT7Qv8g74E8=";
-    };
+    postPatch = ''
+      substituteInPlace crates/c/build.rs \
+        --replace "/usr/bin/clang-16" "${clang_16}/bin/clang"
+    '';
 
     cargoLock = {
       lockFile = src + "/Cargo.lock";
       outputHashes = {
         "openai_api_rust-0.1.8" = "sha256-os5Y8KIWXJEYEcNzzT57wFPpEXdZ2Uy9W3j5+hJhhR4=";
+        "std_detect-0.1.5" = "sha256-RwWejfqyGOaeU9zWM4fbb/hiO1wMpxYPKEjLO0rtRmU=";
       };
     };
 
@@ -59,6 +58,7 @@ in
       curl
       pkg-config
       rustPlatform.bindgenHook
+      clang_16
     ];
 
     buildInputs =
