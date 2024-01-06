@@ -9,7 +9,7 @@ with pkgs; let
   in {
     dcc = callPackage ./dcc {};
 
-    fre = callPackage ./fre {};
+    fre = callPackage ./fre.nix {};
 
     immich-go = callPackage ./immich-go.nix {};
 
