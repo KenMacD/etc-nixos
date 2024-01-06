@@ -15,7 +15,7 @@ with pkgs; let
 
     modprobed-db = callPackage ./modprobed-db.nix {};
 
-    pgvecto-rs = callPackage ./pgvecto-rs.nix { fenix = inputs.fenix.packages.${system}; };
+    pgvecto-rs = callPackage ./pgvecto-rs.nix {};
 
     wpantund = callPackage ./wpantund {};
   };
