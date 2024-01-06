@@ -241,7 +241,7 @@ in {
 
   services.jellyfin = {
     enable = true;
-    openFirewall = true;
+    openFirewall = false;
   };
   systemd.services.jellyfin.environment."JELLYFIN_PublishedServerUrl" = "https://jellyfin.home.macdermid.ca";
 
