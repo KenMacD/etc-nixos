@@ -6,16 +6,13 @@
 }:
 # Ref: https://github.com/immich-app/immich/blob/main/docker/docker-compose.yml
 let
-  version = "1.90.2";
-  dataDir = "/mnt/silver/immich";
+  version = "1.91.4";
+  dataDir = "/mnt/easy/immich";
   dbuser = "immich";
   dbname = "immich";
   dbpassword = "immich";
   ociBackend = config.virtualisation.oci-containers.backend;
   containersHost = "host.containers.internal";
-
-  # cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1
-  typesenseApiKey = "ABCD";
 
   pgSuperUser = config.services.postgresql.superUser;
 
@@ -30,10 +27,6 @@ let
       REDIS_HOSTNAME = containersHost;
       REDIS_PORT = toString config.services.redis.servers.immich.port;
       REDIS_PASSWORD = "immich";
-
-      TYPESENSE_API_KEY = typesenseApiKey;
-      TYPESENSE_ENABLED = "true";
-      TYPESENSE_HOST = "immich-typesense";
 
       LOG_LEVEL = "debug";
 
@@ -86,7 +79,7 @@ in {
     ];
 
     # For 0.91.0:
-    extraPlugins = [ pkgs.pgvecto-rs ];
+    extraPlugins = [ (pkgs.pgvecto-rs.override { postgresql = config.services.postgresql.package; }) ];
     settings = { shared_preload_libraries = "vectors"; };
   };
 
@@ -94,7 +87,6 @@ in {
     enable = true;
     port = 31640;
     bind = "10.88.0.1 172.27.0.3";
-    #    user = "immich";
     requirePass = "immich";
   };
   systemd.services.redis-immich.after = ["podman-wait-for-host-interface.service"];
@@ -142,8 +134,6 @@ in {
         ports = ["3550:3001"];
         entrypoint = "/bin/sh";
         cmd = ["./start-server.sh"];
-        # dependsOn = [ "${ociBackend}-immich-typesense" ];
-        dependsOn = ["immich-typesense"];
         volumes = ["${dataDir}:/usr/src/app/upload"];
       };
 
@@ -152,8 +142,6 @@ in {
       // {
         image = "ghcr.io/immich-app/immich-server:v${version}";
         entrypoint = "/bin/sh";
-        # dependsOn = [ "${ociBackend}-immich-typesense" ];
-        dependsOn = ["immich-typesense"];
         cmd = ["./start-microservices.sh"];
         volumes = ["${dataDir}:/usr/src/app/upload"];
       };
@@ -164,21 +152,6 @@ in {
         image = "ghcr.io/immich-app/immich-machine-learning:v${version}";
         volumes = ["immich-machine-learning-cache:/cache"];
       };
-
-    immich-typesense = {
-      image = "docker.io/typesense/typesense:0.25.1@sha256:035ccfbc3fd8fb9085ea205fdcb62de63eaefdbebd710e88e57f978a30f2090d";
-
-      environment = {
-        TYPESENSE_API_KEY = typesenseApiKey;
-        TYPESENSE_DATA_DIR = "/data";
-      };
-      extraOptions = [
-        "--uidmap=0:${toString config.ids.uids.immich}:1"
-      ];
-
-      # Map volumes to host
-      volumes = ["immich-typesense:/data"];
-    };
   };
 
   systemd.services = {
