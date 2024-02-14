@@ -6,7 +6,7 @@
 }:
 # Ref: https://github.com/immich-app/immich/blob/main/docker/docker-compose.yml
 let
-  version = "1.91.4";
+  version = "1.94.1";
   dataDir = "/mnt/easy/immich";
   dbuser = "immich";
   dbname = "immich";
@@ -34,9 +34,6 @@ let
       PUBLIC_IMMICH_SERVER_URL = "https://immich.home.macdermid.ca";
       # IMMICH_SERVER_URL = "http://immich-server:3001";
     };
-    extraOptions = [
-      "--uidmap=0:${toString config.ids.uids.immich}:1"
-    ];
   };
 in {
   # TODO: use another network, or at least keep in sync with
@@ -79,8 +76,8 @@ in {
     ];
 
     # For 0.91.0:
-    extraPlugins = [ (pkgs.pgvecto-rs.override { postgresql = config.services.postgresql.package; }) ];
-    settings = { shared_preload_libraries = "vectors"; };
+    extraPlugins = [(pkgs.pgvecto-rs.override {postgresql = config.services.postgresql.package;})];
+    settings = {shared_preload_libraries = "vectors";};
   };
 
   services.redis.servers.immich = {
@@ -135,6 +132,7 @@ in {
         entrypoint = "/bin/sh";
         cmd = ["./start-server.sh"];
         volumes = ["${dataDir}:/usr/src/app/upload"];
+        extraOptions = ["--uidmap=0:${toString config.ids.uids.immich}:1"];
       };
 
     immich-microservices =
@@ -143,7 +141,13 @@ in {
         image = "ghcr.io/immich-app/immich-server:v${version}";
         entrypoint = "/bin/sh";
         cmd = ["./start-microservices.sh"];
-        volumes = ["${dataDir}:/usr/src/app/upload"];
+        volumes = [
+          "${dataDir}:/usr/src/app/upload"
+          "/dev/bus/usb:/dev/bus/usb"
+        ];
+        extraOptions = [
+          "--uidmap=0:${toString config.ids.uids.immich}:1"
+        ];
       };
 
     immich-machine-learning =
@@ -151,6 +155,12 @@ in {
       // {
         image = "ghcr.io/immich-app/immich-machine-learning:v${version}";
         volumes = ["immich-machine-learning-cache:/cache"];
+        extraOptions = [
+          "--uidmap=0:${toString config.ids.uids.immich}:1"
+          "--device-cgroup-rule"
+          "c 189:* rmw"
+          "--device=/dev/dri:/dev/dri"
+        ];
       };
   };
 
