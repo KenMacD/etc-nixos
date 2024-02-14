@@ -14,18 +14,25 @@
 # curl https://github.com/login/oauth/access_token -X POST -d 'client_id=01ab8ac9400c4e429b23&scope=user:email&device_code=YOUR_DEVICE_ID&grant_type=urn:ietf:params:oauth:grant-type:device_code'
 # use access_token
 let
-  vscode-extensions = inputs.nix-vscode-extensions.extensions.${system}.vscode-marketplace;
+  vscode = pkgs.vscode;
 in {
   # secret service needed to store API key
   services.passSecretService.enable = true;
   services.gnome.gnome-keyring.enable = true;
 
+  xdg.mime = {
+    enable = true;
+    defaultApplications = {
+      "x-scheme-handler/vscodium" = "codium-url-handler.desktop";
+    };
+  };
+
   environment.systemPackages = with pkgs; [
     # Nix LSP for nix-ide (try nil or nixd?)
     rnix-lsp
     (vscode-with-extensions.override {
-      vscode = pkgs.vscodium;
-      vscodeExtensions = with vscode-extensions; [
+      inherit vscode;
+      vscodeExtensions = with inputs.nix-vscode-extensions.extensions.${system}.vscode-marketplace; [
         aaron-bond.better-comments
         adamhartford.vscode-base64
         alefragnani.project-manager
@@ -48,8 +55,10 @@ in {
         github.copilot
         github.copilot-chat
         github.vscode-pull-request-github
+        gitpod.gitpod-desktop
         golang.go
         hashicorp.terraform
+        jebbs.plantuml
         jnoortheen.nix-ide
         llvm-vs-code-extensions.vscode-clangd
         maelvalais.autoconf

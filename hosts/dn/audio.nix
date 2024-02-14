@@ -30,9 +30,11 @@
     cmus
     pavucontrol
     pamixer
-    pulseaudio
-    easyeffects
     pulsemixer
+
+    # Effects
+    easyeffects
+    jamesdsp
 
     # Sound Plugins
     distrho
@@ -52,6 +54,7 @@
       Policy.AutoEnable = false;
     };
   };
+  hardware.pulseaudio.enable = false;
 
   environment.variables = with lib;
     listToAttrs (map (type:

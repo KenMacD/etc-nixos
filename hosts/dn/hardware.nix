@@ -27,57 +27,65 @@
     root = {
       device = "/dev/disk/by-uuid/cafc8704-c41f-49fc-a7bf-a1fbe4baf03b";
       preLVM = false;
+      bypassWorkqueues = true;
+      allowDiscards = true;
     };
   };
 
   fileSystems."/" = {
     device = "/dev/mapper/root";
     fsType = "btrfs";
-    options = ["subvol=root" "noatime" "user_subvol_rm_allowed"];
+    options = ["subvol=root" "commit=60" "noatime" "user_subvol_rm_allowed"];
   };
 
   fileSystems."/home" = {
     device = "/dev/mapper/root";
     fsType = "btrfs";
-    options = ["subvol=home" "noatime" "user_subvol_rm_allowed"];
+    options = ["subvol=home" "commit=60" "noatime" "user_subvol_rm_allowed"];
   };
 
   # Nocow for qcow2 files
   fileSystems."/home/kenny/VirtualMachines" = {
     device = "/dev/mapper/root";
     fsType = "btrfs";
-    options = ["subvol=home_kenny_VirtualMachines" "noatime" "user_subvol_rm_allowed"];
+    options = ["subvol=home_kenny_VirtualMachines" "commit=60" "noatime" "user_subvol_rm_allowed"];
   };
 
   fileSystems."/home/kenny/.local/share/go/pkg" = {
     device = "/dev/mapper/root";
     fsType = "btrfs";
-    options = ["subvol=home_kenny_go_pkg" "noatime" "user_subvol_rm_allowed"];
+    options = ["subvol=home_kenny_go_pkg" "commit=60" "noatime" "user_subvol_rm_allowed"];
   };
 
   fileSystems."/nix" = {
     device = "/dev/mapper/root";
     fsType = "btrfs";
-    options = ["subvol=nix" "noatime" "user_subvol_rm_allowed"];
+    options = ["subvol=nix" "commit=60" "noatime" "user_subvol_rm_allowed"];
   };
 
   # Using rootless podman, but was:
   fileSystems."/var/lib/docker" = {
     device = "/dev/mapper/root";
     fsType = "btrfs";
-    options = ["subvol=var_lib_docker" "noatime" "user_subvol_rm_allowed"];
-  };
-
-  # Also using overlay tmpfs... but keep in case need more room
-  fileSystems."/tmp" = {
-    device = "/dev/mapper/root";
-    fsType = "btrfs";
-    options = ["subvol=tmp" "noatime" "user_subvol_rm_allowed"];
+    options = ["subvol=var_lib_docker" "commit=60" "noatime" "user_subvol_rm_allowed"];
   };
 
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/E032-D07D";
     fsType = "vfat";
+    options = ["fmask=0077" "dmask=0077"];
+  };
+
+  fileSystems."/run/media/black" = {
+    device = "/dev/disk/by-uuid/779defff-0c31-4144-9cc7-840a17f7bdb6";
+    fsType = "btrfs";
+    options = [
+        "noauto"                       # do not mount on boot
+        "nofail"
+        "x-systemd.automount"          # mount when needed
+        "x-systemd.device-timeout=1ms" # device should be plugged already—do not wait for it
+        "x-systemd.idle-timout=5m"     # unmount after 5 min of inactivity
+    ];
   };
 
   swapDevices = [
@@ -90,4 +98,5 @@
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
   hardware.cpu.intel.updateMicrocode =
     lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware.cpu.x86.msr.enable = true; # Required for powertop
 }
