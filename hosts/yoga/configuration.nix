@@ -13,6 +13,7 @@ in {
     '';
   };
 
+  systemd.services."systemd-networkd-wait-online".enable = lib.mkForce false;
   system.autoUpgrade.enable = true;
   hardware = {
     bluetooth.enable = true;
@@ -191,8 +192,9 @@ in {
   ########################################
   virtualisation.podman = {
     enable = true;
-    dockerCompat = true;
-    defaultNetwork.settings.dns_enabled.enable = true;
+    dockerCompat = false;
+  };
+  virtualisation.docker.enable = true;
   };
 
   ########################################
@@ -216,6 +218,7 @@ in {
 
   services.gitea = {
     enable = true;
+    stateDir = "/mnt/easy/yoga-var-lib/gitea";
 
     settings = {
       "git.timeout" = {
@@ -238,6 +241,7 @@ in {
       session.COOKIE_SECURE = true;
     };
   };
+  systemd.services.gitea.unitConfig.RequiresMountsFor = config.services.gitea.stateDir;
 
   services.jellyfin = {
     enable = true;
@@ -289,6 +293,12 @@ in {
     TimeoutStopFailureMode = "kill";
   };
 
+  services.unifi = {
+    enable = true;
+    unifiPackage = pkgs.unifi8;
+    openFirewall = true;
+  };
+
   # nginx
   systemd.services.nginx.serviceConfig.SupplementaryGroups = "acme";
   services.nginx = {
@@ -318,6 +328,14 @@ in {
       ssl_stapling_verify on;
 
       ########################################
+      geo $internal {
+        default no;
+
+        127.0.0.0/8 yes;
+        172.27.0.0/24 yes;
+      }
+
+      ########################################
       # https://github.com/MidAutumnMoon/Nuran/blob/fbf3f38169c70eadbd72aaec4e07db3c8ea485be/nixos/web/server/nginx/configfile.nix#L116
       more_clear_headers Server;
       more_clear_headers X-Powered-By;
@@ -329,7 +347,7 @@ in {
       more_set_headers 'Referrer-Policy: strict-origin';
 
       # Enable CSP for your services.
-      #add_header Content-Security-Policy "script-src 'self'; object-src 'none'; base-uri 'none';" always;
+      # add_header Content-Security-Policy "script-src 'self'; object-src 'none'; base-uri 'none';" always;
 
       # This might create errors
       # proxy_cookie_path / "/; secure; HttpOnly; SameSite=strict";
@@ -352,19 +370,26 @@ in {
         sslCertificate = "${certs.${certName}.directory}/fullchain.pem";
         sslCertificateKey = "${certs.${certName}.directory}/key.pem";
         sslTrustedCertificate = "${certs.${certName}.directory}/chain.pem";
+
+        extraConfig = ''
+          if ($internal != yes) {
+            return 404;
+          }
+        '';
       };
+      public = config: builtins.removeAttrs config ["extraConfig"];
       proxy = port:
         base {
-          "/".proxyPass = "http://127.0.0.1:${toString port}/";
+          "/".proxyPass = "http://127.0.0.1:${toString port}";
         };
       proxywss = port:
         base {
-          "/".proxyPass = "http://127.0.0.1:${toString port}/";
+          "/".proxyPass = "http://127.0.0.1:${toString port}";
           "/".proxyWebsockets = true;
         };
       proxytls = port:
         base {
-          "/".proxyPass = "https://127.0.0.1:${toString port}/";
+          "/".proxyPass = "https://127.0.0.1:${toString port}";
         };
     in {
       "_" =
@@ -384,11 +409,12 @@ in {
       "hedgedoc.home.macdermid.ca" = proxy config.services.hedgedoc.settings.port;
       "auth.home.macdermid.ca" = proxytls 9001;
       "influxdb.home.macdermid.ca" = proxy 8086;
-      "jellyfin.home.macdermid.ca" = proxywss 8096;
+      "jellyfin.home.macdermid.ca" = public (proxywss 8096);
       "matrix.home.macdermid.ca" = proxy config.services.matrix-conduit.settings.global.port;
       "nzbget.home.macdermid.ca" = proxy 6789;
       "miniflux.home.macdermid.ca" = proxy 35001;
 
+      "unifi.home.macdermid.ca" = proxytls 8443;
       "immich.home.macdermid.ca" = base {
         "/".proxyPass = "http://127.0.0.1:3550/";
         "/".proxyWebsockets = true;
@@ -404,7 +430,7 @@ in {
   systemd.services.nzbget.path = with pkgs; [
     unrar
     p7zip
-    python39  # TODO: when videosort updated, update python
+    python39 # TODO: when videosort updated, update python
   ];
 
   # Minidlna
@@ -485,6 +511,7 @@ in {
   # Packages
   ########################################
   environment.systemPackages = with pkgs; [
+    bcachefs-tools
     btrfs-progs
     dhcpcd
     git
@@ -536,6 +563,7 @@ in {
           "$@"
       '')
 
+    libva-utils
     aspell
     aspellDicts.en
     aspellDicts.en-computers
