@@ -51,6 +51,9 @@ in {
         # TODO: needed?
         libportal-qt5
 
+        # Test gamma adjust
+        wl-gammarelay-rs
+
         # Systray programs
         blueman
         networkmanagerapplet
@@ -81,5 +84,8 @@ in {
 
     programs.waybar.enable = true;
     services.blueman.enable = true;
+
+    # glib-networking required for TLS for programs like freerdp
+    services.gnome.glib-networking.enable = true;
   };
 }

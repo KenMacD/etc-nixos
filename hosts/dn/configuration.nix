@@ -286,26 +286,29 @@
     aspellDicts.en
     aspellDicts.en-computers
     bc
-    borgbackup
     brightnessctl
     chromium
     fd
     firefox
     fzf
     httpie
+    libreoffice-fresh
     immich-go  # local
     libreoffice
+    librewolf
     libusb1
     libva-utils
-    lsd # ls, but better
-    most
+    magic-wormhole
     (nnn.override {withNerdIcons = true;})
     p7zip
+    patchelf
     python3
     restic
+    ratarmount  # Mount tar/archives with FUSE
     rlwrap
     rmlint
     tmux
+    sshfs
     unzip
     xdg-utils
     yt-dlp
@@ -318,7 +321,9 @@
 
     # Terminal related
     kitty
+    lsd # ls, but better
     mdcat
+    most
     vivid # for LS_COLORS
     yq-go # Using to switch color theme
 
@@ -345,6 +350,7 @@
     # System management
     acpid
     bcc
+    compsize  # Show on-disk file size
     dig
     fwupd
     fwupd-efi
@@ -394,10 +400,8 @@
     })
 
     # Email
-    # fetch mail from imap
-    fdm
-    # simple smtp client
-    msmtp
+    fdm # fetch mail from imap
+    msmtp # simple smtp client
     neomutt
     notmuch # search
     pdfminer # pdf
@@ -405,17 +409,7 @@
     khal # ical view
     ripmime # pipe msgs to extract attachements
     urlscan
-    urlview
     lynx
-
-    steam-run
-    lutris
-    mindforger
-    ffmpeg
-    binwalk
-    screen
-    qalculate-gtk
-    mitmproxy
 
     # Task management
     taskwarrior
@@ -424,14 +418,20 @@
     vit
 
     # General/Unsorted
-    magic-wormhole
-    patchelf
-    sshfs
-
     # Virtualization
     virt-manager
     nixos-generators
     bubblewrap
+
+    # Version Control related
+    # gitFull
+    git-absorb # git commit --fixup, but automatic
+    git-no-hooks
+    git-filter-repo
+    git-lfs
+    gita  # Update a group of repos
+    gitui
+    jujutsu  # jj command for git, to try out
 
     # Development
     amazon-ecs-cli
@@ -440,6 +440,7 @@
     awscli2
     aws-azure-login
     bintools
+    binwalk
     clang-tools
     delta
     direnv
@@ -447,12 +448,9 @@
     file
     gdb
     gh
-    gita  # Update a group of repos
-    gitFull
-    gitui
-    git-filter-repo
     gnumake
     hotspot
+    insomnium # Postman like API tool
     jq
     llvm
     man-pages

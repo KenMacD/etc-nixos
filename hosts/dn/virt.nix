@@ -35,8 +35,8 @@
     # Search gcr.io as well
     containers.registries.search = options.virtualisation.containers.registries.search.default ++ ["gcr.io"];
 
-    # Add when user USB redirection retuired:
-    # spiceUSBRedirection.enable = true;
+    # Add when user USB redirection required:
+    spiceUSBRedirection.enable = true;
 
     podman = {
       enable = true;
@@ -49,6 +49,9 @@
     # out of files.
     lxd.enable = true;
     lxd.recommendedSysctlSettings = true;
+
+    # Testing multipass
+    multipass.enable = true;
 
     waydroid.enable = true;
 
@@ -97,14 +100,17 @@
 
   environment.systemPackages = with pkgs; [
     buildah
+    crane # crane digest <image>
+    cri-tools
     distrobox
+    dive # A tool for exploring a docker image
+    guestfs-tools # virt-customize -a ubuntu.img --root-password random
+    libguestfs-with-appliance # guestfish / guestmount
     podman-compose
     podman-tui
-    cri-tools
+    trivy #  Aqua Security - vulnerability security scanner
 
-    dive # A tool for exploring a docker image
-
-    trivy # vuln scanner
+    wget # needed for: lxc-create --template download 
 
     # Testing gvisor runtime
     gvisor
@@ -112,7 +118,7 @@
     # Testing firecracker
     firecracker
     firectl
-    ignite
+    flintlock
     # firecracker-containerd (doesn't exist)
 
     # Kubernetes stuff
@@ -120,27 +126,24 @@
     kind
     krew # kubectl plugin manager
     kubectl
+    kubectl-doctor # doctor?
+    kubectx # kubectx & kubens
     kubecolor # kubectl with color output
+    kubescape # Kubescape vuln scanner?
     kubernetes # kubeadm
     kubernetes-helm
+    openlens # openlens dashboard
+    stern # multi-pod tail
 
     # Kubenetes testing:
-    kubectx # kubectx & kubens
     kubeswitch
-    stern # multi-pod tail
     minikube
     # Broken 20230202 docker-machine-kvm2  # kvm2 driver for minikube
-    # awscli-local
     google-cloud-sdk
     skopeo # inspect information on images
 
     nerdctl
     rootlesskit # maybe for nerdctl/containerd
-
-    kubectl-doctor # doctor?
-    trivy #  Aqua Security - security scanner
-
-    kubescape # Kubescape vuln scanner?
 
     quickemu
     quickgui
@@ -149,7 +152,6 @@
     crun
     libkrun
     libkrunfw
-    gvisor
     youki
     openlens
   ];
