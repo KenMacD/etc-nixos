@@ -57,7 +57,8 @@ with lib; {
   boot.loader.systemd-boot.enable = mkDefault true;
 
   # Use the latest released kernel
-  boot.kernelPackages = mkDefault pkgs.linuxPackages_latest;
+  boot.kernelPackages = mkDefault pkgs.linuxPackages_6_7_hardened;
+  security.unprivilegedUsernsClone = mkDefault config.virtualisation.containers.enable;
 
   # Limit previous generations to avoid /boot filling up
   boot.loader.systemd-boot.configurationLimit = mkDefault 10;
