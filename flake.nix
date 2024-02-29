@@ -12,6 +12,7 @@
   inputs.nixpkgs-master.url = "github:NixOS/nixpkgs/master";
   inputs.nixpkgs-23_05.url = "github:NixOS/nixpkgs/nixos-23.05";
   inputs.nixpkgs-stable.follows = "nixpkgs-23_05";
+  inputs.nixpkgs-mongodb-pin.url = "github:NixOS/nixpkgs/106c4ac6aa6e325263b740fd30bdda3b430178ef";
 
   inputs.devenv = {
     url = "github:cachix/devenv";
@@ -61,6 +62,7 @@
     nixpkgs-staging-next,
     nixpkgs-master,
     nixpkgs-stable,
+    nixpkgs-mongodb-pin,
 
     devenv,
     fenix,
@@ -85,6 +87,14 @@
     overlay-stable = final: prev: {
       stable = nixpkgs-stable.legacyPackages.${prev.system};
     };
+    overlay-mongodb-pin = self: super: {
+      mongodb-4_4 =
+        (import nixpkgs-mongodb-pin {
+          inherit system;
+          config.allowUnfreePredicate = pkg: "mongodb" == (super.lib.getName pkg);
+        })
+        .mongodb-4_4;
+    };
     overlay-nix-bubblewrap = final: prev: {
       nix-bubblewrap = nix-bubblewrap.packages.${prev.system}.default;
       wrapPackage = nix-bubblewrap.lib.${prev.system}.wrapPackage;
@@ -101,6 +111,7 @@
             nix.nixPath = let path = toString ./.; in ["repl=${path}/repl.nix" "nixpkgs=${inputs.nixpkgs}"];
             nixpkgs.overlays = [
               overlay-local
+              overlay-mongodb-pin
             ];
           })
           ./common.nix
