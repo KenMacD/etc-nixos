@@ -14,6 +14,7 @@
   inputs.nixpkgs-23_11.url = "github:NixOS/nixpkgs/nixos-23.11";
   inputs.nixpkgs-stable.follows = "nixpkgs-23_11";
   inputs.nixpkgs-mongodb-pin.url = "github:NixOS/nixpkgs/106c4ac6aa6e325263b740fd30bdda3b430178ef";
+  inputs.nixpkgs-pr291484.url = "github:NixOS/nixpkgs/9c96d0aa255827aa0249148c759a98fc2691db10";
 
   inputs.devenv = {
     url = "github:cachix/devenv";
@@ -64,6 +65,7 @@
     nixpkgs-master,
     nixpkgs-stable,
     nixpkgs-mongodb-pin,
+    nixpkgs-pr291484,
 
     devenv,
     fenix,
@@ -99,6 +101,10 @@
     overlay-nix-bubblewrap = final: prev: {
       nix-bubblewrap = nix-bubblewrap.packages.${prev.system}.default;
       wrapPackage = nix-bubblewrap.lib.${prev.system}.wrapPackage;
+    };
+    overlay-espanso-new = final: prev: {
+      espanso = (import nixpkgs-pr291484 { inherit system; })
+        .espanso;
     };
   in {
     packages.x86_64-linux =
@@ -138,6 +144,7 @@
               overlay-stable
               overlay-nix-bubblewrap
               (import ./overlays/testing.nix)
+              overlay-espanso-new
             ];
           })
           # Add to regsitry so nixpkgs commands use system versions
