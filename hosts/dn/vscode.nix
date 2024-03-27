@@ -14,7 +14,7 @@
 # curl https://github.com/login/oauth/access_token -X POST -d 'client_id=01ab8ac9400c4e429b23&scope=user:email&device_code=YOUR_DEVICE_ID&grant_type=urn:ietf:params:oauth:grant-type:device_code'
 # use access_token
 let
-  vscode = pkgs.vscode;
+  vscode = pkgs.vscodium;
 in {
   # secret service needed to store API key
   services.passSecretService.enable = true;
@@ -28,14 +28,13 @@ in {
   };
 
   environment.systemPackages = with pkgs; [
-    # Nix LSP for nix-ide (try nil or nixd?)
-    rnix-lsp
     (vscode-with-extensions.override {
       inherit vscode;
       vscodeExtensions = with inputs.nix-vscode-extensions.extensions.${system}.vscode-marketplace; [
         aaron-bond.better-comments
         adamhartford.vscode-base64
         alefragnani.project-manager
+        amazonwebservices.aws-toolkit-vscode
         arrterian.nix-env-selector
         asciidoctor.asciidoctor-vscode
         asvetliakov.vscode-neovim
@@ -72,7 +71,7 @@ in {
         ms-kubernetes-tools.vscode-kubernetes-tools
         ms-python.python
         ms-toolsai.jupyter
-        ms-vscode.cmake-tools
+        # broken 2024-03-27 ms-vscode.cmake-tools
         ms-vscode.cpptools
         (ms-vscode.vscode-embedded-tools.overrideAttrs (_: {
           sourceRoot = "extension";
@@ -94,6 +93,7 @@ in {
         streetsidesoftware.code-spell-checker
         streetsidesoftware.code-spell-checker-canadian-english
         tamasfe.even-better-toml
+        threadheap.serverless-ide-vscode
         tintinweb.graphviz-interactive-preview
         twxs.cmake
         vadimcn.vscode-lldb
