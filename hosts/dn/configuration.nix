@@ -174,7 +174,13 @@
     };
     udisks2.enable = true;
     ddccontrol.enable = true;
-    zerotier-home.enable = true;
+    zerotier-home = {
+      enable = true;
+      zeronsd = {
+        enable = true;
+        package = pkgs.zeronsd;
+      };
+    };
   };
 
   zramSwap.enable = true;
