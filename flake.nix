@@ -111,6 +111,22 @@
       import ./pkgs {pkgs = nixpkgs.legacyPackages.${system}; inherit inputs; };
 
     nixosConfigurations = {
+      r1pro = nixpkgs.lib.nixosSystem {
+        inherit system;
+        modules = [
+          ({ pkgs, ...}: {
+            nix.nixPath = let path = toString ./.; in ["repl=${path}/repl.nix" "nixpkgs=${inputs.nixpkgs}"];
+            nixpkgs.overlays = [
+              overlay-local
+            ];
+	    boot.kernelPackages = pkgs.linuxPackages_6_8;
+          })
+          ./common.nix
+          ./hosts/r1pro/configuration.nix
+          ./hosts/r1pro/hardware.nix
+        ];
+      };
+
       yoga = nixpkgs.lib.nixosSystem {
         inherit system;
         modules = [
