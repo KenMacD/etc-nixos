@@ -23,6 +23,7 @@ with pkgs; let
     pgvecto-rs = callPackage ./pgvecto-rs.nix {};
 
     wpantund = callPackage ./wpantund {};
+    zeronsd = callPackage ./zeronsd {};
   };
 in
   lib.fix (lib.extends overrides packages)
