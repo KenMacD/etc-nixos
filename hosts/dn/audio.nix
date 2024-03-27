@@ -5,7 +5,6 @@
   ...
 }: {
   security.rtkit.enable = true; # for pipewire
-  services.pipewire.wireplumber.enable = true;
   services.blueman.enable = true;
 
   services.pipewire = {
@@ -15,6 +14,20 @@
     alsa.support32Bit = true;
     jack.enable = true;
     pulse.enable = true;
+
+    wireplumber = {
+      enable = true;
+      configPackages = [
+        (pkgs.writeTextDir "share/bluetooth.lua.d/51-bluez-config.lua" ''
+          bluez_monitor.properties = {
+            ["bluez5.enable-sbc-xq"] = true,
+            ["bluez5.enable-msbc"] = true,
+            ["bluez5.enable-hw-volume"] = true,
+            ["bluez5.headset-roles"] = "[ hsp_hs hsp_ag hfp_hf hfp_ag ]"
+          }
+        '')
+      ];
+    };
   };
 
   ########################################
@@ -63,14 +76,4 @@
         "$HOME/.nix-profile/lib/${type}"
         "/run/current-system/sw/lib/${type}"
       ]) ["dssi" "ladspa" "lv2" "lxvst" "vst" "vst3"]);
-  environment.etc = {
-    "wireplumber/bluetooth.lua.d/51-bluez-config.lua".text = ''
-      bluez_monitor.properties = {
-        ["bluez5.enable-sbc-xq"] = true,
-        ["bluez5.enable-msbc"] = true,
-        ["bluez5.enable-hw-volume"] = true,
-        ["bluez5.headset-roles"] = "[ hsp_hs hsp_ag hfp_hf hfp_ag ]"
-      }
-    '';
-  };
 }
