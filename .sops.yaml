@@ -1,0 +1,19 @@
+keys:
+  - &admin_kenny CC7C9BE4F442A854E29DF25695981B9FE3FB7465
+  - &host_dn age1tzakv84yjzf4zlw2hfrauj7e3p7vrct4j5xvmhuupgq98fhpmyfqvmdmq2
+  - &host_yoga age1da2yp3vd85556a0eh0t52fgdjkh0f4fayvjddwe90awmj3w2x3csh4pkw6
+  - &host_r1pro age1da2yp3vd85556a0eh0t52fgdjkh0f4fayvjddwe90awmj3w2x3csh4pkw6
+
+creation_rules:
+  - path_regex: hosts/dn/secrets.yaml$
+    key_groups:
+    - pgp:
+      - *admin_kenny
+      age:
+      - *host_dn
+  - path_regex: hosts/yoga/secrets.yaml$
+    key_groups:
+    - pgp:
+      - *admin_kenny
+      age:
+      - *host_yoga

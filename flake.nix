@@ -142,6 +142,7 @@
           ./hosts/yoga/hardware.nix
           ./modules/hardened.nix
           ./modules/immich.nix
+          sops-nix.nixosModules.sops
         ];
       };
       dn = nixpkgs.lib.nixosSystem {
