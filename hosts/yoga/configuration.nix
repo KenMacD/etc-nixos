@@ -37,6 +37,14 @@ in {
   };
 
   ########################################
+  # Secrets
+  ########################################
+  sops.defaultSopsFile = ./secrets.yaml;
+  sops.secrets.cloudflare = { };
+  sops.secrets.oauth2_proxy = { };
+  sops.secrets.telegraf = { };
+
+  ########################################
   # Boot
   ########################################
   boot.loader.systemd-boot.enable = true;
@@ -132,8 +140,7 @@ in {
     validateURL = "${config.services.kanidm.serverSettings.origin}/oauth2/openid/${clientId}/userinfo";
 
     clientID = clientId;
-    clientSecret = secrets.OAUTH2_PROXY_CLIENT_SECRET;
-    cookie.secret = secrets.OAUTH2_PROXY_COOKIE_SECRET;
+    keyFile = config.sops.secrets.oauth2_proxy.path;
     email.domains = ["*"];
     reverseProxy = true;
     passAccessToken = true;
@@ -195,7 +202,6 @@ in {
     dockerCompat = false;
   };
   virtualisation.docker.enable = true;
-  };
 
   ########################################
   # Complex Services
@@ -266,8 +272,7 @@ in {
     defaults = {
       email = "kenny@macdermid.ca";
       dnsProvider = "cloudflare";
-      # TODO: fix
-      credentialsFile = ./. + "/cloudflare.env";
+      credentialsFile = config.sops.secrets.cloudflare.path;
       dnsResolver = "1.1.1.1:53";
     };
     certs."home.macdermid.ca" = {
@@ -460,11 +465,14 @@ in {
 
   services.telegraf = {
     enable = true;
+    environmentFiles = [
+      config.sops.secrets.telegraf.path
+    ];
     extraConfig = {
       outputs.influxdb_v2 = {
         namepass = ["heat" "thermostat" "weather"];
         urls = ["http://127.0.0.1:8086"];
-        token = secrets.INFLUX_HVAC_WRITE;
+        token = "$INFLUX_HVAC_WRITE";
         organization = "macdermid";
         bucket = "hvac";
       };
@@ -476,7 +484,7 @@ in {
         interval = "5m";
         name_override = "weather";
         urls = [
-          "https://api.darksky.net/forecast/${secrets.DARK_SKY_API_KEY}/${secrets.DARK_SKY_API_LOCATION}?exclude=alerts%2Cdaily%2Chourly%2Cminutely%2Cflag&units=ca"
+          "https://api.darksky.net/forecast/$DARK_SKY_API_KEY/$DARK_SKY_API_LOCATION?exclude=alerts%2Cdaily%2Chourly%2Cminutely%2Cflag&units=ca"
         ];
         data_format = "json";
         json_query = "currently";
