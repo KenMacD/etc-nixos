@@ -27,10 +27,6 @@
   inputs.flake-utils = {
     url = "github:numtide/flake-utils";
   };
-  inputs.llama-cpp = {
-    url = "github:ggerganov/llama.cpp";
-    inputs.nixpkgs.follows = "nixpkgs";
-  };
   inputs.microvm = {
     url = "github:astro/microvm.nix";
     inputs.nixpkgs.follows = "nixpkgs";
@@ -51,11 +47,6 @@
     url = "github:Mic92/sops-nix";
     inputs.nixpkgs.follows = "nixpkgs";
   };
-  # piped test
-  inputs.squalus = {
-    url = "github:squalus/flake";
-    inputs.nixpkgs.follows = "nixpkgs";
-  };
 
   outputs = {
     self,
@@ -70,13 +61,11 @@
     devenv,
     fenix,
     flake-utils,
-    #llama-cpp,
     microvm,
     nix-alien,
     nix-bubblewrap,
     nix-vscode-extensions,
     sops-nix,
-    squalus,
     ...
   } @ inputs: let
     system = "x86_64-linux";
