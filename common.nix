@@ -184,6 +184,11 @@ with lib; {
     execWheelOnly = true;
     extraConfig = ''
       Defaults  env_keep += "BORG_KEYS_DIR"
+
+      # Allow yubikey auth for sudo:
+      Defaults  env_keep += "SSH_AUTH_SOCK"
+      Defaults  env_keep += "GPG_TTY"
+      Defaults  env_keep += "GNUPGHOME"
     '';
   };
   services.openssh.settings.PasswordAuthentication = mkDefault false;
