@@ -2,7 +2,7 @@
   description = "NixOS configuration";
 
   nixConfig = {
-    extra-experimental-features = ["nix-command" "flakes" "ca-derivations"];
+    extra-experimental-features = ["nix-command" "flakes"];
     max-jobs = "auto";
     auto-optimise-store = "true";
   };
