@@ -9,19 +9,20 @@
 # Build from source is in git history, but takes multiple gigs of space and is slow.
 let
   versionHashes = {
-    "14" = "sha256-8YRC1Cd9i0BGUJwLmUoPVshdD4nN66VV3p48ziy3ZbA=";
-    "16" = "sha256-L+57VRFv4rIEjvqExFvU5C9XI7l0zWj9pkKvNE5DP+k=";
+    "14" = "sha256-8RDWkVbSxAmhSlggbYeSXHvCg5TNavvIPIZ0Ivua61Q=";
+    "15" = "sha256-uPE76ofzAevJMHSjFHYJQWUh5NZotaD9dhaX84uDFiQ=";
+    "16" = "sha256-aJ1wLNZVdsZAvQeE26YVnJBr8lAm6i6/3eio5H44d7s=";
   };
   major = lib.versions.major postgresql.version;
 in
   stdenv.mkDerivation rec {
     pname = "pgvecto-rs";
-    version = "0.1.11";
+    version = "0.2.0";
 
     nativeBuildInputs = [dpkg];
 
     src = fetchurl {
-      url = "https://github.com/tensorchord/pgvecto.rs/releases/download/v${version}/vectors-pg${major}-v${version}-x86_64-unknown-linux-gnu.deb";
+      url = "https://github.com/tensorchord/pgvecto.rs/releases/download/v${version}/vectors-pg${major}_${version}_amd64.deb";
       hash = versionHashes."${major}";
     };
 
