@@ -29,6 +29,7 @@ with lib; {
       keep-outputs = true
       keep-derivations = true
       keep-going = true
+      connect-timeout = 4
     '';
 
     daemonCPUSchedPolicy = "idle";
