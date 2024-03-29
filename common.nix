@@ -23,6 +23,8 @@ with lib; {
       dates = "weekly";
       options = "--delete-older-than 30d";
     };
+    # after https://github.com/NixOS/nix/pull/8323 and/or https://github.com/NixOS/nix/pull/3494
+    #   print-build-logs = true
     extraOptions = ''
       keep-outputs = true
       keep-derivations = true
