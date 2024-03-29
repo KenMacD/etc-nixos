@@ -181,6 +181,7 @@
               overlay-staging-next
               overlay-master
               overlay-stable
+              # (import ./overlays/sway-dbg.nix)
               overlay-nix-bubblewrap
               (import ./overlays/testing.nix)
               overlay-espanso-new
