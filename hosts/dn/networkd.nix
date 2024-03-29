@@ -4,6 +4,8 @@
   lib,
   ...
 }: {
+  systemd.network.enable = true;
+
   environment.systemPackages = with pkgs; [
     iw
     wavemon
