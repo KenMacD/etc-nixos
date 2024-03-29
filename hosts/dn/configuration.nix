@@ -10,6 +10,7 @@
   imports = [
     ./android.nix
     ./audio.nix
+    ./bwrap.nix
     ../../modules/hp-printer.nix
     ./firewall.nix
     ./re.nix
