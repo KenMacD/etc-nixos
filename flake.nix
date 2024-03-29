@@ -137,12 +137,11 @@
       r1pro = nixpkgs.lib.nixosSystem {
         inherit system;
         modules = [
-          ({ pkgs, ...}: {
+          ({pkgs, ...}: {
             nix.nixPath = let path = toString ./.; in ["repl=${path}/repl.nix" "nixpkgs=${inputs.nixpkgs}"];
             nixpkgs.overlays = [
               overlay-local
             ];
-	    boot.kernelPackages = pkgs.linuxPackages_6_8;
           })
           ./common.nix
           ./hosts/r1pro/configuration.nix
