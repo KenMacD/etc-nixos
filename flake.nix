@@ -109,6 +109,31 @@
     };
 
     nixosConfigurations = {
+      # nix build .#nixosConfigurations.iso.config.system.build.isoImage
+      iso = nixpkgs.lib.nixosSystem {
+        inherit system;
+        modules = [
+          ./common.nix
+          "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-calamares-plasma6.nix"
+          ({
+            pkgs,
+            lib,
+            ...
+          }: {
+            environment.systemPackages = [pkgs.neovim];
+
+            # Enables copy / paste when running in a KVM with spice.
+            services.spice-vdagentd.enable = true;
+
+            # Use faster squashfs compression
+            isoImage.squashfsCompression = "gzip -Xcompression-level 1";
+
+            boot.kernelPackages = pkgs.linuxPackages_6_8;
+            boot.supportedFilesystems.zfs = lib.mkForce false;
+          })
+        ];
+      };
+
       r1pro = nixpkgs.lib.nixosSystem {
         inherit system;
         modules = [
