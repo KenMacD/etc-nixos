@@ -5,7 +5,6 @@
   ...
 }: let
   ip = "172.27.0.3";
-  secrets = import ./secrets.nix;
 in {
   nix = {
     extraOptions = ''
@@ -542,7 +541,6 @@ in {
       "focalboard.home.macdermid.ca" = proxywss 18000;
       "git.home.macdermid.ca" = {http2 = true;} // proxy config.services.gitea.settings.server.HTTP_PORT;
       "grafana.home.macdermid.ca" = proxywss config.services.grafana.settings.server.http_port;
-      "hedgedoc.home.macdermid.ca" = proxy config.services.hedgedoc.settings.port;
       "immich.home.macdermid.ca" = base {
         "/".proxyPass = "http://127.0.0.1:3550/";
         "/".proxyWebsockets = true;
@@ -617,22 +615,6 @@ in {
         data_format = "influx";
       };
       inputs.nginx = [{urls = ["https://nginxstatus.home.macdermid.ca/"];}];
-    };
-  };
-
-  services.hedgedoc = {
-    enable = true;
-    settings = {
-      domain = "hedgedoc.home.macdermid.ca";
-      host = "127.0.0.1";
-      port = 8090;
-      protocolUseSSL = true;
-      db = {
-        dialect = "sqlite";
-        storage = "/var/lib/hedgedoc/db.hedgedoc.sqlite";
-      };
-      defaultPermission = "private";
-      sessionSecret = secrets.HEDGEDOC_SESSION_SECRET;
     };
   };
 
