@@ -14,6 +14,18 @@ rec {
       '';
   });
 
+  vaultwarden = super.vaultwarden.overrideAttrs (old: {
+    # PR: SSO using OpenID Connect
+    # https://github.com/dani-garcia/vaultwarden/pull/3899
+    version = "8ed73712e6e492079e1a49f0f33bc3d2a9001d00";
+    src = super.fetchFromGitHub {
+      owner = "dani-garcia";
+      repo = old.pname;
+      rev = "8ed73712e6e492079e1a49f0f33bc3d2a9001d00";
+      sha256 = "sha256-nMacjqME6/Iav7Bzh1BciSrckWw5B3wwRpggb3MBYzI=";
+    };
+  });
+
   notmuch = super.notmuch.overrideAttrs (old: {
     buildInputs =
       (old.buildInputs or [])
