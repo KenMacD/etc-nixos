@@ -216,8 +216,9 @@ with lib; {
   # Packages
   ########################################
   environment.systemPackages = with pkgs; [
-    kitty.terminfo
     alejandra
+    config.boot.kernelPackages.cpupower
+    kitty.terminfo
   ];
 
   # Set RCLONE_FAST_LIST to always reduce costs
