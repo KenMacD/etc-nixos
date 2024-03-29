@@ -27,6 +27,9 @@
   inputs.flake-utils = {
     url = "github:numtide/flake-utils";
   };
+  inputs.impermanence = {
+    url = "github:nix-community/impermanence";
+  };
   inputs.microvm = {
     url = "github:astro/microvm.nix";
     inputs.nixpkgs.follows = "nixpkgs";
@@ -50,17 +53,16 @@
 
   outputs = {
     self,
-
     nixpkgs,
     nixpkgs-staging-next,
     nixpkgs-master,
     nixpkgs-stable,
     nixpkgs-mongodb-pin,
     nixpkgs-pr291484,
-
     devenv,
     fenix,
     flake-utils,
+    impermanence,
     microvm,
     nix-alien,
     nix-bubblewrap,
