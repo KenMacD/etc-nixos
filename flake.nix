@@ -192,6 +192,7 @@
             nix.registry.nixpkgs.flake = nixpkgs;
             nix.registry.nixpkgs-master.flake = nixpkgs-master;
             nix.registry.nixpkgs-stable.flake = nixpkgs-stable;
+            nix.registry.nixpkgs-mongodb-pin.flake = nixpkgs-mongodb-pin;
             nix.registry.microvm.flake = microvm;
             nix.registry.devenv.flake = devenv;
             nix.registry.local.flake = self;
