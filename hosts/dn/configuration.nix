@@ -11,6 +11,7 @@
     ./android.nix
     ./audio.nix
     ./bwrap.nix
+    ./emacs.nix
     ../../modules/hp-printer.nix
     ./firewall.nix
     ./re.nix
@@ -81,6 +82,23 @@
   environment.variables.VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json:/run/opengl-driver-32/share/vulkan/icd.d/intel_icd.i686.json";
   environment.variables.LIBVA_DRIVER_NAME = "iHD";
 
+  boot.kernelParams = [
+    # "nohz_full=1-7"
+    "console=tty2"
+    "preempt=full"
+    "nmi_watchdog=0"
+    "vm.dirty_writeback_centisecs=6000"
+
+    # TODO: move to common? or maybe just desktop?
+    "panic=0"
+
+    # "i915.enable_dc=1"
+    # "i915.edp_vswing=0"
+    # "i915.enable_guc=2"
+    # "i915.enable_fbc=1"
+    # "i915.enable_psr=1"
+    # "i915.disable_power_well=0"
+  ];
   boot.kernel.sysctl = {"dev.i915.perf_stream_paranoid" = 0;};
   boot.extraModulePackages = with config.boot.kernelPackages; [
     turbostat
@@ -113,11 +131,25 @@
   # Workaround https://github.com/NixOS/nixpkgs/issues/231191
   environment.etc."resolv.conf".mode = "direct-symlink";
 
+  environment.etc = {
+    "nixos-overlays/overlays.nix" = {
+      mode = "0444";
+      text = ''
+        self: super:
+        with super.lib;
+        let
+          # Load the system config and get the `nixpkgs.overlays` option
+          overlays = (import <nixpkgs/nixos> { }).config.nixpkgs.overlays;
+        in
+          # Apply all overlays to the input of the current "main" overlay
+          foldl' (flip extends) (_: super) overlays self
+      '';
+    };
+  };
 
   ########################################
   # Desktop Environment
   ########################################
-  boot.kernelParams = ["console=tty2"];
   services.greetd = {
     enable = true;
     settings = {
@@ -128,6 +160,11 @@
     };
   };
   programs.xwayland.enable = false;
+
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+  };
 
   # Use Wayland for Electron apps
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
@@ -146,7 +183,8 @@
   xdg.portal = {
     enable = true;
     wlr.enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    # May be needed: https://wiki.archlinux.org/title/XDG_Desktop_Portal#Poor_font_rendering_in_GTK_apps_on_KDE_Plasma
+    extraPortals = [pkgs.xdg-desktop-portal-gtk];
   };
   qt.platformTheme = "qt5ct";
 
@@ -157,7 +195,7 @@
     flatpak.enable = true;
     fwupd.enable = true;
     lorri.enable = true;
-    openssh.enable = false;
+    openssh.enable = true;
     pcscd.enable = true;
     snapper.configs.home = {
       ALLOW_USERS = ["kenny"];
@@ -167,10 +205,22 @@
     };
     thermald.enable = true;
     udev = {
-      packages = [pkgs.yubikey-personalization];
+      packages = [
+        pkgs.yubikey-personalization
+        pkgs.espanso-wayland
+      ];
+
       # Amlogic:
+      # particle usb flash dongle
+      # if systemd-logind use uaccess
       extraRules = ''
-        SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="1b8e", ATTR{idProduct}=="c003", MODE:="0666", SYMLINK+="worldcup"
+        SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="1b8e", ATTR{idProduct}=="c003", MODE:="0666", SYMLINK+="worldcup", OWNER="kenny", GROUP="users"
+        ATTRS{idVendor}=="0d28", ATTRS{idProduct}=="0204", OWNER="kenny", GROUP="users"
+
+        SUBSYSTEM=="usb", ATTR{idVendor}=="05ed", TEST=="power/control", ATTR{power/control}="on"
+
+        SUBSYSTEM=="usb", ATTRS{idVendor}=="057e", ATTRS{idProduct}=="3000", OWNER="kenny", GROUP="users"
+        SUBSYSTEM=="usb", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="27e2", OWNER="kenny", GROUP="users"
       '';
     };
     udisks2.enable = true;
@@ -196,6 +246,7 @@
   # Fonts
   ########################################
   fonts = {
+    # ln -s /run/current-system/sw/share/X11/fonts ~/.local/share/fonts
     fontDir.enable = true;
     packages = with pkgs; [
       (nerdfonts.override {
@@ -304,6 +355,7 @@
   };
 
   programs.thefuck.enable = true;
+
   environment.systemPackages = with pkgs;
   with config.boot.kernelPackages; [
     # General
@@ -317,8 +369,8 @@
     firefox
     fzf
     httpie
-    libreoffice-fresh
     immich-go  # local
+    libreoffice-fresh
     libreoffice
     librewolf
     libusb1
@@ -329,7 +381,7 @@
     patchelf
     python3
     restic
-    ratarmount  # Mount tar/archives with FUSE
+    ratarmount # Mount tar/archives with FUSE
     rlwrap
     rmlint
     tmux
@@ -354,6 +406,7 @@
 
     # Password management
     age-plugin-yubikey
+    genpass
     gopass # replacement for pass, has -o option
     gopass-jsonapi
     qtpass
@@ -363,6 +416,7 @@
     yubioath-flutter
 
     # Video
+    ffmpeg
     intel-gpu-tools
     mpv
     v4l-utils
@@ -375,7 +429,7 @@
     # System management
     acpid
     bcc
-    compsize  # Show on-disk file size
+    compsize # Show on-disk file size
     dig
     fwupd
     fwupd-efi
@@ -442,11 +496,18 @@
     taskopen
     vit
 
+    # AI
+    # llama-cpp
+    # python3Packages.huggingface-hub
+    # ollama
+
     # General/Unsorted
+    pinta
+    qalculate-gtk
+
     # Virtualization
-    virt-manager
     nixos-generators
-    bubblewrap
+    virt-manager
 
     # Version Control related
     # gitFull
@@ -454,11 +515,12 @@
     git-no-hooks
     git-filter-repo
     git-lfs
-    gita  # Update a group of repos
+    gita # Update a group of repos
     gitui
-    jujutsu  # jj command for git, to try out
+    jujutsu # jj command for git, to try out
 
     # Development
+    act # Run your GitHub Actions locally
     amazon-ecs-cli
     android-tools
     aws-adfs
@@ -468,6 +530,7 @@
     binwalk
     clang-tools
     delta
+    difftastic
     direnv
     dtc
     file
@@ -490,9 +553,63 @@
     pgcli
     ripgrep
     tio
+    yamllint
+    stable.yamlfix # broken 2024-03-29
+
+    # Testing
+    atuin # shell history in sqlite?
+    hashcat
+    gnome.seahorse
+    libsmbios # smbios-thermal-ctl
+    modprobed-db
+    nushell # odd different shell
+    phinger-cursors
+    tessen # password dmenu
+    # Broken: 2023-10-26 azure-cli
+    # bcompare
+    (wrapOBS {
+      plugins = with obs-studio-plugins; [
+        wlrobs
+      ];
+    })
+    steam-run
+    lutris
+    # TODO: broken 2024-02-11 mitmproxy
+
+    # s0ix-selftest-tool
 
     # My Packages
+    # dcc -- wait until openssl3 supported
     fre
-    modprobed-db
+    sd
+
+    # Testing from https://github.com/b3nj5m1n/dotfiles
+    aria # Basically a better wget
+    atuin # Save & search shell history
+    du-dust # More intuitive du
+    eza # Better ls
+    tealdeer # tldr
+
+    deptree
+
+    xdg-desktop-portal-wlr
+    imhex
+
+    tpm2-tools
+    tpm2-tss
+
+    (pkgs.writeTextFile {
+      name = "dbus-sway-environment";
+      destination = "/bin/dbus-sway-environment";
+      executable = true;
+
+      text = ''
+        dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+        systemctl --user stop pipewire pipewire-media-session xdg-desktop-portal xdg-desktop-portal-wlr
+        systemctl --user start pipewire pipewire-media-session xdg-desktop-portal xdg-desktop-portal-wlr
+      '';
+    })
+
+    pcscliteWithPolkit.out
   ];
 }
