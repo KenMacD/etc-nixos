@@ -14,6 +14,19 @@ in {
   };
 
   systemd.services."systemd-networkd-wait-online".enable = lib.mkForce false;
+
+  services.rabbitmq = {
+    enable = true;
+    managementPlugin.enable = true;
+    # https://www.rabbitmq.com/mqtt.html
+    plugins = ["rabbitmq_management" "rabbitmq_mqtt"];
+    configItems = {
+      # "ath_backends.abc" = "def;
+      # "mqtt.subscription_ttl" = "10000";
+      # #"log.default.level" = "warning";
+      # "log.connection.level" = "warning";
+    };
+  };
   system.autoUpgrade.enable = true;
   hardware = {
     bluetooth.enable = true;
@@ -40,17 +53,25 @@ in {
   # Secrets
   ########################################
   sops.defaultSopsFile = ./secrets.yaml;
-  sops.secrets.cloudflare = { };
-  sops.secrets.oauth2_proxy = { };
-  sops.secrets.telegraf = { };
+  sops.secrets.cloudflare = {};
+  sops.secrets.oauth2_proxy = {};
+  sops.secrets.telegraf = {};
 
   ########################################
   # Boot
   ########################################
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.kernel.sysctl."fs.inotify.max_user_watches" = 524288;
+  boot.tmp.useTmpfs = false;
+  boot.tmp.tmpfsSize = "90%";
 
+  boot.kernel.sysctl = {
+    "fs.inotify.max_user_watches" = 524288;
+
+    "net.ipv4.ip_forward" = true;
+    "net.ipv6.conf.all.forwarding" = true;
+    "net.ipv4.conf.all.proxy_arp" = true;
+  };
   powerManagement.enable = true;
 
   ########################################
@@ -86,8 +107,41 @@ in {
   };
 
   services.postgresql = {
-    package = pkgs.postgresql_16;
+    # TODO: Testing JIT package... does it help?
+    package = pkgs.postgresql_16_jit;
+    enableJIT = true;
+    settings = {
+      # Set larger query size to see immich queries
+      # default: 1024
+      track_activity_query_size = "64kB";
+
+      # Trying https://pgtune.leopard.in.ua/#/
+      # DB Version: 16
+      # OS Type: linux
+      # DB Type: mixed
+      # Total Memory (RAM): 4 GB
+      # CPUs num: 4
+      # Data Storage: hdd
+      max_connections = "100";
+      shared_buffers = "1GB";
+      effective_cache_size = "3GB";
+      maintenance_work_mem = "256MB";
+      checkpoint_completion_target = "0.9";
+      wal_buffers = "16MB";
+      default_statistics_target = "100";
+      random_page_cost = "4";
+      effective_io_concurrency = "2";
+      work_mem = "2621kB";
+      huge_pages = "off";
+      min_wal_size = "1GB";
+      max_wal_size = "4GB";
+      max_worker_processes = "4";
+      max_parallel_workers_per_gather = "2";
+      max_parallel_workers = "4";
+      max_parallel_maintenance_workers = "2";
+    };
   };
+
   services.miniflux = {
     enable = true;
     adminCredentialsFile = "/etc/nixos/miniflux-admin-credentials";
@@ -113,6 +167,7 @@ in {
       ldapbindaddress = "127.0.0.1:636";
       origin = "https://auth.home.macdermid.ca";
       domain = "auth.home.macdermid.ca";
+      # log_level = "debug";
       tls_chain = "/var/lib/acme/home.macdermid.ca/fullchain.pem";
       tls_key = "/var/lib/acme/home.macdermid.ca/key.pem";
     };
@@ -178,10 +233,11 @@ in {
   # Simple Services
   ########################################
   services = {
+    logind.lidSwitch = "ignore";
     openssh = {
       enable = true;
+      # passwordAuthentication = true;
     };
-    logind.lidSwitch = "ignore";
     thermald.enable = true;
     udisks2.enable = true;
     upower.enable = true;
@@ -191,7 +247,12 @@ in {
   # User
   ########################################
   users.users.kenny = {
-    extraGroups = ["media" "podman" "dialout"];
+    extraGroups = [
+      "dialout"
+      "libvirtd"
+      "media"
+      "podman"
+    ];
   };
 
   ########################################
@@ -200,8 +261,17 @@ in {
   virtualisation.podman = {
     enable = true;
     dockerCompat = false;
+    # defaultNetwork.settings.dns_enabled.enable = true;
   };
   virtualisation.docker.enable = true;
+  virtualisation.libvirtd = {
+    enable = true;
+    qemu.ovmf = {
+      enable = true;
+    };
+    # Only care about host arch:
+    qemu.package = pkgs.qemu_kvm;
+  };
 
   ########################################
   # Complex Services
@@ -216,10 +286,46 @@ in {
         enabled = true;
         org_name = "MacDermid";
         org_role = "Editor";
+        # org_role = "Admin";
       };
       "auth.basic".enabled = "false";
       auth.disable_login_form = "true";
     };
+  };
+
+  services.prometheus = {
+    enable = true;
+    port = 9091;
+    exporters = {
+      node = {
+        enable = true;
+        enabledCollectors = ["systemd"];
+        port = 9092;
+      };
+      smartctl = {
+        enable = true;
+        port = 9093;
+      };
+    };
+
+    scrapeConfigs = [
+      {
+        job_name = "yoga";
+        static_configs = [
+          {
+            targets = ["127.0.0.1:${toString config.services.prometheus.exporters.node.port}"];
+          }
+        ];
+      }
+      {
+        job_name = "yoga-smart";
+        static_configs = [
+          {
+            targets = ["127.0.0.1:${toString config.services.prometheus.exporters.smartctl.port}"];
+          }
+        ];
+      }
+    ];
   };
 
   services.gitea = {
@@ -235,6 +341,12 @@ in {
         PULL = 50000;
         GC = 50000;
         #        MIGRATE = 2400;
+      };
+      security = {
+        REVERSE_PROXY_AUTHENTICATION_EMAIL = "X-Email";
+      };
+      service = {
+        ENABLE_REVERSE_PROXY_AUTHENTICATION = true;
       };
       server = {
         DOMAIN = "git.home.macdermid.ca";
@@ -288,6 +400,7 @@ in {
         allow_registration = true;
         server_name = "macdermid.ca";
         allow_federation = false;
+        cleanup_second_interval = 60 * 60;
       };
     };
   };
@@ -304,11 +417,23 @@ in {
     openFirewall = true;
   };
 
+  services.cockpit = {
+    enable = true;
+    openFirewall = false;
+    settings = {
+      Webservice = {
+        Origins = "https://cockpit.home.macdermid.ca";
+      };
+    };
+  };
+
   # nginx
   systemd.services.nginx.serviceConfig.SupplementaryGroups = "acme";
   services.nginx = {
     enable = true;
     package = pkgs.nginxQuic;
+
+    serverTokens = false;
 
     recommendedOptimisation = true;
     recommendedGzipSettings = true;
@@ -336,8 +461,12 @@ in {
       geo $internal {
         default no;
 
+        fd3e:fa5c:b78a:1548:d599:9300::/88 yes;
         127.0.0.0/8 yes;
         172.27.0.0/24 yes;
+
+        # TODO: move podman network? Or at least put a value here?
+        10.88.0.0/16 yes;
       }
 
       ########################################
@@ -402,29 +531,35 @@ in {
         // base {
           "/".return = "444";
         };
+      "auth.home.macdermid.ca" = proxytls 9001;
       "www.home.macdermid.ca" =
         base {
           "/".root = "/etc/nixos/hosts/yoga/www/";
         }
         // {serverAliases = ["home.macdermid.ca"];};
       "bitwarden.home.macdermid.ca" = proxywss config.services.vaultwarden.config.ROCKET_PORT;
+      "cockpit.home.macdermid.ca" = proxywss config.services.cockpit.port;
       "focalboard.home.macdermid.ca" = proxywss 18000;
       "git.home.macdermid.ca" = {http2 = true;} // proxy config.services.gitea.settings.server.HTTP_PORT;
       "grafana.home.macdermid.ca" = proxywss config.services.grafana.settings.server.http_port;
       "hedgedoc.home.macdermid.ca" = proxy config.services.hedgedoc.settings.port;
-      "auth.home.macdermid.ca" = proxytls 9001;
-      "influxdb.home.macdermid.ca" = proxy 8086;
-      "jellyfin.home.macdermid.ca" = public (proxywss 8096);
-      "matrix.home.macdermid.ca" = proxy config.services.matrix-conduit.settings.global.port;
-      "nzbget.home.macdermid.ca" = proxy 6789;
-      "miniflux.home.macdermid.ca" = proxy 35001;
-
-      "unifi.home.macdermid.ca" = proxytls 8443;
       "immich.home.macdermid.ca" = base {
         "/".proxyPass = "http://127.0.0.1:3550/";
         "/".proxyWebsockets = true;
       };
-
+      "influxdb.home.macdermid.ca" = proxy 8086;
+      "jellyfin.home.macdermid.ca" = public (proxywss 8096);
+      "matrix.home.macdermid.ca" = proxy config.services.matrix-conduit.settings.global.port;
+      "miniflux.home.macdermid.ca" = proxy 35001;
+      "nzbget.home.macdermid.ca" = proxy 6789;
+      "nginxstatus.home.macdermid.ca" = base {
+        "/".extraConfig = ''
+          stub_status on;
+          access_log off;
+        '';
+      };
+      "rabbitmq.home.macdermid.ca" = proxy config.services.rabbitmq.managementPlugin.port;
+      "unifi.home.macdermid.ca" = proxytls 8443;
     };
   };
 
@@ -470,32 +605,18 @@ in {
     ];
     extraConfig = {
       outputs.influxdb_v2 = {
-        namepass = ["heat" "thermostat" "weather"];
+        #        namepass = ["heat" "thermostat" "weather"];
         urls = ["http://127.0.0.1:8086"];
         token = "$INFLUX_HVAC_WRITE";
+        #token = secrets.INFLUX_HVAC_WRITE;
         organization = "macdermid";
-        bucket = "hvac";
+        bucket = "telegraf";
       };
       inputs.socket_listener = {
         service_address = "udp://:8089";
         data_format = "influx";
       };
-      inputs.http = {
-        interval = "5m";
-        name_override = "weather";
-        urls = [
-          "https://api.darksky.net/forecast/$DARK_SKY_API_KEY/$DARK_SKY_API_LOCATION?exclude=alerts%2Cdaily%2Chourly%2Cminutely%2Cflag&units=ca"
-        ];
-        data_format = "json";
-        json_query = "currently";
-        json_string_fields = [
-          "icon"
-          "precipType"
-          "summary"
-        ];
-        json_time_key = "time";
-        json_time_format = "unix";
-      };
+      inputs.nginx = [{urls = ["https://nginxstatus.home.macdermid.ca/"];}];
     };
   };
 
@@ -519,18 +640,35 @@ in {
   # Packages
   ########################################
   environment.systemPackages = with pkgs; [
+    aspell
+    aspellDicts.en
+    aspellDicts.en-computers
     bcachefs-tools
     btrfs-progs
     dhcpcd
-    git
+    exiftool
+    fd
     fwupd
+    git
     htop
+    immich-cli
+    immich-go # local
+    jesec-rtorrent
     kitty # for term info only
+    libva-utils
+    mediainfo
     ncdu
     nixfmt
     powertop
     pstree
+    restic
+    rmlint
     tmux
+    (weechat.override {
+      configure = {availablePlugins, ...}: {
+        plugins = with availablePlugins; [python];
+      };
+    })
     wpa_supplicant
     yt-dlp
 
@@ -539,15 +677,13 @@ in {
     p7zip
     python3
 
-    screen
-    focalboard
-    jesec-rtorrent
-
+    # for postgresql upgrade
     (let
       # XXX specify the postgresql package you'd like to upgrade to.
       # Do not forget to list the extensions you need.
-      newPostgres = pkgs.postgresql_15.withPackages (pp: [
-      ]);
+      newPostgres =
+        pkgs.postgresql_15.withPackages (pp: [
+        ]);
     in
       pkgs.writeScriptBin "upgrade-pg-cluster" ''
         set -eux
@@ -570,15 +706,5 @@ in {
           --old-bindir $OLDBIN --new-bindir $NEWBIN \
           "$@"
       '')
-
-    libva-utils
-    aspell
-    aspellDicts.en
-    aspellDicts.en-computers
-    (weechat.override {
-      configure = {availablePlugins, ...}: {
-        plugins = with availablePlugins; [python];
-      };
-    })
   ];
 }
