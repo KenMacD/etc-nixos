@@ -283,6 +283,16 @@
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true;
+    package = pkgs.steam.override {
+      extraPkgs = pkgs:
+        with pkgs; [
+          libgdiplus
+          glib
+        ];
+      extraProfile = ''
+        export GSETTINGS_SCHEMA_DIR="${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.name}/glib-2.0/schemas/"
+      '';
+    };
   };
 
   programs.thefuck.enable = true;
