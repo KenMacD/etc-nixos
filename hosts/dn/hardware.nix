@@ -51,6 +51,7 @@
     options = ["subvol=home_kenny_VirtualMachines" "commit=60" "noatime" "user_subvol_rm_allowed"];
   };
 
+  # TODO: should use XDG home
   fileSystems."/home/kenny/.local/share/go/pkg" = {
     device = "/dev/mapper/root";
     fsType = "btrfs";
@@ -85,6 +86,20 @@
         "x-systemd.automount"          # mount when needed
         "x-systemd.device-timeout=1ms" # device should be plugged already—do not wait for it
         "x-systemd.idle-timout=5m"     # unmount after 5 min of inactivity
+    ];
+  };
+
+  # TESTING
+  fileSystems."/persist" = {
+    device = "/dev/mapper/root";
+    # TODO: set once in use
+    # neededForBoot = true;
+    fsType = "btrfs";
+    options = [
+      "subvol=persist"
+      "commit=60"
+      "noatime"
+      "user_subvol_rm_allowed"
     ];
   };
 
