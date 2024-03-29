@@ -232,6 +232,10 @@
   security.sudo.extraConfig = ''
     Defaults  env_keep += "DISPLAY"
     Defaults  env_keep += "PYTHONPATH"
+    Defaults  env_keep += "RESTIC_PASSWORD"
+    Defaults  env_keep += "RESTIC_PASSWORD_COMMAND"
+    Defaults  env_keep += "RESTIC_PASSWORD_FILE"
+    Defaults  env_keep += "RESTIC_REPOSITORY"
   '';
 
   ########################################
