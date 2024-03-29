@@ -237,6 +237,10 @@
     Defaults  env_keep += "RESTIC_PASSWORD_FILE"
     Defaults  env_keep += "RESTIC_REPOSITORY"
   '';
+  security.pam.services = {
+    # login.u2fAuth = true;
+    sudo.u2fAuth = true;
+  };
 
   ########################################
   # Crypto
