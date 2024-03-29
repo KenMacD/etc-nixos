@@ -36,6 +36,10 @@ with lib; {
   # Disable command-not-found until proper Flake solution
   programs.command-not-found.enable = mkDefault false;
 
+  # Disable building man-cache as it's slow, slightly
+  # lower than default of 1000
+  documentation.man.generateCaches = mkOverride 999 false;
+
   # Include current config:
   environment.etc.current-nixos-config.source = ./.;
 
