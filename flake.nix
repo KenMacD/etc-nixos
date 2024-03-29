@@ -71,15 +71,13 @@
     ...
   } @ inputs: let
     system = "x86_64-linux";
-    overlay-local = self: super: import ./pkgs {pkgs = super; inherit inputs; };
-    overlay-staging-next = final: prev: {
-      staging-next = nixpkgs-staging-next.legacyPackages.${prev.system};
-    };
+    overlay-local = self: super:
+      import ./pkgs {
+        pkgs = super;
+        inherit inputs;
+      };
     overlay-master = final: prev: {
       master = nixpkgs-master.legacyPackages.${prev.system};
-    };
-    overlay-stable = final: prev: {
-      stable = nixpkgs-stable.legacyPackages.${prev.system};
     };
     overlay-mongodb-pin = self: super: {
       mongodb-4_4 =
@@ -93,13 +91,22 @@
       nix-bubblewrap = nix-bubblewrap.packages.${prev.system}.default;
       wrapPackage = nix-bubblewrap.lib.${prev.system}.wrapPackage;
     };
+    overlay-stable = final: prev: {
+      stable = nixpkgs-stable.legacyPackages.${prev.system};
+    };
+    overlay-staging-next = final: prev: {
+      staging-next = nixpkgs-staging-next.legacyPackages.${prev.system};
+    };
     overlay-espanso-new = final: prev: {
-      espanso = (import nixpkgs-pr291484 { inherit system; })
+      espanso =
+        (import nixpkgs-pr291484 {inherit system;})
         .espanso;
     };
   in {
-    packages.x86_64-linux =
-      import ./pkgs {pkgs = nixpkgs.legacyPackages.${system}; inherit inputs; };
+    packages.x86_64-linux = import ./pkgs {
+      pkgs = nixpkgs.legacyPackages.${system};
+      inherit inputs;
+    };
 
     nixosConfigurations = {
       r1pro = nixpkgs.lib.nixosSystem {
