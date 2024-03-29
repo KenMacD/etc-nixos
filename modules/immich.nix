@@ -6,7 +6,7 @@
 }:
 # Ref: https://github.com/immich-app/immich/blob/main/docker/docker-compose.yml
 let
-  version = "1.94.1";
+  version = "1.99.0";
   dataDir = "/mnt/easy/immich";
   dbuser = "immich";
   dbname = "immich";
@@ -132,7 +132,10 @@ in {
         entrypoint = "/bin/sh";
         cmd = ["./start-server.sh"];
         volumes = ["${dataDir}:/usr/src/app/upload"];
-        extraOptions = ["--uidmap=0:${toString config.ids.uids.immich}:1"];
+        extraOptions = [
+          "--uidmap=0:${toString config.ids.uids.immich}:1"
+          "--add-host=auth.home.macdermid.ca:host-gateway"
+        ];
       };
 
     immich-microservices =
