@@ -76,10 +76,9 @@ in {
     # Start tray services
     environment.etc."sway/config.d/desktop.conf".source = pkgs.writeText "desktop.conf" ''
       exec ${pkgs.blueman}/bin/blueman-applet
-      exec ${pkgs.networkmanagerapplet}/bin/nm-applet --indicator
+      # exec ${pkgs.networkmanagerapplet}/bin/nm-applet --indicator
       exec ${pkgs.udiskie}/bin/udiskie --tray
-      # TODO: add -q for quiet?
-      exec ${pkgs.wpa_supplicant_gui}/bin/wpa_gui -t
+      exec ${pkgs.wpa_supplicant_gui}/bin/wpa_gui -q -t
     '';
 
     programs.waybar.enable = true;
