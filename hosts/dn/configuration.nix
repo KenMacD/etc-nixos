@@ -84,7 +84,6 @@
 
   boot.kernelParams = [
     # "nohz_full=1-7"
-    "console=tty2"
     "preempt=full"
     "nmi_watchdog=0"
     "vm.dirty_writeback_centisecs=6000"
