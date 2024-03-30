@@ -6,7 +6,6 @@
 }:
 with lib; let
   cfg = config.services.zerotier-home;
-  token = "TOKEN"; # TODO: secretify token:
   domain = "zero.macdermid.ca";
   network = "NETWORK";
   dnsServers = "IP ADDR"; # TODO: sync from ZT console
@@ -25,6 +24,11 @@ in {
   };
 
   config = mkIf cfg.enable {
+    # Must contain ZEROTIER_CENTRAL_TOKEN
+    sops.secrets.zeronsd = {
+      sopsFile = ./zerotier.secrets.yaml;
+    };
+
     services.zerotierone = {
       enable = true;
       joinNetworks = [network];
@@ -58,12 +62,12 @@ in {
 
       serviceConfig = {
         Type = "simple";
+	EnvironmentFile = config.sops.secrets.zeronsd.path;
 
         ExecStart = concatStringsSep " " [
           "${cfg.zeronsd.package}/bin/zeronsd"
           "start"
           "-s /var/lib/zerotier-one/authtoken.secret"
-          "-t ${pkgs.writeTextDir "token" token}/token"
           "-d ${domain}"
           "${network}"
         ];
