@@ -53,7 +53,7 @@ in {
   ########################################
   sops.defaultSopsFile = ./secrets.yaml;
   sops.secrets.cloudflare = {};
-  sops.secrets.oauth2_proxy = {};
+  sops.secrets.miniflux = {};
   sops.secrets.telegraf = {};
 
   ########################################
@@ -143,12 +143,17 @@ in {
 
   services.miniflux = {
     enable = true;
-    adminCredentialsFile = "/etc/nixos/miniflux-admin-credentials";
+    adminCredentialsFile =  config.sops.secrets.miniflux.path;
     config = {
       DEBUG = "off";
       LISTEN_ADDR = "127.0.0.1:35001";
       BASE_URL = "https://miniflux.home.macdermid.ca";
-      AUTH_PROXY_HEADER = "X-Email";
+#      AUTH_PROXY_HEADER = "X-Email";
+      OAUTH2_PROVIDER="oidc";
+      OAUTH2_CLIENT_ID="miniflux";
+      OAUTH2_REDIRECT_URL="https://miniflux.home.macdermid.ca/oauth2/oidc/callback";
+      OAUTH2_OIDC_DISCOVERY_ENDPOINT="https://auth.home.macdermid.ca/oauth2/openid/miniflux";
+#      OAUTH2_USER_CREATION=1
     };
   };
   services.avahi.publish = {
@@ -173,46 +178,6 @@ in {
     enableClient = true;
     clientSettings = {
       uri = "${config.services.kanidm.serverSettings.origin}";
-    };
-  };
-
-  systemd.services.oauth2_proxy = {
-    after = ["nginx.service" "kanidm.service"];
-    requires = ["nginx.service" "kanidm.service"];
-  };
-
-  services.oauth2_proxy = let
-    clientId = "miniflux";
-  in {
-    enable = true;
-    provider = "oidc";
-    scope = "openid email";
-    cookie.domain = ".home.macdermid.ca";
-
-    loginURL = "${config.services.kanidm.serverSettings.origin}/ui/oauth2";
-    redeemURL = "${config.services.kanidm.serverSettings.origin}/oauth2/token";
-    validateURL = "${config.services.kanidm.serverSettings.origin}/oauth2/openid/${clientId}/userinfo";
-
-    clientID = clientId;
-    keyFile = config.sops.secrets.oauth2_proxy.path;
-    email.domains = ["*"];
-    reverseProxy = true;
-    passAccessToken = true;
-    setXauthrequest = true;
-
-    nginx = {
-      proxy = "http://127.0.0.1:4180";
-      virtualHosts = [
-        "miniflux.home.macdermid.ca"
-      ];
-    };
-
-    extraConfig = {
-      whitelist-domain = ".home.macdermid.ca";
-      oidc-issuer-url = "${config.services.kanidm.serverSettings.origin}/oauth2/openid/${clientId}";
-      provider-display-name = "Kanidm";
-      skip-provider-button = true;
-      code-challenge-method = "S256";
     };
   };
 
