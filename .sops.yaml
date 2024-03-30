@@ -5,15 +5,15 @@ keys:
   - &host_r1pro age1da2yp3vd85556a0eh0t52fgdjkh0f4fayvjddwe90awmj3w2x3csh4pkw6
 
 creation_rules:
-  - path_regex: hosts/dn/secrets.yaml$
-    key_groups:
-    - pgp:
-      - *admin_kenny
-      age:
-      - *host_dn
   - path_regex: hosts/yoga/secrets.yaml$
     key_groups:
     - pgp:
       - *admin_kenny
       age:
       - *host_yoga
+  - path_regex: modules/zerotier.secrets.yaml$
+    key_groups:
+    - pgp:
+      - *admin_kenny
+      age:
+      - *host_dn
