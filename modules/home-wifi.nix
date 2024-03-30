@@ -12,18 +12,27 @@ in {
   };
 
   config = mkIf cfg.enable {
-    systemd.network.networks."30-homewifi" = {
-      matchConfig = {
-        Name = "wlp0s20f3";
-        BSSID = "3c:cd:57:98:cd:bb";
-        SSID = "MacDermid";
-      };
-      networkConfig = {
-        MulticastDNS = true;
-      } // config.systemd.network.networks."40-wlp0s20f3".networkConfig;
-      dhcpV4Config = {
-        UseDomains = true;
-      };
-    };
+    systemd.network.networks =
+      foldl'
+      (acc: interface:
+        {
+          "30-homewifi-${interface}" = {
+            matchConfig = {
+              Name = interface;
+              SSID = "MacDermid";
+            };
+            networkConfig =
+              {
+                MulticastDNS = true;
+              }
+              // (getAttr "40-${interface}" config.systemd.network.networks).networkConfig;
+            dhcpV4Config = {
+              UseDomains = true;
+            };
+          };
+        }
+        // acc)
+      {}
+      config.networking.wireless.interfaces;
   };
 }
