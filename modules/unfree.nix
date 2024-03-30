@@ -13,6 +13,7 @@ with lib; {
       "discord"
       "genymotion"
       "hplip"
+      "j-link"
       "megasync"
       "mongodb-4"
       "nosql-workbench"
@@ -26,6 +27,9 @@ with lib; {
       "vscode-extension-github-copilot"
       "vscode-extension-ms-vscode-cpptools"
       "vscode-extension-ms-vscode-remote-remote-ssh"
+      "unifi-controller"
+      "unrar"
+      "vscode"
       "zerotierone"
     ];
 }
