@@ -112,6 +112,7 @@
       # nix build .#nixosConfigurations.iso.config.system.build.isoImage
       iso = nixpkgs.lib.nixosSystem {
         inherit system;
+        specialArgs = {inherit system inputs;};
         modules = [
           ./common.nix
           "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-calamares-plasma6.nix"
@@ -136,6 +137,7 @@
 
       r1pro = nixpkgs.lib.nixosSystem {
         inherit system;
+        specialArgs = {inherit system inputs;};
         modules = [
           ({pkgs, ...}: {
             nix.nixPath = let path = toString ./.; in ["repl=${path}/repl.nix" "nixpkgs=${inputs.nixpkgs}"];
@@ -151,6 +153,7 @@
 
       yoga = nixpkgs.lib.nixosSystem {
         inherit system;
+        specialArgs = {inherit system inputs;};
         modules = [
           ({...}: {
             nix.nixPath = let path = toString ./.; in ["repl=${path}/repl.nix" "nixpkgs=${inputs.nixpkgs}"];
