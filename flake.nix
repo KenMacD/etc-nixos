@@ -8,11 +8,11 @@
   };
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-  inputs.nixpkgs-staging-next.url = "github:NixOS/nixpkgs/staging-next";
-  inputs.nixpkgs-master.url = "github:NixOS/nixpkgs/master";
   inputs.nixpkgs-23_05.url = "github:NixOS/nixpkgs/nixos-23.05";
   inputs.nixpkgs-23_11.url = "github:NixOS/nixpkgs/nixos-23.11";
   inputs.nixpkgs-stable.follows = "nixpkgs-23_11";
+  inputs.nixpkgs-staging-next.url = "github:NixOS/nixpkgs/staging-next";
+  inputs.nixpkgs-master.url = "github:NixOS/nixpkgs/master";
   inputs.nixpkgs-mongodb-pin.url = "github:NixOS/nixpkgs/106c4ac6aa6e325263b740fd30bdda3b430178ef";
   inputs.nixpkgs-pr291484.url = "github:NixOS/nixpkgs/9c96d0aa255827aa0249148c759a98fc2691db10";
 
@@ -54,11 +54,11 @@
   outputs = {
     self,
     nixpkgs,
-    nixpkgs-staging-next,
     nixpkgs-master,
-    nixpkgs-stable,
     nixpkgs-mongodb-pin,
     nixpkgs-pr291484,
+    nixpkgs-stable,
+    nixpkgs-staging-next,
     devenv,
     fenix,
     flake-utils,

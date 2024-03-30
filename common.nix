@@ -14,6 +14,18 @@ with lib; {
   ];
 
   ########################################
+  # Vulnerabilty CVE-2024-3094
+  ########################################
+  # Re: https://github.com/NixOS/nixpkgs/pull/300028
+  # Re: https://github.com/DarkKirb/nixos-config/pull/381
+  system.replaceRuntimeDependencies = [
+    {
+      original = pkgs.xz;
+      replacement = inputs.nixpkgs-staging-next.legacyPackages.${config.nixpkgs.system}.xz;
+    }
+  ];
+
+  ########################################
   # Nix
   ########################################
   system.stateVersion = "23.05";
