@@ -4,6 +4,7 @@
   pkgs,
   ...
 }:
+# Re: https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/profiles/hardened.nix
 with lib; {
   security.apparmor.enable = mkDefault true;
   security.sudo.execWheelOnly = mkDefault true;
