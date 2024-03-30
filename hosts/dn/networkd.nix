@@ -23,7 +23,9 @@
   networking.interfaces.wlp0s20f3.useDHCP = true;
   networking.interfaces.enp0s20f0u1c2.useDHCP = true;
 
+  systemd.services.wpa_supplicant.preStart = "touch /etc/wpa_supplicant.conf";
   networking.wireless = {
+    allowAuxiliaryImperativeNetworks = true;
     extraConfig = ''
       p2p_disabled=1
     '';
