@@ -120,6 +120,8 @@
     useNetworkd = true;
     networkmanager.enable = false;
   };
+  home-wifi.enable = true;
+
   systemd.services."systemd-networkd-wait-online".enable = lib.mkForce false;
 
   services.resolved = {
