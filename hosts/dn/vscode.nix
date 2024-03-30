@@ -14,7 +14,18 @@
 # curl https://github.com/login/oauth/access_token -X POST -d 'client_id=01ab8ac9400c4e429b23&scope=user:email&device_code=YOUR_DEVICE_ID&grant_type=urn:ietf:params:oauth:grant-type:device_code'
 # use access_token
 let
-  vscode = pkgs.vscodium;
+  vscode = pkgs.vscodium.overrideAttrs (old: rec {
+    # Running copilot in vscodium, see bug: https://github.com/VSCodium/vscodium/issues/888
+    postInstall =
+      (old.postInstall or "")
+      + ''
+        substituteInPlace $out/lib/vscode/resources/app/product.json \
+          --replace '"GitHub.copilot": ["inlineCompletionsAdditions"],' \
+             '"GitHub.copilot": ["inlineCompletions","inlineCompletionsNew","inlineCompletionsAdditions","textDocumentNotebook","interactive","terminalDataWriteEvent"],' \
+          --replace '"GitHub.copilot-nightly": ["inlineCompletionsAdditions"],' \
+             '"GitHub.copilot-nightly": ["inlineCompletions","inlineCompletionsNew","inlineCompletionsAdditions","textDocumentNotebook","interactive","terminalDataWriteEvent"],' \
+      '';
+  });
 in {
   # secret service needed to store API key
   services.passSecretService.enable = true;
