@@ -1,0 +1,21 @@
+diff --git a/scripts/assume.fish b/scripts/assume.fish
+index 0d73045..4320fff 100644
+--- a/scripts/assume.fish
++++ b/scripts/assume.fish
+@@ -1,5 +1,7 @@
+ #!/bin/fish
+ 
++function assume
++
+ #this is set to true because the alias will be configured to point to the fish script in a previous step
+ #this happens in the assume script
+ set -gx GRANTED_ALIAS_CONFIGURED "true"
+@@ -91,4 +93,6 @@ else if test "$GRANTED_FLAG" = "GrantedOutput"
+   end
+ end
+ 
+-exit $GRANTED_STATUS
+\ No newline at end of file
++return $GRANTED_STATUS
++
++end
