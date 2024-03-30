@@ -7,9 +7,9 @@
 with lib; let
   cfg = config.services.zerotier-home;
   domain = "zero.macdermid.ca";
-  network = "NETWORK";
-  dnsServers = "IP ADDR"; # TODO: sync from ZT console
-  ztInterface = "ztINTERFACE";
+  network = "3efa5cb78a1548d5";
+  dnsServers = "fd3e:fa5c:b78a:1548:d599:9336:cc44:4d02"; # TODO: sync from ZT console
+  ztInterface = "ztrfyet727";
 in {
   options.services.zerotier-home = {
     enable = mkEnableOption "Zerotier network";
