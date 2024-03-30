@@ -1,6 +1,10 @@
 self: super:
 # This overlay contains hopefully temporary patches.
-rec {
+let
+  stdenvDebug = super.stdenvAdapters.keepDebugInfo super.pkgs.clang16Stdenv;
+in rec {
+  firefox = super.firefox.overrideAttrs (old: {
+    libs = old.libs + ":/run/opengl-driver/lib: " + super.intel-gmmlib.outPath + "/lib";
   });
 
   vaultwarden = super.vaultwarden.overrideAttrs (old: {
