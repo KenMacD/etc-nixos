@@ -1,17 +1,6 @@
 self: super:
 # This overlay contains hopefully temporary patches.
 rec {
-  # Runnin copilot in vscodium, see bug: https://github.com/VSCodium/vscodium/issues/888
-  vscodium = super.vscodium.overrideAttrs (old: rec {
-    postInstall =
-      (old.postInstall or "")
-      + ''
-        substituteInPlace $out/lib/vscode/resources/app/product.json \
-          --replace '"GitHub.copilot": ["inlineCompletionsAdditions"],' \
-             '"GitHub.copilot": ["inlineCompletions","inlineCompletionsNew","inlineCompletionsAdditions","textDocumentNotebook","interactive","terminalDataWriteEvent"],' \
-          --replace '"GitHub.copilot-nightly": ["inlineCompletionsAdditions"],' \
-             '"GitHub.copilot-nightly": ["inlineCompletions","inlineCompletionsNew","inlineCompletionsAdditions","textDocumentNotebook","interactive","terminalDataWriteEvent"],' \
-      '';
   });
 
   vaultwarden = super.vaultwarden.overrideAttrs (old: {
