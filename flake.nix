@@ -150,6 +150,7 @@
           ./common.nix
           ./hosts/r1pro/configuration.nix
           ./hosts/r1pro/hardware.nix
+          sops-nix.nixosModules.sops
         ];
       };
 
