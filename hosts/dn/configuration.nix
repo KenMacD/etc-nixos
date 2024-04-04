@@ -30,7 +30,13 @@
   ########################################
   nix.settings = {
     sandbox = true;
-    substituters = ["https://aseipp-nix-cache.global.ssl.fastly.net"];
+    substituters = [
+      "https://nix.home.macdermid.ca"
+      "https://aseipp-nix-cache.global.ssl.fastly.net"
+    ];
+    trusted-public-keys = [
+      "nix.home.macdermid.ca:CQuA65gXW8KuFlk9Ufx5oMsAiTZzQhfluNoaOzypXMo="
+    ];
   };
   nix.settings.trusted-users = ["root" "kenny"];
   nix.extraOptions = ''

@@ -53,6 +53,7 @@ in {
   ########################################
   sops.defaultSopsFile = ./secrets.yaml;
   sops.secrets.cloudflare = {};
+  sops.secrets.nix-cache-key= {};
   sops.secrets.miniflux = {};
   sops.secrets.telegraf = {};
 
@@ -205,6 +206,11 @@ in {
     thermald.enable = true;
     udisks2.enable = true;
     upower.enable = true;
+    nix-serve = {
+      enable = true;
+      bindAddress = "127.0.0.1";
+      secretKeyFile = config.sops.secrets.nix-cache-key.path;
+    };
   };
 
   ########################################
@@ -521,6 +527,7 @@ in {
           access_log off;
         '';
       };
+      "nix.home.macdermid.ca" = proxy config.services.nix-serve.port;
       "rabbitmq.home.macdermid.ca" = proxy config.services.rabbitmq.managementPlugin.port;
       "unifi.home.macdermid.ca" = proxytls 8443;
     };
