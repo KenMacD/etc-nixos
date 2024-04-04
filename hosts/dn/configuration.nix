@@ -357,6 +357,17 @@
 
   programs.thefuck.enable = true;
 
+  # Allow input access of espanso
+  security.wrappers.espanso = {
+    source = "${pkgs.espanso-wayland}/bin/espanso";
+    capabilities = "cap_dac_override+p";
+    owner = "root";
+    group = "root";
+  };
+
+  services.espanso.enable = true;
+  systemd.user.services.espanso.serviceConfig.ExecStart = lib.mkForce "/run/wrappers/bin/espanso -vvv worker";
+
   environment.systemPackages = with pkgs;
   with config.boot.kernelPackages; [
     # General
