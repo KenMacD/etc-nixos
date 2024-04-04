@@ -14,7 +14,7 @@
   inputs.nixpkgs-staging-next.url = "github:NixOS/nixpkgs/staging-next";
   inputs.nixpkgs-master.url = "github:NixOS/nixpkgs/master";
   inputs.nixpkgs-mongodb-pin.url = "github:NixOS/nixpkgs/106c4ac6aa6e325263b740fd30bdda3b430178ef";
-  inputs.nixpkgs-pr291484.url = "github:NixOS/nixpkgs/9c96d0aa255827aa0249148c759a98fc2691db10";
+  inputs.nixpkgs-pr291484.url = "github:NixOS/nixpkgs/9c96d0aa255827aa0249148c759a98fc2691db10"; # Espanso 2.2.1
 
   inputs.devenv = {
     url = "github:cachix/devenv";
