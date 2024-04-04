@@ -20,6 +20,10 @@ with pkgs; let
 
     git-no-hooks = callPackage ./git-no-hooks {};
 
+    go-mod-upgrade = callPackage ./go-mod-upgrade.nix {};
+
+    goplantuml = callPackage ./goplantuml.nix {};
+
     granted-update = callPackage ./granted.nix {};
 
     immich-go = callPackage ./immich-go.nix {};
