@@ -70,7 +70,7 @@ with lib; {
   security.unprivilegedUsernsClone = mkDefault config.virtualisation.containers.enable;
 
   # Limit previous generations to avoid /boot filling up
-  boot.loader.systemd-boot.configurationLimit = mkDefault 10;
+  boot.loader.systemd-boot.configurationLimit = mkDefault 50;
   boot.loader.efi.canTouchEfiVariables = mkDefault true;
   boot.tmp.useTmpfs = mkDefault true;
 
