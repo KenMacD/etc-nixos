@@ -106,10 +106,21 @@ in {
     nameservers = ["172.27.0.1"];
   };
 
+  # To access from dbeaver forward to socket:
+  # ssh kenny@yoga -L 35432:/var/run/postgresql/.s.PGSQL.5432
   services.postgresql = {
     # TODO: Testing JIT package... does it help?
     package = pkgs.postgresql_16_jit;
     enableJIT = true;
+    authentication = ''
+      local all all ident map=mapping
+    '';
+    identMap = ''
+      mapping kenny    postgres
+      mapping root     postgres
+      mapping postgres postgres
+      mapping /^(.*)$  \1
+    '';
     settings = {
       # Set larger query size to see immich queries
       # default: 1024
