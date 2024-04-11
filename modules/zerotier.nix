@@ -48,6 +48,7 @@ in {
         ConfigureWithoutCarrier = true;
         DHCP = false;
         DNS = dnsServers;
+        DNSDefaultRoute = false;
         Domains = domain;
         KeepConfiguration = "static";
       };
@@ -62,7 +63,7 @@ in {
 
       serviceConfig = {
         Type = "simple";
-	EnvironmentFile = config.sops.secrets.zeronsd.path;
+        EnvironmentFile = config.sops.secrets.zeronsd.path;
 
         ExecStart = concatStringsSep " " [
           "${cfg.zeronsd.package}/bin/zeronsd"
