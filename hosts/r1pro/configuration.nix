@@ -63,6 +63,14 @@ in {
   # Services
   ########################################
   services.fwupd.enable = true;
+  services.caddy = {
+    enable = true;
+    virtualHosts."jellyfin.macdermid.ca" = {
+      extraConfig = ''
+        respond "Access denied" 403 {
+          close
+        }
+      '';
     };
   };
   services.openssh = {
