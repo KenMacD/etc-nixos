@@ -47,7 +47,6 @@ in {
   ########################################
   # Networking
   ########################################
-  home-wifi.enable = true;
   # TODO: set
   networking.firewall.enable = false;
   networking = {
