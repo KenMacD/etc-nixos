@@ -62,16 +62,18 @@ in {
   ########################################
   # Services
   ########################################
-  services = {
-    fwupd.enable = true;
-    openssh.enable = true;
-    openssh.settings.PasswordAuthentication = true;
-    zerotierone = {
-      enable = true;
-      joinNetworks = [
-	"3efa5cb78a1548d5" # Home
-      ];
+  services.fwupd.enable = true;
     };
+  };
+  services.openssh = {
+    enable = true;
+    settings.PasswordAuthentication = true;
+  };
+  services.zerotierone = {
+    enable = true;
+    joinNetworks = [
+      "3efa5cb78a1548d5" # Home
+    ];
   };
 
   systemd.services.zerotierone.serviceConfig = {
