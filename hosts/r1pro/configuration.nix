@@ -67,6 +67,9 @@ in {
   };
   services.openssh = {
     enable = true;
+    extraConfig = ''
+      PrintLastLog no
+    '';
     settings.PasswordAuthentication = true;
   };
   services.zerotierone = {
