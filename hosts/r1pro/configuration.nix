@@ -89,6 +89,17 @@ in {
   ########################################
   # User
   ########################################
+  users.motd = ''
+    Welcome to r1pro. This system is running NixOS.
+
+    To find a package:
+    $ nix search nixpkgs ___
+    or use https://search.nixos.org/packages
+
+    To install a package:
+    $ nix shell nixpkgs#___
+  '';
+
   users.users.kenny = {
     extraGroups = ["media" "podman" "dialout"];
   };
