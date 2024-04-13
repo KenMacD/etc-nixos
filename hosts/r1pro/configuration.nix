@@ -67,12 +67,11 @@ in {
     enable = true;
     virtualHosts."jellyfin.macdermid.ca" = {
       extraConfig = ''
-        respond "Access denied" 403 {
-          close
-        }
+        reverse_proxy 127.0.0.1:8096
       '';
     };
   };
+  services.jellyfin.enable = true;
   services.openssh = {
     enable = true;
     extraConfig = ''
