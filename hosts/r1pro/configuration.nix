@@ -65,9 +65,17 @@ in {
   services.fwupd.enable = true;
   services.caddy = {
     enable = true;
+    extraConfig = ''
+      (common) {
+        header /* {
+          -Server
+        }
+      }
+    '';
     virtualHosts."jellyfin.macdermid.ca" = {
       extraConfig = ''
         reverse_proxy 127.0.0.1:8096
+        import common
       '';
     };
   };
