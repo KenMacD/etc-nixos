@@ -72,6 +72,11 @@
   services.fwupd.enable = true;
   services.caddy = {
     enable = true;
+    globalConfig = ''
+      cert_issuer acme {
+        disable_http_challenge
+      }
+    '';
     extraConfig = ''
       (common) {
         header /* {
