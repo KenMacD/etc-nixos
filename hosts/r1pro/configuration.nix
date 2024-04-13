@@ -105,6 +105,15 @@
     enable = true;
     extraConfig = ''
       PrintLastLog no
+
+      Match User media
+        ChrootDirectory /srv/media
+
+        AllowAgentForwarding no
+        AllowTcpForwarding no
+        X11Forwarding no
+
+        ForceCommand internal-sftp
     '';
     settings.PasswordAuthentication = true;
   };
@@ -136,8 +145,17 @@
     $ nix shell nixpkgs#___
   '';
 
-  users.users.kenny = {
-    extraGroups = ["media" "podman" "dialout"];
+  users.groups.media.members = with config.users.users; [
+    config.services.jellyfin.user
+
+    kenny.name
+    media.name
+  ];
+
+  users.users.media = {
+    uid = 1001;
+    isNormalUser = true;
+    shell = "${pkgs.shadow}/bin/nologin";
   };
 
   ########################################
