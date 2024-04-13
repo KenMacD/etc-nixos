@@ -3,9 +3,7 @@
   pkgs,
   lib,
   ...
-}: let
-  secrets = import ./secrets.nix;
-in {
+}: {
   imports = [
     ./networkd.nix
   ];
@@ -33,6 +31,15 @@ in {
         intel-compute-runtime # OpenCL filter support (hardware tonemapping and subtitle burn-in)
       ];
     };
+  };
+
+  ########################################
+  # Secrets
+  ########################################
+  sops.defaultSopsFile = ./secrets.yaml;
+  sops.secrets.cloudflare-tunnel = {
+    owner = config.services.cloudflared.user;
+    inherit (config.services.cloudflared) group;
   };
 
   ########################################
@@ -77,6 +84,15 @@ in {
         reverse_proxy 127.0.0.1:8096
         import common
       '';
+    };
+  };
+  services.cloudflared = {
+    enable = true;
+    tunnels = {
+      "r1pro" = {
+        credentialsFile = config.sops.secrets.cloudflare-tunnel.path;
+        default = "http_status:404";
+      };
     };
   };
   services.jellyfin.enable = true;
