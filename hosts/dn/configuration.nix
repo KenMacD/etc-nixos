@@ -373,6 +373,10 @@
 
   services.espanso.enable = true;
   systemd.user.services.espanso.serviceConfig.ExecStart = lib.mkForce "/run/wrappers/bin/espanso -vvv worker";
+  # Workaround for bash & commands missing from the service path:
+  # Nixos doesn't appear to use systemctl import-environment PATH for
+  # these, so instead just add the current-system to the path
+  systemd.user.services.espanso.path = [ "/run/current-system/sw" ];
 
   environment.systemPackages = with pkgs;
   with config.boot.kernelPackages; [
