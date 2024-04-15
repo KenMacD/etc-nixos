@@ -101,6 +101,21 @@
     };
   };
   services.jellyfin.enable = true;
+  systemd.services.jellyfin.serviceConfig = {
+    CapabilityBoundingSet = "";
+    ProtectProc = "invisible";
+    ProcSubset = "pid";
+    ProtectHome = true;
+    ProtectSystem = "strict";
+    ProtectClock = true;
+    ReadWritePaths = [
+      "/srv/media"
+      config.services.jellyfin.dataDir
+      config.services.jellyfin.configDir
+      config.services.jellyfin.cacheDir
+      config.services.jellyfin.logDir
+    ];
+  };
   services.openssh = {
     enable = true;
     extraConfig = ''
