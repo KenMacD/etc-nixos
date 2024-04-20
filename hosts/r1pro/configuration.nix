@@ -116,6 +116,12 @@
       config.services.jellyfin.logDir
     ];
   };
+  services.nzbget.enable = true;
+  systemd.services.nzbget.path = with pkgs; [
+    unrar
+    p7zip
+    python39 # TODO: when videosort updated, update python
+  ];
   services.openssh = {
     enable = true;
     extraConfig = ''
@@ -162,6 +168,7 @@
 
   users.groups.media.members = with config.users.users; [
     config.services.jellyfin.user
+    config.services.nzbget.user
 
     kenny.name
     media.name
