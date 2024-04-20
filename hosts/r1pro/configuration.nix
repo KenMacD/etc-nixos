@@ -138,6 +138,10 @@
     '';
     settings.PasswordAuthentication = true;
   };
+  services.zerotier-home = {
+    enable = true;
+    zeronsd.enable = true;
+  };
   services.zerotierone = {
     enable = true;
     joinNetworks = [

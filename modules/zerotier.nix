@@ -23,7 +23,7 @@ in {
       package = mkOption {
         type = types.package;
         description = mkDoc "ZeroNSD Package";
-        default = callPackage ../pkgs/zeronsd {};
+        default = pkgs.callPackage ../pkgs/zeronsd {};
       };
     };
   };
