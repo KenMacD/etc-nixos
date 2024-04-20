@@ -11,6 +11,11 @@ with pkgs; let
 
     deptree = callPackage ./deptree.nix {};
 
+    espanso-wayland = callPackage ./espanso {
+      waylandSupport = true;
+      x11Support = false;
+    };
+
     fre = callPackage ./fre.nix {};
 
     freerdp3 = libsForQt5.callPackage ./freerdp3.nix {

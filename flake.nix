@@ -14,7 +14,6 @@
   inputs.nixpkgs-staging-next.url = "github:NixOS/nixpkgs/staging-next";
   inputs.nixpkgs-master.url = "github:NixOS/nixpkgs/master";
   inputs.nixpkgs-mongodb-pin.url = "github:NixOS/nixpkgs/66adc1e47f8784803f2deb6cacd5e07264ec2d5c"; # 2024-04-19
-  inputs.nixpkgs-pr291484.url = "github:NixOS/nixpkgs/9c96d0aa255827aa0249148c759a98fc2691db10"; # Espanso 2.2.1
   inputs.nixpkgs-pr301553.url = "github:NixOS/nixpkgs/724e7a8655c59cbdd6770b0b710bc374690256ea"; # Podman 5.0.1
 
   inputs.devenv = {
@@ -57,7 +56,6 @@
     nixpkgs,
     nixpkgs-master,
     nixpkgs-mongodb-pin,
-    nixpkgs-pr291484,
     nixpkgs-pr301553,
     nixpkgs-stable,
     nixpkgs-staging-next,
@@ -99,11 +97,6 @@
     };
     overlay-staging-next = final: prev: {
       staging-next = nixpkgs-staging-next.legacyPackages.${prev.system};
-    };
-    overlay-espanso-new = final: prev: {
-      espanso =
-        (import nixpkgs-pr291484 {inherit system;})
-        .espanso;
     };
   in {
     packages.x86_64-linux = import ./pkgs {
@@ -191,7 +184,6 @@
               # (import ./overlays/sway-dbg.nix)
               overlay-nix-bubblewrap
               (import ./overlays/testing.nix)
-              overlay-espanso-new
             ];
           })
           # Add to regsitry so nixpkgs commands use system versions
