@@ -15,7 +15,7 @@ with lib; {
       "hplip"
       "j-link"
       "megasync"
-      "mongodb-4"
+      "mongodb"
       "nosql-workbench"
       "obsidian"
       "slack"
