@@ -351,7 +351,6 @@ in {
         HTTP_ADDRESS = "127.0.0.1";
         ROOT_URL = "https://git.home.macdermid.ca/";
       };
-      log.LEVEL = "Warn";
       service.DISABLE_REGISTRATION = true; # After creating my account
       session.COOKIE_SECURE = true;
     };
