@@ -63,8 +63,8 @@ in {
       description = "zeronsd";
 
       wantedBy = ["multi-user.target"];
-      after = ["zerotierone.service"];
-      requires = ["zerotierone.service"];
+      after = ["network-online.target" "zerotierone.service"];
+      requires = ["network-online.target" "zerotierone.service"];
 
       serviceConfig = {
         Type = "simple";
