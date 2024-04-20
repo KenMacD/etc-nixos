@@ -53,9 +53,10 @@ in {
   ########################################
   sops.defaultSopsFile = ./secrets.yaml;
   sops.secrets.cloudflare = {};
-  sops.secrets.nix-cache-key= {};
+  sops.secrets.nix-cache-key = {};
   sops.secrets.miniflux = {};
   sops.secrets.telegraf = {};
+  sops.secrets.restic-immich = {};
 
   ########################################
   # Boot
@@ -257,6 +258,22 @@ in {
   ########################################
   # Complex Services
   ########################################
+  # Backups
+  services.restic.backups.immich = {
+    repository = "/run/media/red/immich-restic";
+    passwordFile = config.sops.secrets.restic-immich.path;
+    paths = [
+      "library"
+      "upload"
+    ];
+    timerConfig = {
+      OnCalendar = "02:05";
+      RandomizedDelaySec = "1h";
+    };
+  };
+  # TODO: Not need once 0.18 released? See Restic 2092, 4026, 4762.
+  systemd.services.restic-backups-immich.serviceConfig.WorkingDirectory = "/mnt/easy/immich";
+
   # Grafana
   services.grafana = {
     enable = true;
