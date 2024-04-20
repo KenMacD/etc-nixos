@@ -13,7 +13,7 @@
   inputs.nixpkgs-stable.follows = "nixpkgs-23_11";
   inputs.nixpkgs-staging-next.url = "github:NixOS/nixpkgs/staging-next";
   inputs.nixpkgs-master.url = "github:NixOS/nixpkgs/master";
-  inputs.nixpkgs-mongodb-pin.url = "github:NixOS/nixpkgs/106c4ac6aa6e325263b740fd30bdda3b430178ef";
+  inputs.nixpkgs-mongodb-pin.url = "github:NixOS/nixpkgs/66adc1e47f8784803f2deb6cacd5e07264ec2d5c"; # 2024-04-19
   inputs.nixpkgs-pr291484.url = "github:NixOS/nixpkgs/9c96d0aa255827aa0249148c759a98fc2691db10"; # Espanso 2.2.1
   inputs.nixpkgs-pr301553.url = "github:NixOS/nixpkgs/724e7a8655c59cbdd6770b0b710bc374690256ea"; # Podman 5.0.1
 
@@ -81,13 +81,14 @@
     overlay-master = final: prev: {
       master = nixpkgs-master.legacyPackages.${prev.system};
     };
-    overlay-mongodb-pin = self: super: {
-      mongodb-4_4 =
-        (import nixpkgs-mongodb-pin {
-          inherit system;
-          config.allowUnfreePredicate = pkg: "mongodb" == (super.lib.getName pkg);
-        })
-        .mongodb-4_4;
+    overlay-mongodb-pin = self: super: let
+      pinned-pkgs = import nixpkgs-mongodb-pin {
+        inherit system;
+        config.allowUnfreePredicate = pkg: "mongodb" == (super.lib.getName pkg);
+      };
+    in {
+      mongodb-4_4 = pinned-pkgs.mongodb-4_4;
+      mongodb-5_0 = pinned-pkgs.mongodb-5_0;
     };
     overlay-nix-bubblewrap = final: prev: {
       nix-bubblewrap = nix-bubblewrap.packages.${prev.system}.default;
