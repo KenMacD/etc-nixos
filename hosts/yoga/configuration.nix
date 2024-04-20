@@ -83,7 +83,7 @@ in {
     domain = "home.macdermid.ca";
     hostId = "f5a3f353";
     firewall = {
-      # grafana, nzbget, test, minidlna, portainer
+      # grafana, test, minidlna, portainer
       allowedTCPPorts = [
         80
         443
@@ -200,7 +200,6 @@ in {
   users.groups.media.members = with config.systemd.services; [
     jellyfin.serviceConfig.User
     minidlna.serviceConfig.User
-    nzbget.serviceConfig.User
   ];
   users.groups.render.members = with config.systemd.services; [
     jellyfin.serviceConfig.User
@@ -548,7 +547,6 @@ in {
       "jellyfin.home.macdermid.ca" = public (proxywss 8096);
       "matrix.home.macdermid.ca" = proxy config.services.matrix-conduit.settings.global.port;
       "miniflux.home.macdermid.ca" = proxy 35001;
-      "nzbget.home.macdermid.ca" = proxy 6789;
       "nginxstatus.home.macdermid.ca" = base {
         "/".extraConfig = ''
           stub_status on;
@@ -560,16 +558,6 @@ in {
       "unifi.home.macdermid.ca" = proxytls 8443;
     };
   };
-
-  # TODO: backup nzbget config
-  services.nzbget = {
-    enable = true;
-  };
-  systemd.services.nzbget.path = with pkgs; [
-    unrar
-    p7zip
-    python39 # TODO: when videosort updated, update python
-  ];
 
   # Minidlna
   services.minidlna = {
@@ -653,11 +641,6 @@ in {
     })
     wpa_supplicant
     yt-dlp
-
-    # for nzbget
-    unrar
-    p7zip
-    python3
 
     # for postgresql upgrade
     (let
