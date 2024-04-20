@@ -156,17 +156,17 @@ in {
 
   services.miniflux = {
     enable = true;
-    adminCredentialsFile =  config.sops.secrets.miniflux.path;
+    adminCredentialsFile = config.sops.secrets.miniflux.path;
     config = {
       DEBUG = "off";
       LISTEN_ADDR = "127.0.0.1:35001";
       BASE_URL = "https://miniflux.home.macdermid.ca";
-#      AUTH_PROXY_HEADER = "X-Email";
-      OAUTH2_PROVIDER="oidc";
-      OAUTH2_CLIENT_ID="miniflux";
-      OAUTH2_REDIRECT_URL="https://miniflux.home.macdermid.ca/oauth2/oidc/callback";
-      OAUTH2_OIDC_DISCOVERY_ENDPOINT="https://auth.home.macdermid.ca/oauth2/openid/miniflux";
-#      OAUTH2_USER_CREATION=1
+      #      AUTH_PROXY_HEADER = "X-Email";
+      OAUTH2_PROVIDER = "oidc";
+      OAUTH2_CLIENT_ID = "miniflux";
+      OAUTH2_REDIRECT_URL = "https://miniflux.home.macdermid.ca/oauth2/oidc/callback";
+      OAUTH2_OIDC_DISCOVERY_ENDPOINT = "https://auth.home.macdermid.ca/oauth2/openid/miniflux";
+      #      OAUTH2_USER_CREATION=1
     };
   };
   services.avahi.publish = {
@@ -242,7 +242,7 @@ in {
   virtualisation.podman = {
     enable = true;
     dockerCompat = false;
-    # defaultNetwork.settings.dns_enabled.enable = true;
+    #defaultNetwork.settings.dns_enabled.enable = true;
   };
   virtualisation.docker.enable = true;
   virtualisation.libvirtd = {
