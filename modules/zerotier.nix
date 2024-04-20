@@ -8,7 +8,11 @@ with lib; let
   cfg = config.services.zerotier-home;
   domain = "zero.macdermid.ca";
   network = "3efa5cb78a1548d5";
-  dnsServers = "fd3e:fa5c:b78a:1548:d599:9336:cc44:4d02"; # TODO: sync from ZT console
+  dnsServers = [
+    # TODO: sync from ZT console
+    "fd3e:fa5c:b78a:1548:d599:9336:cc44:4d02" # dn
+    "fd3e:fa5c:b78a:1548:d599:93db:5a5b:1290" # r1pro
+  ];
   ztInterface = "ztrfyet727";
 in {
   options.services.zerotier-home = {
@@ -19,6 +23,7 @@ in {
       package = mkOption {
         type = types.package;
         description = mkDoc "ZeroNSD Package";
+        default = callPackage ../pkgs/zeronsd {};
       };
     };
   };
