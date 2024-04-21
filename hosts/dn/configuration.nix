@@ -38,7 +38,6 @@
       "nix.home.macdermid.ca:CQuA65gXW8KuFlk9Ufx5oMsAiTZzQhfluNoaOzypXMo="
     ];
   };
-  nix.settings.trusted-users = ["root" "kenny"];
   nix.extraOptions = ''
     binary-caches-parallel-connections = 12
     warn-dirty = false
