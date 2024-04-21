@@ -19,6 +19,7 @@ with lib; {
   system.stateVersion = "23.05";
   nix = {
     settings.auto-optimise-store = mkDefault true;
+    settings.trusted-users = mkDefault ["root" "@wheel"];
     gc = {
       automatic = true;
       dates = "weekly";
