@@ -142,18 +142,6 @@
     enable = true;
     zeronsd.enable = true;
   };
-  services.zerotierone = {
-    enable = true;
-    joinNetworks = [
-      "3efa5cb78a1548d5" # Home
-    ];
-  };
-
-  systemd.services.zerotierone.serviceConfig = {
-    KillMode = lib.mkForce "control-group";
-    TimeoutStopFailureMode = "kill";
-  };
-
   zramSwap.enable = true;
 
   ########################################
