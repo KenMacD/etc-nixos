@@ -85,7 +85,6 @@
         config.allowUnfreePredicate = pkg: "mongodb" == (super.lib.getName pkg);
       };
     in {
-      mongodb-4_4 = pinned-pkgs.mongodb-4_4;
       mongodb-5_0 = pinned-pkgs.mongodb-5_0;
     };
     overlay-nix-bubblewrap = final: prev: {
