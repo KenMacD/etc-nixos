@@ -180,6 +180,7 @@
               overlay-local
               overlay-staging-next
               overlay-master
+              overlay-mongodb-pin
               overlay-stable
               # (import ./overlays/sway-dbg.nix)
               overlay-nix-bubblewrap

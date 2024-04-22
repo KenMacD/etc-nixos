@@ -49,6 +49,11 @@
     extra-experimental-features = cgroups
     use-cgroups = true
   '';
+  # When building mongodb enable the following. Otherwise it takes
+  # forever just to run out of space
+  # see: https://github.com/NixOS/nixpkgs/issues/54707#issuecomment-1132907191
+  # systemd.services.nix-daemon = { environment.TMPDIR = "/nix/tmp"; };
+  # systemd.tmpfiles.rules = [ "d /nix/tmp 0755 root root 1d" ];
 
   nixpkgs.config = {};
 
@@ -372,6 +377,10 @@
 
   services.espanso.enable = true;
   systemd.user.services.espanso.serviceConfig.ExecStart = lib.mkForce "/run/wrappers/bin/espanso -vvv worker";
+
+  # Building mongodb takes forever. Pin it here so
+  # it can be copied to other stores
+  system.extraDependencies = [ pkgs.mongodb-5_0 ];
 
   environment.systemPackages = with pkgs;
   with config.boot.kernelPackages; [
