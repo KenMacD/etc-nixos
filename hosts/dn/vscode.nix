@@ -83,7 +83,7 @@ in {
         ms-python.python
         ms-toolsai.jupyter
         # broken 2024-03-27 ms-vscode.cmake-tools
-        ms-vscode.cpptools
+        vscode-extensions.ms-vscode.cpptools
         (ms-vscode.vscode-embedded-tools.overrideAttrs (_: {
           sourceRoot = "extension";
         }))
@@ -95,6 +95,7 @@ in {
         nordic-semiconductor.nrf-kconfig
         nordic-semiconductor.nrf-terminal
         pomdtr.excalidraw-editor
+        platformio.platformio-ide
         probe-rs.probe-rs-debugger
         redhat.vscode-yaml
         rust-lang.rust-analyzer
