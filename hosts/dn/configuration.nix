@@ -376,7 +376,7 @@
   };
 
   services.espanso.enable = true;
-  systemd.user.services.espanso.serviceConfig.ExecStart = lib.mkForce "/run/wrappers/bin/espanso -vvv worker";
+  systemd.user.services.espanso.serviceConfig.ExecStart = lib.mkForce "/run/wrappers/bin/espanso worker";
 
   # Building mongodb takes forever. Pin it here so
   # it can be copied to other stores
