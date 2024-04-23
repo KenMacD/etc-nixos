@@ -57,6 +57,7 @@ in {
   sops.secrets.miniflux = {};
   sops.secrets.telegraf = {};
   sops.secrets.restic-immich = {};
+  sops.secrets.restic-postgresql = {};
 
   ########################################
   # Boot
@@ -153,6 +154,7 @@ in {
       max_parallel_maintenance_workers = "2";
     };
   };
+  services.postgresqlBackup.enable = true;
 
   services.miniflux = {
     enable = true;
@@ -272,6 +274,17 @@ in {
   };
   # TODO: Not need once 0.18 released? See Restic 2092, 4026, 4762.
   systemd.services.restic-backups-immich.serviceConfig.WorkingDirectory = "/mnt/easy/immich";
+  services.restic.backups.postgresql = {
+    repository = "/run/media/red/restic-postgresql";
+    passwordFile = config.sops.secrets.restic-postgresql.path;
+    paths = [
+      "/var/backup/postgresql/all.sql.gz"
+    ];
+    timerConfig = {
+      OnCalendar = "02:45";
+      RandomizedDelaySec = "1h";
+    };
+  };
 
   # Grafana
   services.grafana = {
