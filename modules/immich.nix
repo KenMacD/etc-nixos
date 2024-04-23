@@ -6,7 +6,7 @@
 }:
 # Ref: https://github.com/immich-app/immich/blob/main/docker/docker-compose.yml
 let
-  version = "1.100.0";
+  version = "1.102.3";
   dataDir = "/mnt/easy/immich";
   dbuser = "immich";
   dbname = "immich";
