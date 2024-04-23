@@ -26,7 +26,17 @@ in {
       # "log.connection.level" = "warning";
     };
   };
-  system.autoUpgrade.enable = true;
+  system.autoUpgrade = {
+    enable = true;
+    flake = "path:/home/kenny/src/nixos#yoga";
+    flags = [
+      "--recreate-lock-file"
+      "-L" # print build logs
+    ];
+    dates = "02:00";
+    randomizedDelaySec = "45min";
+  };
+
   hardware = {
     bluetooth.enable = true;
     opengl = {
