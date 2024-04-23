@@ -69,7 +69,6 @@
   ########################################
   # Services
   ########################################
-  services.fwupd.enable = true;
   services.caddy = {
     enable = true;
     globalConfig = ''
@@ -100,6 +99,7 @@
       };
     };
   };
+  services.fwupd.enable = true;
   services.jellyfin.enable = true;
   systemd.services.jellyfin.serviceConfig = {
     CapabilityBoundingSet = "";
@@ -137,6 +137,37 @@
         ForceCommand internal-sftp
     '';
     settings.PasswordAuthentication = true;
+  };
+  services.samba = {
+    enable = true;
+    openFirewall = true;
+    extraConfig = ''
+      workgroup = WORKGROUP
+      server string = ${config.networking.hostName}
+      netbios name = ${config.networking.hostName}
+      security = user
+      hosts allow = 192.168.2. 127.0.0.1 localhost
+      hosts deny = 0.0.0.0/0
+      guest account = nobody
+      map to guest = bad user
+    '';
+    shares = {
+      media = {
+        path = "/srv/media";
+        browseable = "yes";
+        "read only" = "no";
+        "guest ok" = "yes";
+        "guest only" = "yes";
+        "create mask" = "0664";
+        "directory mask" = "0775";
+        "force user" = config.users.users.media.name;
+        "force group" = config.users.groups.media.name;
+      };
+    };
+  };
+  services.samba-wsdd = {
+    enable = true;
+    openFirewall = true;
   };
   services.zerotier-home = {
     enable = true;
