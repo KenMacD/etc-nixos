@@ -15,7 +15,6 @@
   };
 
   systemd.services."systemd-networkd-wait-online".enable = lib.mkForce false;
-  system.autoUpgrade.enable = true;
   hardware = {
     bluetooth.enable = true;
     opengl = {
@@ -69,6 +68,16 @@
   ########################################
   # Services
   ########################################
+  system.autoUpgrade = {
+    enable = true;
+    flake = "path:/home/kenny/src/nixos#r1pro";
+    flags = [
+      "--recreate-lock-file"
+      "-L" # print build logs
+    ];
+    dates = "03:30";
+    randomizedDelaySec = "45min";
+  };
   services.caddy = {
     enable = true;
     globalConfig = ''
