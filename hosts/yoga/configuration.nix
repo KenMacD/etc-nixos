@@ -94,11 +94,10 @@ in {
     domain = "home.macdermid.ca";
     hostId = "f5a3f353";
     firewall = {
-      # grafana, test, minidlna, portainer
+      # grafana, test, portainer
       allowedTCPPorts = [
         80
         443
-        8200 # minidlna
       ];
       # upnp
       allowedUDPPorts = [
@@ -210,11 +209,8 @@ in {
   # Users
   ########################################
   users.groups.media.members = with config.systemd.services; [
-    jellyfin.serviceConfig.User
-    minidlna.serviceConfig.User
   ];
   users.groups.render.members = with config.systemd.services; [
-    jellyfin.serviceConfig.User
   ];
 
   ########################################
@@ -379,12 +375,6 @@ in {
     };
   };
   systemd.services.gitea.unitConfig.RequiresMountsFor = config.services.gitea.stateDir;
-
-  services.jellyfin = {
-    enable = true;
-    openFirewall = false;
-  };
-  systemd.services.jellyfin.environment."JELLYFIN_PublishedServerUrl" = "https://jellyfin.home.macdermid.ca";
 
   services.vaultwarden = {
     enable = true;
@@ -566,7 +556,6 @@ in {
         "/".proxyWebsockets = true;
       };
       "influxdb.home.macdermid.ca" = proxy 8086;
-      "jellyfin.home.macdermid.ca" = public (proxywss 8096);
       "matrix.home.macdermid.ca" = proxy config.services.matrix-conduit.settings.global.port;
       "miniflux.home.macdermid.ca" = proxy 35001;
       "nginxstatus.home.macdermid.ca" = base {
@@ -578,24 +567,6 @@ in {
       "nix.home.macdermid.ca" = proxy config.services.nix-serve.port;
       "rabbitmq.home.macdermid.ca" = proxy config.services.rabbitmq.managementPlugin.port;
       "unifi.home.macdermid.ca" = proxytls 8443;
-    };
-  };
-
-  # Minidlna
-  services.minidlna = {
-    enable = true;
-
-    settings = {
-      notify_interval = 60;
-      friendly_name = "Cubie";
-      log_level = "info";
-      media_dir = [
-        "V,/mnt/multimedia/incoming"
-        "V,/mnt/multimedia/films"
-        "V,/mnt/multimedia/tv"
-      ];
-      root_container = "V";
-      network_interface = "eth0";
     };
   };
 
