@@ -67,7 +67,7 @@ with lib; {
 
   # Use the latest released kernel
   # bcachefs overrides with mkDefault as well
-  boot.kernelPackages = mkOverride 999 pkgs.linuxPackages_6_8;
+  boot.kernelPackages = mkOverride 999 pkgs.linuxPackages_6_9;
   security.unprivilegedUsernsClone = mkDefault config.virtualisation.containers.enable;
 
   # Limit previous generations to avoid /boot filling up
