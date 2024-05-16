@@ -16,7 +16,6 @@
     ./firewall.nix
     ./re.nix
     ./rust.nix
-    ./sboot.nix
     ./virt.nix
     ./vscode.nix
 
