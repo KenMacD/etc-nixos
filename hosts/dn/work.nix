@@ -14,6 +14,6 @@
 
     freerdp3
 
-    (granted-update.override {withFish = true;})
+    (granted.override {withFish = true;})
   ];
 }
