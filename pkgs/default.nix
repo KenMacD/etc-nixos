@@ -29,8 +29,6 @@ with pkgs; let
 
     goplantuml = callPackage ./goplantuml.nix {};
 
-    granted-update = callPackage ./granted.nix {};
-
     immich-go = callPackage ./immich-go.nix {};
 
     insomnium = callPackage ./insomnium.nix {};
