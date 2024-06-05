@@ -3,6 +3,7 @@
   lib,
   pkgs,
   inputs,
+  system,
   ...
 }:
 with lib; {
@@ -47,6 +48,24 @@ with lib; {
 
   # Include current config:
   environment.etc.current-nixos-config.source = ./.;
+
+  # From: github:etu/nixconfig/modules/base/default.nix
+  system.activationScripts.diff = {
+    supportsDryActivation = true;
+    text = ''
+      NO_FORMAT="\033[0m"
+      F_BOLD="\033[1m"
+      C_LIME="\033[38;5;10m"
+
+      if test -e /run/current-system; then
+        echo -e "''${F_BOLD}''${C_LIME}==> diff to current-system ''${NO_FORMAT}"
+        ${pkgs.nvd}/bin/nvd --nix-bin-dir=${config.nix.package}/bin diff /run/current-system "$systemConfig"
+      fi
+
+      echo -e "''${F_BOLD}''${C_LIME}==> Indicate if a reboot is needed or not ''${NO_FORMAT}"
+      ${inputs.nixos-needsreboot.packages.${system}.default}/bin/nixos-needsreboot || true
+    '';
+  };
 
   ########################################
   # Hardware
