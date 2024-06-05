@@ -38,6 +38,10 @@
     url = "github:thiagokokada/nix-alien";
     inputs.nixpkgs.follows = "nixpkgs";
   };
+  inputs.nixos-needsreboot = {
+    url = "github:thefossguy/nixos-needsreboot";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
   inputs.nix-bubblewrap = {
     url = "sourcehut:~fgaz/nix-bubblewrap";
     inputs.nixpkgs.follows = "nixpkgs";
@@ -67,6 +71,7 @@
     nix-alien,
     nix-bubblewrap,
     nix-vscode-extensions,
+    nixos-needsreboot,
     sops-nix,
     ...
   } @ inputs: let
