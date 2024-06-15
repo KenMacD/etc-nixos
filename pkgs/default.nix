@@ -37,6 +37,8 @@ with pkgs; let
 
     pgvecto-rs = callPackage ./pgvecto-rs.nix {};
 
+    tun2proxy = callPackage ./tun2proxy {};
+
     wl-gammarelay-rs = callPackage ./wl-gammarelay-rs.nix {};
     wpantund = callPackage ./wpantund {};
     zeronsd = callPackage ./zeronsd {};
