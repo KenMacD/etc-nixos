@@ -127,8 +127,8 @@
   # Network
   ########################################
   networking = {
-    hostName = "dn";
-    hostId = "822380ad";
+    hostName = "ke";
+    hostId = "65350c54";
     useNetworkd = true;
     networkmanager.enable = false;
   };
