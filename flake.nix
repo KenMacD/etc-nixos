@@ -171,7 +171,7 @@
           sops-nix.nixosModules.sops
         ];
       };
-      dn = nixpkgs.lib.nixosSystem {
+      ke = nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = {inherit system inputs;};
         modules = [
@@ -214,8 +214,8 @@
           ./common.nix
           ./modules/wpantund.nix
           ./modules/nix-alien.nix
-          ./hosts/dn/configuration.nix
-          ./hosts/dn/hardware.nix
+          ./hosts/ke/configuration.nix
+          ./hosts/ke/hardware.nix
           ./modules/hardened.nix
           microvm.nixosModules.host
           sops-nix.nixosModules.sops
