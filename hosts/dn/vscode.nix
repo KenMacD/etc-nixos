@@ -42,6 +42,12 @@ in {
     (vscode-with-extensions.override {
       inherit vscode;
       vscodeExtensions = with inputs.nix-vscode-extensions.extensions.${system}.vscode-marketplace; [
+        inputs.nix-vscode-extensions.extensions.${system}.vscode-marketplace."42crunch".vscode-openapi
+
+        # Newest version of the following extensions require a newer vscodium
+        pkgs.vscode-extensions.github.copilot
+        pkgs.vscode-extensions.github.copilot-chat
+
         aaron-bond.better-comments
         adamhartford.vscode-base64
         alefragnani.project-manager
@@ -52,6 +58,7 @@ in {
         augustocdias.tasks-shell-input
         bmalehorn.vscode-fish
         brettm12345.nixfmt-vscode
+        bruno-api-client.bruno
         christian-kohler.path-intellisense
         crystal-lang-tools.crystal-lang
         dbaeumer.vscode-eslint
@@ -62,12 +69,12 @@ in {
         foam.foam-vscode
         formulahendry.code-runner
         foxundermoon.shell-format
-        github.copilot
-        github.copilot-chat
         github.vscode-pull-request-github
         gitpod.gitpod-desktop
         golang.go
-        hashicorp.terraform
+        # Broken: 2024-04-29       hashicorp.terraform
+        hbenl.vscode-mocha-test-adapter
+        hbenl.vscode-test-explorer
         jebbs.plantuml
         jnoortheen.nix-ide
         llvm-vs-code-extensions.vscode-clangd
@@ -83,6 +90,7 @@ in {
         ms-python.python
         ms-toolsai.jupyter
         # broken 2024-03-27 ms-vscode.cmake-tools
+        ms-vscode.test-adapter-converter
         vscode-extensions.ms-vscode.cpptools
         (ms-vscode.vscode-embedded-tools.overrideAttrs (_: {
           sourceRoot = "extension";

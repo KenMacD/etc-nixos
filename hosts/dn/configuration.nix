@@ -27,14 +27,17 @@
   ########################################
   # Nix
   ########################################
+  # nix.package = pkgs.nixVersions.unstable;
   nix.settings = {
     sandbox = true;
     substituters = [
-      "https://nix.home.macdermid.ca"
+      #      "https://nix.home.macdermid.ca"
+      #      "https://nix.macdermid.ca"
       "https://aseipp-nix-cache.global.ssl.fastly.net"
     ];
     trusted-public-keys = [
       "nix.home.macdermid.ca:CQuA65gXW8KuFlk9Ufx5oMsAiTZzQhfluNoaOzypXMo="
+      "nix.macdermid.ca:sAlwW/Ph4P8pyrUT7pmWnsFeGVyZ7pyXYjUmo41/hc8="
     ];
   };
   nix.extraOptions = ''
@@ -171,10 +174,10 @@
   };
   programs.xwayland.enable = false;
 
-  programs.hyprland = {
-    enable = true;
-    xwayland.enable = true;
-  };
+  #  programs.hyprland = {
+  #    enable = true;
+  #    xwayland.enable = true;
+  #  };
 
   # Use Wayland for Electron apps
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
@@ -207,12 +210,12 @@
     lorri.enable = true;
     openssh.enable = true;
     pcscd.enable = true;
-    snapper.configs.home = {
-      ALLOW_USERS = ["kenny"];
-      SUBVOLUME = "/home";
-      TIMELINE_CREATE = true;
-      TIMELINE_CLEANUP = true;
-    };
+#    snapper.configs.home = {
+#      ALLOW_USERS = ["kenny"];
+#      SUBVOLUME = "/home";
+#      TIMELINE_CREATE = true;
+#      TIMELINE_CLEANUP = true;
+#    };
     thermald.enable = true;
     udev = {
       packages = [
@@ -237,20 +240,20 @@
     ddccontrol.enable = true;
     zerotier-home = {
       enable = true;
-      zeronsd = {
-        enable = true;
-        package = pkgs.zeronsd;
-      };
+#      zeronsd = {
+#        enable = true;
+#        package = pkgs.zeronsd;
+#      };
     };
   };
 
   zramSwap.enable = true;
 
-  services.wpantund = {
-    enable = true;
-    # TODO: udev rule to a different device name
-    socketPath = "/dev/ttyACM0";
-  };
+  #  services.wpantund = {
+  #    enable = true;
+  #    # TODO: udev rule to a different device name
+  #    socketPath = "/dev/ttyACM0";
+  #  };
 
   ########################################
   # Fonts
@@ -298,10 +301,10 @@
     Defaults  env_keep += "RESTIC_PASSWORD_FILE"
     Defaults  env_keep += "RESTIC_REPOSITORY"
   '';
-  security.pam.services = {
-    # login.u2fAuth = true;
-    sudo.u2fAuth = true;
-  };
+  #  security.pam.services = {
+  #    # login.u2fAuth = true;
+  #    sudo.u2fAuth = true;
+  #  };
 
   ########################################
   # Crypto
@@ -374,12 +377,12 @@
     group = "root";
   };
 
-  services.espanso.enable = true;
-  systemd.user.services.espanso.serviceConfig.ExecStart = lib.mkForce "/run/wrappers/bin/espanso worker";
+  #  services.espanso.enable = true;
+  #  systemd.user.services.espanso.serviceConfig.ExecStart = lib.mkForce "/run/wrappers/bin/espanso worker";
 
   # Building mongodb takes forever. Pin it here so
   # it can be copied to other stores
-  system.extraDependencies = [ pkgs.mongodb-5_0 ];
+  # system.extraDependencies = [pkgs.mongodb-5_0];
 
   environment.systemPackages = with pkgs;
   with config.boot.kernelPackages; [
@@ -394,7 +397,7 @@
     firefox
     fzf
     httpie
-    immich-go  # local
+    immich-go # local
     libreoffice-fresh
     libreoffice
     librewolf
@@ -475,7 +478,9 @@
 
     # Networking
     _3proxy
+    dante
     openconnect
+    tun2proxy
 
     # Nix
     alejandra # Nix formatter
@@ -491,6 +496,7 @@
     irssi
     signal-desktop
     slack
+    tdesktop
     (weechat.override {
       configure = {availablePlugins, ...}: {
         plugins = with availablePlugins; [python];
@@ -553,6 +559,7 @@
     aws-azure-login
     bintools
     binwalk
+    bruno # Postman like API tool
     clang-tools
     delta
     difftastic
@@ -563,14 +570,15 @@
     gh
     gnumake
     hotspot
-    insomnium # Postman like API tool
+    insomnium # Postman like API tool - :( no longer maintained
     jq
     llvm
     man-pages
     meld
     meson-tools
+    miller # mlr convert csv to json: mlr --c2j --jlistwrap cat
     mold
-    nix-bubblewrap
+    # nix-bubblewrap
     nix-direnv
     parallel
     perf
@@ -600,6 +608,7 @@
     steam-run
     lutris
     # TODO: broken 2024-02-11 mitmproxy
+    mitmproxy
 
     # s0ix-selftest-tool
 
