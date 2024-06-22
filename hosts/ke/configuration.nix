@@ -75,20 +75,17 @@
   ########################################
   hardware = {
     enableRedistributableFirmware = true;
-    opengl = {
+    graphics = {
       enable = true;
-      driSupport = true; # for vulkan
-      driSupport32Bit = true;
-      setLdLibraryPath = true;
+      enable32Bit = true;
+      extraPackages = with pkgs; [
+        intel-compute-runtime
+        intel-media-driver
+        vaapiVdpau
+      ];
       extraPackages32 = with pkgs.pkgsi686Linux; [
         libva
         pipewire
-      ];
-      extraPackages = with pkgs; [
-        intel-compute-runtime
-        # LIBVA_DRIVER_NAME=iHD (newer)
-        intel-media-driver
-        vaapiVdpau
       ];
     };
   };
