@@ -30,6 +30,10 @@
   inputs.impermanence = {
     url = "github:nix-community/impermanence";
   };
+  inputs.lanzaboote = {
+    url = "github:nix-community/lanzaboote/v0.4.1";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
   inputs.microvm = {
     url = "github:astro/microvm.nix";
     inputs.nixpkgs.follows = "nixpkgs";
@@ -67,6 +71,7 @@
     fenix,
     flake-utils,
     impermanence,
+    lanzaboote,
     microvm,
     nix-alien,
     nix-bubblewrap,
@@ -217,6 +222,7 @@
           ./hosts/ke/configuration.nix
           ./hosts/ke/hardware.nix
           ./modules/hardened.nix
+          lanzaboote.nixosModules.lanzaboote
           microvm.nixosModules.host
           sops-nix.nixosModules.sops
         ];
