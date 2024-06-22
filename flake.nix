@@ -81,6 +81,7 @@
     ...
   } @ inputs: let
     system = "x86_64-linux";
+    pkgs = import nixpkgs {inherit system;};
     overlay-local = self: super:
       import ./pkgs {
         pkgs = super;
@@ -107,10 +108,34 @@
     overlay-staging-next = final: prev: {
       staging-next = nixpkgs-staging-next.legacyPackages.${prev.system};
     };
-  in {
+  in rec {
     packages.x86_64-linux = import ./pkgs {
       pkgs = nixpkgs.legacyPackages.${system};
       inherit inputs;
+    };
+
+    # nix develop local#<shell>
+    devShells.${system} = {
+      nodejs = pkgs.mkShellNoCC {
+        packages = with pkgs; [
+          nodejs
+          pnpm
+          yarn
+        ];
+      };
+      python = pkgs.mkShellNoCC {
+        packages = with pkgs; [
+          (python3.withPackages (ps:
+            with ps; [
+              cython
+              pip
+              pip-tools
+              setuptools
+              tox
+              virtualenv
+            ]))
+        ];
+      };
     };
 
     nixosConfigurations = {
@@ -225,6 +250,12 @@
           lanzaboote.nixosModules.lanzaboote
           microvm.nixosModules.host
           sops-nix.nixosModules.sops
+          # TODO: script this for all devshells?
+          ({...}: {
+            system.extraDependencies = [
+              devShells.${system}.python
+            ];
+          })
         ];
       };
       atom = nixpkgs.lib.nixosSystem {
