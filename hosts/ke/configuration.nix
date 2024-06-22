@@ -210,6 +210,11 @@
   ########################################
   services = {
     flatpak.enable = true;
+    fprintd = {
+      enable = true;
+      tod.enable = true;
+      tod.driver = pkgs.libfprint-2-tod1-goodix;
+    };
     fwupd.enable = true;
     lorri.enable = true;
     openssh.enable = true;
@@ -319,6 +324,12 @@
   #    # login.u2fAuth = true;
   #    sudo.u2fAuth = true;
   #  };
+
+  # Ask for password first for swaylock
+  security.pam.services.swaylock.rules.auth.fprintd.order =
+    config.security.pam.services.swaylock.rules.auth.unix.order + 10;
+  # Allow null password to fall-back to fprintd
+  security.pam.services.swaylock.rules.auth.unix.settings.nullok = lib.mkForce true;
 
   ########################################
   # Crypto
