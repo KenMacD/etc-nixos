@@ -11,11 +11,6 @@ with pkgs; let
 
     deptree = callPackage ./deptree.nix {};
 
-    espanso-wayland = callPackage ./espanso {
-      waylandSupport = true;
-      x11Support = false;
-    };
-
     fre = callPackage ./fre.nix {};
 
     git-no-hooks = callPackage ./git-no-hooks {};
