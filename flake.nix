@@ -243,7 +243,6 @@
             nix.nixPath = let path = toString ./.; in ["repl=${path}/repl.nix" "nixpkgs=${inputs.nixpkgs}"];
           })
           ./common.nix
-          ./modules/wpantund.nix
           ./modules/nix-alien.nix
           ./hosts/ke/configuration.nix
           ./hosts/ke/hardware.nix

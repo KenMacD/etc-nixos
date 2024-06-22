@@ -268,12 +268,6 @@
 
   zramSwap.enable = true;
 
-  #  services.wpantund = {
-  #    enable = true;
-  #    # TODO: udev rule to a different device name
-  #    socketPath = "/dev/ttyACM0";
-  #  };
-
   ########################################
   # Fonts
   ########################################
