@@ -6,6 +6,12 @@ keys:
   - &host_ke age1zfjrfcpws67kt05vtjcgus2r3vm75gu2hxke3tqgw9aqh5xkuu2qs83q2s
 
 creation_rules:
+  - path_regex: hosts/ke/secrets.yaml$
+    key_groups:
+    - pgp:
+      - *admin_kenny
+      age:
+      - *host_ke
   - path_regex: hosts/r1pro/secrets.yaml$
     key_groups:
     - pgp:
