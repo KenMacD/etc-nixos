@@ -139,13 +139,14 @@
     };
 
     nixosConfigurations = {
-      # nix build .#nixosConfigurations.iso.config.system.build.isoImage
+      # nix build path:/home/kenny/src/nixos#nixosConfigurations.iso.config.system.build.isoImage
       iso = nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = {inherit system inputs;};
         modules = [
           ./common.nix
-          "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-calamares-plasma6.nix"
+          sops-nix.nixosModules.sops
+          "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal-new-kernel.nix"
           ({
             pkgs,
             lib,
@@ -159,7 +160,7 @@
             # Use faster squashfs compression
             isoImage.squashfsCompression = "gzip -Xcompression-level 1";
 
-            boot.kernelPackages = pkgs.linuxPackages_6_8;
+            boot.supportedFilesystems.bcachefs = true;
             boot.supportedFilesystems.zfs = lib.mkForce false;
           })
         ];
