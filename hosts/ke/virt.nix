@@ -25,8 +25,11 @@
   virtualisation = {
     libvirtd = {
       enable = true;
-      qemu.ovmf = {
-        enable = true;
+      qemu = {
+        ovmf.enable = true;
+        ovmf.packages = [pkgs.OVMFFull.fd];
+        runAsRoot = false;
+        swtpm.enable = true;
       };
       # Only care about host arch:
       qemu.package = pkgs.qemu_kvm;
@@ -72,6 +75,14 @@
     "containers/registries.conf.d/enforce.conf".text = ''
       short-name-mode="enforcing"
     '';
+
+    "ovmf/edk2-x86_64-secure-code.fd" = {
+      source = config.virtualisation.libvirtd.qemu.package + "/share/qemu/edk2-x86_64-secure-code.fd";
+    };
+
+    "ovmf/edk2-i386-vars.fd" = {
+      source = config.virtualisation.libvirtd.qemu.package + "/share/qemu/edk2-i386-vars.fd";
+    };
   };
 
   # kind on rootless podman requires:
@@ -108,9 +119,10 @@
     libguestfs-with-appliance # guestfish / guestmount
     podman-compose
     podman-tui
+    swtpm # Software tpm support
     trivy #  Aqua Security - vulnerability security scanner
 
-    wget # needed for: lxc-create --template download 
+    wget # needed for: lxc-create --template download
 
     # Testing gvisor runtime
     gvisor
