@@ -26,6 +26,12 @@
   ];
 
   ########################################
+  # Secrets
+  ########################################
+  sops.defaultSopsFile = ./secrets.yaml;
+  sops.secrets.restic-efi = {};
+
+  ########################################
   # Nix
   ########################################
   # nix.package = pkgs.nixVersions.unstable;
@@ -211,6 +217,16 @@
     lorri.enable = true;
     openssh.enable = true;
     pcscd.enable = true;
+    restic.backups.efi = {
+      repository = "/root/restic-efi";
+      passwordFile = config.sops.secrets.restic-efi.path;
+      paths = [
+        "/boot"
+      ];
+      timerConfig = {
+        OnCalendar = "daily";
+      };
+    };
 #    snapper.configs.home = {
 #      ALLOW_USERS = ["kenny"];
 #      SUBVOLUME = "/home";
