@@ -39,6 +39,8 @@ in {
   };
 
   environment.systemPackages = with pkgs; [
+    nil # Nix language server
+
     (vscode-with-extensions.override {
       inherit vscode;
       vscodeExtensions = with inputs.nix-vscode-extensions.extensions.${system}.vscode-marketplace; [
