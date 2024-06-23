@@ -6,7 +6,7 @@
 }:
 # Ref: https://github.com/immich-app/immich/blob/main/docker/docker-compose.yml
 let
-  version = "1.102.3";
+  version = "1.106.4";
   dataDir = "/mnt/easy/immich";
   dbuser = "immich";
   dbname = "immich";
@@ -110,7 +110,6 @@ in {
     after = ["postgresql.service"];
     before = [
       "${ociBackend}-immich-server.service"
-      "${ociBackend}-immich-microservices.service"
       "${ociBackend}-immich-machine-learning.service"
     ];
     wantedBy = ["multi-user.target"];
@@ -129,27 +128,13 @@ in {
       // {
         image = "ghcr.io/immich-app/immich-server:v${version}";
         ports = ["3550:3001"];
-        entrypoint = "/bin/sh";
-        cmd = ["./start-server.sh"];
-        volumes = ["${dataDir}:/usr/src/app/upload"];
-        extraOptions = [
-          "--uidmap=0:${toString config.ids.uids.immich}:1"
-          "--add-host=auth.home.macdermid.ca:host-gateway"
-        ];
-      };
-
-    immich-microservices =
-      immichBase
-      // {
-        image = "ghcr.io/immich-app/immich-server:v${version}";
-        entrypoint = "/bin/sh";
-        cmd = ["./start-microservices.sh"];
         volumes = [
           "${dataDir}:/usr/src/app/upload"
           "/dev/bus/usb:/dev/bus/usb"
         ];
         extraOptions = [
           "--uidmap=0:${toString config.ids.uids.immich}:1"
+          "--add-host=auth.home.macdermid.ca:host-gateway"
         ];
       };
 
@@ -169,11 +154,6 @@ in {
 
   systemd.services = {
     "${ociBackend}-immich-server" = {
-      requires = ["postgresql.service" "redis-immich.service"];
-      after = ["postgresql.service" "redis-immich.service"];
-    };
-
-    "${ociBackend}-immich-microservices" = {
       requires = ["postgresql.service" "redis-immich.service"];
       after = ["postgresql.service" "redis-immich.service"];
     };
