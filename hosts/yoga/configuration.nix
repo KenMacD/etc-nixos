@@ -28,7 +28,7 @@ in {
   };
   system.autoUpgrade = {
     enable = true;
-    flake = "path:/home/kenny/src/nixos#yoga";
+    flake = "path:/etc/nixos#yoga";
     flags = [
       "--recreate-lock-file"
       "-L" # print build logs
