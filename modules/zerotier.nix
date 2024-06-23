@@ -70,6 +70,10 @@ in {
         Type = "simple";
         EnvironmentFile = config.sops.secrets.zeronsd.path;
 
+	# Probably a better way, but better than nothing
+        Restart = "on-failure";
+        RestartSec = 10;
+
         ExecStart = concatStringsSep " " [
           "${cfg.zeronsd.package}/bin/zeronsd"
           "start"
