@@ -39,11 +39,8 @@ in {
 
   hardware = {
     bluetooth.enable = true;
-    opengl = {
+    graphics = {
       enable = true;
-      driSupport = true; # for vulkan
-      driSupport32Bit = true;
-      setLdLibraryPath = true;
       extraPackages = with pkgs; [
         intel-media-driver
         vaapiIntel
