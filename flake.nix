@@ -13,7 +13,7 @@
   inputs.nixpkgs-stable.follows = "nixpkgs-23_11";
   inputs.nixpkgs-staging-next.url = "github:NixOS/nixpkgs/staging-next";
   inputs.nixpkgs-master.url = "github:NixOS/nixpkgs/master";
-  inputs.nixpkgs-mongodb-pin.url = "github:NixOS/nixpkgs/66adc1e47f8784803f2deb6cacd5e07264ec2d5c"; # 2024-04-19
+  inputs.nixpkgs-mongodb-pin.url = "github:NixOS/nixpkgs/33be72b31b7cc5a0b43cc3b6c005cf4e4d47d899"; # 2024-06-28
   inputs.nixpkgs-pr301553.url = "github:NixOS/nixpkgs/724e7a8655c59cbdd6770b0b710bc374690256ea"; # Podman 5.0.1
 
   inputs.devenv = {
