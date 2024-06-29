@@ -24,6 +24,10 @@
     url = "github:nix-community/fenix";
     inputs.nixpkgs.follows = "nixpkgs";
   };
+  inputs.flake-programs-sqlite = {
+    url = "github:wamserma/flake-programs-sqlite";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
   inputs.flake-utils = {
     url = "github:numtide/flake-utils";
   };
@@ -69,6 +73,7 @@
     nixpkgs-staging-next,
     devenv,
     fenix,
+    flake-programs-sqlite,
     flake-utils,
     impermanence,
     lanzaboote,
@@ -179,6 +184,7 @@
           ./common.nix
           ./hosts/r1pro/configuration.nix
           ./hosts/r1pro/hardware.nix
+          flake-programs-sqlite.nixosModules.programs-sqlite
           sops-nix.nixosModules.sops
         ];
       };
@@ -199,6 +205,7 @@
           ./hosts/yoga/hardware.nix
           ./modules/hardened.nix
           ./modules/immich.nix
+          flake-programs-sqlite.nixosModules.programs-sqlite
           sops-nix.nixosModules.sops
         ];
       };
@@ -247,6 +254,7 @@
           ./hosts/ke/configuration.nix
           ./hosts/ke/hardware.nix
           ./modules/hardened.nix
+          flake-programs-sqlite.nixosModules.programs-sqlite
           lanzaboote.nixosModules.lanzaboote
           microvm.nixosModules.host
           sops-nix.nixosModules.sops
