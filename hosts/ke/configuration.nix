@@ -229,12 +229,20 @@
         OnCalendar = "daily";
       };
     };
-#    snapper.configs.home = {
-#      ALLOW_USERS = ["kenny"];
-#      SUBVOLUME = "/home";
-#      TIMELINE_CREATE = true;
-#      TIMELINE_CLEANUP = true;
-#    };
+    snapper = {
+      snapshotInterval = "*:0/5";
+      cleanupInterval = "hourly";
+      configs.home = {
+        ALLOW_USERS = ["kenny"];
+        SUBVOLUME = "/home";
+        TIMELINE_CREATE = true;
+        TIMELINE_CLEANUP = true;
+
+        # Use snapper only for short-term backups:
+        TIMELINE_LIMIT_MONTHLY = "1";
+        TIMELINE_LIMIT_YEARLY = "0";
+      };
+    };
     thermald.enable = true;
     udev = {
       packages = [
