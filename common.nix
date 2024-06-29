@@ -122,60 +122,6 @@ with lib; {
   ########################################
   # User
   ########################################
-  programs.fish.enable = true;
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-    viAlias = true;
-    vimAlias = true;
-    configure = {
-      packages.myPlugins = with pkgs.vimPlugins; {
-        start = [
-          lazy-nvim
-          nvim-treesitter.withAllGrammars
-          nvim-lastplace
-          vim-gnupg
-        ];
-        opt = [];
-      };
-      customRC = ''
-        " ignore case in search unless set
-        set ignorecase
-        set smartcase
-
-        " No directory editing please
-        for f in argv()
-          if isdirectory(f)
-            echomsg "vimrc: Cowardly refusing to edit directory " . f
-            quit
-          endif
-        endfor
-        if exists('g:vscode')
-          " VSCode extension
-        else
-          " ordinary neovim
-          " Disable mouse selections
-          set mouse=
-        endif
-
-        " Enable treesitter and lazyvim
-        lua << EOF
-        require'nvim-treesitter.configs'.setup {
-          highlight = {
-            enable = true,
-          },
-        }
-        require("lazy").setup()
-        EOF
-
-        " Show nbsp characters
-        set listchars=nbsp:.
-
-        " gopass
-        au BufNewFile,BufRead /dev/shm/gopass.* setlocal noswapfile nobackup noundofile
-      '';
-    };
-  };
   users.users.kenny = {
     isNormalUser = true;
     uid = 1000;
@@ -234,6 +180,64 @@ with lib; {
   # NTP
   services.timesyncd.enable = true;
   networking.timeServers = ["time.cloudflare.com"];
+
+  ########################################
+  # Programs
+  ########################################
+  programs.fish.enable = true;
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+    viAlias = true;
+    vimAlias = true;
+    configure = {
+      packages.myPlugins = with pkgs.vimPlugins; {
+        start = [
+          lazy-nvim
+          nvim-treesitter.withAllGrammars
+          nvim-lastplace
+          vim-gnupg
+        ];
+        opt = [];
+      };
+      customRC = ''
+        " ignore case in search unless set
+        set ignorecase
+        set smartcase
+
+        " No directory editing please
+        for f in argv()
+          if isdirectory(f)
+            echomsg "vimrc: Cowardly refusing to edit directory " . f
+            quit
+          endif
+        endfor
+        if exists('g:vscode')
+          " VSCode extension
+        else
+          " ordinary neovim
+          " Disable mouse selections
+          set mouse=
+        endif
+
+        " Enable treesitter and lazyvim
+        lua << EOF
+        require'nvim-treesitter.configs'.setup {
+          highlight = {
+            enable = true,
+          },
+        }
+        require("lazy").setup()
+        EOF
+
+        " Show nbsp characters
+        set listchars=nbsp:.
+
+        " gopass
+        au BufNewFile,BufRead /dev/shm/gopass.* setlocal noswapfile nobackup noundofile
+      '';
+    };
+  };
 
   ########################################
   # Packages
