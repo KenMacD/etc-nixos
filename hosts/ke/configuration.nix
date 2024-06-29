@@ -267,10 +267,10 @@
     ddccontrol.enable = true;
     zerotier-home = {
       enable = true;
-#      zeronsd = {
-#        enable = true;
-#        package = pkgs.zeronsd;
-#      };
+      zeronsd = {
+        enable = true;
+        package = pkgs.zeronsd;
+      };
     };
   };
 
