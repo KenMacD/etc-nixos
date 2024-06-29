@@ -2,9 +2,6 @@
   config,
   lib,
   pkgs,
-  nixpkgs,
-  inputs,
-  system,
   ...
 }: {
   imports = [
@@ -524,17 +521,6 @@
     signal-desktop
     slack
     tdesktop
-    (weechat.override {
-      configure = {availablePlugins, ...}: {
-        plugins = with availablePlugins; [python];
-        scripts = with pkgs.weechatScripts; [
-          buffer_autoset
-          wee-slack
-          weechat-autosort
-          weechat-go
-        ];
-      };
-    })
 
     # Email
     fdm # fetch mail from imap
@@ -575,6 +561,7 @@
     git-lfs
     gita # Update a group of repos
     gitui
+    haskellPackages.git-mediate # modify a merge then run to fix it up
     jujutsu # jj command for git, to try out
 
     # Development
