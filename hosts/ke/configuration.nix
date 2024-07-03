@@ -509,7 +509,6 @@
     # Nix
     alejandra # Nix formatter
     nix-tree
-    nixfmt
     nixpkgs-fmt
 
     # Wireless

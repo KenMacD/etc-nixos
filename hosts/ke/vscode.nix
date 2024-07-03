@@ -59,7 +59,6 @@ in {
         asvetliakov.vscode-neovim
         augustocdias.tasks-shell-input
         bmalehorn.vscode-fish
-        brettm12345.nixfmt-vscode
         bruno-api-client.bruno
         christian-kohler.path-intellisense
         crystal-lang-tools.crystal-lang
