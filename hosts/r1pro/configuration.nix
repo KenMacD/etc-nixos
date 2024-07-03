@@ -225,7 +225,6 @@
     kitty # for term info only
     libva-utils
     ncdu
-    nixfmt
     powertop
     pstree
     tmux

@@ -618,7 +618,6 @@ in {
     libva-utils
     mediainfo
     ncdu
-    nixfmt
     powertop
     pstree
     restic
