@@ -10,8 +10,6 @@
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   inputs.nixpkgs-24_05.url = "github:NixOS/nixpkgs/nixos-24.05";
   inputs.nixpkgs-stable.follows = "nixpkgs-24_05";
-  inputs.nixpkgs-staging-next.url = "github:NixOS/nixpkgs/staging-next";
-  inputs.nixpkgs-master.url = "github:NixOS/nixpkgs/master";
   inputs.nixpkgs-mongodb-pin.url = "github:NixOS/nixpkgs/33be72b31b7cc5a0b43cc3b6c005cf4e4d47d899"; # 2024-06-28
   inputs.nixpkgs-pr301553.url = "github:NixOS/nixpkgs/724e7a8655c59cbdd6770b0b710bc374690256ea"; # Podman 5.0.1
 
@@ -65,11 +63,9 @@
   outputs = {
     self,
     nixpkgs,
-    nixpkgs-master,
     nixpkgs-mongodb-pin,
     nixpkgs-pr301553,
     nixpkgs-stable,
-    nixpkgs-staging-next,
     devenv,
     fenix,
     flake-programs-sqlite,
@@ -91,9 +87,6 @@
         pkgs = super;
         inherit inputs;
       };
-    overlay-master = final: prev: {
-      master = nixpkgs-master.legacyPackages.${prev.system};
-    };
     overlay-mongodb-pin = self: super: let
       pinned-pkgs = import nixpkgs-mongodb-pin {
         inherit system;
@@ -108,9 +101,6 @@
     };
     overlay-stable = final: prev: {
       stable = nixpkgs-stable.legacyPackages.${prev.system};
-    };
-    overlay-staging-next = final: prev: {
-      staging-next = nixpkgs-staging-next.legacyPackages.${prev.system};
     };
   in rec {
     packages.x86_64-linux = import ./pkgs {
@@ -219,8 +209,6 @@
           }: {
             nixpkgs.overlays = [
               overlay-local
-              overlay-staging-next
-              overlay-master
               overlay-mongodb-pin
               overlay-stable
               # (import ./overlays/sway-dbg.nix)
@@ -231,7 +219,6 @@
           # Add to regsitry so nixpkgs commands use system versions
           ({pkgs, ...}: {
             nix.registry.nixpkgs.flake = nixpkgs;
-            nix.registry.nixpkgs-master.flake = nixpkgs-master;
             nix.registry.nixpkgs-stable.flake = nixpkgs-stable;
             nix.registry.nixpkgs-mongodb-pin.flake = nixpkgs-mongodb-pin;
             nix.registry.nixpkgs-podman5.flake = nixpkgs-pr301553;
