@@ -8,9 +8,8 @@
   };
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-  inputs.nixpkgs-23_05.url = "github:NixOS/nixpkgs/nixos-23.05";
-  inputs.nixpkgs-23_11.url = "github:NixOS/nixpkgs/nixos-23.11";
-  inputs.nixpkgs-stable.follows = "nixpkgs-23_11";
+  inputs.nixpkgs-24_05.url = "github:NixOS/nixpkgs/nixos-24.05";
+  inputs.nixpkgs-stable.follows = "nixpkgs-24_05";
   inputs.nixpkgs-staging-next.url = "github:NixOS/nixpkgs/staging-next";
   inputs.nixpkgs-master.url = "github:NixOS/nixpkgs/master";
   inputs.nixpkgs-mongodb-pin.url = "github:NixOS/nixpkgs/33be72b31b7cc5a0b43cc3b6c005cf4e4d47d899"; # 2024-06-28
