@@ -39,7 +39,7 @@ in {
         gtk_engines
         gsettings-desktop-schemas
         lxappearance
-        gnome.adwaita-icon-theme
+        adwaita-icon-theme
 
         # Display profiles
         kanshi

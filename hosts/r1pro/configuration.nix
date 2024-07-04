@@ -17,11 +17,9 @@
   systemd.services."systemd-networkd-wait-online".enable = lib.mkForce false;
   hardware = {
     bluetooth.enable = true;
-    opengl = {
+    graphics = {
       enable = true;
-      driSupport = true; # for vulkan
-      driSupport32Bit = true;
-      setLdLibraryPath = true;
+      enable32Bit = true;
       extraPackages = with pkgs; [
         intel-media-driver
         vaapiIntel

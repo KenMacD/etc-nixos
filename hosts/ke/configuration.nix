@@ -605,7 +605,7 @@
     # Testing
     atuin # shell history in sqlite?
     hashcat
-    gnome.seahorse
+    seahorse
     libsmbios # smbios-thermal-ctl
     modprobed-db
     nushell # odd different shell
