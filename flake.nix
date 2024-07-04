@@ -198,6 +198,47 @@
           sops-nix.nixosModules.sops
         ];
       };
+      an = nixpkgs.lib.nixosSystem {
+        inherit system;
+        specialArgs = {inherit system inputs;};
+        modules = [
+          ({
+            config,
+            pkgs,
+            ...
+          }: {
+            nixpkgs.overlays = [
+              overlay-local
+              overlay-stable
+            ];
+          })
+          # Add to regsitry so nixpkgs commands use system versions
+          ({pkgs, ...}: {
+            nix.registry.nixpkgs.flake = nixpkgs;
+            nix.registry.nixpkgs-stable.flake = nixpkgs-stable;
+            nix.registry.nixpkgs-mongodb-pin.flake = nixpkgs-mongodb-pin;
+            nix.registry.nixpkgs-podman5.flake = nixpkgs-pr301553;
+            nix.registry.microvm.flake = microvm;
+            nix.registry.devenv.flake = devenv;
+            nix.registry.local.flake = self;
+          })
+          ({pkgs, ...}: {
+            virtualisation.podman.enable = true;
+            virtualisation.podman.defaultNetwork.settings.dns_enabled = true;
+            networking.firewall.allowedUDPPorts = [53];
+          })
+          ({...}: {
+            # Use the flakes' nixpkgs for commands
+            nix.nixPath = let path = toString ./.; in ["repl=${path}/repl.nix" "nixpkgs=${inputs.nixpkgs}"];
+          })
+          ./common.nix
+          ./modules/nix-alien.nix
+          ./hosts/an/configuration.nix
+          ./hosts/an/hardware.nix
+          ./modules/hardened.nix
+          sops-nix.nixosModules.sops
+        ];
+      };
       ke = nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = {inherit system inputs;};
