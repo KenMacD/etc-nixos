@@ -236,8 +236,8 @@
         TIMELINE_CLEANUP = true;
 
         # Use snapper only for short-term backups:
-        TIMELINE_LIMIT_MONTHLY = "1";
-        TIMELINE_LIMIT_YEARLY = "0";
+        TIMELINE_LIMIT_MONTHLY = 1;
+        TIMELINE_LIMIT_YEARLY = 0;
       };
     };
     thermald.enable = true;
