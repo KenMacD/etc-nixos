@@ -1,11 +1,6 @@
 {
   description = "NixOS configuration";
 
-  nixConfig = {
-    extra-experimental-features = ["nix-command" "flakes"];
-    max-jobs = "auto";
-    auto-optimise-store = "true";
-  };
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   inputs.nixpkgs-24_05.url = "github:NixOS/nixpkgs/nixos-24.05";
