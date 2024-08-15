@@ -37,6 +37,11 @@ in {
     services.zerotierone = {
       enable = true;
       joinNetworks = [network];
+      localConf = {
+        settings = {
+          softwareUpdate = "disable";
+        };
+      };
     };
 
     systemd.services.zerotierone.serviceConfig = {
@@ -70,7 +75,7 @@ in {
         Type = "simple";
         EnvironmentFile = config.sops.secrets.zeronsd.path;
 
-	# Probably a better way, but better than nothing
+        # Probably a better way, but better than nothing
         Restart = "on-failure";
         RestartSec = 10;
 

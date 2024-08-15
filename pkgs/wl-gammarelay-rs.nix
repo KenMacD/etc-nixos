@@ -1,11 +1,10 @@
-{ lib
-, fetchFromGitHub
-, rustPlatform
+{
+  lib,
+  fetchFromGitHub,
+  rustPlatform,
 }:
-
 # Sources:
 # * https://github.com/nix-community/nixpkgs-wayland/blob/master/pkgs/wl-gammarelay-rs/default.nix
-
 rustPlatform.buildRustPackage rec {
   pname = "wl-gammarelay-rs";
   version = "v0.3.2";

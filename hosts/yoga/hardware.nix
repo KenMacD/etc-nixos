@@ -85,6 +85,12 @@
   fileSystems."/mnt/easy" = {
     device = "/dev/disk/by-uuid/fd308d96-c40d-4eab-b9b4-4440390cb27f";
     fsType = "bcachefs";
+    # Filesystem can do an upgrade/repair on boot
+    options = [
+      "fsck"
+      "fix_errors"
+      "x-systemd.mount-timeout=45m"
+    ];
   };
 
   fileSystems."/mnt/multimedia" = {

@@ -15,7 +15,7 @@ rustPlatform.buildRustPackage rec {
     sha256 = "sha256-cYqEPohqUmewvBUoGJQfa4ATxw2uny5+nUKtNzrxK38=";
   };
 
-  cargoSha256 = "sha256-BEIrjHsIrNkFEEjCrTKwsJL9hptmVOI8x3ZWoo9ZUvQ=";
+  cargoHash = "sha256-BEIrjHsIrNkFEEjCrTKwsJL9hptmVOI8x3ZWoo9ZUvQ=";
 
   meta = with lib; {
     description = "Command line frecency tracking";

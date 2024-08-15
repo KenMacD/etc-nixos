@@ -58,8 +58,8 @@
   # When building mongodb enable the following. Otherwise it takes
   # forever just to run out of space
   # see: https://github.com/NixOS/nixpkgs/issues/54707#issuecomment-1132907191
-  systemd.services.nix-daemon = {environment.TMPDIR = "/nix/tmp";};
-  systemd.tmpfiles.rules = ["d /nix/tmp 0755 root root 1d"];
+  #systemd.services.nix-daemon = {environment.TMPDIR = "/nix/tmp";};
+  #systemd.tmpfiles.rules = ["d /nix/tmp 0755 root root 1d"];
 
   nixpkgs.config = {};
 
@@ -79,6 +79,7 @@
         intel-compute-runtime
         intel-media-driver
         vaapiVdpau
+        vpl-gpu-rt
       ];
       extraPackages32 = with pkgs.pkgsi686Linux; [
         libva
@@ -104,12 +105,8 @@
     # TODO: move to common? or maybe just desktop?
     "panic=0"
 
-    # "i915.enable_dc=1"
-    # "i915.edp_vswing=0"
-    # "i915.enable_guc=2"
-    # "i915.enable_fbc=1"
-    # "i915.enable_psr=1"
-    # "i915.disable_power_well=0"
+    "i915.force_probe=!a7a1"
+    "xe.force_probe=a7a1"
   ];
   boot.kernel.sysctl = {"dev.i915.perf_stream_paranoid" = 0;};
   boot.extraModulePackages = with config.boot.kernelPackages; [
@@ -213,7 +210,6 @@
       tod.driver = pkgs.libfprint-2-tod1-goodix;
     };
     fwupd.enable = true;
-    lorri.enable = true;
     openssh.enable = true;
     pcscd.enable = true;
     restic.backups.efi = {
@@ -226,6 +222,7 @@
         OnCalendar = "daily";
       };
     };
+
     snapper = {
       snapshotInterval = "*:0/5";
       cleanupInterval = "hourly";
@@ -353,12 +350,18 @@
   ########################################
   nixpkgs.overlays = [];
   programs.bcc.enable = true;
+  programs.direnv.enable = true;
   # broken 2023-02-21 & 2023-05-25 programs.sysdig.enable = true;
 
   programs.starship = {
     enable = true;
     settings = {
       add_newline = true;
+
+      aws = {
+        format = "on [$symbol($profile)(\\[$duration\\] )]($style)";
+        symbol = "☁️ ";
+      };
       gcloud.disabled = true;
       nix_shell.disabled = true;
       git_status = {
@@ -407,6 +410,7 @@
   # Building mongodb takes forever. Pin it here so
   # it can be copied to other stores
   system.extraDependencies = [pkgs.mongodb-5_0];
+  # system.extraDependencies = [pkgs.mongodb-6_0];
 
   environment.systemPackages = with pkgs;
   with config.boot.kernelPackages; [
@@ -449,6 +453,7 @@
     s-tui
 
     # Terminal related
+    glow # Make markdown pretty
     kitty
     lsd # ls, but better
     mdcat
@@ -502,6 +507,7 @@
 
     # Networking
     _3proxy
+    cloudflared
     dante
     openconnect
     tun2proxy

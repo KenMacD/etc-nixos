@@ -23,6 +23,9 @@ in {
 
     CARGO_HOME = "${XDG_DATA_HOME}/cargo";
 
+    # Fix curl & httpie tls verification
+    CURL_CA_BUNDLE = "/etc/ssl/certs/ca-bundle.crt";
+
     DOCKER_CONFIG = "${XDG_CONFIG_HOME}/docker";
 
     # Doesn't work with services

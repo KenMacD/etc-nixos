@@ -5,6 +5,8 @@
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   inputs.nixpkgs-24_05.url = "github:NixOS/nixpkgs/nixos-24.05";
   inputs.nixpkgs-stable.follows = "nixpkgs-24_05";
+  inputs.nixpkgs-master.url = "github:NixOS/nixpkgs/master";
+
   inputs.nixpkgs-mongodb-pin.url = "github:NixOS/nixpkgs/33be72b31b7cc5a0b43cc3b6c005cf4e4d47d899"; # 2024-06-28
 
   inputs.devenv = {
@@ -28,14 +30,17 @@
   inputs.lanzaboote = {
     url = "github:nix-community/lanzaboote/v0.4.1";
     inputs.nixpkgs.follows = "nixpkgs";
+    inputs.flake-utils.follows = "flake-utils";
   };
   inputs.microvm = {
     url = "github:astro/microvm.nix";
     inputs.nixpkgs.follows = "nixpkgs";
+    inputs.flake-utils.follows = "flake-utils";
   };
   inputs.nix-alien = {
     url = "github:thiagokokada/nix-alien";
     inputs.nixpkgs.follows = "nixpkgs";
+    inputs.flake-utils.follows = "flake-utils";
   };
   inputs.nixos-needsreboot = {
     url = "github:thefossguy/nixos-needsreboot";
@@ -44,10 +49,12 @@
   inputs.nix-bubblewrap = {
     url = "sourcehut:~fgaz/nix-bubblewrap";
     inputs.nixpkgs.follows = "nixpkgs";
+    inputs.flake-utils.follows = "flake-utils";
   };
   inputs.nix-vscode-extensions = {
     url = "github:nix-community/nix-vscode-extensions";
     inputs.nixpkgs.follows = "nixpkgs";
+    inputs.flake-utils.follows = "flake-utils";
   };
   inputs.sops-nix = {
     url = "github:Mic92/sops-nix";
@@ -57,6 +64,7 @@
   outputs = {
     self,
     nixpkgs,
+    nixpkgs-master,
     nixpkgs-mongodb-pin,
     nixpkgs-stable,
     devenv,
@@ -93,10 +101,17 @@
       };
     in {
       mongodb-5_0 = pinned-pkgs.mongodb-5_0;
+      mongodb-6_0 = pinned-pkgs.mongodb-6_0;
     };
     overlay-nix-bubblewrap = final: prev: {
       nix-bubblewrap = nix-bubblewrap.packages.${prev.system}.default;
       wrapPackage = nix-bubblewrap.lib.${prev.system}.wrapPackage;
+    };
+    overlay-nix-master = self: super: {
+      master = import nixpkgs-master {
+        inherit system;
+        config.allowUnfreePredicate = pkg: builtins.elem (super.lib.getName pkg) unfreePackages;
+      };
     };
     overlay-stable = self: super: {
       stable = import nixpkgs-stable {
@@ -252,6 +267,7 @@
             nixpkgs.overlays = [
               overlay-local
               overlay-mongodb-pin
+              overlay-nix-master
               overlay-stable
               # (import ./overlays/sway-dbg.nix)
               overlay-nix-bubblewrap
@@ -262,10 +278,11 @@
           ({pkgs, ...}: {
             nix.registry.nixpkgs.flake = nixpkgs;
             nix.registry.nixpkgs-stable.flake = nixpkgs-stable;
+            nix.registry.nixpkgs-master.flake = nixpkgs-master;
             nix.registry.nixpkgs-mongodb-pin.flake = nixpkgs-mongodb-pin;
-            nix.registry.microvm.flake = microvm;
             nix.registry.devenv.flake = devenv;
             nix.registry.local.flake = self;
+            nix.registry.microvm.flake = microvm;
           })
           ({pkgs, ...}: {
             virtualisation.podman.enable = true;

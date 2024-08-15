@@ -75,6 +75,7 @@ in {
 
     # Start tray services
     environment.etc."sway/config.d/desktop.conf".source = pkgs.writeText "desktop.conf" ''
+      # seat seat0 xcursor_theme Adwaita 24
       exec ${pkgs.blueman}/bin/blueman-applet
       # exec ${pkgs.networkmanagerapplet}/bin/nm-applet --indicator
       exec ${pkgs.udiskie}/bin/udiskie --tray
