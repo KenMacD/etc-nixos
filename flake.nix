@@ -6,7 +6,6 @@
   inputs.nixpkgs-24_05.url = "github:NixOS/nixpkgs/nixos-24.05";
   inputs.nixpkgs-stable.follows = "nixpkgs-24_05";
   inputs.nixpkgs-mongodb-pin.url = "github:NixOS/nixpkgs/33be72b31b7cc5a0b43cc3b6c005cf4e4d47d899"; # 2024-06-28
-  inputs.nixpkgs-pr301553.url = "github:NixOS/nixpkgs/724e7a8655c59cbdd6770b0b710bc374690256ea"; # Podman 5.0.1
 
   inputs.devenv = {
     url = "github:cachix/devenv";
@@ -59,7 +58,6 @@
     self,
     nixpkgs,
     nixpkgs-mongodb-pin,
-    nixpkgs-pr301553,
     nixpkgs-stable,
     devenv,
     fenix,
@@ -221,7 +219,6 @@
             nix.registry.nixpkgs.flake = nixpkgs;
             nix.registry.nixpkgs-stable.flake = nixpkgs-stable;
             nix.registry.nixpkgs-mongodb-pin.flake = nixpkgs-mongodb-pin;
-            nix.registry.nixpkgs-podman5.flake = nixpkgs-pr301553;
             nix.registry.microvm.flake = microvm;
             nix.registry.devenv.flake = devenv;
             nix.registry.local.flake = self;
@@ -266,7 +263,6 @@
             nix.registry.nixpkgs.flake = nixpkgs;
             nix.registry.nixpkgs-stable.flake = nixpkgs-stable;
             nix.registry.nixpkgs-mongodb-pin.flake = nixpkgs-mongodb-pin;
-            nix.registry.nixpkgs-podman5.flake = nixpkgs-pr301553;
             nix.registry.microvm.flake = microvm;
             nix.registry.devenv.flake = devenv;
             nix.registry.local.flake = self;
