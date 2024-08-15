@@ -4,7 +4,6 @@
   lib,
   ...
 }: {
-
   environment.systemPackages = with pkgs; [
     iw
     wavemon

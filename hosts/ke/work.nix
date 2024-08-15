@@ -14,5 +14,13 @@
     freerdp3
 
     (granted.override {withFish = true;})
+
+    # K8 clients
+    k9s
+    kdash
+    seabird
+
+    postman
+    gh-copilot
   ];
 }

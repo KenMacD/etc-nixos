@@ -9,9 +9,6 @@
     echo "always" > /sys/kernel/mm/transparent_hugepage/enabled
     echo "defer+madvise" > /sys/kernel/mm/transparent_hugepage/defrag
   '';
-  boot.kernelParams = [
-    # "intel_iommu=on"
-  ];
 
   users.users.kenny.extraGroups = [
     "kvm"
@@ -87,8 +84,8 @@
 
   # kind on rootless podman requires:
   # Need to force this because lxd disables it
-  systemd.enableUnifiedCgroupHierarchy = lib.mkForce true;
-  systemd.services."user@".serviceConfig = {Delegate = "yes";};
+  # TODO: does lxd still disable this? systemd.enableUnifiedCgroupHierarchy = lib.mkForce true;
+  # systemd.services."user@".serviceConfig = {Delegate = "yes";};
 
   security.pam.loginLimits = [
     # Raised to test yugabyte db in kind

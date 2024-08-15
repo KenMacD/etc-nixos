@@ -2,7 +2,7 @@ self: super: let
   overridePackage = package: override: overrideAttrs:
     (package.override override).overrideAttrs overrideAttrs;
   stdenvDebug = super.stdenvAdapters.keepDebugInfo super.pkgs.clang16Stdenv;
-  mesonFlags = [ ];
+  mesonFlags = [];
   #mesonFlags = [
   #  "-Db_sanitize=memory"
   #  "-Dc_args=[-fsanitize-memory-track-origins=2,-fno-omit-frame-pointer]"
@@ -31,7 +31,7 @@ in let
         owner = "wlroots";
         repo = "wlroots";
         rev = "63e2f2e28fc1f037a0117bb85d37f84397345c71";
-	hash = "sha256-my9x7+zNRUDaGNAT3fQivjzahq2kVxDWsDRW4Vp4Gas=";
+        hash = "sha256-my9x7+zNRUDaGNAT3fQivjzahq2kVxDWsDRW4Vp4Gas=";
       };
     });
 in {

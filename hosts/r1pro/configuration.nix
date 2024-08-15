@@ -20,12 +20,15 @@
     graphics = {
       enable = true;
       enable32Bit = true;
+      # From https://nixos.wiki/wiki/Jellyfin
       extraPackages = with pkgs; [
         intel-media-driver
-        vaapiIntel
+        intel-vaapi-driver
         vaapiVdpau
         libvdpau-va-gl
         intel-compute-runtime # OpenCL filter support (hardware tonemapping and subtitle burn-in)
+        vpl-gpu-rt
+        intel-media-sdk
       ];
     };
   };
@@ -207,7 +210,7 @@
   users.users.media = {
     uid = 1001;
     isNormalUser = true;
-    shell = "${pkgs.shadow}/bin/nologin";
+    shell = pkgs.shadow;
   };
 
   ########################################

@@ -20,6 +20,8 @@ with lib; {
   nix = {
     settings.auto-optimise-store = mkDefault true;
     settings.trusted-users = mkDefault ["root" "@wheel"];
+    settings.use-xdg-base-directories = true;
+    # settings.allow-import-from-derivation = false;
     gc = {
       automatic = true;
       dates = "weekly";
@@ -87,7 +89,7 @@ with lib; {
   security.unprivilegedUsernsClone = mkDefault config.virtualisation.containers.enable;
 
   # Limit previous generations to avoid /boot filling up
-  boot.loader.systemd-boot.configurationLimit = mkDefault 50;
+  boot.loader.systemd-boot.configurationLimit = mkDefault 10;
   boot.loader.efi.canTouchEfiVariables = mkDefault true;
   boot.tmp.useTmpfs = mkDefault true;
 
@@ -243,7 +245,6 @@ with lib; {
   # Packages
   ########################################
   environment.systemPackages = with pkgs; [
-    alejandra
     config.boot.kernelPackages.cpupower
     kitty.terminfo
   ];

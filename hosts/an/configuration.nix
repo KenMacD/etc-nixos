@@ -142,7 +142,6 @@
   # services.xserver.libinput.enable' defined in `/nix/store/qhyi6iczshf7s9qd36jfvb3sdqmnpnk7-source/hosts/an/configuration.nix' has been renamed to `services.libinput.enable'.
   # services.xserver.displayManager.sddm.enable' defined in `/nix/store/qhyi6iczshf7s9qd36jfvb3sdqmnpnk7-source/hosts/an/configuration.nix' has been renamed to `services.displayManager.sddm.enable'.
 
-  sound.enable = true;
   hardware.pulseaudio.enable = true;
   services.desktopManager.plasma6.enable = true;
   services.displayManager.sddm.wayland.enable = true;

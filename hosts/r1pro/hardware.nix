@@ -9,7 +9,7 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod"];
+  boot.initrd.availableKernelModules = ["xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod"];
   boot.initrd.kernelModules = [];
   boot.kernelModules = ["kvm-intel"];
   boot.extraModulePackages = [];
@@ -17,8 +17,14 @@
   fileSystems."/" = {
     device = "UUID=1e8a0c0b-7f51-4074-90d7-3cae56d527c5";
     fsType = "bcachefs";
+    # Filesystem can do an upgrade/repair on boot
+    options = [
+      "fsck"
+      "fix_errors"
+      "x-systemd.device-timeout=1h"
+      "x-systemd.device-timeout=1h"
+    ];
   };
-
 
   fileSystems."/boot" = {
     device = "UUID=8EC3-189B";
