@@ -178,8 +178,8 @@ with lib; {
   # Services
   ########################################
   # NTP
-  services.timesyncd.enable = true;
-  networking.timeServers = ["time.cloudflare.com"];
+  services.timesyncd.enable = mkDefault true;
+  networking.timeServers = mkDefault ["time.cloudflare.com"];
 
   ########################################
   # Programs
