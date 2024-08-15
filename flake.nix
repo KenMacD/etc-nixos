@@ -81,7 +81,13 @@
     ...
   } @ inputs: let
     system = "x86_64-linux";
-    pkgs = import nixpkgs {inherit system;};
+    unfreePackages = import ./unfree.nix;
+
+    lib = (import nixpkgs {inherit system;}).lib;
+    pkgs = import nixpkgs {
+      inherit system;
+      config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) unfreePackages;
+    };
     overlay-local = self: super:
       import ./pkgs {
         pkgs = super;
@@ -90,7 +96,7 @@
     overlay-mongodb-pin = self: super: let
       pinned-pkgs = import nixpkgs-mongodb-pin {
         inherit system;
-        config.allowUnfreePredicate = pkg: "mongodb" == (super.lib.getName pkg);
+        config.allowUnfreePredicate = pkg: builtins.elem (super.lib.getName pkg) unfreePackages;
       };
     in {
       mongodb-5_0 = pinned-pkgs.mongodb-5_0;
@@ -99,8 +105,11 @@
       nix-bubblewrap = nix-bubblewrap.packages.${prev.system}.default;
       wrapPackage = nix-bubblewrap.lib.${prev.system}.wrapPackage;
     };
-    overlay-stable = final: prev: {
-      stable = nixpkgs-stable.legacyPackages.${prev.system};
+    overlay-stable = self: super: {
+      stable = import nixpkgs-stable {
+        inherit system;
+        config.allowUnfreePredicate = pkg: builtins.elem (super.lib.getName pkg) unfreePackages;
+      };
     };
   in rec {
     packages.x86_64-linux = import ./pkgs {

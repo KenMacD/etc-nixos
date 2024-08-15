@@ -11,7 +11,6 @@ with lib; {
     modules/default.nix
     modules/env.nix # Set XDG/config vars
     modules/sway-desktop.nix # My sway desktop configuration
-    modules/unfree.nix
   ];
 
   ########################################
@@ -38,6 +37,7 @@ with lib; {
     daemonCPUSchedPolicy = "idle";
     daemonIOSchedClass = "idle";
   };
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) (import ./unfree.nix);
 
   # Disable building man-cache as it's slow, slightly
   # lower than default of 1000
