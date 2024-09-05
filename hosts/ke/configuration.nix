@@ -172,10 +172,13 @@
   };
   programs.xwayland.enable = false;
 
-  #  programs.hyprland = {
-  #    enable = true;
-  #    xwayland.enable = true;
-  #  };
+  # TODO: Multi-monitor broken until: https://nixpk.gs/pr-tracker.html?pr=339047
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+    # TODO: Portal build broken until: https://nixpk.gs/pr-tracker.html?pr=338836
+    portalPackage = pkgs.master.xdg-desktop-portal-hyprland;
+  };
 
   # Use Wayland for Electron apps
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
