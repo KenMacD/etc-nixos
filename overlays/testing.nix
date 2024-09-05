@@ -8,15 +8,7 @@ in rec {
   });
 
   # TODO: broken on 2024-08-15
-  awscli2 = super.stable.awscli2;
-  cargo-audit = super.stable.cargo-audit;
-  delta = super.stable.delta;
-  easyeffects = super.stable.easyeffects;
-  kdash = super.stable.kdash;
-  quickemu = super.stable.quickemu;
   quickgui = super.stable.quickgui;
-  taskwarrior = super.stable.taskwarrior;
-  zerotierone = super.stable.zerotierone;
 
   aichat = super.aichat.overrideAttrs (old: rec {
     version = "0.20.0";
