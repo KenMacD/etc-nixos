@@ -11,17 +11,18 @@ in rec {
   quickgui = super.stable.quickgui;
 
   aichat = super.aichat.overrideAttrs (old: rec {
-    version = "0.20.0";
+    version = "0.21.1";
     src = super.fetchFromGitHub {
       owner = "sigoden";
       repo = "aichat";
       rev = "v${version}";
-      hash = "sha256-khi5B8nYNK7otWZEs5koCzQaYGZwmGxP3zrMYIt3Ds4=";
+      hash = "sha256-ScCzRItkC5WEPt36WP8kXRlqVNKnNwdK7fXTz1Tqd3Q=";
     };
     cargoDeps = old.cargoDeps.overrideAttrs (super.lib.const {
       name = "${old.pname}-vendor.tar.gz";
       inherit src;
-      outputHash = "sha256-CPDECvODyo7MifNm3EGAdZw+Pew+ET6Y38H7dZtK1vQ=";
+      #outputHash = super.lib.fakeHash;
+      outputHash = "sha256-AbrCdgf4OTTjNNTxGm2kghONLzcqOUhAhpvFuz8m0kQ=";
     });
   });
 
