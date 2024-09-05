@@ -407,9 +407,16 @@
     group = "root";
   };
 
-  #  services.espanso.enable = true;
-  #  systemd.user.services.espanso.serviceConfig.ExecStart = lib.mkForce "/run/wrappers/bin/espanso worker";
-
+  services.espanso.enable = true;
+  systemd.user.services.espanso = {
+    serviceConfig.ExecStart = lib.mkForce "/run/wrappers/bin/espanso worker";
+    # Commands needed for expansions:
+    path = with pkgs; [
+      bash
+      dig
+      gopass
+    ];
+  };
   # Building mongodb takes forever. Pin it here so
   # it can be copied to other stores
   system.extraDependencies = [pkgs.mongodb-5_0];
