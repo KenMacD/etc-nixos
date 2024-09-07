@@ -1,9 +1,15 @@
 {pkgs ? import <nixpkgs> {}}: let
   callPackage = pkgs.callPackage;
 in {
+  aider = callPackage ./aider.nix {};
+
+  butterfish = callPackage ./butterfish.nix {};
+
   dcc = callPackage ./dcc {};
 
   deptree = callPackage ./deptree.nix {};
+
+  fabric-ai = callPackage ./fabric-ai.nix {};
 
   fre = callPackage ./fre.nix {};
 
@@ -17,13 +23,19 @@ in {
 
   insomnium = callPackage ./insomnium.nix {};
 
+  llm-ollama = callPackage ./llm-ollama.nix {};
+
+  magic-cli = callPackage ./magic-cli {};
+
   modprobed-db = callPackage ./modprobed-db.nix {};
 
   pgvecto-rs = callPackage ./pgvecto-rs.nix {};
 
-  tun2proxy = callPackage ./tun2proxy {};
+  resticprofile = callPackage ./resticprofile.nix {};
 
-  wl-gammarelay-rs = callPackage ./wl-gammarelay-rs.nix {};
+  shh = callPackage ./shh.nix {};
+
+  tun2proxy = callPackage ./tun2proxy {};
 
   zeronsd = callPackage ./zeronsd {};
 }
