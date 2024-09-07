@@ -1,7 +1,9 @@
 {
+  self,
   config,
   lib,
   pkgs,
+  system,
   ...
 }:
 # Ref: https://github.com/immich-app/immich/blob/main/docker/docker-compose.yml
@@ -76,7 +78,8 @@ in {
     ];
 
     # For 0.91.0:
-    extraPlugins = [(pkgs.pgvecto-rs.override {postgresql = config.services.postgresql.package;})];
+    # TODO: should be an input
+    extraPlugins = [(self.packages.${system}.pgvecto-rs.override {postgresql = config.services.postgresql.package;})];
     settings = {shared_preload_libraries = "vectors";};
   };
 

@@ -89,11 +89,6 @@
       inherit system;
       config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) unfreePackages;
     };
-    overlay-local = self: super:
-      import ./pkgs {
-        pkgs = super;
-        inherit inputs;
-      };
     overlay-mongodb-pin = self: super: let
       pinned-pkgs = import nixpkgs-mongodb-pin {
         inherit system;
@@ -120,9 +115,8 @@
       };
     };
   in rec {
-    packages.x86_64-linux = import ./pkgs {
+    packages.${system} = import ./pkgs {
       pkgs = nixpkgs.legacyPackages.${system};
-      inherit inputs;
     };
 
     # nix develop local#<shell>
@@ -183,9 +177,6 @@
         modules = [
           ({pkgs, ...}: {
             nix.nixPath = let path = toString ./.; in ["repl=${path}/repl.nix" "nixpkgs=${inputs.nixpkgs}"];
-            nixpkgs.overlays = [
-              overlay-local
-            ];
           })
           ./common.nix
           ./hosts/r1pro/configuration.nix
@@ -197,12 +188,11 @@
 
       yoga = nixpkgs.lib.nixosSystem {
         inherit system;
-        specialArgs = {inherit system inputs;};
+        specialArgs = {inherit self system inputs;};
         modules = [
           ({...}: {
             nix.nixPath = let path = toString ./.; in ["repl=${path}/repl.nix" "nixpkgs=${inputs.nixpkgs}"];
             nixpkgs.overlays = [
-              overlay-local
               overlay-mongodb-pin
             ];
           })
@@ -225,7 +215,6 @@
             ...
           }: {
             nixpkgs.overlays = [
-              overlay-local
               overlay-stable
             ];
           })
@@ -257,7 +246,7 @@
       };
       ke = nixpkgs.lib.nixosSystem {
         inherit system;
-        specialArgs = {inherit system inputs;};
+        specialArgs = {inherit self system inputs;};
         modules = [
           ({
             config,
@@ -265,7 +254,6 @@
             ...
           }: {
             nixpkgs.overlays = [
-              overlay-local
               overlay-mongodb-pin
               overlay-nix-master
               overlay-stable
