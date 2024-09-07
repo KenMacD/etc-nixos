@@ -1,9 +1,15 @@
 {
+  self,
   config,
   lib,
   pkgs,
+  system,
   ...
-}: {
+}:
+
+let
+  local = self.packages.${system};
+in {
   imports = [
     ./android.nix
     ./audio.nix
@@ -520,11 +526,12 @@
     cloudflared
     dante
     openconnect
-    tun2proxy
+    local.tun2proxy
 
     # Nix
     alejandra # Nix formatter
     nix-tree
+    nixd
     nixpkgs-fmt
 
     # Wireless
@@ -571,13 +578,14 @@
     # Version Control related
     # gitFull
     git-absorb # git commit --fixup, but automatic
-    git-no-hooks
+    local.git-no-hooks
     git-filter-repo
     git-lfs
     gita # Update a group of repos
     gitui
     haskellPackages.git-mediate # modify a merge then run to fix it up
     jujutsu # jj command for git, to try out
+    pre-commit
 
     # Development
     act # Run your GitHub Actions locally
@@ -599,7 +607,7 @@
     gh
     gnumake
     hotspot
-    insomnium # Postman like API tool - :( no longer maintained
+    local.insomnium # Postman like API tool - :( no longer maintained
     jq
     llvm
     man-pages
@@ -653,7 +661,7 @@
     eza # Better ls
     tealdeer # tldr
 
-    deptree
+    local.deptree
 
     xdg-desktop-portal-wlr
     imhex
