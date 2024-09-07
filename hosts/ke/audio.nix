@@ -4,7 +4,6 @@
   pkgs,
   ...
 }: {
-  security.rtkit.enable = true; # for pipewire
   services.blueman.enable = true;
 
   services.pipewire = {
