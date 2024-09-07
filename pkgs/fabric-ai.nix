@@ -18,6 +18,6 @@ buildGoModule rec {
   meta = with lib; {
     description = "An open-source framework for augmenting humans using AI";
     license = licenses.mit;
-    maintainers = [ ];
+    maintainers = [];
   };
 }

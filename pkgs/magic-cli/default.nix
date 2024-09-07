@@ -1,12 +1,12 @@
-{ lib
-, rustPlatform
-, fetchFromGitHub
-, libxcb
-, openssl
-, pkg-config
-, python3
+{
+  lib,
+  rustPlatform,
+  fetchFromGitHub,
+  libxcb,
+  openssl,
+  pkg-config,
+  python3,
 }:
-
 rustPlatform.buildRustPackage rec {
   pname = "magic-cli";
   version = "0.0.6";
@@ -43,6 +43,6 @@ rustPlatform.buildRustPackage rec {
     description = "Command line utility to make you a magician in the terminal ";
     homepage = "https://guywaldman.com/posts/introducing-magic-cli";
     license = licenses.mit;
-    maintainers = with maintainers; [ ];
+    maintainers = with maintainers; [];
   };
 }

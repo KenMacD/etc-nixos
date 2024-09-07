@@ -9,6 +9,7 @@
   "hplip"
   "j-link"
   "libfprint-2-tod1-goodix"
+  "lmstudio"
   "megasync"
   "mongodb"
   "nosql-workbench"

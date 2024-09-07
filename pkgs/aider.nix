@@ -108,6 +108,6 @@ in
       homepage = "https://github.com/paul-gauthier/aider";
       license = lib.licenses.asl20;
       mainProgram = "aider";
-      maintainers = with lib.maintainers; [ ];
+      maintainers = with lib.maintainers; [];
     };
   }

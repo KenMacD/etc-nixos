@@ -5,12 +5,11 @@
   pkgs,
   system,
   ...
-}:
-
-let
+}: let
   local = self.packages.${system};
 in {
   imports = [
+    ./ai.nix
     ./android.nix
     ./audio.nix
     ./bwrap.nix
@@ -451,7 +450,7 @@ in {
     (nnn.override {withNerdIcons = true;})
     p7zip
     patchelf
-    python3
+    (python3.withPackages (_: config.python3SystemPackages))
     restic
     ratarmount # Mount tar/archives with FUSE
     rlwrap
