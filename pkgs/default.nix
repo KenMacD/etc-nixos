@@ -1,7 +1,7 @@
 {pkgs ? import <nixpkgs> {}}: let
   callPackage = pkgs.callPackage;
 in {
-  aider = callPackage ./aider.nix {};
+  aider-chat = callPackage ./aider.nix {};
 
   butterfish = callPackage ./butterfish.nix {};
 
