@@ -170,19 +170,16 @@ in {
     enable = true;
     settings = {
       default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --user-menu --cmd ${pkgs.sway}/bin/sway";
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --user-menu --cmd \"${pkgs.uwsm}/bin/uwsm start -S -F /run/current-system/sw/bin/sway\"";
         user = "greeter";
       };
     };
   };
   programs.xwayland.enable = false;
 
-  # TODO: Multi-monitor broken until: https://nixpk.gs/pr-tracker.html?pr=339047
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
-    # TODO: Portal build broken until: https://nixpk.gs/pr-tracker.html?pr=338836
-    portalPackage = pkgs.master.xdg-desktop-portal-hyprland;
   };
 
   # Use Wayland for Electron apps
