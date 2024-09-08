@@ -59,7 +59,7 @@ in {
 
   environment.systemPackages = with pkgs; [
     aichat
-    local.aider
+    local.aider-chat
     gh-copilot
     fishPlugins.github-copilot-cli-fish
     (llm.withPlugins [

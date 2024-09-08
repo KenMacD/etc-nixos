@@ -3,17 +3,18 @@
   stdenv,
   python311,
   fetchFromGitHub,
-  git,
+  gitMinimal,
   portaudio,
 }: let
   python3 = python311.override {
     self = python3;
     packageOverrides = _: super: {tree-sitter = super.tree-sitter_0_21;};
   };
+  version = "0.55.0";
 in
-  python3.pkgs.buildPythonApplication rec {
+  python3.pkgs.buildPythonApplication {
     pname = "aider-chat";
-    version = "0.55.0";
+    inherit version;
     pyproject = true;
 
     src = fetchFromGitHub {
@@ -48,7 +49,7 @@ in
         pillow
         playwright
         prompt-toolkit
-        (python3.pkgs.callPackage ./pypager.nix {})
+        pypager
         pypandoc
         pyperclip
         pyyaml
@@ -58,9 +59,6 @@ in
         soundfile
         streamlit
         watchdog
-
-        # Used to verify pyton generated code
-        flake8
       ]
       ++ lib.optionals (!tensorflow.meta.broken) [
         llama-index-core
@@ -71,7 +69,7 @@ in
 
     pythonRelaxDeps = true;
 
-    nativeCheckInputs = (with python3.pkgs; [pytestCheckHook]) ++ [git];
+    nativeCheckInputs = (with python3.pkgs; [pytestCheckHook]) ++ [gitMinimal];
 
     disabledTestPaths = [
       # requires network
