@@ -82,11 +82,6 @@
     };
   };
 
-  # kind on rootless podman requires:
-  # Need to force this because lxd disables it
-  # TODO: does lxd still disable this? systemd.enableUnifiedCgroupHierarchy = lib.mkForce true;
-  # systemd.services."user@".serviceConfig = {Delegate = "yes";};
-
   security.pam.loginLimits = [
     # Raised to test yugabyte db in kind
     {
