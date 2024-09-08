@@ -227,7 +227,7 @@ in {
         OnCalendar = "daily";
       };
     };
-
+    sccache.enable = true;
     snapper = {
       snapshotInterval = "*:0/5";
       cleanupInterval = "hourly";
