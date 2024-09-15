@@ -30,16 +30,21 @@ with lib; {
     # after https://github.com/NixOS/nix/pull/8323 and/or https://github.com/NixOS/nix/pull/3494
     #   print-build-logs = true
     extraOptions = ''
-      keep-outputs = true
-      keep-derivations = true
       keep-going = true
-      connect-timeout = 1
+      connect-timeout = 2
     '';
 
     daemonCPUSchedPolicy = "idle";
     daemonIOSchedClass = "idle";
   };
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) (import ./unfree.nix);
+  systemd.services."nix-daemon".serviceConfig = {
+    # It'd be nice if this could be 50% of all CPUs
+    # Re: https://github.com/systemd/systemd/issues/33136
+    CPUQuota = "200%";
+    ManagedOOMMemoryPressure = "kill";
+    ManagedOOMMemoryPressureLimit = "80%";
+  };
 
   # Disable building man-cache as it's slow, slightly
   # lower than default of 1000
