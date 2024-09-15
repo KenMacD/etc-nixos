@@ -99,19 +99,17 @@ with lib; {
   boot.tmp.useTmpfs = mkDefault true;
 
   # Clean up old coredumps
-  systemd = {
-    services.clear-log = {
-      description = "Clear old coredumps";
-      serviceConfig = {
-        Type = "oneshot";
-        ExecStart = "${pkgs.systemd}/bin/journalctl --vacuum-time=14d";
-      };
+  systemd.services.clear-log = {
+    description = "Clear old coredumps";
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.systemd}/bin/journalctl --vacuum-time=14d";
     };
-    timers.clear-log = {
-      wantedBy = ["timers.target"];
-      partOf = ["clear-log.service"];
-      timerConfig.OnCalendar = "weekly UTC";
-    };
+  };
+  systemd.timers.clear-log = {
+    wantedBy = ["timers.target"];
+    partOf = ["clear-log.service"];
+    timerConfig.OnCalendar = "weekly UTC";
   };
 
   ########################################
