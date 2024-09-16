@@ -68,16 +68,10 @@
     nixpkgs-mongodb-pin,
     nixpkgs-stable,
     devenv,
-    fenix,
     flake-programs-sqlite,
-    flake-utils,
-    impermanence,
     lanzaboote,
     microvm,
-    nix-alien,
     nix-bubblewrap,
-    nix-vscode-extensions,
-    nixos-needsreboot,
     sops-nix,
     ...
   } @ inputs: let
@@ -175,7 +169,7 @@
         inherit system;
         specialArgs = {inherit system inputs;};
         modules = [
-          ({pkgs, ...}: {
+          ({...}: {
             nix.nixPath = let path = toString ./.; in ["repl=${path}/repl.nix" "nixpkgs=${inputs.nixpkgs}"];
           })
           ./common.nix
@@ -209,17 +203,13 @@
         inherit system;
         specialArgs = {inherit system inputs;};
         modules = [
-          ({
-            config,
-            pkgs,
-            ...
-          }: {
+          ({...}: {
             nixpkgs.overlays = [
               overlay-stable
             ];
           })
           # Add to regsitry so nixpkgs commands use system versions
-          ({pkgs, ...}: {
+          ({...}: {
             nix.registry.nixpkgs.flake = nixpkgs;
             nix.registry.nixpkgs-stable.flake = nixpkgs-stable;
             nix.registry.nixpkgs-mongodb-pin.flake = nixpkgs-mongodb-pin;
@@ -227,7 +217,7 @@
             nix.registry.devenv.flake = devenv;
             nix.registry.local.flake = self;
           })
-          ({pkgs, ...}: {
+          ({...}: {
             virtualisation.podman.enable = true;
             virtualisation.podman.defaultNetwork.settings.dns_enabled = true;
             networking.firewall.allowedUDPPorts = [53];
@@ -248,11 +238,7 @@
         inherit system;
         specialArgs = {inherit self system inputs;};
         modules = [
-          ({
-            config,
-            pkgs,
-            ...
-          }: {
+          ({...}: {
             nixpkgs.overlays = [
               overlay-mongodb-pin
               overlay-nix-master
@@ -263,7 +249,7 @@
             ];
           })
           # Add to regsitry so nixpkgs commands use system versions
-          ({pkgs, ...}: {
+          ({...}: {
             nix.registry.nixpkgs.flake = nixpkgs;
             nix.registry.nixpkgs-stable.flake = nixpkgs-stable;
             nix.registry.nixpkgs-master.flake = nixpkgs-master;
@@ -272,7 +258,7 @@
             nix.registry.local.flake = self;
             nix.registry.microvm.flake = microvm;
           })
-          ({pkgs, ...}: {
+          ({...}: {
             virtualisation.podman.enable = true;
             virtualisation.podman.defaultNetwork.settings.dns_enabled = true;
             networking.firewall.allowedUDPPorts = [53];
