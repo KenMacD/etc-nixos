@@ -111,20 +111,25 @@
   };
   services.fwupd.enable = true;
   services.jellyfin.enable = true;
-  systemd.services.jellyfin.serviceConfig = {
-    CapabilityBoundingSet = "";
-    ProtectProc = "invisible";
-    ProcSubset = "pid";
-    ProtectHome = true;
-    ProtectSystem = "strict";
-    ProtectClock = true;
-    ReadWritePaths = [
-      "/srv/media"
-      config.services.jellyfin.dataDir
-      config.services.jellyfin.configDir
-      config.services.jellyfin.cacheDir
-      config.services.jellyfin.logDir
-    ];
+  systemd.services.jellyfin = {
+    environment = {
+      JELLYFIN_PublishedServerUrl = "https://jellyfin.macdermid.ca";
+    };
+    serviceConfig = {
+      CapabilityBoundingSet = "";
+      ProtectProc = "invisible";
+      ProcSubset = "pid";
+      ProtectHome = true;
+      ProtectSystem = "strict";
+      ProtectClock = true;
+      ReadWritePaths = [
+        "/srv/media"
+        config.services.jellyfin.dataDir
+        config.services.jellyfin.configDir
+        config.services.jellyfin.cacheDir
+        config.services.jellyfin.logDir
+      ];
+    };
   };
   services.nzbget.enable = true;
   systemd.services.nzbget.path = with pkgs; [
@@ -151,17 +156,17 @@
   services.samba = {
     enable = true;
     openFirewall = true;
-    extraConfig = ''
-      workgroup = WORKGROUP
-      server string = ${config.networking.hostName}
-      netbios name = ${config.networking.hostName}
-      security = user
-      hosts allow = 192.168.2. 127.0.0.1 localhost
-      hosts deny = 0.0.0.0/0
-      guest account = nobody
-      map to guest = bad user
-    '';
-    shares = {
+    settings = {
+      global = {
+        "workgroup" = "WORKGROUP";
+        "server string" = "${config.networking.hostName}";
+        "netbios name" = "${config.networking.hostName}";
+        "security" = "user";
+        "hosts allow" = "192.168.2. 127.0.0.1 localhost";
+        "hosts deny" = "0.0.0.0/0";
+        "guest account" = "nobody";
+        "map to guest" = "bad user";
+      };
       media = {
         path = "/srv/media";
         browseable = "yes";
