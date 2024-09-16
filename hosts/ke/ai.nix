@@ -40,21 +40,20 @@ in {
 
   services.open-webui = {
     enable = true;
-    # TODO: remove when https://nixpk.gs/pr-tracker.html?pr=340039
-    package = pkgs.master.open-webui;
     port = 3001;
   };
 
   # TODO: tensorflow-2.13.0 not supported for interpreter python3.12
-  #  services.private-gpt = {
-  #    enable = true;
-  #  };
+  # services.private-gpt = {
+  #   enable = true;
+  # };
 
   # TODO: add comfyanonymous/ComfyUI pkg?
 
   python3SystemPackages = with pkgs.python3Packages; [
     # vllm
     llm
+    local.llm-ollama
   ];
 
   environment.systemPackages = with pkgs; [
@@ -62,9 +61,6 @@ in {
     local.aider-chat
     gh-copilot
     fishPlugins.github-copilot-cli-fish
-    (llm.withPlugins [
-      local.llm-ollama
-    ])
     (local-ai.override {with_clblas = true;})
     lmstudio # to try, open-webui-like?
     local.magic-cli
