@@ -91,7 +91,7 @@ in {
       exec ${pkgs.blueman}/bin/blueman-applet
       # exec ${pkgs.networkmanagerapplet}/bin/nm-applet --indicator
       exec ${pkgs.udiskie}/bin/udiskie --tray
-      exec ${pkgs.wpa_supplicant_gui}/bin/wpa_gui -q -t
+      # Start manually when needed: exec ${pkgs.wpa_supplicant_gui}/bin/wpa_gui -q -t
     '';
 
     programs.waybar.enable = true;
