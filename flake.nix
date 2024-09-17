@@ -1,7 +1,6 @@
 {
   description = "NixOS configuration";
 
-
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   inputs.nixpkgs-24_05.url = "github:NixOS/nixpkgs/nixos-24.05";
   inputs.nixpkgs-stable.follows = "nixpkgs-24_05";
