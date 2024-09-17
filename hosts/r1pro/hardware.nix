@@ -19,8 +19,6 @@
     fsType = "bcachefs";
     # Filesystem can do an upgrade/repair on boot
     options = [
-      "fsck"
-      "fix_errors"
       "x-systemd.device-timeout=1h"
       "x-systemd.device-timeout=1h"
     ];
