@@ -92,9 +92,14 @@ in {
       # exec ${pkgs.networkmanagerapplet}/bin/nm-applet --indicator
       exec ${pkgs.udiskie}/bin/udiskie --tray
       # Start manually when needed: exec ${pkgs.wpa_supplicant_gui}/bin/wpa_gui -q -t
+
+      # Call after sway is started to keep uwsm from killing
+      # exec ${pkgs.uwsm}/bin/uwsm finalize
     '';
 
     programs.waybar.enable = true;
+    programs.uwsm.enable = true; # sets graphical-session.target
+    programs.uwsm.waylandCompositors = {};
     services.blueman.enable = true;
 
     # glib-networking required for TLS for programs like freerdp
