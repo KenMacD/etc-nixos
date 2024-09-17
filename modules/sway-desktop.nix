@@ -43,6 +43,7 @@ in {
 
         # Display profiles
         kanshi
+        shikane
         wdisplays
 
         # Clipboard test
@@ -70,6 +71,17 @@ in {
       wrapperFeatures = {
         base = true;
         gtk = true;
+      };
+    };
+
+    # Start shikane
+    systemd.user.services.shikane = {
+      description = "shikane - dynamic output configuration";
+      wantedBy = ["graphical-session.target"];
+      partOf = ["graphical-session.target"];
+      serviceConfig = {
+        ExecStart = "${pkgs.shikane}/bin/shikane";
+        Restart = "on-failure";
       };
     };
 
