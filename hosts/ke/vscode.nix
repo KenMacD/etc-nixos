@@ -42,6 +42,7 @@
           asvetliakov.vscode-neovim
           augustocdias.tasks-shell-input
           bierner.markdown-mermaid
+          blaxk.serverless-command # Testing with serverless framework
           bmalehorn.vscode-fish
           bruno-api-client.bruno
           charliermarsh.ruff
@@ -49,6 +50,7 @@
           codeium.codeium
           crystal-lang-tools.crystal-lang
           # Closed source now? Trying continue.continue instead danielsanmedium.dscodegpt
+          davidanson.vscode-markdownlint
           dbaeumer.vscode-eslint
           deerawan.vscode-dash # Lookup upstream docs
           eamodio.gitlens
@@ -105,6 +107,7 @@
           probe-rs.probe-rs-debugger
           redhat.vscode-yaml
           rust-lang.rust-analyzer
+          saoudrizwan.claude-dev
           shardulm94.trailing-spaces
           shd101wyy.markdown-preview-enhanced
           streetsidesoftware.code-spell-checker

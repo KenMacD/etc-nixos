@@ -136,7 +136,7 @@
     kubescape # Kubescape vuln scanner?
     kubernetes # kubeadm
     kubernetes-helm
-    # openlens closed its source code? 
+    # openlens closed its source code?
     stern # multi-pod tail
 
     # Kubenetes testing:

@@ -183,7 +183,10 @@ in {
   };
 
   # Use Wayland for Electron apps
-  environment.sessionVariables.NIXOS_OZONE_WL = "1";
+  environment.variables.NIXOS_OZONE_WL = "1";
+  # Clone files as the FS is also clone
+  environment.variables.UV_LINK_MODE = "clone";
+
   environment.pathsToLink = ["/libexec"]; # Required for sway/polkit
   environment.shellAliases = {
     "ls" = "lsd";
@@ -424,6 +427,10 @@ in {
   system.extraDependencies = [pkgs.mongodb-5_0];
   # system.extraDependencies = [pkgs.mongodb-6_0];
 
+  python3SystemPackages = with pkgs.python3Packages; [
+    uv
+  ];
+
   environment.systemPackages = with pkgs;
   with config.boot.kernelPackages; [
     # General
@@ -436,11 +443,12 @@ in {
     fd
     firefox
     fzf
+    glib
     httpie
     immich-go # local
+    libnotify
     libreoffice-fresh
     libreoffice
-    librewolf
     libusb1
     libva-utils
     magic-wormhole
@@ -455,6 +463,7 @@ in {
     tmux
     sshfs
     unzip
+    wl-mirror
     xdg-utils
     yt-dlp
 
@@ -553,7 +562,7 @@ in {
     lynx
 
     # Task management
-    taskwarrior
+    taskwarrior3
     taskwarrior-tui
     taskopen
     vit
@@ -574,7 +583,7 @@ in {
     # Version Control related
     # gitFull
     git-absorb # git commit --fixup, but automatic
-    local.git-no-hooks
+    git
     git-filter-repo
     git-lfs
     gita # Update a group of repos
@@ -618,6 +627,7 @@ in {
     pkgconf
     pgcli
     ripgrep
+    ruff
     tio
     yamllint
     stable.yamlfix # broken 2024-03-29
@@ -642,6 +652,7 @@ in {
     lutris
     # TODO: broken 2024-02-11 mitmproxy
     mitmproxy
+    zed-editor
 
     # s0ix-selftest-tool
 
