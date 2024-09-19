@@ -10,7 +10,7 @@
     self = python3;
     packageOverrides = _: super: {tree-sitter = super.tree-sitter_0_21;};
   };
-  version = "0.55.0";
+  version = "0.56.0";
 in
   python3.pkgs.buildPythonApplication {
     pname = "aider-chat";
@@ -21,8 +21,13 @@ in
       owner = "paul-gauthier";
       repo = "aider";
       rev = "v${version}";
-      hash = "sha256-/BTs4vPg/iwi4bLxctmgLLZLexnRe4w9mHKsmq31hvM=";
+      hash = "sha256-e0Fqj67vYt41Zbr1FN2fuLp6cHRius8RtacBHLgB9dM=";
     };
+
+    patchPhase = ''
+      substituteInPlace aider/sendchat.py \
+        --replace litellm.llms.anthropic.AnthropicError litellm.llms.anthropic.chat.AnthropicError
+    '';
 
     build-system = with python3.pkgs; [setuptools setuptools-scm];
 
