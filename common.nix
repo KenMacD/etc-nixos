@@ -195,6 +195,7 @@ with lib; {
     defaultEditor = true;
     viAlias = true;
     vimAlias = true;
+    withRuby = false;
     configure = {
       packages.myPlugins = with pkgs.vimPlugins; {
         start = [
@@ -225,6 +226,12 @@ with lib; {
           set mouse=
         endif
 
+        " Show nbsp characters
+        set listchars=nbsp:.
+
+        " gopass
+        au BufNewFile,BufRead /dev/shm/gopass.* setlocal noswapfile nobackup noundofile
+
         " Enable treesitter and lazyvim
         lua << EOF
         require'nvim-treesitter.configs'.setup {
@@ -233,16 +240,21 @@ with lib; {
           },
         }
         require("lazy").setup()
+
+        -- Load the user configuration if available
+        local user_config_path = os.getenv("XDG_CONFIG_HOME") .. "/nvim/init.lua"
+        if vim.fn.filereadable(user_config_path) == 1 then
+          dofile(user_config_path)
+        end
         EOF
-
-        " Show nbsp characters
-        set listchars=nbsp:.
-
-        " gopass
-        au BufNewFile,BufRead /dev/shm/gopass.* setlocal noswapfile nobackup noundofile
       '';
     };
   };
+
+#	" Load user config
+#        " if filereadable(expand('~/.config/nvim/init.lua'))
+#        "  lua require('init')
+#        " endif
 
   ########################################
   # Packages
