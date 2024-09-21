@@ -5,6 +5,7 @@
   ...
 }: {
   imports = [
+    ./lobechat.nix
     ./networkd.nix
   ];
 
