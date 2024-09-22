@@ -6,8 +6,6 @@
   inputs.nixpkgs-stable.follows = "nixpkgs-24_05";
   inputs.nixpkgs-master.url = "github:NixOS/nixpkgs/master";
 
-  inputs.nixpkgs-mongodb-pin.url = "github:NixOS/nixpkgs/33be72b31b7cc5a0b43cc3b6c005cf4e4d47d899"; # 2024-06-28
-
   inputs.devenv = {
     url = "github:cachix/devenv";
     inputs.nixpkgs.follows = "nixpkgs";
@@ -64,7 +62,6 @@
     self,
     nixpkgs,
     nixpkgs-master,
-    nixpkgs-mongodb-pin,
     nixpkgs-stable,
     devenv,
     flake-programs-sqlite,
@@ -81,15 +78,6 @@
     pkgs = import nixpkgs {
       inherit system;
       config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) unfreePackages;
-    };
-    overlay-mongodb-pin = self: super: let
-      pinned-pkgs = import nixpkgs-mongodb-pin {
-        inherit system;
-        config.allowUnfreePredicate = pkg: builtins.elem (super.lib.getName pkg) unfreePackages;
-      };
-    in {
-      mongodb-5_0 = pinned-pkgs.mongodb-5_0;
-      mongodb-6_0 = pinned-pkgs.mongodb-6_0;
     };
     overlay-nix-bubblewrap = final: prev: {
       nix-bubblewrap = nix-bubblewrap.packages.${prev.system}.default;
@@ -185,9 +173,6 @@
         modules = [
           ({...}: {
             nix.nixPath = let path = toString ./.; in ["repl=${path}/repl.nix" "nixpkgs=${inputs.nixpkgs}"];
-            nixpkgs.overlays = [
-              overlay-mongodb-pin
-            ];
           })
           ./common.nix
           ./hosts/yoga/configuration.nix
@@ -211,7 +196,6 @@
           ({...}: {
             nix.registry.nixpkgs.flake = nixpkgs;
             nix.registry.nixpkgs-stable.flake = nixpkgs-stable;
-            nix.registry.nixpkgs-mongodb-pin.flake = nixpkgs-mongodb-pin;
             nix.registry.microvm.flake = microvm;
             nix.registry.devenv.flake = devenv;
             nix.registry.local.flake = self;
@@ -239,7 +223,6 @@
         modules = [
           ({...}: {
             nixpkgs.overlays = [
-              overlay-mongodb-pin
               overlay-nix-master
               overlay-stable
               # (import ./overlays/sway-dbg.nix)
@@ -252,7 +235,6 @@
             nix.registry.nixpkgs.flake = nixpkgs;
             nix.registry.nixpkgs-stable.flake = nixpkgs-stable;
             nix.registry.nixpkgs-master.flake = nixpkgs-master;
-            nix.registry.nixpkgs-mongodb-pin.flake = nixpkgs-mongodb-pin;
             nix.registry.devenv.flake = devenv;
             nix.registry.local.flake = self;
             nix.registry.microvm.flake = microvm;
