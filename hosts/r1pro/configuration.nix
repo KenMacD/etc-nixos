@@ -1,9 +1,13 @@
 {
+  self,
   config,
   pkgs,
   lib,
+  system,
   ...
-}: {
+}: let
+  local = self.packages.${system};
+in {
   imports = [
     ./lobechat.nix
     ./networkd.nix
@@ -138,6 +142,26 @@
     p7zip
     python39 # TODO: when videosort updated, update python
   ];
+  services.mongodb = {
+    enable = true;
+    package = local.mongodb-bin_7;
+    # Oddly the auth/initialRootPassword didn't work
+    extraConfig = ''
+      security.authorization: enabled
+      setParameter:
+        authenticationMechanisms: SCRAM-SHA-256
+
+    '';
+  };
+  systemd.services.mongodb.serviceConfig = {
+    # https://www.mongodb.com/docs/manual/reference/ulimit
+    LimitFSIZE = "infinity";
+    LimitCPU = "infinity";
+    LimitAS = "infinity";
+    LimitMEMLOCK = "infinity";
+    LimitNOFILE = 64000;
+    LimitNPROC = 64000;
+  };
   services.openssh = {
     enable = true;
     extraConfig = ''
@@ -249,6 +273,7 @@
     htop
     kitty # for term info only
     libva-utils
+    mongosh
     ncdu
     powertop
     pstree

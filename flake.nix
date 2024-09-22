@@ -154,7 +154,7 @@
 
       r1pro = nixpkgs.lib.nixosSystem {
         inherit system;
-        specialArgs = {inherit system inputs;};
+        specialArgs = {inherit self system inputs;};
         modules = [
           ({...}: {
             nix.nixPath = let path = toString ./.; in ["repl=${path}/repl.nix" "nixpkgs=${inputs.nixpkgs}"];
