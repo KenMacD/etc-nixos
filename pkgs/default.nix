@@ -29,6 +29,16 @@ in {
 
   modprobed-db = callPackage ./modprobed-db.nix {};
 
+  mongodb-bin_7 = callPackage ./mongodb-bin.nix {
+    version = "7.0.14";
+    hash = "sha256-tM+MquEIeFE17Mi4atjtbfXW77hLm5WlDsui/CRs4IQ=";
+  };
+  mongodb-bin_6 = callPackage ./mongodb-bin.nix {
+    version = "6.0.17";
+    hash = "sha256-zZ1ObTLo15UNxCjck56LWMrf7FwRapYKCwfU+LeUmi0=";
+    extraBuildInputs = [pkgs.lzma];
+  };
+
   pgvecto-rs = callPackage ./pgvecto-rs.nix {};
 
   resticprofile = callPackage ./resticprofile.nix {};
