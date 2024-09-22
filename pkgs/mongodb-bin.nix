@@ -48,6 +48,8 @@ stdenv.mkDerivation {
     description = "A scalable, high-performance, open source NoSQL database";
     homepage = "http://www.mongodb.org";
     platforms = ["x86_64-linux"];
-    license = licenses.unfree;
+    # TODO: figure out unfree for self
+    # maybe something in https://discourse.nixos.org/t/allowunfree-predicate-does-not-apply-to-self-packages/21734
+    # license = licenses.unfree;
   };
 }
