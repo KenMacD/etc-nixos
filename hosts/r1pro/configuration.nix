@@ -146,14 +146,22 @@ in {
     enable = true;
     package = local.mongodb-bin_7;
     # Oddly the auth/initialRootPassword didn't work
+    pidFile = "/run/mongodb/mongodb.pid";
     extraConfig = ''
+      net:
+        unixDomainSocket:
+          enabled: true
+          filePermissions: 0777
+          pathPrefix: "/run/mongodb"
+
       security.authorization: enabled
       setParameter:
         authenticationMechanisms: SCRAM-SHA-256
-
     '';
   };
   systemd.services.mongodb.serviceConfig = {
+    RuntimeDirectory = "mongodb";
+
     # https://www.mongodb.com/docs/manual/reference/ulimit
     LimitFSIZE = "infinity";
     LimitCPU = "infinity";
