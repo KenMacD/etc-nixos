@@ -422,10 +422,6 @@ in {
       gopass
     ];
   };
-  # Building mongodb takes forever. Pin it here so
-  # it can be copied to other stores
-  system.extraDependencies = [pkgs.mongodb-5_0];
-  # system.extraDependencies = [pkgs.mongodb-6_0];
 
   python3SystemPackages = with pkgs.python3Packages; [
     uv
