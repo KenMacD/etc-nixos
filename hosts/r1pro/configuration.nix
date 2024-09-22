@@ -154,6 +154,24 @@
     '';
     settings.PasswordAuthentication = true;
   };
+  services.postgresql = {
+    enable = true;
+    enableTCPIP = true;
+    package = pkgs.postgresql_16;
+    # https://docs.pgvecto.rs/admin/upgrading.html
+    # CREATE EXTENSION IF NOT EXISTS vectors;
+    extraPlugins = with pkgs.postgresql.pkgs; [pgvecto-rs];
+    settings = {shared_preload_libraries = "vectors";};
+    authentication = ''
+      local all all ident map=mapping
+    '';
+    identMap = ''
+      mapping kenny    postgres
+      mapping root     postgres
+      mapping postgres postgres
+      mapping /^(.*)$  \1
+    '';
+  };
   services.samba = {
     enable = true;
     openFirewall = true;
