@@ -1,5 +1,9 @@
-{pkgs ? import <nixpkgs> {}}: let
-  callPackage = pkgs.callPackage;
+{
+  pkgs ? import <nixpkgs> {},
+  inputs,
+  system,
+}: let
+  inherit (pkgs) callPackage python3Packages;
 in {
   aider-chat = callPackage ./aider.nix {};
 
@@ -23,7 +27,8 @@ in {
 
   insomnium = callPackage ./insomnium.nix {};
 
-  llm-ollama = callPackage ./llm-ollama.nix {};
+  llm-claude-3 = python3Packages.callPackage ./llm-claude-3.nix {};
+  llm-ollama = python3Packages.callPackage ./llm-ollama.nix {};
 
   magic-cli = callPackage ./magic-cli {};
 

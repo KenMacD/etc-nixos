@@ -16,6 +16,8 @@
     jira-cli-go
     postman
     slirp4netns
+    terraformer
+    terragrunt
 
     # K8 clients
     k9s

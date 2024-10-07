@@ -1,24 +1,27 @@
 {
-  fetchPypi,
+  buildPythonPackage,
+  fetchFromGitHub,
   lib,
-  python3Packages,
+  setuptools,
+  ollama,
 }:
-# From https://github.com/nix-community/nur-combined/blob/master/repos/javimerino/pkgs/llm-ollama/default.nix
-python3Packages.buildPythonApplication rec {
+buildPythonPackage rec {
   pname = "llm-ollama";
-  version = "0.4.3";
+  version = "0.5.0";
   pyproject = true;
-  src = fetchPypi {
-    pname = "llm_ollama";
-    inherit version;
-    hash = "sha256-fYyMeSAmFKMJZFiDQlQ1tHlVTkyGPCDmt0l43WmkjUc=";
+
+  src = fetchFromGitHub {
+    owner = "taketwo";
+    repo = "llm-ollama";
+    rev = version;
+    sha256 = "sha256-QxmFgiy+Z5MNtnf2nvGndZk2MMuMhkOfofUsxCoh7J0=";
   };
 
   nativeBuildInputs = [
-    python3Packages.setuptools
+    setuptools
   ];
   propagatedBuildInputs = [
-    python3Packages.ollama
+    ollama
   ];
 
   # We can't add llm as a propagatedBuildInput as it creates a

@@ -448,6 +448,7 @@ in {
     libusb1
     libva-utils
     magic-wormhole
+    mongodb-compass
     (nnn.override {withNerdIcons = true;})
     p7zip
     patchelf
@@ -518,6 +519,7 @@ in {
     power-profiles-daemon
     pstree
     remmina
+    sops
     usbutils
     turbostat
     x86_energy_perf_policy
@@ -624,9 +626,11 @@ in {
     pgcli
     ripgrep
     ruff
+    ssm-session-manager-plugin
     tio
     yamllint
     stable.yamlfix # broken 2024-03-29
+    zeal # Offline docs
 
     # Testing
     atuin # shell history in sqlite?
