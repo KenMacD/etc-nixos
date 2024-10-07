@@ -189,7 +189,20 @@ with lib; {
   ########################################
   # Programs
   ########################################
-  programs.fish.enable = true;
+  programs.fish = {
+    enable = true;
+    interactiveShellInit = ''
+      function whichreal
+        readlink (which $argv)
+      end
+
+      if set -q KITTY_INSTALLATION_DIR
+          set --global KITTY_SHELL_INTEGRATION enabled
+          source "$KITTY_INSTALLATION_DIR/shell-integration/fish/vendor_conf.d/kitty-shell-integration.fish"
+          set --prepend fish_complete_path "$KITTY_INSTALLATION_DIR/shell-integration/fish/vendor_completions.d"
+      end
+    '';
+  };
   programs.neovim = {
     enable = true;
     defaultEditor = true;
