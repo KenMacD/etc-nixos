@@ -10,7 +10,7 @@
     self = python3;
     packageOverrides = _: super: {tree-sitter = super.tree-sitter_0_21;};
   };
-  version = "0.56.0";
+  version = "0.59.0";
 in
   python3.pkgs.buildPythonApplication {
     pname = "aider-chat";
@@ -21,7 +21,7 @@ in
       owner = "paul-gauthier";
       repo = "aider";
       rev = "v${version}";
-      hash = "sha256-e0Fqj67vYt41Zbr1FN2fuLp6cHRius8RtacBHLgB9dM=";
+      hash = "sha256-20LicYj1j5gGzhF+SxPUKu858nHZgwDF1JxXeHRtYe0=";
     };
 
     patchPhase = ''
@@ -54,6 +54,7 @@ in
         pillow
         playwright
         prompt-toolkit
+        pydub
         pypager
         pypandoc
         pyperclip
