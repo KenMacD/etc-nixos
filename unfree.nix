@@ -12,6 +12,7 @@
   "lmstudio"
   "megasync"
   "mongodb"
+  "mongodb-compass"
   "nosql-workbench"
   "obsidian"
   "postman"

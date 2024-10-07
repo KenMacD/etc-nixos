@@ -67,6 +67,7 @@
           # Broken: 2024-04-29       hashicorp.terraform
           hbenl.vscode-mocha-test-adapter
           hbenl.vscode-test-explorer
+          humao.rest-client
           jebbs.plantuml
           jnoortheen.nix-ide
           kamadorueda.alejandra
@@ -102,6 +103,7 @@
           nordic-semiconductor.nrf-devicetree
           nordic-semiconductor.nrf-kconfig
           nordic-semiconductor.nrf-terminal
+          pascalreitermann93.vscode-yaml-sort
           pomdtr.excalidraw-editor
           platformio.platformio-ide
           probe-rs.probe-rs-debugger
