@@ -308,6 +308,7 @@ in {
       "scanner"
       "lp"
 
+      config.programs.ydotool.group
       config.security.wrappers.dumpcap.group
     ];
   };
@@ -399,6 +400,7 @@ in {
   };
 
   programs.thefuck.enable = true;
+  programs.ydotool.enable = true;
 
   # Allow input access of espanso
   security.wrappers.espanso = {
