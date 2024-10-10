@@ -10,22 +10,6 @@ in rec {
   # TODO: broken on 2024-08-15
   quickgui = super.stable.quickgui;
 
-  aichat = super.aichat.overrideAttrs (old: rec {
-    version = "0.21.1";
-    src = super.fetchFromGitHub {
-      owner = "sigoden";
-      repo = "aichat";
-      rev = "v${version}";
-      hash = "sha256-ScCzRItkC5WEPt36WP8kXRlqVNKnNwdK7fXTz1Tqd3Q=";
-    };
-    cargoDeps = old.cargoDeps.overrideAttrs (super.lib.const {
-      name = "${old.pname}-vendor.tar.gz";
-      inherit src;
-      #outputHash = super.lib.fakeHash;
-      outputHash = "sha256-AbrCdgf4OTTjNNTxGm2kghONLzcqOUhAhpvFuz8m0kQ=";
-    });
-  });
-
   notmuch = super.notmuch.overrideAttrs (old: {
     buildInputs =
       (old.buildInputs or [])
