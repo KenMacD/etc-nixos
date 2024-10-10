@@ -447,7 +447,6 @@ in {
     libreoffice
     libusb1
     libva-utils
-    magic-wormhole
     mongodb-compass
     (nnn.override {withNerdIcons = true;})
     p7zip
@@ -461,6 +460,7 @@ in {
     sshfs
     unzip
     wl-mirror
+    wormhole-william
     xdg-utils
     yt-dlp
 
