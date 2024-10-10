@@ -185,7 +185,8 @@ in {
   # Use Wayland for Electron apps
   environment.variables.NIXOS_OZONE_WL = "1";
   # Clone files as the FS is also clone
-  environment.variables.UV_LINK_MODE = "clone";
+  # Odd... tries to clone directories as well as files
+  # environment.variables.UV_LINK_MODE = "clone";
 
   environment.pathsToLink = ["/libexec"]; # Required for sway/polkit
   environment.shellAliases = {
