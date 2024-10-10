@@ -99,6 +99,7 @@
           ms-vscode-remote.remote-ssh
           msedge-dev.gnls
           nhoizey.gremlins
+          nicolasvuillamy.vscode-groovy-lint
           nordic-semiconductor.nrf-connect
           nordic-semiconductor.nrf-devicetree
           nordic-semiconductor.nrf-kconfig
