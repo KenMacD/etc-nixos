@@ -177,11 +177,6 @@ in {
   };
   programs.xwayland.enable = false;
 
-  programs.hyprland = {
-    enable = true;
-    xwayland.enable = true;
-  };
-
   # Use Wayland for Electron apps
   environment.variables.NIXOS_OZONE_WL = "1";
   # Clone files as the FS is also clone
