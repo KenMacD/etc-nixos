@@ -1,10 +1,13 @@
 {
+  self,
   config,
   pkgs,
   lib,
+  system,
   ...
 }: let
   ip = "172.27.0.3";
+  local = self.packages.${system};
 in {
   nix = {
     extraOptions = ''
@@ -420,6 +423,7 @@ in {
   services.unifi = {
     enable = true;
     unifiPackage = pkgs.unifi8;
+    mongodbPackage = local.mongodb-bin_7;
     openFirewall = true;
   };
 
