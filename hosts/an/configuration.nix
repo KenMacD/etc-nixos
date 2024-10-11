@@ -2,9 +2,6 @@
   config,
   lib,
   pkgs,
-  nixpkgs,
-  inputs,
-  system,
   ...
 }: {
   ########################################
@@ -55,6 +52,7 @@
         vaapiVdpau
       ];
     };
+    sane.enable = true;
   };
   services.hardware.bolt.enable = true;
   services.avahi.enable = true; # For Chromecast
