@@ -14,7 +14,6 @@ in {
     ./audio.nix
     ./bwrap.nix
     ./emacs.nix
-    ../../modules/hp-printer.nix
     ./firewall.nix
     ./re.nix
     ./rust.nix
