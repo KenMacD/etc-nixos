@@ -17,9 +17,7 @@
   fileSystems."/" = {
     device = "UUID=1e8a0c0b-7f51-4074-90d7-3cae56d527c5";
     fsType = "bcachefs";
-    # Filesystem can do an upgrade/repair on boot
     options = [
-      "x-systemd.device-timeout=1h"
       "x-systemd.device-timeout=1h"
     ];
   };
