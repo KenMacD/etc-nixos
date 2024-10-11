@@ -98,7 +98,6 @@
   in rec {
     packages.${system} = import ./pkgs {
       pkgs = nixpkgs.legacyPackages.${system};
-      inherit system inputs;
     };
 
     # nix develop local#<shell>
