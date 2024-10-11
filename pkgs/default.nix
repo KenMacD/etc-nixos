@@ -1,8 +1,4 @@
-{
-  pkgs ? import <nixpkgs> {},
-  inputs,
-  system,
-}: let
+{pkgs ? import <nixpkgs> {}}: let
   inherit (pkgs) callPackage python3Packages;
 in {
   aider-chat = callPackage ./aider.nix {};
