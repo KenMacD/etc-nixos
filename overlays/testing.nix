@@ -7,9 +7,6 @@ in rec {
     libs = old.libs + ":/run/opengl-driver/lib: " + super.intel-gmmlib.outPath + "/lib";
   });
 
-  # TODO: broken on 2024-08-15
-  quickgui = super.stable.quickgui;
-
   notmuch = super.notmuch.overrideAttrs (old: {
     buildInputs =
       (old.buildInputs or [])

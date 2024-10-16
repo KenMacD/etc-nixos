@@ -228,6 +228,7 @@
               # (import ./overlays/sway-dbg.nix)
               overlay-nix-bubblewrap
               (import ./overlays/testing.nix)
+              (import ./overlays/broken.nix)
             ];
           })
           # Add to regsitry so nixpkgs commands use system versions
