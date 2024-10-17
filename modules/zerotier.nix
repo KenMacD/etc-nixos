@@ -10,7 +10,6 @@ with lib; let
   network = "3efa5cb78a1548d5";
   dnsServers = [
     # TODO: sync from ZT console
-    "fd3e:fa5c:b78a:1548:d599:9336:cc44:4d02" # dn
     "fd3e:fa5c:b78a:1548:d599:93db:5a5b:1290" # r1pro
   ];
   ztInterface = "ztrfyet727";
@@ -29,9 +28,9 @@ in {
   };
 
   config = mkIf cfg.enable {
-    # Must contain ZEROTIER_CENTRAL_TOKEN
     sops.secrets.zeronsd = {
       sopsFile = ./zerotier.secrets.yaml;
+      owner = config.users.users.zeronsd.name;
     };
 
     services.zerotierone = {
@@ -64,28 +63,11 @@ in {
       };
     };
 
-    systemd.services.zeronsd = mkIf cfg.zeronsd.enable {
-      description = "zeronsd";
-
-      wantedBy = ["multi-user.target"];
-      after = ["network-online.target" "zerotierone.service"];
-      requires = ["network-online.target" "zerotierone.service"];
-
-      serviceConfig = {
-        Type = "simple";
-        EnvironmentFile = config.sops.secrets.zeronsd.path;
-
-        # Probably a better way, but better than nothing
-        Restart = "on-failure";
-        RestartSec = 10;
-
-        ExecStart = concatStringsSep " " [
-          "${cfg.zeronsd.package}/bin/zeronsd"
-          "start"
-          "-s /var/lib/zerotier-one/authtoken.secret"
-          "-d ${domain}"
-          "${network}"
-        ];
+    services.zeronsd.servedNetworks.${network} = mkIf cfg.zeronsd.enable {
+      settings = {
+        domain = toString domain;
+        token = config.sops.secrets.zeronsd.path;
+        log_level = "info";
       };
     };
   };
