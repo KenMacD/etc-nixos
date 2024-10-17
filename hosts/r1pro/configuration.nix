@@ -59,8 +59,6 @@ in {
   ########################################
   # Networking
   ########################################
-  # TODO: set
-  networking.firewall.enable = false;
   networking = {
     hostName = "r1pro";
     useNetworkd = true;
@@ -69,6 +67,17 @@ in {
     #domain = "home.macdermid.ca";
     # TODO: set?
     #hostId = "f5a3f353";
+  };
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [
+      80 # HTTP (Caddy)
+      443 # HTTPS (Caddy)
+    ];
+    allowedUDPPorts = [
+      5353 # mDNS
+      5355 # LLMNR (Link-Local Multicast Name Resolution)
+    ];
   };
 
   ########################################
@@ -115,7 +124,10 @@ in {
     };
   };
   services.fwupd.enable = true;
-  services.jellyfin.enable = true;
+  services.jellyfin = {
+    enable = true;
+    openFirewall = false;
+  };
   systemd.services.jellyfin = {
     environment = {
       JELLYFIN_PublishedServerUrl = "https://jellyfin.macdermid.ca";
@@ -172,6 +184,7 @@ in {
   };
   services.openssh = {
     enable = true;
+    openFirewall = true;
     extraConfig = ''
       PrintLastLog no
 
