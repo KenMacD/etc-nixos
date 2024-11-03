@@ -603,6 +603,7 @@ in {
     direnv
     dtc
     file
+    local.fwdctrl
     gdb
     gh
     gnumake

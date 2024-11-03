@@ -15,6 +15,8 @@ in {
 
   fre = callPackage ./fre.nix {};
 
+  fwdctrl = python3Packages.callPackage ./fwdctrl.nix {};
+
   git-no-hooks = callPackage ./git-no-hooks {};
 
   go-mod-upgrade = callPackage ./go-mod-upgrade.nix {};
