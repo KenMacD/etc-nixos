@@ -28,11 +28,6 @@ in {
   };
 
   config = mkIf cfg.enable {
-    sops.secrets.zeronsd = {
-      sopsFile = ./zerotier.secrets.yaml;
-      owner = config.users.users.zeronsd.name;
-    };
-
     services.zerotierone = {
       enable = true;
       joinNetworks = [network];
@@ -61,6 +56,11 @@ in {
         Domains = domain;
         KeepConfiguration = "static";
       };
+    };
+
+    sops.secrets.zeronsd = mkIf cfg.zeronsd.enable {
+      sopsFile = ./zerotier.secrets.yaml;
+      owner = config.users.users.zeronsd.name;
     };
 
     services.zeronsd.servedNetworks.${network} = mkIf cfg.zeronsd.enable {
