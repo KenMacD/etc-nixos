@@ -252,6 +252,15 @@ in {
     enable = true;
     zeronsd.enable = true;
   };
+  virtualisation.oci-containers.backend = "podman";
+  virtualisation.podman = {
+    enable = true;
+    autoPrune.enable = true;
+    dockerCompat = true;
+    defaultNetwork.settings = {
+      dns_enabled = true;
+    };
+  };
   zramSwap.enable = true;
 
   ########################################
