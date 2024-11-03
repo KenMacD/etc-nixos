@@ -11,6 +11,9 @@ self: super: let
     "cutter"
     "distrho"
     "open-webui"
+
+    # TODO: broken on 2024-10-22
+    "guestfs-tools"
   ];
 
   masterPackages = [
