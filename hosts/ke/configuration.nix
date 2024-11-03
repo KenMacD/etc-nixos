@@ -112,6 +112,14 @@ in {
     "i915.force_probe=!a7a1"
     "xe.force_probe=a7a1"
   ];
+  specialisation.i915.configuration = {
+    boot.kernelParams = [
+      "preempt=full"
+      "nmi_watchdog=0"
+      "vm.dirty_writeback_centisecs=6000"
+      "panic=0"
+    ];
+  };
   boot.kernel.sysctl = {"dev.i915.perf_stream_paranoid" = 0;};
   boot.extraModulePackages = with config.boot.kernelPackages; [
     turbostat
