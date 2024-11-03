@@ -62,6 +62,7 @@ in {
     pandoc # Test html -> markdown
     plandex
     plandex-server
+    local.repopack # Testing
     shell-gpt # $ sgpt ...
     tgpt # $ tgpt question
 

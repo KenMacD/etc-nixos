@@ -42,6 +42,8 @@ in {
     extraBuildInputs = [pkgs.xz];
   };
 
+  repopack = callPackage ./repopack.nix {};
+
   pgvecto-rs = callPackage ./pgvecto-rs.nix {};
 
   resticprofile = callPackage ./resticprofile.nix {};
