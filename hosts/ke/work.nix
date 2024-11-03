@@ -18,10 +18,13 @@
     slirp4netns
     terraformer
     terragrunt
+    tfsec # Terraform static analysis tool
+    trivy # Container security scanner
 
     # K8 clients
     k9s
     kdash
+    lens
     seabird
   ];
 }
