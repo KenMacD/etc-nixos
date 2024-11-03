@@ -105,6 +105,7 @@
     buildah
     crane # crane digest <image>
     cri-tools
+    diffoci # Diff container images
     distrobox
     dive # A tool for exploring a docker image
     guestfs-tools # virt-customize -a ubuntu.img --root-password random

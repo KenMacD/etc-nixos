@@ -435,6 +435,7 @@ in {
     chromium
     fd
     firefox
+    fuse
     fzf
     glib
     httpie
@@ -579,10 +580,12 @@ in {
     # gitFull
     git-absorb # git commit --fixup, but automatic
     git
+    git-extras
     git-filter-repo
     git-lfs
     gita # Update a group of repos
     gitui
+    ghorg # clone all repos from an org
     haskellPackages.git-mediate # modify a merge then run to fix it up
     jujutsu # jj command for git, to try out
     pre-commit
