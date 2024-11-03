@@ -264,11 +264,6 @@ with lib; {
     };
   };
 
-#	" Load user config
-#        " if filereadable(expand('~/.config/nvim/init.lua'))
-#        "  lua require('init')
-#        " endif
-
   ########################################
   # Packages
   ########################################
