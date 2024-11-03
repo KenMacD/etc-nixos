@@ -10,7 +10,7 @@
     self = python3;
     packageOverrides = _: super: {tree-sitter = super.tree-sitter_0_21;};
   };
-  version = "0.59.0";
+  version = "0.61.0";
 in
   python3.pkgs.buildPythonApplication {
     pname = "aider-chat";
@@ -21,7 +21,7 @@ in
       owner = "paul-gauthier";
       repo = "aider";
       rev = "v${version}";
-      hash = "sha256-20LicYj1j5gGzhF+SxPUKu858nHZgwDF1JxXeHRtYe0=";
+      hash = "sha256-C1VMdLRb+FVN8zwWRa7RCkRxZgdUPNUfBdAjMi9efjQ=";
     };
 
     patchPhase = ''
@@ -31,45 +31,49 @@ in
 
     build-system = with python3.pkgs; [setuptools setuptools-scm];
 
-    dependencies = with python3.pkgs;
-      [
-        aiohappyeyeballs
-        backoff
-        beautifulsoup4
-        configargparse
-        diff-match-patch
-        diskcache
-        flake8
-        gitpython
-        grep-ast
-        importlib-resources
-        jiter
-        json5
-        jsonschema
-        litellm
-        networkx
-        numpy
-        packaging
-        pathspec
-        pillow
-        playwright
-        prompt-toolkit
-        pydub
-        pypager
-        pypandoc
-        pyperclip
-        pyyaml
-        rich
-        scipy
-        sounddevice
-        soundfile
-        streamlit
-        watchdog
-      ]
-      ++ lib.optionals (!tensorflow.meta.broken) [
-        llama-index-core
-        llama-index-embeddings-huggingface
-      ];
+    dependencies = with python3.pkgs; [
+      aiohappyeyeballs
+      backoff
+      beautifulsoup4
+      configargparse
+      diff-match-patch
+      diskcache
+      flake8
+      gitpython
+      grep-ast
+      importlib-resources
+      jiter
+      json5
+      jsonschema
+      litellm
+      mixpanel
+      networkx
+      numpy
+      packaging
+      pathspec
+      pexpect
+      pillow
+      playwright
+      posthog
+      prompt-toolkit
+      propcache
+      psutil
+      pydub
+      pypager
+      pypandoc
+      pyperclip
+      pyyaml
+      rich
+      scipy
+      sounddevice
+      soundfile
+      streamlit
+      watchdog
+      #      ]
+      #      ++ lib.optionals (!tensorflow.meta.broken) [
+      #        llama-index-core
+      #        llama-index-embeddings-huggingface
+    ];
 
     buildInputs = [portaudio];
 
