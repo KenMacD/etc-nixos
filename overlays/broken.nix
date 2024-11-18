@@ -3,17 +3,11 @@ self: super: let
     # TODO: broken on 2024-08-15
     "quickgui"
 
-    # TODO: broken on 2024-10-10
-    "checkov"
-
     # TODO: broken on 2024-10-16
-    "azure-cli"
     "cutter"
-    "distrho"
-    "open-webui"
 
-    # TODO: broken on 2024-10-22
-    "guestfs-tools"
+    # TODO: broken on 2024-11-17
+    "mitmproxy"
   ];
 
   masterPackages = [
