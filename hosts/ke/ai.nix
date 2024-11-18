@@ -65,7 +65,7 @@ in {
     local.repopack # Testing
     shell-gpt # $ sgpt ...
     tgpt # $ tgpt question
-    windsurf
+    local.windsurf
 
     # Support tools
     argc

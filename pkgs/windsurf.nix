@@ -1,6 +1,7 @@
 {
   lib,
   stdenv,
+  nixpkgs,
   callPackage,
   fetchurl,
   nixosTests,
@@ -8,7 +9,7 @@
   useVSCodeRipgrep ? stdenv.hostPlatform.isDarwin,
 }:
 # https://windsurf-stable.codeium.com/api/update/linux-x64/stable/latest
-callPackage <nixpkgs/pkgs/applications/editors/vscode/generic.nix> rec {
+callPackage "${nixpkgs}/pkgs/applications/editors/vscode/generic.nix" rec {
   inherit commandLineArgs useVSCodeRipgrep;
 
   version = "1.0.2";
