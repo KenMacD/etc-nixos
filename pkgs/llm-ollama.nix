@@ -7,14 +7,14 @@
 }:
 buildPythonPackage rec {
   pname = "llm-ollama";
-  version = "0.5.0";
+  version = "0.7.0";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "taketwo";
     repo = "llm-ollama";
     rev = version;
-    sha256 = "sha256-QxmFgiy+Z5MNtnf2nvGndZk2MMuMhkOfofUsxCoh7J0=";
+    hash = "sha256-DYhhCsvCMQnxxaKVinkz5C3qZPiD+rVpwHyEQnWuh4s=";
   };
 
   nativeBuildInputs = [

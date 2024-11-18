@@ -7,13 +7,13 @@
 }:
 buildPythonPackage rec {
   pname = "llm-claude-3";
-  version = "0.4.1";
+  version = "0.9";
   pyproject = true;
   src = fetchFromGitHub {
     owner = "simonw";
     repo = "llm-claude-3";
     rev = version;
-    sha256 = "sha256-FedR4g+B0wfzSJYC+3x9cJljV870XSU9hhRec7xaC8w=";
+    hash = "sha256-tN4rWfXVDkcfyTTvDsvwvTlYzkPeZE7fL5ufTyhL+Wc=";
   };
 
   nativeBuildInputs = [
