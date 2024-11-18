@@ -54,5 +54,7 @@ in {
 
   tun2proxy = callPackage ./tun2proxy {};
 
+  windsurf = callPackage ./windsurf {};
+
   zeronsd = callPackage ./zeronsd {};
 }
