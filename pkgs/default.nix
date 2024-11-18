@@ -1,4 +1,7 @@
-{pkgs ? import <nixpkgs> {}}: let
+{
+  pkgs,
+  nixpkgs,
+}: let
   inherit (pkgs) callPackage python3Packages;
 in {
   aider-chat = callPackage ./aider.nix {};
@@ -54,7 +57,7 @@ in {
 
   tun2proxy = callPackage ./tun2proxy {};
 
-  windsurf = callPackage ./windsurf {};
+  windsurf = callPackage ./windsurf.nix {inherit nixpkgs;};
 
   zeronsd = callPackage ./zeronsd {};
 }
