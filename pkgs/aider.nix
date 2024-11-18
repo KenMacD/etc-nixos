@@ -10,7 +10,7 @@
     self = python3;
     packageOverrides = _: super: {tree-sitter = super.tree-sitter_0_21;};
   };
-  version = "0.61.0";
+  version = "0.62.0";
 in
   python3.pkgs.buildPythonApplication {
     pname = "aider-chat";
@@ -18,10 +18,10 @@ in
     pyproject = true;
 
     src = fetchFromGitHub {
-      owner = "paul-gauthier";
+      owner = "Aider-AI";
       repo = "aider";
       rev = "v${version}";
-      hash = "sha256-C1VMdLRb+FVN8zwWRa7RCkRxZgdUPNUfBdAjMi9efjQ=";
+      hash = "sha256-o5vyOaJSUcdwuHBbzgpo5RDpZLnIur5dM+b7Y7PVBXA=";
     };
 
     patchPhase = ''
