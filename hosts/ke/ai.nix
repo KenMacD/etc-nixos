@@ -51,6 +51,7 @@ in {
   environment.systemPackages = with pkgs; [
     aichat
     aider-chat
+    code-cursor
     gh-copilot
     fabric-ai
     local.files-to-prompt
