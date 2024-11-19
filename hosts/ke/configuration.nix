@@ -227,13 +227,20 @@ in {
       enable = true;
       keyboards = {
         default = {
+          # Test cases: <expected>: <input>
+          # Ctrl+c: d:CapsLock t:5 d:KeyC t:5 u:KeyC t:5 u:CapsLock t:9000
+          # Escape: d:CapsLock t:5 u:CapsLock t:9000
+          # CapsLock: d:ShiftLeft t:5 d:CapsLock t:5 u:CapsLock t:5 u:ShiftLeft t:9000
           config = ''
             (defsrc
-              caps)
+              caps lsft rsft)
+
+            (defalias
+              capsctl (fork (tap-hold-press 100 100 esc lctl) caps (lsft rsft)))
 
             (deflayermap (default-layer)
-              ;; tap caps lock as caps lock, hold caps lock as left control
-              caps (tap-hold 100 100 caps lctl))
+              ;; tap caps lock as caps lock, hold caps lock as left control, shift+caps lock = caps lock
+              caps @capsctl)
           '';
         };
       };
