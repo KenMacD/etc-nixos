@@ -38,10 +38,12 @@ in {
   # nix.package = pkgs.nixVersions.unstable;
   nix.settings = {
     sandbox = true;
-    substituters = [
-      #      "https://nix.home.macdermid.ca"
-      #      "https://nix.macdermid.ca"
+    extra-substituters = [
       "https://aseipp-nix-cache.global.ssl.fastly.net"
+      # TODO: set up, using priority (eg 'http://cache.nixos.org?priority=40'):
+      # default is 40
+      # "https://nix.home.macdermid.ca"
+      # "https://nix.macdermid.ca"
     ];
     trusted-public-keys = [
       "nix.home.macdermid.ca:CQuA65gXW8KuFlk9Ufx5oMsAiTZzQhfluNoaOzypXMo="
@@ -236,6 +238,8 @@ in {
         };
       };
     };
+    kbfs.enable = true; # keybase fs
+    keybase.enable = true;
     openssh.enable = true;
     pcscd.enable = true;
     restic.backups.efi = {
@@ -375,6 +379,7 @@ in {
   programs.bcc.enable = true;
   programs.direnv.enable = true;
   # broken 2023-02-21 & 2023-05-25 programs.sysdig.enable = true;
+  programs.sysdig.enable = true;
 
   programs.starship = {
     enable = true;
@@ -646,6 +651,8 @@ in {
     pgcli
     ripgrep
     ruff
+    sqlite-utils
+    sqlite
     ssm-session-manager-plugin
     tio
     yamllint
@@ -661,7 +668,6 @@ in {
     nushell # odd different shell
     phinger-cursors
     tessen # password dmenu
-    # Broken: 2023-10-26 azure-cli
     # bcompare
     (wrapOBS {
       plugins = with obs-studio-plugins; [
@@ -670,7 +676,6 @@ in {
     })
     steam-run
     lutris
-    # TODO: broken 2024-02-11 mitmproxy
     mitmproxy
     zed-editor
 

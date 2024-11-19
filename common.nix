@@ -215,6 +215,7 @@ with lib; {
           lazy-nvim
           nvim-treesitter.withAllGrammars
           nvim-lastplace
+          sleuth
           vim-gnupg
         ];
         opt = [];
