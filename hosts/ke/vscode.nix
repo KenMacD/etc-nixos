@@ -61,6 +61,7 @@
           foam.foam-vscode
           formulahendry.code-runner
           foxundermoon.shell-format
+          github.vscode-github-actions
           github.vscode-pull-request-github
           gitpod.gitpod-desktop
           golang.go
