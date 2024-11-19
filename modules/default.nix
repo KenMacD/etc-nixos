@@ -3,6 +3,8 @@
   imports = [
     ./home-wifi.nix # Specific trusted-network config
 
+    ./plandex.nix
+
     ./python-packages.nix
 
     ./sccache.nix
