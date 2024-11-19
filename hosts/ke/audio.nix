@@ -29,6 +29,34 @@
     };
   };
 
+  #  TODO: improve active-audio detection first
+  #  systemd.user.services.volume-decay = {
+  #    unitConfig = {
+  #      Description = "Volume decay service";
+  #      After = "pipewire.service";
+  #    };
+  #
+  #    serviceConfig = {
+  #      Type = "oneshot";
+  #      ExecStart = let
+  #        script = pkgs.writeShellScript "volume-decay" ''
+  #          # Check if there are any active audio streams
+  #          if ! ${pkgs.wireplumber}/bin/wpctl status | grep -q "RUNNING"; then
+  #            ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ .01-
+  #          fi
+  #        '';
+  #      in "${script}";
+  #    };
+  #  };
+  #  systemd.user.timers.volume-decay = {
+  #    wantedBy = [ "timers.target" ];
+  #    partOf = [ "volume-decay.service" ];
+  #    unitConfig = {
+  #      Description = "Timer for volume decay";
+  #    };
+  #    timerConfig.OnCalendar = "minutely";
+  #  };
+
   ########################################
   # Packages
   ########################################
@@ -43,13 +71,14 @@
     pavucontrol
     pamixer
     pulsemixer
+    wireplumber
 
     # Effects
     easyeffects
     jamesdsp
 
     # Sound Plugins
-    distrho
+    # TODO: broken: distrho
     swh_lv2
 
     # Bluetooth audio
