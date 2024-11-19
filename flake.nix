@@ -10,10 +10,6 @@
     url = "github:cachix/devenv";
     inputs.nixpkgs.follows = "nixpkgs";
   };
-  inputs.fenix = {
-    url = "github:nix-community/fenix";
-    inputs.nixpkgs.follows = "nixpkgs";
-  };
   inputs.flake-programs-sqlite = {
     url = "github:wamserma/flake-programs-sqlite";
     inputs.nixpkgs.follows = "nixpkgs";
