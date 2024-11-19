@@ -1,11 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  inputs,
-  system,
-  ...
-}: {
+{pkgs, ...}: {
   environment.systemPackages = with pkgs; [
     (azure-cli.withExtensions (with pkgs.azure-cli-extensions; [graphservices]))
     checkov # Static code analysis tool for infrastructure-as-code
