@@ -67,6 +67,7 @@ in {
     shell-gpt # $ sgpt ...
     tgpt # $ tgpt question
     local.windsurf
+    (warp-terminal.override {waylandSupport = true;}) # Testing (closed-sources though)
 
     # Support tools
     argc

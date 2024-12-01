@@ -9,6 +9,8 @@
   "genymotion"
   "gh-copilot"
   "gitbutler"
+  "goland"
+  "goland-with-plugins"
   "hplip"
   "j-link"
   "lens-desktop"
@@ -34,5 +36,6 @@
   "unifi-controller"
   "unrar"
   "vscode"
+  "warp-terminal"
   "zerotierone"
 ]
