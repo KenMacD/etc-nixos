@@ -1,11 +1,5 @@
 self: super: let
   stablePackages = [
-
-    # TODO: broken on 2024-10-16
-    "cutter"
-
-    # TODO: broken on 2024-11-17
-    "mitmproxy"
   ];
 
   masterPackages = [
