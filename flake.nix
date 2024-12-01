@@ -3,7 +3,9 @@
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   inputs.nixpkgs-24_05.url = "github:NixOS/nixpkgs/nixos-24.05";
-  inputs.nixpkgs-stable.follows = "nixpkgs-24_05";
+  inputs.nixpkgs-24_11.url = "github:NixOS/nixpkgs/nixos-24.11";
+  inputs.nixpkgs-old-stable.follows = "nixpkgs-24_05";
+  inputs.nixpkgs-stable.follows = "nixpkgs-24_11";
   inputs.nixpkgs-master.url = "github:NixOS/nixpkgs/master";
 
   inputs.devenv = {
@@ -58,6 +60,7 @@
     self,
     nixpkgs,
     nixpkgs-master,
+    nixpkgs-old-stable,
     nixpkgs-stable,
     devenv,
     flake-programs-sqlite,
@@ -81,6 +84,12 @@
     };
     overlay-nix-master = self: super: {
       master = import nixpkgs-master {
+        inherit system;
+        config.allowUnfreePredicate = pkg: builtins.elem (super.lib.getName pkg) unfreePackages;
+      };
+    };
+    overlay-old-stable = self: super: {
+      old-stable = import nixpkgs-old-stable {
         inherit system;
         config.allowUnfreePredicate = pkg: builtins.elem (super.lib.getName pkg) unfreePackages;
       };
@@ -221,6 +230,7 @@
           ({...}: {
             nixpkgs.overlays = [
               overlay-nix-master
+              overlay-old-stable
               overlay-stable
               # (import ./overlays/sway-dbg.nix)
               overlay-nix-bubblewrap
@@ -231,6 +241,7 @@
           # Add to regsitry so nixpkgs commands use system versions
           ({...}: {
             nix.registry.nixpkgs.flake = nixpkgs;
+            nix.registry.nixpkgs-old-stable.flake = nixpkgs-old-stable;
             nix.registry.nixpkgs-stable.flake = nixpkgs-stable;
             nix.registry.nixpkgs-master.flake = nixpkgs-master;
             nix.registry.devenv.flake = devenv;
