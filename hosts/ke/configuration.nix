@@ -310,15 +310,11 @@ in {
     # ln -s /run/current-system/sw/share/X11/fonts ~/.local/share/fonts
     fontDir.enable = true;
     packages = with pkgs; [
-      (nerdfonts.override {
-        fonts = [
-          "NerdFontsSymbolsOnly"
-        ];
-      })
       dosis
       fira-code
       fira-code-symbols
       font-awesome # Used by waybar
+      nerd-fonts.symbols-only
       roboto
       roboto-mono
     ];
