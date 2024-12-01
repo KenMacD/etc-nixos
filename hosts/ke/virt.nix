@@ -154,7 +154,6 @@
     rootlesskit # maybe for nerdctl/containerd
 
     quickemu
-    quickgui
 
     # libkrun work? (with overlay)
     crun

@@ -1,7 +1,5 @@
 self: super: let
   stablePackages = [
-    # TODO: broken on 2024-08-15
-    "quickgui"
 
     # TODO: broken on 2024-10-16
     "cutter"
