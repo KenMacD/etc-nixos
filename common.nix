@@ -126,9 +126,18 @@ with lib; {
   ########################################
   # User
   ########################################
+  # Enumerate all systems uids here:
+  ids.uids = {
+    kenny = 1001;
+    angela = 1002;
+
+    media = 1200;
+
+    restic-kenny-laptop = 1300;
+  };
   users.users.kenny = {
     isNormalUser = true;
-    uid = 1000;
+    uid = config.ids.uids.kenny;
     createHome = true;
     shell = pkgs.fish;
     extraGroups = ["wheel"];
