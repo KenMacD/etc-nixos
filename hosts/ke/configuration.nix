@@ -483,7 +483,7 @@ in {
     fzf
     glib
     httpie
-    immich-go # local
+    immich-go
     libnotify
     libreoffice-fresh
     libreoffice
