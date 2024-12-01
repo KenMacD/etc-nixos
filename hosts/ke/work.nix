@@ -14,6 +14,9 @@
     tfsec # Terraform static analysis tool
     trivy # Container security scanner
 
+    # Testing out refactoring ability
+    (jetbrains.plugins.addPlugins jetbrains.goland ["github-copilot"])
+
     # K8 clients
     k9s
     kdash
