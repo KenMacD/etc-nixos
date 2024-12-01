@@ -182,15 +182,11 @@
     # ln -s /run/current-system/sw/share/X11/fonts ~/.local/share/fonts
     fontDir.enable = true;
     packages = with pkgs; [
-      (nerdfonts.override {
-        fonts = [
-          "NerdFontsSymbolsOnly"
-        ];
-      })
       dosis
       fira-code
       fira-code-symbols
       font-awesome # Used by waybar
+      nerd-fonts.symbols-only
       roboto
       roboto-mono
     ];
@@ -201,7 +197,7 @@
   # User
   ########################################
   users.users.kenny = {
-    uid = 1000;
+    uid = config.ids.uids.kenny;
     extraGroups = [
       "dialout"
       "networkmanager"
@@ -212,7 +208,7 @@
     ];
   };
   users.users.angela = {
-    uid = 1001;
+    uid = config.ids.uids.angela;
     isNormalUser = true;
     createHome = true;
     extraGroups = [
