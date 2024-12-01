@@ -8,6 +8,7 @@
     (granted.override {withFish = true;})
     jira-cli-go
     postman
+    proxychains-ng
     slirp4netns
     terraformer
     terragrunt
