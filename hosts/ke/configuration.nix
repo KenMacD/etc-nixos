@@ -231,6 +231,20 @@ in {
           # Ctrl+c: d:CapsLock t:5 d:KeyC t:5 u:KeyC t:5 u:CapsLock t:9000
           # Escape: d:CapsLock t:5 u:CapsLock t:9000
           # CapsLock: d:ShiftLeft t:5 d:CapsLock t:5 u:CapsLock t:5 u:ShiftLeft t:9000
+          #
+          # Configs;
+          # concurrent-tap-hold required for chords
+          # process-unmapped-keys required to avoid swapping order on quick
+          #   shift-letters
+          #
+          # TODO:
+          # * Set up espanso-like macros
+          # * Mby remove shift+caps now that double-shift works
+          # * Make ctrl+v work in kitty
+          extraDefCfg = ''
+            concurrent-tap-hold yes
+            process-unmapped-keys yes
+          '';
           config = ''
             (defsrc
               caps lsft rsft)
@@ -241,6 +255,9 @@ in {
             (deflayermap (default-layer)
               ;; tap caps lock as caps lock, hold caps lock as left control, shift+caps lock = caps lock
               caps @capsctl)
+
+            (defchordsv2-experimental
+              (lsft rsft) caps 200 all-released ())
           '';
         };
       };
