@@ -123,6 +123,14 @@ in {
       };
     };
   };
+  systemd.services.cloudflared-tunnel-r1pro = {
+    unitConfig = {
+      StartLimitIntervalSec = 0;
+    };
+    serviceConfig = {
+      RestartSec = "30s";
+    };
+  };
   services.fwupd.enable = true;
   services.jellyfin = {
     enable = true;
