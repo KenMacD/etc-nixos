@@ -286,7 +286,7 @@ in {
   ];
 
   users.users.media = {
-    uid = 1001;
+    uid = config.ids.uids.media;
     home = "/srv/media";
     homeMode = "2770";
     isNormalUser = true;
