@@ -131,7 +131,7 @@ with lib; {
     kenny = 1001;
     angela = 1002;
 
-    media = 1200;
+    media = 1201;
 
     restic-kenny-laptop = 1300;
   };
