@@ -70,5 +70,21 @@ in {
         log_level = "info";
       };
     };
+
+    systemd.services."zeronsd-${network}" = mkIf cfg.zeronsd.enable {
+      serviceConfig = {
+        ExecStartPre = [
+          # Zerotier does a chmod 700 which wipes the tmpfiles acls
+          ("+"
+            + pkgs.writeShellScript "setfacl-authtoken" ''
+              ${pkgs.acl}/bin/setfacl -m u:zeronsd:--x /var/lib/zerotier-one
+              ${pkgs.acl}/bin/setfacl -m u:zeronsd:r-- /var/lib/zerotier-one/authtoken.secret
+            '')
+        ];
+        Restart = lib.mkForce "always";
+        RestartSec = lib.mkForce "30s";
+        RuntimeMaxSec = "1d";
+      };
+    };
   };
 }
