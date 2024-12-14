@@ -18,21 +18,22 @@ with lib; {
   ########################################
   system.stateVersion = "23.05";
   nix = {
-    settings.auto-optimise-store = mkDefault true;
-    settings.trusted-users = mkDefault ["root" "@wheel"];
-    settings.use-xdg-base-directories = true;
-    # settings.allow-import-from-derivation = false;
+    settings = {
+      auto-optimise-store = mkDefault true;
+      connect-timeout = mkDefault 2;
+      keep-going = mkDefault true;
+      trusted-users = mkDefault ["root" "@wheel"];
+      use-xdg-base-directories = true;
+      # allow-import-from-derivation = false;
+      #
+      # after https://github.com/NixOS/nix/pull/8323 and/or https://github.com/NixOS/nix/pull/3494
+      #   print-build-logs = true
+    };
     gc = {
       automatic = true;
       dates = "weekly";
       options = "--delete-older-than 30d";
     };
-    # after https://github.com/NixOS/nix/pull/8323 and/or https://github.com/NixOS/nix/pull/3494
-    #   print-build-logs = true
-    extraOptions = ''
-      keep-going = true
-      connect-timeout = 2
-    '';
 
     daemonCPUSchedPolicy = "idle";
     daemonIOSchedClass = "idle";
