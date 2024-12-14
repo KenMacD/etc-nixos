@@ -138,19 +138,30 @@
         modules = [
           ./common.nix
           sops-nix.nixosModules.sops
-          "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal-new-kernel.nix"
+          "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-plasma5-new-kernel.nix"
           ({
             pkgs,
             lib,
             ...
           }: {
-            environment.systemPackages = [pkgs.neovim];
+            environment.systemPackages = with pkgs; [
+              neovim
+              restic
+            ];
 
             # Enables copy / paste when running in a KVM with spice.
             services.spice-vdagentd.enable = true;
 
             # Use faster squashfs compression
             isoImage.squashfsCompression = "gzip -Xcompression-level 1";
+
+            # Files to include
+            isoImage.contents = [
+              {
+                source = self;
+                target = "/nixos/";
+              }
+            ];
 
             boot.supportedFilesystems.bcachefs = true;
             boot.supportedFilesystems.zfs = lib.mkForce false;
