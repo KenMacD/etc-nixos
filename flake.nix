@@ -12,6 +12,10 @@
     url = "github:cachix/devenv";
     inputs.nixpkgs.follows = "nixpkgs";
   };
+  inputs.disko = {
+    url = "github:nix-community/disko/latest";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
   inputs.flake-programs-sqlite = {
     url = "github:wamserma/flake-programs-sqlite";
     inputs.nixpkgs.follows = "nixpkgs";
@@ -145,6 +149,7 @@
             ...
           }: {
             environment.systemPackages = with pkgs; [
+              inputs.disko.packages.${system}.disko
               neovim
               restic
             ];
