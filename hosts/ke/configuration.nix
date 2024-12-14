@@ -50,17 +50,6 @@ in {
       "nix.macdermid.ca:sAlwW/Ph4P8pyrUT7pmWnsFeGVyZ7pyXYjUmo41/hc8="
     ];
   };
-  nix.extraOptions = ''
-    binary-caches-parallel-connections = 12
-    warn-dirty = false
-    experimental-features = ca-derivations
-
-    extra-experimental-features = auto-allocate-uids
-    auto-allocate-uids = true
-
-    extra-experimental-features = cgroups
-    use-cgroups = true
-  '';
   # When building mongodb enable the following. Otherwise it takes
   # forever just to run out of space
   # see: https://github.com/NixOS/nixpkgs/issues/54707#issuecomment-1132907191

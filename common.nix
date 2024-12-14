@@ -17,15 +17,28 @@ with lib; {
   # Nix
   ########################################
   system.stateVersion = "23.05";
-  nix = {
+  nix = let
+    flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
+  in {
     settings = {
+      auto-allocate-uids = true;
       auto-optimise-store = mkDefault true;
       connect-timeout = mkDefault 2;
-      experimental-features = ["nix-command" "flakes"];
+      download-buffer-size = 1024 * 1024 * 256; # default: 64M
+      experimental-features = [
+        "auto-allocate-uids"
+        # "ca-derivations"
+        "cgroups"
+        "nix-command"
+        "flakes"
+      ];
+      flake-registry = mkDefault ""; # instead of https://channels.nixos.org/flake-registry.json
       keep-going = mkDefault true;
       trusted-users = mkDefault ["root" "@wheel"];
+      use-cgroups = mkDefault true;
       use-xdg-base-directories = true;
-      download-buffer-size = 1024 * 1024 * 256;  # default: 64M
+      # warn-dirty = mkDefault false;
+      #
       # allow-import-from-derivation = false;
       #
       # after https://github.com/NixOS/nix/pull/8323 and/or https://github.com/NixOS/nix/pull/3494
@@ -37,8 +50,11 @@ with lib; {
       options = "--delete-older-than 30d";
     };
 
+    channel.enable = mkDefault false;
     daemonCPUSchedPolicy = "idle";
     daemonIOSchedClass = "idle";
+    nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
+    registry = lib.mapAttrs (_: flake: {inherit flake;}) flakeInputs;
   };
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) (import ./unfree.nix);
   systemd.services."nix-daemon".serviceConfig = {
