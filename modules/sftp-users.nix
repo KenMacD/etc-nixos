@@ -18,6 +18,7 @@ with lib; let
 
     config = mkIf config.sftpOnly {
       # Force non-login user:
+      isSystemUser = true;
       isNormalUser = false;
       shell = pkgs.shadow;
       useDefaultShell = false;
