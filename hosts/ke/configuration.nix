@@ -90,6 +90,7 @@ in {
   # Force intel vulkan driver to prevent software rendering:
   environment.variables.VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json:/run/opengl-driver-32/share/vulkan/icd.d/intel_icd.i686.json";
   environment.variables.LIBVA_DRIVER_NAME = "iHD";
+  environment.variables.OCL_ICD_VENDORS = "/run/opengl-driver/etc/OpenCL/vendors/";
 
   boot.kernelParams = [
     # "nohz_full=1-7"
