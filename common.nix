@@ -21,6 +21,7 @@ with lib; {
     settings = {
       auto-optimise-store = mkDefault true;
       connect-timeout = mkDefault 2;
+      experimental-features = ["nix-command" "flakes"];
       keep-going = mkDefault true;
       trusted-users = mkDefault ["root" "@wheel"];
       use-xdg-base-directories = true;
