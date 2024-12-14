@@ -25,6 +25,7 @@ with lib; {
       keep-going = mkDefault true;
       trusted-users = mkDefault ["root" "@wheel"];
       use-xdg-base-directories = true;
+      download-buffer-size = 1024 * 1024 * 256;  # default: 64M
       # allow-import-from-derivation = false;
       #
       # after https://github.com/NixOS/nix/pull/8323 and/or https://github.com/NixOS/nix/pull/3494
