@@ -655,7 +655,6 @@ in {
     gh
     gnumake
     hotspot
-    local.insomnium # Postman like API tool - :( no longer maintained
     jq
     llvm
     man-pages
