@@ -24,11 +24,3 @@ creation_rules:
       - *admin_kenny
       age:
       - *host_yoga
-  - path_regex: modules/zerotier.secrets.yaml$
-    key_groups:
-    - pgp:
-      - *admin_kenny
-      age:
-      - *host_dn
-      - *host_ke
-      - *host_r1pro

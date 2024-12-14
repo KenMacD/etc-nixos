@@ -54,6 +54,4 @@ in {
   tun2proxy = callPackage ./tun2proxy {};
 
   windsurf = callPackage ./windsurf.nix {inherit nixpkgs;};
-
-  zeronsd = callPackage ./zeronsd {};
 }
