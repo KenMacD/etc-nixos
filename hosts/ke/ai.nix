@@ -12,7 +12,6 @@
 in {
   programs.neovim.configure.packages.myPlugins = with pkgs.vimPlugins; {
     opt = [
-      copilot-vim
     ];
   };
 
@@ -52,10 +51,8 @@ in {
     aichat
     aider-chat
     code-cursor
-    gh-copilot
     fabric-ai
     local.files-to-prompt
-    fishPlugins.github-copilot-cli-fish
     lmstudio # to try, open-webui-like?
     local.magic-cli
     mods # pipe command output to a question

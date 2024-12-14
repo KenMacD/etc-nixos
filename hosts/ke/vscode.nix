@@ -25,8 +25,6 @@
       vscodeExtensions = lib.concatLists [
         # NixOS available extensions
         (with pkgs.vscode-extensions; [
-          github.copilot
-          github.copilot-chat
           continue.continue
         ])
         # Nix Community extensions
