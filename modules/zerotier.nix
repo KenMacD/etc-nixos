@@ -16,18 +16,16 @@ with lib; let
 in {
   options.services.zerotier-home = {
     enable = mkEnableOption "Zerotier network";
-
-    zeronsd = {
-      enable = mkEnableOption "Zerotier NS daemon";
-      package = mkOption {
-        type = types.package;
-        description = mkDoc "ZeroNSD Package";
-        default = pkgs.callPackage ../pkgs/zeronsd {};
-      };
-    };
   };
 
   config = mkIf cfg.enable {
+    networking.hosts = {
+      "fd3e:fa5c:b78a:1548:d599:9320:cd20:ef74" = ["edgemax" "edgemax.zero.macdermid.ca"];
+      "fd3e:fa5c:b78a:1548:d599:93bd:36c5:7846" = ["ke" "ke.zero.macdermid.ca"];
+      "fd3e:fa5c:b78a:1548:d599:93db:5a5b:1290" = ["r1pro" "r1pro.zero.macdermid.ca"];
+      "fd3e:fa5c:b78a:1548:d599:93e6:e04f:ec84" = ["yoga" "yoga.zero.macdermid.ca"];
+    };
+
     services.zerotierone = {
       enable = true;
       joinNetworks = [network];
@@ -55,35 +53,6 @@ in {
         DNSDefaultRoute = false;
         Domains = domain;
         KeepConfiguration = "static";
-      };
-    };
-
-    sops.secrets.zeronsd = mkIf cfg.zeronsd.enable {
-      sopsFile = ./zerotier.secrets.yaml;
-      owner = config.users.users.zeronsd.name;
-    };
-
-    services.zeronsd.servedNetworks.${network} = mkIf cfg.zeronsd.enable {
-      settings = {
-        domain = toString domain;
-        token = config.sops.secrets.zeronsd.path;
-        log_level = "info";
-      };
-    };
-
-    systemd.services."zeronsd-${network}" = mkIf cfg.zeronsd.enable {
-      serviceConfig = {
-        ExecStartPre = [
-          # Zerotier does a chmod 700 which wipes the tmpfiles acls
-          ("+"
-            + pkgs.writeShellScript "setfacl-authtoken" ''
-              ${pkgs.acl}/bin/setfacl -m u:zeronsd:--x /var/lib/zerotier-one
-              ${pkgs.acl}/bin/setfacl -m u:zeronsd:r-- /var/lib/zerotier-one/authtoken.secret
-            '')
-        ];
-        Restart = lib.mkForce "always";
-        RestartSec = lib.mkForce "30s";
-        RuntimeMaxSec = "1d";
       };
     };
   };

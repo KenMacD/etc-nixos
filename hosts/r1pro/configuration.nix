@@ -251,10 +251,7 @@ in {
     enable = true;
     openFirewall = true;
   };
-  services.zerotier-home = {
-    enable = true;
-    zeronsd.enable = true;
-  };
+  services.zerotier-home.enable = true;
   virtualisation.oci-containers.backend = "podman";
   virtualisation.podman = {
     enable = true;
