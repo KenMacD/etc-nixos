@@ -13,11 +13,6 @@ in {
     ./networkd.nix
   ];
 
-  nix = {
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
-  };
 
   systemd.services."systemd-networkd-wait-online".enable = lib.mkForce false;
   hardware = {

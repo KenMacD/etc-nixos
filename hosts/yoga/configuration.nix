@@ -9,11 +9,6 @@
   ip = "172.27.0.3";
   local = self.packages.${system};
 in {
-  nix = {
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
-  };
 
   systemd.services."systemd-networkd-wait-online".enable = lib.mkForce false;
 
