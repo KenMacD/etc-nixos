@@ -26,8 +26,6 @@ in {
 
   goplantuml = callPackage ./goplantuml.nix {};
 
-  insomnium = callPackage ./insomnium.nix {};
-
   llm-claude-3 = python3Packages.callPackage ./llm-claude-3.nix {};
   llm-ollama = python3Packages.callPackage ./llm-ollama.nix {};
 
