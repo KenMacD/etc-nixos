@@ -1,13 +1,11 @@
 [
   "android-sdk-tools"
   "bcompare"
-  "copilot.vim"
   "cursor"
   "dell-command-configure"
   "discord"
   "drawio" # Apache 2 but not with Atlassian
   "genymotion"
-  "gh-copilot"
   "gitbutler"
   "goland"
   "goland-with-plugins"
@@ -28,8 +26,6 @@
   "steam-unwrapped"
   "unifi-controller"
   "unrar"
-  "vscode-extension-github-copilot"
-  "vscode-extension-github-copilot-chat"
   "vscode-extension-ms-vscode-cpptools"
   "vscode-extension-ms-vscode-remote-remote-ssh"
   "vscode-with-extensions"
