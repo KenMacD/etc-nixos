@@ -186,6 +186,7 @@ in {
   systemd.services.kanidm.serviceConfig.SupplementaryGroups = "acme";
   services.kanidm = {
     enableServer = true;
+    package = pkgs.kanidm_1_4;
     serverSettings = {
       bindaddress = "127.0.0.1:9001";
       ldapbindaddress = "127.0.0.1:636";
