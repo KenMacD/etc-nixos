@@ -28,7 +28,9 @@ with lib; let
 
       # Create their sftp dir, chroot'd in sshd
       home = mkDefault "/srv/sftp/${name}";
-      createHome = mkDefault true;
+
+      # Do not create home, as a home owned by the user can't be used for chroot
+      createHome = false;
     };
   };
   sftpUsers = filterAttrs (_: u: u.sftpOnly) config.users.users;
