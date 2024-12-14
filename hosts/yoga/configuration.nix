@@ -63,6 +63,7 @@ in {
   sops.secrets.telegraf = {};
   sops.secrets.restic-immich = {};
   sops.secrets.restic-postgresql = {};
+  sops.secrets.ssh-sftp-yoga = {};
 
   ########################################
   # Boot

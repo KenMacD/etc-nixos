@@ -294,6 +294,14 @@ in {
     group = "media";
   };
 
+  users.users.sftp-yoga = {
+    uid = config.ids.uids.sftp-yoga;
+    sftpOnly = true;
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEJ0iluA6vWgJ0cBfwLLYLozRJ4r7UBxkPYzOWWqYcf/"
+    ];
+  };
+
   ########################################
   # Packages
   ########################################

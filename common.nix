@@ -152,7 +152,7 @@ with lib; {
 
     media = 1201;
 
-    restic-kenny-laptop = 1300;
+    sftp-yoga = 1301;
   };
   users.users.kenny = {
     isNormalUser = true;
