@@ -27,10 +27,8 @@ with lib; let
       group = name;
 
       # Create their sftp dir, chroot'd in sshd
-      home = mkDefault "/srv/sftp/${name}";
-
-      # Do not create home, as a home owned by the user can't be used for chroot
-      createHome = false;
+      home = "/srv/sftp/${name}/${name}";
+      createHome = true;
     };
   };
   sftpUsers = filterAttrs (_: u: u.sftpOnly) config.users.users;
@@ -56,10 +54,9 @@ in {
           user: value: ''
             Match User ${user}
 
-            ForceCommand internal-sftp
+            ForceCommand internal-sftp -d %u
 
-            # ChrootDirectory ${dirOf value.home}
-            ChrootDirectory ${value.home}
+            ChrootDirectory ${dirOf value.home}
 
             AllowAgentForwarding no
             AllowTcpForwarding no
