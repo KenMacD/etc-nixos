@@ -82,6 +82,16 @@
   boot.kernel.sysctl = {"kernel.sysrq" = 128 + 64 + 16;};
 
   ########################################
+  # Secrets
+  ########################################
+  sops.defaultSopsFile = ./secrets.yaml;
+  sops.secrets.immich-angela-api-key = {
+    owner = config.users.users.angela.name;
+    group = config.users.users.angela.group;
+    mode = "0400";
+  };
+
+  ########################################
   # Network
   ########################################
   networking = {
