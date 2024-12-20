@@ -58,6 +58,10 @@ in {
   ########################################
   sops.defaultSopsFile = ./secrets.yaml;
   sops.secrets.cloudflare = {};
+  sops.secrets.cloudflare-tunnel = {
+    owner = config.services.cloudflared.user;
+    inherit (config.services.cloudflared) group;
+  };
   sops.secrets.nix-cache-key = {};
   sops.secrets.miniflux = {};
   sops.secrets.telegraf = {};
@@ -415,6 +419,24 @@ in {
   systemd.services.zerotierone.serviceConfig = {
     KillMode = lib.mkForce "control-group";
     TimeoutStopFailureMode = "kill";
+  };
+
+  services.cloudflared = {
+    enable = true;
+    tunnels = {
+      "yoga" = {
+        credentialsFile = config.sops.secrets.cloudflare-tunnel.path;
+        default = "http_status:404";
+      };
+    };
+  };
+  systemd.services.cloudflared-tunnel-yoga = {
+    unitConfig = {
+      StartLimitIntervalSec = 0;
+    };
+    serviceConfig = {
+      RestartSec = "30s";
+    };
   };
 
   services.unifi = {
