@@ -217,6 +217,10 @@ with lib; {
   ########################################
   # Programs
   ########################################
+  programs.git.config = {
+    init.defaultBranch = "main";
+    url."https://github.com/".insteadOf = [ "gh:" "github:" ];
+  };
   programs.fish = {
     enable = true;
     interactiveShellInit = ''
