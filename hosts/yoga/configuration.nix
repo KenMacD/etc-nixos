@@ -66,6 +66,7 @@ in {
   sops.secrets.miniflux = {};
   sops.secrets.telegraf = {};
   sops.secrets.restic-immich = {};
+  sops.secrets.restic-immich-r1pro = {}; # ID: 46300c0d6919712580f906d502ad7eafadf40179c096b9045f7a5ac7edb96a13
   sops.secrets.restic-postgresql = {};
   sops.secrets.ssh-sftp-yoga = {};
 
@@ -281,6 +282,28 @@ in {
   };
   # TODO: Not need once 0.18 released? See Restic 2092, 4026, 4762.
   systemd.services.restic-backups-immich.serviceConfig.WorkingDirectory = "/mnt/easy/immich";
+
+  programs.ssh.extraConfig = ''
+    Host r1pro-sftp
+      HostName r1pro
+      User sftp-yoga
+      IdentityFile /run/secrets/ssh-sftp-yoga
+  '';
+  services.restic.backups.immich-r1pro = {
+    repository = "sftp://r1pro-sftp:/restic-immich";
+    passwordFile = config.sops.secrets.restic-immich-r1pro.path;
+    paths = [
+      "library"
+      "upload"
+    ];
+    timerConfig = {
+      OnCalendar = "03:05";
+      RandomizedDelaySec = "1h";
+    };
+  };
+  # TODO: Not need once 0.18 released? See Restic 2092, 4026, 4762.
+  systemd.services.restic-backups-immich-r1pro.serviceConfig.WorkingDirectory = "/mnt/easy/immich";
+
   services.restic.backups.postgresql = {
     repository = "/run/media/red/restic-postgresql";
     passwordFile = config.sops.secrets.restic-postgresql.path;
