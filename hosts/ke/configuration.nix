@@ -299,7 +299,6 @@ in {
     udev = {
       packages = [
         pkgs.yubikey-personalization
-        pkgs.espanso-wayland
       ];
 
       # Amlogic:
@@ -448,25 +447,6 @@ in {
 
   programs.thefuck.enable = true;
   programs.ydotool.enable = true;
-
-  # Allow input access of espanso
-  security.wrappers.espanso = {
-    source = "${pkgs.espanso-wayland}/bin/espanso";
-    capabilities = "cap_dac_override+p";
-    owner = "root";
-    group = "root";
-  };
-
-  services.espanso.enable = true;
-  systemd.user.services.espanso = {
-    serviceConfig.ExecStart = lib.mkForce "/run/wrappers/bin/espanso worker";
-    # Commands needed for expansions:
-    path = with pkgs; [
-      bash
-      dig
-      gopass
-    ];
-  };
 
   python3SystemPackages = with pkgs.python3Packages; [
     uv
