@@ -26,6 +26,8 @@
   "steam-unwrapped"
   "unifi-controller"
   "unrar"
+  "vscode-extension-github-copilot"
+  "vscode-extension-github-copilot-chat"
   "vscode-extension-ms-vscode-cpptools"
   "vscode-extension-ms-vscode-remote-remote-ssh"
   "vscode-with-extensions"
