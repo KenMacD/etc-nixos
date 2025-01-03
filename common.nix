@@ -154,6 +154,7 @@ with lib; {
 
     sftp-yoga = 1301;
   };
+  users.defaultUserShell = pkgs.fish;
   users.users.kenny = {
     isNormalUser = true;
     uid = config.ids.uids.kenny;
