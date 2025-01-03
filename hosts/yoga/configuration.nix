@@ -368,38 +368,6 @@ in {
     ];
   };
 
-  services.gitea = {
-    enable = true;
-    stateDir = "/mnt/easy/yoga-var-lib/gitea";
-
-    settings = {
-      "git.timeout" = {
-        DEFAULT = 50000;
-        MIGRATE = 50000;
-        MIRROR = 50000;
-        CLONE = 50000;
-        PULL = 50000;
-        GC = 50000;
-        #        MIGRATE = 2400;
-      };
-      security = {
-        REVERSE_PROXY_AUTHENTICATION_EMAIL = "X-Email";
-      };
-      service = {
-        ENABLE_REVERSE_PROXY_AUTHENTICATION = true;
-      };
-      server = {
-        DOMAIN = "git.home.macdermid.ca";
-        HTTP_PORT = 3001;
-        HTTP_ADDRESS = "127.0.0.1";
-        ROOT_URL = "https://git.home.macdermid.ca/";
-      };
-      service.DISABLE_REGISTRATION = true; # After creating my account
-      session.COOKIE_SECURE = true;
-    };
-  };
-  systemd.services.gitea.unitConfig.RequiresMountsFor = config.services.gitea.stateDir;
-
   services.vaultwarden = {
     enable = true;
     config = {
@@ -588,7 +556,6 @@ in {
       "bitwarden.home.macdermid.ca" = proxywss config.services.vaultwarden.config.ROCKET_PORT;
       "cockpit.home.macdermid.ca" = proxywss config.services.cockpit.port;
       "focalboard.home.macdermid.ca" = proxywss 18000;
-      "git.home.macdermid.ca" = {http2 = true;} // proxy config.services.gitea.settings.server.HTTP_PORT;
       "grafana.home.macdermid.ca" = proxywss config.services.grafana.settings.server.http_port;
       "immich.home.macdermid.ca" = base {
         "/".proxyPass = "http://127.0.0.1:3550/";
