@@ -220,31 +220,45 @@ in {
           # Test cases: <expected>: <input>
           # Ctrl+c: d:CapsLock t:5 d:KeyC t:5 u:KeyC t:5 u:CapsLock t:9000
           # Escape: d:CapsLock t:5 u:CapsLock t:9000
-          # CapsLock: d:ShiftLeft t:5 d:CapsLock t:5 u:CapsLock t:5 u:ShiftLeft t:9000
+          # CapsLock: d:ShiftLeft t:5 d:ShiftRight t:50 u:ShiftLeft t:5 u:ShiftRight
           #
           # Configs;
           # concurrent-tap-hold required for chords
           # process-unmapped-keys required to avoid swapping order on quick
           #   shift-letters
-          #
-          # TODO:
-          # * Set up espanso-like macros
-          # * Mby remove shift+caps now that double-shift works
-          # * Make ctrl+v work in kitty
           extraDefCfg = ''
             concurrent-tap-hold yes
             process-unmapped-keys yes
           '';
           config = ''
             (defsrc
-              caps lsft rsft)
+              caps lsft rsft rctl)
 
-            (defalias
-              capsctl (fork (tap-hold-press 100 100 esc lctl) caps (lsft rsft)))
+            (defseq
+              email (k m)
+              gmail (g m)
+              endash (e n -)
+              emdash (e m -)
+              ellipsis (. . .)
+            )
+
+            (deffakekeys
+              email (macro k e n n y S-2 m a c d e r m i d . c a)
+              gmail (macro k e n n y . m a c d e r m i d S-2 g m a i l . c o m)
+
+              ;; (unicode _) should work, but Kitty's kitten doesn't like it
+              ;; Kitty suggests doing it another way: https://github.com/kovidgoyal/kitty/issues/6559
+              endash (macro C-S-u 100 Digit2 Digit0 Digit1 Digit3 ret)
+              emdash (macro C-S-u 100 Digit2 Digit0 Digit1 Digit4 ret)
+              ellipsis (macro C-S-u 100 Digit2 Digit0 Digit2 Digit6 ret)
+            )
 
             (deflayermap (default-layer)
-              ;; tap caps lock as caps lock, hold caps lock as left control, shift+caps lock = caps lock
-              caps @capsctl)
+              ;; tap caps as esc, hold as left control
+              caps (tap-hold 100 100 esc lctl)
+              ;; rctl as a sequence leader key
+              rctl (tap-hold-release 200 200 sldr rctl)
+            )
 
             (defchordsv2-experimental
               (lsft rsft) caps 200 all-released ())
