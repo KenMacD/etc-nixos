@@ -12,6 +12,7 @@ let
     "14" = "sha256-8RDWkVbSxAmhSlggbYeSXHvCg5TNavvIPIZ0Ivua61Q=";
     "15" = "sha256-uPE76ofzAevJMHSjFHYJQWUh5NZotaD9dhaX84uDFiQ=";
     "16" = "sha256-aJ1wLNZVdsZAvQeE26YVnJBr8lAm6i6/3eio5H44d7s=";
+    "17" = lib.fakeHash; # Does not exist
   };
   major = lib.versions.major postgresql.version;
 in
