@@ -95,7 +95,7 @@
       Policy.AutoEnable = false;
     };
   };
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
 
   environment.variables = with lib;
     listToAttrs (map (type:
