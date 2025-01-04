@@ -6,9 +6,10 @@
   system,
   ...
 }:
+# TODO: there's a module now... convert
 # Ref: https://github.com/immich-app/immich/blob/main/docker/docker-compose.yml
 let
-  version = "1.106.4";
+  version = "1.123.0";
   dataDir = "/mnt/easy/immich";
   dbuser = "immich";
   dbname = "immich";
@@ -130,7 +131,7 @@ in {
       immichBase
       // {
         image = "ghcr.io/immich-app/immich-server:v${version}";
-        ports = ["3550:3001"];
+        ports = ["3550:2283"];
         volumes = [
           "${dataDir}:/usr/src/app/upload"
           "/dev/bus/usb:/dev/bus/usb"
