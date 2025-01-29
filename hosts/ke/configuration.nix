@@ -402,9 +402,12 @@ in {
   programs.bcc.enable = true;
   programs.direnv.enable = true;
   programs.git.enable = true;
-  # broken 2023-02-21 & 2023-05-25 programs.sysdig.enable = true;
-  programs.sysdig.enable = true;
-
+  programs.neovim.configure.packages.myPlugins = with pkgs.vimPlugins; {
+    opt = [
+      nerdtree
+    ];
+  };
+  programs.partition-manager.enable = true;
   programs.starship = {
     enable = true;
     settings = {
@@ -446,6 +449,7 @@ in {
     };
   };
 
+  programs.sysdig.enable = true;
   programs.thefuck.enable = true;
   programs.ydotool.enable = true;
 
