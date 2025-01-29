@@ -244,7 +244,6 @@ with lib; {
     configure = {
       packages.myPlugins = with pkgs.vimPlugins; {
         start = [
-          lazy-nvim
           nvim-treesitter.withAllGrammars
           nvim-lastplace
           sleuth
@@ -278,20 +277,19 @@ with lib; {
         " gopass
         au BufNewFile,BufRead /dev/shm/gopass.* setlocal noswapfile nobackup noundofile
 
-        " Enable treesitter and lazyvim
+        " Enable treesitter
         lua << EOF
-        require'nvim-treesitter.configs'.setup {
-          highlight = {
-            enable = true,
-          },
-        }
-        require("lazy").setup()
+          require'nvim-treesitter.configs'.setup {
+            highlight = {
+              enable = true,
+            },
+          }
 
-        -- Load the user configuration if available
-        local user_config_path = os.getenv("XDG_CONFIG_HOME") .. "/nvim/init.lua"
-        if vim.fn.filereadable(user_config_path) == 1 then
-          dofile(user_config_path)
-        end
+          -- Load the user configuration if available
+          local user_config_path = os.getenv("XDG_CONFIG_HOME") .. "/nvim/init.lua"
+          if vim.fn.filereadable(user_config_path) == 1 then
+            dofile(user_config_path)
+          end
         EOF
       '';
     };
