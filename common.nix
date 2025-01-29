@@ -244,9 +244,14 @@ with lib; {
     configure = {
       packages.myPlugins = with pkgs.vimPlugins; {
         start = [
+          editorconfig-vim # Settings in .editorconfig
+          nerdtree # File path browsing
           nvim-treesitter.withAllGrammars
           nvim-lastplace
           sleuth
+          vim-airline # Status/tabline
+          vim-airline-themes # airline themes: let g:airline_theme='<theme>'
+          vim-buffergator # <leader>b to show buffers
           vim-gnupg
         ];
         opt = [];
