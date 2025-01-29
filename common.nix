@@ -257,6 +257,13 @@ with lib; {
         opt = [];
       };
       customRC = ''
+        " Function to source files if they exist
+        function! SourceIfExists(file)
+          if filereadable(expand(a:file))
+            exe 'source' a:file
+          endif
+        endfunction
+
         " ignore case in search unless set
         set ignorecase
         set smartcase
@@ -289,13 +296,14 @@ with lib; {
               enable = true,
             },
           }
-
-          -- Load the user configuration if available
-          local user_config_path = os.getenv("XDG_CONFIG_HOME") .. "/nvim/init.lua"
-          if vim.fn.filereadable(user_config_path) == 1 then
-            dofile(user_config_path)
-          end
         EOF
+
+        " Call user inits
+        let $MYVIMRC = expand('$XDG_CONFIG_HOME/nvim/init.vim')
+        call SourceIfExists("$MYVIMRC")
+
+        let $MYVIMLUA = expand('$XDG_CONFIG_HOME/nvim/init.lua')
+        call SourceIfExists("$MYVIMLUA")
       '';
     };
   };
