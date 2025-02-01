@@ -13,7 +13,6 @@ in {
     ./networkd.nix
   ];
 
-
   systemd.services."systemd-networkd-wait-online".enable = lib.mkForce false;
   hardware = {
     bluetooth.enable = true;
@@ -208,7 +207,7 @@ in {
     package = pkgs.postgresql_16;
     # https://docs.pgvecto.rs/admin/upgrading.html
     # CREATE EXTENSION IF NOT EXISTS vectors;
-    extensions = with pkgs.postgresql.pkgs; [pgvecto-rs];
+    extensions = ps: with ps; [pgvecto-rs];
     settings = {shared_preload_libraries = "vectors";};
     authentication = ''
       local all all ident map=mapping
