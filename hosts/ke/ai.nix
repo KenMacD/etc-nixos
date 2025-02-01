@@ -45,6 +45,7 @@ in {
     llm
     local.llm-claude-3
     local.llm-ollama
+    markitdown
   ];
 
   environment.systemPackages = with pkgs; [
@@ -54,12 +55,12 @@ in {
     fabric-ai
     local.files-to-prompt
     lmstudio # to try, open-webui-like?
-    local.magic-cli
+    # Not really used: local.magic-cli
     mods # pipe command output to a question
     openai-whisper
     pandoc # Test html -> markdown
     local.repopack # Testing
-    shell-gpt # $ sgpt ...
+    # Not really using, asks for openai key: shell-gpt # $ sgpt ...
     tgpt # $ tgpt question
     local.windsurf
     (warp-terminal.override {waylandSupport = true;}) # Testing (closed-sources though)

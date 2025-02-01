@@ -219,7 +219,7 @@ with lib; {
   ########################################
   programs.git.config = {
     init.defaultBranch = "main";
-    url."https://github.com/".insteadOf = [ "gh:" "github:" ];
+    url."https://github.com/".insteadOf = ["gh:" "github:"];
   };
   programs.fish = {
     enable = true;

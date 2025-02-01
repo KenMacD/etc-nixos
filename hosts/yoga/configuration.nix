@@ -222,8 +222,9 @@ in {
     logind.lidSwitch = "ignore";
     openssh = {
       enable = true;
-      # passwordAuthentication = true;
+      settings.PasswordAuthentication = true;
     };
+    power-profiles-daemon.enable = true;
     thermald.enable = true;
     udisks2.enable = true;
     upower.enable = true;
@@ -562,24 +563,21 @@ in {
         "/".proxyWebsockets = true;
       };
       "influxdb.home.macdermid.ca" = proxy 8086;
-      "matrix.home.macdermid.ca" = proxy config.services.matrix-conduit.settings.global.port;
       "miniflux.home.macdermid.ca" = proxy 35001;
       "nginxstatus.home.macdermid.ca" = base {
+        # TODO: merge extraConfigs together
         "/".extraConfig = ''
           stub_status on;
           access_log off;
+
+          if ($internal != yes) {
+            return 404;
+          }
         '';
       };
       "nix.home.macdermid.ca" = proxy config.services.nix-serve.port;
       "rabbitmq.home.macdermid.ca" = proxy config.services.rabbitmq.managementPlugin.port;
       "unifi.home.macdermid.ca" = proxytls 8443;
-    };
-  };
-
-  services.influxdb2 = {
-    enable = true;
-    settings = {
-      log-level = "error";
     };
   };
 

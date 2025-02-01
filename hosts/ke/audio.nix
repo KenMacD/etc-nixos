@@ -66,7 +66,7 @@
   with config.boot.kernelPackages; [
     # Sound Infrastructure
     alsa-utils
-    carla
+    # TODO: broken 2025-01-03 carla
     cmus
     pavucontrol
     pamixer

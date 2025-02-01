@@ -37,6 +37,7 @@
           adamhartford.vscode-base64
           alefragnani.project-manager
           amazonwebservices.aws-toolkit-vscode
+          apertia.vscode-aider
           arrterian.nix-env-selector
           asciidoctor.asciidoctor-vscode
           asvetliakov.vscode-neovim
@@ -90,7 +91,7 @@
           ms-python.python
           ms-python.vscode-pylance
           ms-toolsai.jupyter
-          # broken 2024-03-27 ms-vscode.cmake-tools
+          ms-vscode.cmake-tools
           ms-vscode.test-adapter-converter
           vscode-extensions.ms-vscode.cpptools
           (ms-vscode.vscode-embedded-tools.overrideAttrs (_: {
@@ -101,13 +102,9 @@
           msedge-dev.gnls
           nhoizey.gremlins
           nicolasvuillamy.vscode-groovy-lint
-          nordic-semiconductor.nrf-connect
-          nordic-semiconductor.nrf-devicetree
-          nordic-semiconductor.nrf-kconfig
-          nordic-semiconductor.nrf-terminal
           pascalreitermann93.vscode-yaml-sort
           pomdtr.excalidraw-editor
-          platformio.platformio-ide
+          # platformio.platformio-ide
           probe-rs.probe-rs-debugger
           redhat.vscode-yaml
           rust-lang.rust-analyzer
@@ -126,6 +123,15 @@
           xaver.clang-format
           yuichinukiyama.vscode-preview-server
           yzhang.markdown-all-in-one
+
+          # Nordic Extensions: https://marketplace.visualstudio.com/items?itemName=nordic-semiconductor.nrf-connect-extension-pack
+          ms-vscode.cmake-tools
+          nordic-semiconductor.nrf-connect
+          nordic-semiconductor.nrf-devicetree
+          nordic-semiconductor.nrf-kconfig
+          nordic-semiconductor.nrf-terminal
+          trond-snekvik.gnu-mapfiles
+          twxs.cmake
         ])
       ];
     })
