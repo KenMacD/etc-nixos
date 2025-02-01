@@ -1,6 +1,7 @@
 [
   "android-sdk-tools"
   "bcompare"
+  "bearer"
   "cursor"
   "dell-command-configure"
   "discord"
@@ -18,6 +19,7 @@
   "mongodb"
   "mongodb-compass"
   "nosql-workbench"
+  "nrfutil"
   "obsidian"
   "postman"
   "slack"
