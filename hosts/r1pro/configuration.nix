@@ -309,6 +309,7 @@ in {
     btrfs-progs
     dhcpcd
     git
+    fd
     fwupd
     htop
     kitty # for term info only
@@ -317,6 +318,8 @@ in {
     ncdu
     powertop
     pstree
+    restic
+    ripgrep
     tmux
   ];
 }
