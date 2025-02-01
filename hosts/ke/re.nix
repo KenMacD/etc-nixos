@@ -10,11 +10,12 @@
   environment.systemPackages = with pkgs;
   with config.boot.kernelPackages; [
     ghidra-bin
+    iaito # r2 gui
     radare2
     cutter
     rizin
 
     # Android
-    avalonia-ilspy
+    # TODO: Installs insecure dotnet avalonia-ilspy
   ];
 }

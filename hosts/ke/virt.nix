@@ -111,8 +111,8 @@
     diffoci # Diff container images
     distrobox
     dive # A tool for exploring a docker image
-    guestfs-tools # virt-customize -a ubuntu.img --root-password random
-    libguestfs # guestfish / guestmount
+    # TODO: 2024-12-18 requires build: guestfs-tools # virt-customize -a ubuntu.img --root-password random
+    # TODO: 2024-12-18 requires build: libguestfs # guestfish / guestmount
     podman-compose
     podman-tui
     swtpm # Software tpm support

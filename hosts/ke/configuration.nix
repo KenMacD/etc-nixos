@@ -81,11 +81,16 @@ in {
         pipewire
       ];
     };
+    sane = {
+      enable = true;
+      extraBackends = [pkgs.hplipWithPlugin];
+    };
   };
   services.hardware.bolt.enable = true;
   services.avahi.enable = true; # For Chromecast
   services.upower.enable = true;
   services.power-profiles-daemon.enable = true;
+  services.printing.drivers = [pkgs.hplipWithPlugin];
 
   # Force intel vulkan driver to prevent software rendering:
   environment.variables.VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json:/run/opengl-driver-32/share/vulkan/icd.d/intel_icd.i686.json";
@@ -283,7 +288,7 @@ in {
     sccache.enable = true;
     snapper = {
       snapshotInterval = "*:0/5";
-      cleanupInterval = "hourly";
+      cleanupInterval = "1h";
       configs.home = {
         ALLOW_USERS = ["kenny"];
         SUBVOLUME = "/home";
@@ -402,11 +407,6 @@ in {
   programs.bcc.enable = true;
   programs.direnv.enable = true;
   programs.git.enable = true;
-  programs.neovim.configure.packages.myPlugins = with pkgs.vimPlugins; {
-    opt = [
-      nerdtree
-    ];
-  };
   programs.partition-manager.enable = true;
   programs.starship = {
     enable = true;
@@ -475,13 +475,13 @@ in {
     immich-go
     libnotify
     libreoffice-fresh
-    libreoffice
     libusb1
     libva-utils
     mongodb-compass
     (nnn.override {withNerdIcons = true;})
     p7zip
     patchelf
+    pv
     (python3.withPackages (_: config.python3SystemPackages))
     restic
     ratarmount # Mount tar/archives with FUSE
@@ -602,7 +602,9 @@ in {
     # ollama
 
     # General/Unsorted
+    ets # Add timestamp to commands
     pinta
+    spacer # Insert spaces when command stops output
     qalculate-gtk
 
     # Virtualization
@@ -666,6 +668,10 @@ in {
     yamllint
     stable.yamlfix # broken 2024-03-29
     zeal # Offline docs
+
+    # Security tools
+    aflplusplus
+    bearer
 
     # Testing
     atuin # shell history in sqlite?
