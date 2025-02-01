@@ -80,7 +80,7 @@ in {
 
     # For 0.91.0:
     # TODO: should be an input
-    extensions = [(self.packages.${system}.pgvecto-rs.override {postgresql = config.services.postgresql.package;})];
+    extensions = ps: with ps; [pgvecto-rs];
     settings = {shared_preload_libraries = "vectors";};
   };
 
