@@ -9,7 +9,6 @@
   local = self.packages.${system};
 in {
   imports = [
-    ./lobechat.nix
     ./networkd.nix
   ];
 
