@@ -40,9 +40,8 @@ in {
     sandbox = true;
     extra-substituters = [
       "https://aseipp-nix-cache.global.ssl.fastly.net"
-      # TODO: set up, using priority (eg 'http://cache.nixos.org?priority=40'):
-      # default is 40
-      # "https://nix.home.macdermid.ca"
+      # default priority is 40
+      "https://nix.home.macdermid.ca?priority=30"
       # "https://nix.macdermid.ca"
     ];
     trusted-public-keys = [
@@ -50,6 +49,11 @@ in {
       "nix.macdermid.ca:sAlwW/Ph4P8pyrUT7pmWnsFeGVyZ7pyXYjUmo41/hc8="
     ];
   };
+  nix.extraOptions = ''
+    # Ensure we can still build when nix.home.macdermid.ca is not accessible
+    fallback = true
+  '';
+
   # When building mongodb enable the following. Otherwise it takes
   # forever just to run out of space
   # see: https://github.com/NixOS/nixpkgs/issues/54707#issuecomment-1132907191
