@@ -38,7 +38,6 @@
   inputs.nix-alien = {
     url = "github:thiagokokada/nix-alien";
     inputs.nixpkgs.follows = "nixpkgs";
-    inputs.flake-utils.follows = "flake-utils";
   };
   inputs.nixos-needsreboot = {
     url = "github:thefossguy/nixos-needsreboot";
