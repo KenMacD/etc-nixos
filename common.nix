@@ -249,8 +249,6 @@ with lib; {
           nvim-treesitter.withAllGrammars
           nvim-lastplace
           sleuth
-          vim-airline # Status/tabline
-          vim-airline-themes # airline themes: let g:airline_theme='<theme>'
           vim-buffergator # <leader>b to show buffers
           vim-gnupg
         ];
