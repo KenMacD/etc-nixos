@@ -65,6 +65,7 @@
     nixpkgs-old-stable,
     nixpkgs-stable,
     devenv,
+    disko,
     flake-programs-sqlite,
     lanzaboote,
     microvm,
@@ -276,6 +277,8 @@
           ./hosts/ke/configuration.nix
           ./hosts/ke/hardware.nix
           ./modules/hardened.nix
+
+          disko.nixosModules.disko
           flake-programs-sqlite.nixosModules.programs-sqlite
           lanzaboote.nixosModules.lanzaboote
           microvm.nixosModules.host
