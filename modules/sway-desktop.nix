@@ -11,6 +11,10 @@ in {
     enable = mkEnableOption "Enable my sway desktop config";
   };
 
+  # ? Should set ?
+  # environment.variables = {
+  #   QT_QPA_PLATFORM = "wayland;xcb";
+  # };
   config = mkIf cfg.enable {
     programs.sway = {
       enable = true;
@@ -31,9 +35,9 @@ in {
 
         glfw-wayland
         glew
-        qt5.qtwayland
+        # TODO: needed, and if so, use qt6? qt5.qtwayland
 
-        polkit-kde-agent
+        kdePackages.polkit-kde-agent-1
 
         gtk-engine-murrine
         gtk_engines
@@ -50,7 +54,7 @@ in {
         copyq
 
         # TODO: needed?
-        libportal-qt5
+        # TODO: needed, and if so use qt6? libportal-qt5
 
         # Test gamma adjust
         wl-gammarelay-rs
