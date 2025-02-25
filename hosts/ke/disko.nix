@@ -15,33 +15,54 @@
                 type = "filesystem";
                 format = "vfat";
                 mountpoint = "/boot";
-                mountOptions = ["umask=0077"];
+                mountOptions = [
+                  "fmask=0077"
+                  "dmask=0077"
+                ];
               };
             };
             root = {
               size = "100%";
               content = {
                 type = "btrfs";
-                extraArgs = ["-f"]; # Override existing partition
+                extraArgs = ["--label" "nixos" "--force"];
                 subvolumes = {
                   "/root" = {
                     mountpoint = "/";
+                    mountOptions = [
+                      "lazytime"
+                      "compress=zstd"
+                    ];
                   };
                   "/home" = {
                     mountpoint = "/home";
+                    mountOptions = [
+                      "lazytime"
+                      "compress=zstd"
+                    ];
                   };
                   "/nix" = {
-                    mountOptions = ["noatime"];
-                    # mountOptions = ["compress=zstd" "noatime"];
+                    mountOptions = [
+                      "noatime"
+                      "compress=zstd"
+                    ];
                     mountpoint = "/nix";
                   };
-                  "/swap" = {
-                    mountpoint = "/.swap";
-                    swap = {
-                      swapfile.size = "40G";
-                    };
+                  "/persist" = {
+                    mountOptions = [
+                      "noatime"
+                      "compress=zstd"
+                    ];
+                    mountpoint = "/persist";
                   };
                 };
+              };
+            };
+            swap = {
+              size = "48G";
+              content = {
+                type = "swap";
+                randomEncryption = true;
               };
             };
           };

@@ -13,6 +13,7 @@ in {
     ./android.nix
     ./audio.nix
     ./bwrap.nix
+    ./disko.nix
     ./emacs.nix
     ./firewall.nix
     ./re.nix
