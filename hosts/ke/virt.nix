@@ -13,7 +13,6 @@
   users.users.kenny.extraGroups = [
     "kvm"
     "libvirtd"
-    "lxd"
   ];
 
   ########################################
@@ -45,15 +44,6 @@
       dockerCompat = true;
       defaultNetwork.settings.dns_enabled = true;
     };
-
-    # If lxd is removed then the values from the modules sysctl should
-    # probably be copied to avoid issues like kind-in-podman from running
-    # out of files.
-    lxd.enable = true;
-    lxd.recommendedSysctlSettings = true;
-
-    # Testing multipass
-    multipass.enable = true;
 
     waydroid.enable = true;
 
