@@ -558,10 +558,7 @@ in {
       "cockpit.home.macdermid.ca" = proxywss config.services.cockpit.port;
       "focalboard.home.macdermid.ca" = proxywss 18000;
       "grafana.home.macdermid.ca" = proxywss config.services.grafana.settings.server.http_port;
-      "immich.home.macdermid.ca" = base {
-        "/".proxyPass = "http://127.0.0.1:3550/";
-        "/".proxyWebsockets = true;
-      };
+      "immich.home.macdermid.ca" = proxywss 3550;
       "influxdb.home.macdermid.ca" = proxy 8086;
       "miniflux.home.macdermid.ca" = proxy 35001;
       "nginxstatus.home.macdermid.ca" = base {
