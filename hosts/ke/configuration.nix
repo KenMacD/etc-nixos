@@ -608,6 +608,15 @@ in {
 
     # General/Unsorted
     ets # Add timestamp to commands
+    (pkgs.symlinkJoin {
+      name = "gimp";
+      paths = [pkgs.gimp];
+      buildInputs = [pkgs.makeWrapper];
+      postBuild = ''
+        wrapProgram $out/bin/gimp \
+          --set GDK_BACKEND x11
+      '';
+    })
     pinta
     spacer # Insert spaces when command stops output
     qalculate-gtk
