@@ -41,6 +41,7 @@
                       "compress=zstd"
                     ];
                   };
+                  "/home/.snapshots" = {}; # For snapper snapshots
                   "/nix" = {
                     mountOptions = [
                       "noatime"
