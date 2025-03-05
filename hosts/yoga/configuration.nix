@@ -121,8 +121,8 @@ in {
   # To access from dbeaver forward to socket:
   # ssh kenny@yoga -L 35432:/var/run/postgresql/.s.PGSQL.5432
   services.postgresql = {
-    # TODO: Testing JIT package... does it help?
-    package = pkgs.postgresql_16_jit;
+    package = pkgs.postgresql_16;
+    enable = true;
     enableJIT = true;
     authentication = ''
       local all all ident map=mapping
