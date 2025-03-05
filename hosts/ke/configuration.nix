@@ -484,6 +484,7 @@ in {
     libva-utils
     mongodb-compass
     (nnn.override {withNerdIcons = true;})
+    obsidian
     p7zip
     patchelf
     pv
@@ -527,6 +528,7 @@ in {
     yubioath-flutter
 
     # Video
+    dash-mpd-cli
     ffmpeg
     intel-gpu-tools
     mpv
@@ -566,6 +568,7 @@ in {
     dante
     openconnect
     local.tun2proxy
+    wgnord # Nordvpn connection (requires manual /var/lib/wgnord & /etc/wireguard setup)
 
     # Nix
     alejandra # Nix formatter
@@ -584,10 +587,12 @@ in {
     tdesktop
 
     # Email
+    afew # more tags and MailMover.py
     fdm # fetch mail from imap
     msmtp # simple smtp client
     neomutt
     notmuch # search
+    oama # oauth2 token management
     pdfminer # pdf
     python3Packages.icalendar # ical view
     khal # ical view
@@ -654,6 +659,7 @@ in {
     difftastic
     direnv
     dtc
+    eclipses.eclipse-java
     file
     local.fwdctrl
     gdb
@@ -741,6 +747,5 @@ in {
       '';
     })
 
-    pcscliteWithPolkit.out
   ];
 }
