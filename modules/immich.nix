@@ -9,7 +9,7 @@
 # TODO: there's a module now... convert
 # Ref: https://github.com/immich-app/immich/blob/main/docker/docker-compose.yml
 let
-  version = "1.123.0";
+  version = "1.128.0";
   dataDir = "/mnt/easy/immich";
   dbuser = "immich";
   dbname = "immich";
