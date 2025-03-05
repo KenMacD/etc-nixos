@@ -1,6 +1,5 @@
 {
   config,
-  lib,
   pkgs,
   ...
 }: {
@@ -12,10 +11,10 @@
     (tree-sitter.withPlugins (_: tree-sitter.allGrammars))
     #    tree-sitter
     #    tree-sitter.allGrammars
-    #    emacs29-pgtk
+    #    emacs30-pgtk
     #    TODO: something like:
     # tree-sitter.withPlugins (_: allGrammars)
-    ((emacsPackagesFor (pkgs.emacs29-pgtk.override {
+    ((emacsPackagesFor (pkgs.emacs30-pgtk.override {
         withTreeSitter = true;
         #      tree-sitter = (pkgs.tree-sitter.withPlugins (_: tree-sitter.allGrammars));
       }))
