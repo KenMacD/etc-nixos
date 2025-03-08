@@ -37,5 +37,6 @@
   "unrar"
   "vscode"
   "warp-terminal"
+  "windsurf"
   "zerotierone"
 ]
