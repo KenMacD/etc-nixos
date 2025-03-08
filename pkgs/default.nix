@@ -52,6 +52,4 @@ in {
   shh = callPackage ./shh.nix {};
 
   tun2proxy = callPackage ./tun2proxy {};
-
-  windsurf = callPackage ./windsurf.nix {inherit nixpkgs;};
 }

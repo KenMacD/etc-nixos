@@ -62,7 +62,7 @@ in {
     local.repopack # Testing
     # Not really using, asks for openai key: shell-gpt # $ sgpt ...
     tgpt # $ tgpt question
-    local.windsurf
+    windsurf
     (warp-terminal.override {waylandSupport = true;}) # Testing (closed-sources though)
 
     # Support tools
