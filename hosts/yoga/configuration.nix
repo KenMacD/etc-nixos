@@ -9,7 +9,6 @@
   ip = "172.27.0.3";
   local = self.packages.${system};
 in {
-
   systemd.services."systemd-networkd-wait-online".enable = lib.mkForce false;
 
   services.rabbitmq = {
@@ -191,7 +190,8 @@ in {
   systemd.services.kanidm.serviceConfig.SupplementaryGroups = "acme";
   services.kanidm = {
     enableServer = true;
-    package = pkgs.kanidm_1_4;
+    # Before upgrade test: sudo -u kanidm -g kanidm kanidmd domain upgrade-check
+    package = pkgs.kanidm_1_5;
     serverSettings = {
       bindaddress = "127.0.0.1:9001";
       ldapbindaddress = "127.0.0.1:636";
