@@ -35,10 +35,7 @@ in {
   # Secrets
   ########################################
   sops.defaultSopsFile = ./secrets.yaml;
-  sops.secrets.cloudflare-tunnel = {
-    owner = config.services.cloudflared.user;
-    inherit (config.services.cloudflared) group;
-  };
+  sops.secrets.cloudflare-tunnel = {};
 
   ########################################
   # Boot
