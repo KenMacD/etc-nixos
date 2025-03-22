@@ -43,8 +43,8 @@ in {
     instructor
     huggingface-hub
     llm
-    local.llm-claude-3
-    local.llm-ollama
+    llm-anthropic
+    llm-ollama
     markitdown
   ];
 
