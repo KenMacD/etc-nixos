@@ -26,9 +26,6 @@ in {
 
   goplantuml = callPackage ./goplantuml.nix {};
 
-  llm-claude-3 = python3Packages.callPackage ./llm-claude-3.nix {};
-  llm-ollama = python3Packages.callPackage ./llm-ollama.nix {};
-
   magic-cli = callPackage ./magic-cli {};
 
   modprobed-db = callPackage ./modprobed-db.nix {};
