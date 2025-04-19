@@ -248,7 +248,7 @@
     libreoffice-fresh
     p7zip
     powertop
-    signal-desktop
+    signal-desktop-bin
     soundkonverter
     vim
     vlc

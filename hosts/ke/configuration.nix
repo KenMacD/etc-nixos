@@ -582,7 +582,7 @@ in {
     # Communication
     discord
     irssi
-    signal-desktop
+    signal-desktop-bin
     slack
     tdesktop
 
