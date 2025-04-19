@@ -17,7 +17,6 @@ in {
     ./emacs.nix
     ./firewall.nix
     ./re.nix
-    ./rust.nix
     ./sboot.nix
     ./virt.nix
     ./vscode.nix
@@ -78,6 +77,9 @@ in {
       extraPackages = with pkgs; [
         intel-compute-runtime
         intel-media-driver
+        intel-media-sdk
+        intel-ocl
+        ocl-icd
         vaapiVdpau
         vpl-gpu-rt
       ];
@@ -88,14 +90,18 @@ in {
     };
     sane = {
       enable = true;
-      extraBackends = [pkgs.hplipWithPlugin];
+      # TODO: broken 2025-03-25 extraBackends = [pkgs.hplipWithPlugin];
     };
   };
   services.hardware.bolt.enable = true;
   services.avahi.enable = true; # For Chromecast
   services.upower.enable = true;
   services.power-profiles-daemon.enable = true;
-  services.printing.drivers = [pkgs.hplipWithPlugin];
+  # TODO: broken 2025-03-24 services.printing.drivers = [pkgs.hplipWithPlugin];
+  services.printing = {
+    enable = true;
+    drivers = [pkgs.hplipWithPlugin];
+  };
 
   # Force intel vulkan driver to prevent software rendering:
   environment.variables.VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json:/run/opengl-driver-32/share/vulkan/icd.d/intel_icd.i686.json";
@@ -219,6 +225,8 @@ in {
     flatpak.enable = true;
     fprintd = {
       enable = true;
+      # TODO: broken 2025-03-24
+      # package = pkgs.stable.fprintd-tod;
       tod.enable = true;
       tod.driver = pkgs.libfprint-2-tod1-goodix;
     };
@@ -397,15 +405,6 @@ in {
   };
 
   ########################################
-  # Security
-  ########################################
-  security.tpm2 = {
-    pkcs11.enable = true;
-    tctiEnvironment.enable = true;
-    enable = true;
-  };
-
-  ########################################
   # Packages
   ########################################
   nixpkgs.overlays = [];
@@ -490,7 +489,7 @@ in {
     pv
     (python3.withPackages (_: config.python3SystemPackages))
     restic
-    ratarmount # Mount tar/archives with FUSE
+    # TODO: broken 2025-04 ratarmount # Mount tar/archives with FUSE
     rlwrap
     rmlint
     tmux
@@ -580,11 +579,11 @@ in {
     aircrack-ng
 
     # Communication
+    ayugram-desktop # telegram-desktop alternative
     discord
     irssi
     signal-desktop-bin
     slack
-    tdesktop
 
     # Email
     afew # more tags and MailMover.py
@@ -655,6 +654,7 @@ in {
     binwalk
     bruno # Postman like API tool
     clang-tools
+    codeql
     delta
     difftastic
     direnv
@@ -667,6 +667,7 @@ in {
     gnumake
     hotspot
     jq
+    just
     llvm
     man-pages
     meld
@@ -731,9 +732,6 @@ in {
 
     xdg-desktop-portal-wlr
     imhex
-
-    tpm2-tools
-    tpm2-tss
 
     (pkgs.writeTextFile {
       name = "dbus-sway-environment";
