@@ -29,15 +29,38 @@ in {
   #
   # They have the binaries but not the libraries. I'd need both to link
   # with ollama
-  services.ollama.enable = true;
-  services.open-webui = {
+  #
+  # When running models look at `/show info` to find the `context length` then:
+  # >>> /set parameter num_ctx ___
+  #
+  services.ollama = {
+    # Set host to 0.0.0.0 so it can be accessed by openhands in podman
+    host = "0.0.0.0";
     enable = true;
-    port = 3001;
+    environmentVariables = {
+      OLLAMA_INTEL_GPU = "1";
+      OLLAMA_FLASH_ATTENTION = "1";
+      OLLAMA_NEW_ENGINE = "1";
+    };
   };
 
   # TODO: try when not broken: services.private-gpt.enable = true;
   # TODO: try comfyanonymous/ComfyUI pkg?
 
+  # Openhands
+  # ❯ podman build -f ./containers/app/Dockerfile -t openhands .
+  # ❯ WORKSPACE_BASE=/tmp/workspace podman run --rm -it -p 16845:3000 \
+  #           --network slirp4netns:allow_host_loopback=true \
+  #           -e SANDBOX_RUNTIME_CONTAINER_IMAGE=docker.all-hands.dev/all-hands-ai/runtime:0.27-nikolaik \
+  #           -e WORKSPACE_MOUNT_PATH=$WORKSPACE_BASE \
+  #           -e LOG_ALL_EVENTS=true \
+  #           -e DEBUG=true \
+  #           -e LLM_OLLAMA_BASE_URL="http://host.docker.internal:11434" \
+  #           -e OLLAMA_API_BASE="http://host.docker.internal:11434" \
+  #           -v $WORKSPACE_BASE:/opt/workspace_base:z \
+  #           -v $XDG_RUNTIME_DIR/podman/podman.sock:/var/run/docker.sock:Z \
+  #           --name openhands \
+  #           localhost/openhands:latest
   python3SystemPackages = with pkgs.python3Packages; [
     # vllm
     instructor
@@ -51,8 +74,10 @@ in {
   environment.systemPackages = with pkgs; [
     aichat
     aider-chat
+    claude-code
     code-cursor
     fabric-ai
+    goose-cli
     local.files-to-prompt
     lmstudio # to try, open-webui-like?
     # Not really used: local.magic-cli
@@ -60,6 +85,7 @@ in {
     openai-whisper
     pandoc # Test html -> markdown
     local.repopack # Testing
+    local.ofc
     # Not really using, asks for openai key: shell-gpt # $ sgpt ...
     tgpt # $ tgpt question
     windsurf

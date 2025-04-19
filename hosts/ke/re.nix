@@ -11,6 +11,7 @@
   with config.boot.kernelPackages; [
     ghidra-bin
     iaito # r2 gui
+    ida-free
     radare2
     cutter
     rizin

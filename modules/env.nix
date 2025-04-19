@@ -9,6 +9,7 @@
   XDG_CONFIG_HOME = "$HOME/.config";
   XDG_CACHE_HOME = "$HOME/.cache";
   XDG_STATE_HOME = "$HOME/.local/state";
+  FZF_CTRL_T_COMMAND = "${pkgs.fd}/bin/fd --strip-cwd-prefix --hidden --follow";
 in {
   # Made xdg-ninja happier
   # Not sure if here makes sense, :shrug:
@@ -28,6 +29,10 @@ in {
 
     DOCKER_CONFIG = "${XDG_CONFIG_HOME}/docker";
 
+    # fzf config
+    # TODO: needed?
+    FZF_CTRL_T_OPTS = "--walker=file,follow,hidden --walker-skip=.git,node_modules,.direnv,vendor,dist";
+
     # Doesn't work with services
     # GNUPGHOME = "${XDG_DATA_HOME}/gnupg";
 
@@ -36,6 +41,9 @@ in {
     GRADLE_USER_HOME = "${XDG_DATA_HOME}/gradle";
 
     MINIKUBE_HOME = "${XDG_DATA_HOME}/minikube";
+
+    # Make nrf-connect vscode extension happy
+    NRFUTIL_HOME = "${XDG_DATA_HOME}/nrfutil";
 
     TERMINFO = "${XDG_DATA_HOME}/terminfo";
     TERMINFO_DIRS = "${XDG_DATA_HOME}/terminfo:/usr/share/terminfo";

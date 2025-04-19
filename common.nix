@@ -160,7 +160,11 @@ with lib; {
     uid = config.ids.uids.kenny;
     createHome = true;
     shell = pkgs.fish;
-    extraGroups = ["wheel"];
+    extraGroups = [
+      "wheel"
+      "uinput" # For testing kanata
+      "tss" # Testing tpm2
+    ];
 
     # Podman runs out of subuids with large images (eg connectedhomeip)
     subUidRanges = [
@@ -176,6 +180,9 @@ with lib; {
       }
     ];
 
+    # TODO: look at https://www.openssh.com/agent-restrict.html to see about
+    # limiting key to pam access without allowing it to be used to connect
+    # to further hosts
     openssh.authorizedKeys.keys = [
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCxdqQrcKwakfrGvXCRQ2mNM3c5CkbwSEMuUufIcO0Op0xJJkdb59v2iqkztZMNpJFbS61ymsyzeRCwDQ5xptUNrjvbnppL+tBzErKMdilHzadpLeGffUCJg9GcIVJxQzFVbt0tIGwPsBcVHb1WITmzQCoZ/O0p1NSFRovwU8TXCOhnuObDUisFiJyA2e3C8tNvlm0Rvgb7bIH0T+/W4VIc+7ZZWwP/UMCnBHE4azZAcDJ4e9XO+ZJwg6iUXu7lk5X+34ACeHkPu133cGesz8BMl7yoXT058RcEW5bfcN6Dpl/IODNjxbDeQ/dYiVNnSExUWOrCo1sN1RYUQrKCzCzqCZ+29A07czYJDPjUt8pZdBQV3z261zYqyeP/IOgdHp3LZobIm48XF/+Abp/tTu8e99TP1y3L+8XuAMeu1THwHdcnQLJgv4nGExXijlvI/NlPEWhDqs991hhD7eHkg9w7QfuTjxRvZIjAkeK7ByWqMTULMrQBeHSS095b0gdHG3PEGz9BW9J4gHxW/s/pa5Cya3AOv7DJPDAEgxjqhB4wAuzvNnuxNXZCBwrNr8rRr860eNsOOe1rilSKRojF5s2DRin5OzXxJGQkHb1lndxya6E2U5i/+PzGuuPxNmoRDMZ43z7FZWIFej6Vb6Xd1bc1Q8Izbg5M2ZXVgDVoUrY02Q=="
     ];
@@ -217,6 +224,7 @@ with lib; {
   ########################################
   # Programs
   ########################################
+  # TODO: look at other from https://github.com/arlohb/nixos/blob/910916a5e94b6192505a7535e071b7d025ac040c/conf/shell.nix#L37
   programs.git.config = {
     init.defaultBranch = "main";
     url."https://github.com/".insteadOf = ["gh:" "github:"];
@@ -235,6 +243,9 @@ with lib; {
       end
     '';
   };
+  # TODO: probably move to a separate module
+  # TODO: 0.11 adds vim.lsp.config()/vim.lsp.enable(), see if nixos uses
+  # https://gpanders.com/blog/whats-new-in-neovim-0-11/
   programs.neovim = {
     enable = true;
     defaultEditor = true;
@@ -243,17 +254,30 @@ with lib; {
     withRuby = false;
     configure = {
       packages.myPlugins = with pkgs.vimPlugins; {
+        # To maybe try:
+        # vim-easymotion
+        # vim-json
+        # vim-yaml
+        # telescope
+        # vim-clap
         start = [
           editorconfig-vim # Settings in .editorconfig
           nerdtree # File path browsing
+          nvim-cmp
           nvim-treesitter.withAllGrammars
           nvim-lastplace
           sleuth
           vim-buffergator # <leader>b to show buffers
           vim-gnupg
+
+          # Snippet
+          cmp_luasnip
+          luasnip
+          friendly-snippets
         ];
         opt = [];
       };
+      # Use https://github.com/nix-community/nixvim ?
       customRC = ''
         " Function to source files if they exist
         function! SourceIfExists(file)
@@ -267,19 +291,17 @@ with lib; {
         set smartcase
 
         " No directory editing please
+        " For some reason this isn't printing in NixOS/nvim. Not sure why
         for f in argv()
           if isdirectory(f)
             echomsg "vimrc: Cowardly refusing to edit directory " . f
             quit
           endif
         endfor
-        if exists('g:vscode')
-          " VSCode extension
-        else
-          " ordinary neovim
-          " Disable mouse selections
-          set mouse=
-        endif
+
+        " Use the system clipboard
+        set clipboard+=unnamedplus
+        vnoremap <C-c> "+y
 
         " Show nbsp characters
         set listchars=nbsp:.
@@ -294,6 +316,43 @@ with lib; {
               enable = true,
             },
           }
+
+          local cmp = require('cmp')
+          local luasnip = require('luasnip')
+
+          -- Load friendly-snippets if installed
+          require('luasnip.loaders.from_vscode').lazy_load()
+
+          cmp.setup({
+            snippet = {
+              expand = function(args)
+                luasnip.lsp_expand(args.body)
+              end,
+            },
+            mapping = cmp.mapping.preset.insert({
+              ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+              ['<C-f>'] = cmp.mapping.scroll_docs(4),
+              ['<C-Space>'] = cmp.mapping.complete(),
+              ['<C-e>'] = cmp.mapping.abort(),
+              ['<CR>'] = cmp.mapping.confirm({ select = true }),
+              ['<Tab>'] = cmp.mapping(function(fallback)
+                if cmp.visible() then
+                  cmp.select_next_item()
+                elseif luasnip.expand_or_jumpable() then
+                  luasnip.expand_or_jump()
+                else
+                  fallback()
+                end
+              end, { 'i', 's' }),
+            }),
+            sources = cmp.config.sources({
+              { name = 'nvim_lsp' },
+              { name = 'luasnip' },
+              { name = 'buffer' },
+              { name = 'path' },
+            }),
+          })
+
         EOF
 
         " Call user inits

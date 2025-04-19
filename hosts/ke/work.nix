@@ -4,7 +4,7 @@
     checkov # Static code analysis tool for infrastructure-as-code
     drawio
     freerdp3
-    (granted.override {withFish = true;})
+    granted
     jira-cli-go
     postman
     proxychains-ng

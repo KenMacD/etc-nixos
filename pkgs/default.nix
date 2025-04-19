@@ -40,6 +40,8 @@ in {
     extraBuildInputs = [pkgs.xz];
   };
 
+  ofc = callPackage ./ofc.nix {};
+
   repopack = callPackage ./repopack.nix {};
 
   pgvecto-rs = callPackage ./pgvecto-rs.nix {};

@@ -39,6 +39,17 @@
     # Add when user USB redirection required:
     spiceUSBRedirection.enable = true;
 
+    # Make podman-compose the default compose provider
+    containers = {
+      enable = true;
+      containersConf.settings = {
+        engine = {
+          compose_warning_logs = false;
+          compose_providers = ["${pkgs.podman-compose}/bin/podman-compose"];
+        };
+      };
+    };
+
     podman = {
       enable = true;
       dockerCompat = true;
@@ -101,6 +112,7 @@
     diffoci # Diff container images
     distrobox
     dive # A tool for exploring a docker image
+    landrun
     # TODO: 2024-12-18 requires build: guestfs-tools # virt-customize -a ubuntu.img --root-password random
     # TODO: 2024-12-18 requires build: libguestfs # guestfish / guestmount
     podman-compose

@@ -1,5 +1,11 @@
 self: super: let
   stablePackages = [
+    "nix-alien"
+    "copyq"
+    "jamesdsp"
+
+    "libfprint-2-tod1-goodix"
+    "fprintd-tod"
   ];
 
   masterPackages = [
