@@ -65,10 +65,17 @@ in {
     # vllm
     instructor
     huggingface-hub
+    markitdown
+
+    # llm and plugins
     llm
     llm-anthropic
+    llm-cmd
+    local.llm-deepseek
+    llm-gemini
+    llm-jq
+    local.llm-groq
     llm-ollama
-    markitdown
   ];
 
   environment.systemPackages = with pkgs; [

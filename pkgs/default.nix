@@ -26,6 +26,10 @@ in {
 
   goplantuml = callPackage ./goplantuml.nix {};
 
+  llm-deepseek = python3Packages.callPackage ./llm-deepseek.nix {};
+
+  llm-groq = python3Packages.callPackage ./llm-groq.nix {};
+
   magic-cli = callPackage ./magic-cli {};
 
   modprobed-db = callPackage ./modprobed-db.nix {};
