@@ -61,10 +61,7 @@ in {
   };
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [
-      80 # HTTP (Caddy)
-      443 # HTTPS (Caddy)
-    ];
+    allowedTCPPorts = [];
     allowedUDPPorts = [
       5353 # mDNS
       5355 # LLMNR (Link-Local Multicast Name Resolution)
@@ -83,27 +80,6 @@ in {
     ];
     dates = "03:30";
     randomizedDelaySec = "45min";
-  };
-  services.caddy = {
-    enable = true;
-    globalConfig = ''
-      cert_issuer acme {
-        disable_http_challenge
-      }
-    '';
-    extraConfig = ''
-      (common) {
-        header /* {
-          -Server
-        }
-      }
-    '';
-    virtualHosts."jellyfin.macdermid.ca" = {
-      extraConfig = ''
-        reverse_proxy 127.0.0.1:8096
-        import common
-      '';
-    };
   };
   services.cloudflared = {
     enable = true;
