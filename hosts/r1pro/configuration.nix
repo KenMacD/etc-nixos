@@ -127,7 +127,7 @@ in {
   systemd.services.nzbget.path = with pkgs; [
     unrar
     p7zip
-    python39 # TODO: when videosort updated, update python
+    python3
   ];
   services.mongodb = {
     enable = true;
@@ -283,10 +283,13 @@ in {
   # Packages
   ########################################
   environment.systemPackages = with pkgs; [
+    alejandra
     bcachefs-tools
     btrfs-progs
     dhcpcd
     git
+    gitui
+    gnumake
     fd
     fwupd
     htop
