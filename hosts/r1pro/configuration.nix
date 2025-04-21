@@ -36,6 +36,7 @@ in {
   ########################################
   sops.defaultSopsFile = ./secrets.yaml;
   sops.secrets.cloudflare-tunnel = {};
+  sops.secrets.bigagi = {};
 
   ########################################
   # Boot
@@ -248,6 +249,11 @@ in {
   };
   services.zerotier-home.enable = true;
   virtualisation.oci-containers.backend = "podman";
+  virtualisation.oci-containers.containers.bigagi = {
+    image = "localhost/bigagi:stable";
+    environmentFiles = [config.sops.secrets.bigagi.path];
+    ports = ["3000:3000"];
+  };
   virtualisation.podman = {
     enable = true;
     autoPrune.enable = true;
