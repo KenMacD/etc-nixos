@@ -52,5 +52,7 @@ in {
 
   shh = callPackage ./shh.nix {};
 
+  ttok = python3Packages.callPackage ./ttok.nix {};
+
   tun2proxy = callPackage ./tun2proxy {};
 }
