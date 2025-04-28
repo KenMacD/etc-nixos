@@ -4,8 +4,6 @@
 }: let
   inherit (pkgs) callPackage python3Packages;
 in {
-  aider-chat = callPackage ./aider.nix {};
-
   butterfish = callPackage ./butterfish.nix {};
 
   dcc = callPackage ./dcc {};
