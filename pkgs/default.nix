@@ -10,8 +10,6 @@ in {
 
   deptree = callPackage ./deptree.nix {};
 
-  fabric-ai = callPackage ./fabric-ai.nix {};
-
   files-to-prompt = python3Packages.callPackage ./files-to-prompt.nix {};
 
   fre = callPackage ./fre.nix {};
