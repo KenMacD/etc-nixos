@@ -44,5 +44,7 @@ in {
 
   playwright-mcp = callPackage ./playwright-mcp.nix {};
 
+  souffle-addon = callPackage ./souffle-addon {};
+
   ttok = python3Packages.callPackage ./ttok.nix {};
 }
