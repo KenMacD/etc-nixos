@@ -1,0 +1,13 @@
+diff --git a/mappings_test.cpp b/mappings_test.cpp
+index 32a958d..15be93f 100644
+--- a/mappings_test.cpp
++++ b/mappings_test.cpp
+@@ -219,7 +219,7 @@ BOOST_AUTO_TEST_CASE(test_to_string) {
+                                                                             ),
+                                                              singleton_mapping("x", "2", "two"))))
+                ==
+-               "[[f -> one][y -> eight][a -> eight][b -> eighty-seven]]" // ordering no longer alphabetic
++               "[[b -> eighty-seven][y -> eight][a -> eight][f -> one]]"
+                );
+ }
+ 
