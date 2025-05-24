@@ -566,7 +566,7 @@ in {
     cloudflared
     dante
     openconnect
-    local.tun2proxy
+    tun2proxy
     wgnord # Nordvpn connection (requires manual /var/lib/wgnord & /etc/wireguard setup)
 
     # Nix

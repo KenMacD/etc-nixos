@@ -10,15 +10,11 @@ in {
 
   deptree = callPackage ./deptree.nix {};
 
-  files-to-prompt = python3Packages.callPackage ./files-to-prompt.nix {};
-
   fre = callPackage ./fre.nix {};
 
   fwdctrl = python3Packages.callPackage ./fwdctrl.nix {};
 
   git-no-hooks = callPackage ./git-no-hooks {};
-
-  go-mod-upgrade = callPackage ./go-mod-upgrade.nix {};
 
   goplantuml = callPackage ./goplantuml.nix {};
 
@@ -42,13 +38,8 @@ in {
 
   ofc = callPackage ./ofc.nix {};
 
-  repopack = callPackage ./repopack.nix {};
-
   pgvecto-rs = callPackage ./pgvecto-rs.nix {};
 
-  resticprofile = callPackage ./resticprofile.nix {};
 
   ttok = python3Packages.callPackage ./ttok.nix {};
-
-  tun2proxy = callPackage ./tun2proxy {};
 }

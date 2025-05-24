@@ -85,13 +85,13 @@ in {
     code-cursor
     fabric-ai
     goose-cli
-    local.files-to-prompt
+    files-to-prompt
     lmstudio # to try, open-webui-like?
     # Not really used: local.magic-cli
     mods # pipe command output to a question
     openai-whisper
     pandoc # Test html -> markdown
-    local.repopack # Testing
+    repomix # Testing
     local.ofc
     # Not really using, asks for openai key: shell-gpt # $ sgpt ...
     tgpt # $ tgpt question
