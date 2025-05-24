@@ -42,6 +42,7 @@ in {
 
   pgvecto-rs = callPackage ./pgvecto-rs.nix {};
 
+  playwright-mcp = callPackage ./playwright-mcp.nix {};
 
   ttok = python3Packages.callPackage ./ttok.nix {};
 }
