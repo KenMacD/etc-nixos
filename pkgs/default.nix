@@ -18,6 +18,8 @@ in {
 
   goplantuml = callPackage ./goplantuml.nix {};
 
+  heimdall-rs = callPackage ./heimdall-rs.nix {};
+
   llm-deepseek = python3Packages.callPackage ./llm-deepseek.nix {};
 
   llm-groq = python3Packages.callPackage ./llm-groq.nix {};
