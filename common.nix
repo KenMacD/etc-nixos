@@ -262,6 +262,7 @@ with lib; {
         # vim-clap
         start = [
           editorconfig-vim # Settings in .editorconfig
+          leap-nvim
           nerdtree # File path browsing
           nvim-cmp
           nvim-treesitter.withAllGrammars
@@ -316,6 +317,8 @@ with lib; {
               enable = true,
             },
           }
+          -- 's' then two chars to jump to that
+          require('leap').set_default_mappings()
 
           local cmp = require('cmp')
           local luasnip = require('luasnip')
