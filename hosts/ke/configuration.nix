@@ -412,6 +412,7 @@ in {
   programs.direnv.enable = true;
   programs.git.enable = true;
   programs.partition-manager.enable = true;
+  programs.pay-respects.enable = true;
   programs.starship = {
     enable = true;
     settings = {
@@ -454,7 +455,6 @@ in {
   };
 
   programs.sysdig.enable = true;
-  programs.thefuck.enable = true;
   programs.ydotool.enable = true;
 
   python3SystemPackages = with pkgs.python3Packages; [
