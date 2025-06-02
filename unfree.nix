@@ -23,6 +23,7 @@
   "megasync"
   "mongodb"
   "mongodb-compass"
+  "n8n"
   "nosql-workbench"
   "nrfutil"
   "obsidian"
@@ -37,6 +38,7 @@
   "vscode-extension-fill-labs-dependi" # TODO: find free alternative
   "vscode-extension-github-copilot"
   "vscode-extension-github-copilot-chat"
+  "vscode-extension-ms-python-vscode-pylance"
   "vscode-extension-ms-vscode-cpptools"
   "vscode-extension-ms-vscode-remote-remote-containers"
   "vscode-extension-ms-vscode-remote-remote-ssh"

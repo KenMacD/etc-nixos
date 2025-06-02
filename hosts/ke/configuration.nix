@@ -571,9 +571,11 @@ in {
 
     # Nix
     alejandra # Nix formatter
+    nix-init # Generate Nix packages from URLs with hash prefetching
     nix-tree
     nixd
     nixpkgs-fmt
+    nixpkgs-lint-community
 
     # Wireless
     aircrack-ng
@@ -615,7 +617,7 @@ in {
     (pkgs.symlinkJoin {
       name = "gimp";
       paths = [pkgs.gimp];
-      buildInputs = [pkgs.makeWrapper];
+      nativeBuildInputs = [pkgs.makeWrapper];
       postBuild = ''
         wrapProgram $out/bin/gimp \
           --set GDK_BACKEND x11
@@ -652,7 +654,7 @@ in {
     aws-azure-login
     bintools
     binwalk
-    bruno # Postman like API tool
+    # bruno # Postman like API tool
     clang-tools
     codeql
     delta
@@ -686,6 +688,7 @@ in {
     sqlite
     ssm-session-manager-plugin
     tio
+    yaak # Postman like API tool
     yamllint
     stable.yamlfix # broken 2024-03-29
     zeal # Offline docs

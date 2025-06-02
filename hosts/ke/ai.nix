@@ -89,12 +89,15 @@ in {
     lmstudio # to try, open-webui-like?
     # Not really used: local.magic-cli
     mods # pipe command output to a question
+    n8n
     openai-whisper
     pandoc # Test html -> markdown
+    local.playwright-mcp
     repomix # Testing
     local.ofc
     # Not really using, asks for openai key: shell-gpt # $ sgpt ...
     tgpt # $ tgpt question
+    local.ttok
     windsurf
     (warp-terminal.override {waylandSupport = true;}) # Testing (closed-sources though)
 

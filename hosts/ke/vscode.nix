@@ -147,7 +147,7 @@ in {
             # Try ruff ms-python.flake8
             ms-python.pylint
             ms-python.python
-            # ms-python.vscode-pylance
+            ms-python.vscode-pylance
             ms-toolsai.jupyter
             ms-vscode.cmake-tools
             ms-vscode.test-adapter-converter
