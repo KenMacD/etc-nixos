@@ -10,8 +10,6 @@ in {
 
   deptree = callPackage ./deptree.nix {};
 
-  fre = callPackage ./fre.nix {};
-
   fwdctrl = python3Packages.callPackage ./fwdctrl.nix {};
 
   git-no-hooks = callPackage ./git-no-hooks {};
@@ -25,8 +23,6 @@ in {
   llm-groq = python3Packages.callPackage ./llm-groq.nix {};
 
   magic-cli = callPackage ./magic-cli {};
-
-  modprobed-db = callPackage ./modprobed-db.nix {};
 
   mongodb-bin_7 = callPackage ./mongodb-bin.nix {
     version = "7.0.14";
