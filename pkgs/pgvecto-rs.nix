@@ -7,18 +7,17 @@
 }:
 # Modified from: https://github.com/diogotcorreia/dotfiles/blob/nixos/packages/pgvecto-rs.nix
 # Build from source is in git history, but takes multiple gigs of space and is slow.
+# Hash: nix store prefetch-file "https://github.com/tensorchord/pgvecto.rs/releases/download/v0.4.0/vectors-pg16_0.4.0_amd64.deb"
 let
   versionHashes = {
-    "14" = "sha256-8RDWkVbSxAmhSlggbYeSXHvCg5TNavvIPIZ0Ivua61Q=";
-    "15" = "sha256-uPE76ofzAevJMHSjFHYJQWUh5NZotaD9dhaX84uDFiQ=";
-    "16" = "sha256-aJ1wLNZVdsZAvQeE26YVnJBr8lAm6i6/3eio5H44d7s=";
+    "16" = "sha256-uqjG9Cr2OeDL1SAW75CXkoR9Jh/9UUWqiSi2rYhEgy4=";
     "17" = lib.fakeHash; # Does not exist
   };
   major = lib.versions.major postgresql.version;
 in
   stdenv.mkDerivation rec {
     pname = "pgvecto-rs";
-    version = "0.2.0";
+    version = "0.4.0";
 
     nativeBuildInputs = [dpkg];
 
