@@ -1,11 +1,12 @@
 {
   description = "NixOS configuration";
 
+  # https://channels.nixos.org/
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-  inputs.nixpkgs-24_05.url = "github:NixOS/nixpkgs/nixos-24.05";
   inputs.nixpkgs-24_11.url = "github:NixOS/nixpkgs/nixos-24.11";
-  inputs.nixpkgs-old-stable.follows = "nixpkgs-24_05";
-  inputs.nixpkgs-stable.follows = "nixpkgs-24_11";
+  inputs.nixpkgs-25_05.url = "github:NixOS/nixpkgs/nixos-25.05";
+  inputs.nixpkgs-old-stable.follows = "nixpkgs-24_11";
+  inputs.nixpkgs-stable.follows = "nixpkgs-25_05";
   inputs.nixpkgs-master.url = "github:NixOS/nixpkgs/master";
 
   inputs.devenv = {
