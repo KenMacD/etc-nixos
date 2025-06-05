@@ -107,8 +107,7 @@ with lib; {
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = mkDefault true;
 
-  # bcachefs overrides with mkDefault as well
-  boot.kernelPackages = mkOverride (lib.modules.defaultOrderPriority - 1) pkgs.linuxPackages_6_14;
+  boot.kernelPackages = mkOverride (lib.modules.defaultOrderPriority - 1) pkgs.linuxPackages_6_15;
   security.unprivilegedUsernsClone = mkDefault config.virtualisation.containers.enable;
 
   # Limit previous generations to avoid /boot filling up
