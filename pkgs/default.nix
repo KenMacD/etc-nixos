@@ -18,10 +18,6 @@ in {
 
   heimdall-rs = callPackage ./heimdall-rs.nix {};
 
-  llm-deepseek = python3Packages.callPackage ./llm-deepseek.nix {};
-
-  llm-groq = python3Packages.callPackage ./llm-groq.nix {};
-
   magic-cli = callPackage ./magic-cli {};
 
   mongodb-bin_7 = callPackage ./mongodb-bin.nix {
