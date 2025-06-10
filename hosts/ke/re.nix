@@ -7,16 +7,16 @@
   ########################################
   # Packages
   ########################################
-  environment.systemPackages = with pkgs;
-  with config.boot.kernelPackages; [
-    ghidra-bin
+  programs.ghidra = {
+    enable = true;
+    package = pkgs.ghidra-bin;
+  };
+
+  environment.systemPackages = with pkgs; [
     iaito # r2 gui
     ida-free
     radare2
     cutter
     rizin
-
-    # Android
-    # TODO: Installs insecure dotnet avalonia-ilspy
   ];
 }

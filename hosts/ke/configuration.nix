@@ -469,7 +469,9 @@ in {
     aspellDicts.en-computers
     bc
     brightnessctl
-    chromium
+    (chromium.override {
+      commandLineArgs = "--no-default-browser-check";
+    })
     fd
     firefox
     fuse

@@ -64,6 +64,12 @@ in {
           tintinweb.vscode-inline-bookmarks
           tintinweb.vscode-solidity-language
           tintinweb.vscode-solidity-flattener
+
+          # Python
+          ms-python.debugpy
+          ms-python.pylint
+          ms-python.python
+          ms-python.vscode-pylance
         ]);
     };
   in
@@ -108,7 +114,6 @@ in {
             christian-kohler.path-intellisense
             codeium.codeium
             crystal-lang-tools.crystal-lang
-            # Closed source now? Trying continue.continue instead danielsanmedium.dscodegpt
             davidanson.vscode-markdownlint
             dbaeumer.vscode-eslint
             deerawan.vscode-dash # Lookup upstream docs
@@ -175,7 +180,7 @@ in {
             tintinweb.graphviz-interactive-preview
             twxs.cmake
             usernamehw.errorlens
-            vadimcn.vscode-lldb
+            # TODO: broken 2025-06-09 vadimcn.vscode-lldb
             xaver.clang-format
             yuichinukiyama.vscode-preview-server
             yzhang.markdown-all-in-one
