@@ -66,16 +66,6 @@ in {
     instructor
     huggingface-hub
     markitdown
-
-    # llm and plugins
-    llm
-    llm-anthropic
-    llm-cmd
-    local.llm-deepseek
-    llm-gemini
-    llm-jq
-    local.llm-groq
-    llm-ollama
   ];
 
   environment.systemPackages = with pkgs; [
@@ -86,6 +76,7 @@ in {
     fabric-ai
     goose-cli
     files-to-prompt
+    llm.withAllPlugins
     lmstudio # to try, open-webui-like?
     # Not really used: local.magic-cli
     mods # pipe command output to a question
