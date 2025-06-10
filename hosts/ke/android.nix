@@ -13,7 +13,6 @@
     android-tools
     apktool
     genymotion
-    heimdall
     scrcpy
   ];
 }
