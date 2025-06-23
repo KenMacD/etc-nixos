@@ -17,10 +17,6 @@
     url = "github:nix-community/disko/latest";
     inputs.nixpkgs.follows = "nixpkgs";
   };
-  inputs.flake-programs-sqlite = {
-    url = "github:wamserma/flake-programs-sqlite";
-    inputs.nixpkgs.follows = "nixpkgs";
-  };
   inputs.flake-utils = {
     url = "github:numtide/flake-utils";
   };
@@ -67,7 +63,6 @@
     nixpkgs-stable,
     devenv,
     disko,
-    flake-programs-sqlite,
     lanzaboote,
     microvm,
     nix-bubblewrap,
@@ -225,7 +220,6 @@
           ./common.nix
           ./hosts/r1pro/configuration.nix
           ./hosts/r1pro/hardware.nix
-          flake-programs-sqlite.nixosModules.programs-sqlite
           sops-nix.nixosModules.sops
         ];
       };
@@ -242,7 +236,6 @@
           ./hosts/yoga/hardware.nix
           ./modules/hardened.nix
           ./modules/immich.nix
-          flake-programs-sqlite.nixosModules.programs-sqlite
           sops-nix.nixosModules.sops
         ];
       };
@@ -321,7 +314,6 @@
           ./modules/hardened.nix
 
           disko.nixosModules.disko
-          flake-programs-sqlite.nixosModules.programs-sqlite
           lanzaboote.nixosModules.lanzaboote
           microvm.nixosModules.host
           sops-nix.nixosModules.sops
