@@ -3,40 +3,46 @@
   nixpkgs,
 }: let
   inherit (pkgs) callPackage python3Packages;
-in {
-  butterfish = callPackage ./butterfish.nix {};
-
-  dcc = callPackage ./dcc {};
-
-  deptree = callPackage ./deptree.nix {};
-
-  fwdctrl = python3Packages.callPackage ./fwdctrl.nix {};
-
-  git-no-hooks = callPackage ./git-no-hooks {};
-
-  goplantuml = callPackage ./goplantuml.nix {};
-
-  heimdall-rs = callPackage ./heimdall-rs.nix {};
-
-  magic-cli = callPackage ./magic-cli {};
-
-  mongodb-bin_7 = callPackage ./mongodb-bin.nix {
-    version = "7.0.14";
-    hash = "sha256-tM+MquEIeFE17Mi4atjtbfXW77hLm5WlDsui/CRs4IQ=";
+  nodePackages = import ./node2nix {
+    inherit pkgs;
+    nodejs = pkgs.nodejs_24;
   };
-  mongodb-bin_6 = callPackage ./mongodb-bin.nix {
-    version = "6.0.17";
-    hash = "sha256-zZ1ObTLo15UNxCjck56LWMrf7FwRapYKCwfU+LeUmi0=";
-    extraBuildInputs = [pkgs.xz];
-  };
+in
+  nodePackages
+  // {
+    butterfish = callPackage ./butterfish.nix {};
 
-  ofc = callPackage ./ofc.nix {};
+    dcc = callPackage ./dcc {};
 
-  pgvecto-rs = callPackage ./pgvecto-rs.nix {};
+    deptree = callPackage ./deptree.nix {};
 
-  playwright-mcp = callPackage ./playwright-mcp.nix {};
+    fwdctrl = python3Packages.callPackage ./fwdctrl.nix {};
 
-  souffle-addon = callPackage ./souffle-addon {};
+    git-no-hooks = callPackage ./git-no-hooks {};
 
-  ttok = python3Packages.callPackage ./ttok.nix {};
-}
+    goplantuml = callPackage ./goplantuml.nix {};
+
+    heimdall-rs = callPackage ./heimdall-rs.nix {};
+
+    magic-cli = callPackage ./magic-cli {};
+
+    mongodb-bin_7 = callPackage ./mongodb-bin.nix {
+      version = "7.0.14";
+      hash = "sha256-tM+MquEIeFE17Mi4atjtbfXW77hLm5WlDsui/CRs4IQ=";
+    };
+    mongodb-bin_6 = callPackage ./mongodb-bin.nix {
+      version = "6.0.17";
+      hash = "sha256-zZ1ObTLo15UNxCjck56LWMrf7FwRapYKCwfU+LeUmi0=";
+      extraBuildInputs = [pkgs.xz];
+    };
+
+    ofc = callPackage ./ofc.nix {};
+
+    pgvecto-rs = callPackage ./pgvecto-rs.nix {};
+
+    playwright-mcp = callPackage ./playwright-mcp.nix {};
+
+    souffle-addon = callPackage ./souffle-addon {};
+
+    ttok = python3Packages.callPackage ./ttok.nix {};
+  }

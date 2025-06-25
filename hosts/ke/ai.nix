@@ -69,6 +69,7 @@ in {
   ];
 
   environment.systemPackages = with pkgs; [
+    local."@google/gemini-cli" # Until https://github.com/NixOS/nixpkgs/issues/419897
     aichat
     aider-chat
     claude-code
