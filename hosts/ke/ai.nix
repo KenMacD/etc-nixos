@@ -80,6 +80,7 @@ in {
     llm.withAllPlugins
     lmstudio # to try, open-webui-like?
     # Not really used: local.magic-cli
+    local.mcptools
     mods # pipe command output to a question
     n8n
     openai-whisper

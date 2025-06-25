@@ -26,6 +26,8 @@ in
 
     magic-cli = callPackage ./magic-cli {};
 
+    mcptools = callPackage ./mcptools.nix {};
+
     mongodb-bin_7 = callPackage ./mongodb-bin.nix {
       version = "7.0.14";
       hash = "sha256-tM+MquEIeFE17Mi4atjtbfXW77hLm5WlDsui/CRs4IQ=";
