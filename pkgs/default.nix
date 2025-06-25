@@ -26,6 +26,8 @@ in
 
     magic-cli = callPackage ./magic-cli {};
 
+    mcp-inspector = callPackage ./mcp-inspector.nix {};
+
     mcptools = callPackage ./mcptools.nix {};
 
     mongodb-bin_7 = callPackage ./mongodb-bin.nix {
