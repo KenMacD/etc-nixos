@@ -73,6 +73,7 @@ in {
     aichat
     aider-chat
     claude-code
+    local.container-use
     code-cursor
     fabric-ai
     goose-cli
