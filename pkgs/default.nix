@@ -12,6 +12,8 @@ in
   // {
     butterfish = callPackage ./butterfish.nix {};
 
+    container-use = callPackage ./container-use.nix {};
+
     dcc = callPackage ./dcc {};
 
     deptree = callPackage ./deptree.nix {};
