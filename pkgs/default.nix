@@ -16,6 +16,8 @@ in
 
     deptree = callPackage ./deptree.nix {};
 
+    ferretdb2 = callPackage ./ferretdb2.nix {};
+
     fwdctrl = python3Packages.callPackage ./fwdctrl.nix {};
 
     git-no-hooks = callPackage ./git-no-hooks {};
