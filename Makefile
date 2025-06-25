@@ -7,5 +7,8 @@ MAKEFILE_DIR := $(dir $(MAKEFILE_PATH))
 check:
 	nix flake check path:${MAKEFILE_DIR}
 
+lint:
+	nixpkgs-lint .
+
 format:
 	alejandra **/*.nix
