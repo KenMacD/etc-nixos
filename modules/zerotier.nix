@@ -19,6 +19,8 @@ in {
   };
 
   config = mkIf cfg.enable {
+    # TODO: when systemd 258 see if delegates will work
+    # https://github.com/systemd/systemd/pull/34368
     networking.hosts = {
       "fd3e:fa5c:b78a:1548:d599:9320:cd20:ef74" = ["edgemax" "edgemax.zero.macdermid.ca"];
       "fd3e:fa5c:b78a:1548:d599:93bd:36c5:7846" = ["ke" "ke.zero.macdermid.ca"];
