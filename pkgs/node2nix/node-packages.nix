@@ -8,36 +8,5 @@
   lib,
   globalBuildInputs ? [],
 }: let
-  sources = {
-    "@google/gemini-cli-0.1.1" = {
-      name = "_at_google_slash_gemini-cli";
-      packageName = "@google/gemini-cli";
-      version = "0.1.1";
-      src = fetchurl {
-        url = "https://registry.npmjs.org/@google/gemini-cli/-/gemini-cli-0.1.1.tgz";
-        sha512 = "6/NGntIvC2yBUPVYeMUP0MtmNgi+uBJPi+h/RmxPKRNBD1L8h+Y7VUJPpAoTi9Yl43fM6l2poPHtxwgPK1L6qA==";
-      };
-    };
-  };
-in {
-  "@google/gemini-cli" = nodeEnv.buildNodePackage {
-    name = "_at_google_slash_gemini-cli";
-    packageName = "@google/gemini-cli";
-    version = "0.1.1";
-    src = fetchurl {
-      url = "https://registry.npmjs.org/@google/gemini-cli/-/gemini-cli-0.1.1.tgz";
-      sha512 = "6/NGntIvC2yBUPVYeMUP0MtmNgi+uBJPi+h/RmxPKRNBD1L8h+Y7VUJPpAoTi9Yl43fM6l2poPHtxwgPK1L6qA==";
-    };
-    dependencies = [
-      sources."@google/gemini-cli-0.1.1"
-    ];
-    buildInputs = globalBuildInputs;
-    meta = {
-      description = "[![Gemini CLI CI](https://github.com/google-gemini/gemini-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/google-gemini/gemini-cli/actions/workflows/ci.yml)";
-      homepage = "https://github.com/google-gemini/gemini-cli#readme";
-    };
-    production = true;
-    bypassCache = true;
-    reconstructLock = true;
-  };
-}
+  sources = {};
+in {}

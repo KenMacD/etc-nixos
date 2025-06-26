@@ -69,13 +69,13 @@ in {
   ];
 
   environment.systemPackages = with pkgs; [
-    local."@google/gemini-cli" # Until https://github.com/NixOS/nixpkgs/issues/419897
     aichat
     aider-chat
     claude-code
     local.container-use
     code-cursor
     fabric-ai
+    master.gemini-cli # master until https://nixpk.gs/pr-tracker.html?pr=419945
     goose-cli
     files-to-prompt
     llm.withAllPlugins
