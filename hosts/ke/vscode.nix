@@ -112,7 +112,6 @@ in {
             bruno-api-client.bruno
             charliermarsh.ruff
             christian-kohler.path-intellisense
-            codeium.codeium
             crystal-lang-tools.crystal-lang
             davidanson.vscode-markdownlint
             dbaeumer.vscode-eslint
@@ -195,6 +194,10 @@ in {
             twxs.cmake
 
             # AI Extensions
+            codeium.codeium
+            google.geminicodeassist
+            kilocode.kilo-code # Open-source AI agent. Merged features from Roo Code and Cline.
+            rooveterinaryinc.roo-cline
             saoudrizwan.claude-dev
           ])
         ];
