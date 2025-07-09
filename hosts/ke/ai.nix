@@ -75,7 +75,7 @@ in {
     local.container-use
     code-cursor
     fabric-ai
-    master.gemini-cli # master until https://nixpk.gs/pr-tracker.html?pr=419945
+    gemini-cli
     goose-cli
     files-to-prompt
     llm.withAllPlugins
@@ -91,10 +91,11 @@ in {
     repomix # Testing
     local.ofc
     # Not really using, asks for openai key: shell-gpt # $ sgpt ...
+    strip-tags
+    task-master-ai
     tgpt # $ tgpt question
     local.ttok
     windsurf
-    (warp-terminal.override {waylandSupport = true;}) # Testing (closed-sources though)
 
     # Support tools
     argc
