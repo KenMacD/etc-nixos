@@ -104,6 +104,11 @@
     }
   ];
 
+  # Start tray services
+  environment.etc."sway/config.d/podman-desktop.conf".source = pkgs.writeText "podman-desktop.conf" ''
+    exec ${pkgs.podman-desktop}/bin/podman-desktop
+  '';
+
   environment.systemPackages = with pkgs; [
     buildah
     cosign # Container Signing, Verification
@@ -116,6 +121,7 @@
     # TODO: 2024-12-18 requires build: guestfs-tools # virt-customize -a ubuntu.img --root-password random
     # TODO: 2024-12-18 requires build: libguestfs # guestfish / guestmount
     podman-compose
+    podman-desktop
     podman-tui
     swtpm # Software tpm support
     trivy #  Aqua Security - vulnerability security scanner
