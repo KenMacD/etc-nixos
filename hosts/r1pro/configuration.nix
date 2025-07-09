@@ -176,12 +176,22 @@ in {
   };
   services.postgresql = {
     enable = true;
-    enableTCPIP = true;
-    package = pkgs.postgresql_16;
-    # https://docs.pgvecto.rs/admin/upgrading.html
-    # CREATE EXTENSION IF NOT EXISTS vectors;
-    extensions = ps: with ps; [pgvecto-rs];
-    settings = {shared_preload_libraries = "vectors";};
+    enableTCPIP = false;
+    package = pkgs.postgresql_17;
+
+    # Vector Extension
+    extensions = ps:
+      with ps; [
+        pgvector
+        vectorchord
+      ];
+    settings.shared_preload_libraries = [
+      "vchord"
+      "vector"
+    ];
+    # CREATE EXTENSION IF NOT EXISTS vector;
+    # CREATE EXTENSION IF NOT EXISTS vchord;
+
     authentication = ''
       local all all ident map=mapping
     '';
