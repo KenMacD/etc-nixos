@@ -73,7 +73,7 @@ in {
   ########################################
   system.autoUpgrade = {
     enable = true;
-    flake = "path:/home/kenny/src/nixos#r1pro";
+    flake = "path:/etc/nixos#r1pro";
     flags = [
       "--recreate-lock-file"
       "-L" # print build logs
