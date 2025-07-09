@@ -426,7 +426,7 @@ in {
 
   services.unifi = {
     enable = true;
-    unifiPackage = pkgs.unifi8;
+    unifiPackage = pkgs.unifi;
     mongodbPackage = local.mongodb-bin_7;
     openFirewall = true;
   };
