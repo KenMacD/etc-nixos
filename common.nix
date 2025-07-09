@@ -110,6 +110,11 @@ with lib; {
   boot.kernelPackages = mkOverride (lib.modules.defaultOrderPriority - 1) pkgs.linuxPackages_6_15;
   security.unprivilegedUsernsClone = mkDefault config.virtualisation.containers.enable;
 
+  boot.kernel.sysctl = {
+    # 6.15 hangs a lot, this seems io_uring related:
+    "kernel.io_uring_disabled" = 2;
+  };
+
   # Limit previous generations to avoid /boot filling up
   boot.loader.systemd-boot.configurationLimit = mkDefault 10;
   boot.loader.efi.canTouchEfiVariables = mkDefault true;
