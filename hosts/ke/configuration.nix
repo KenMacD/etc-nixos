@@ -23,6 +23,7 @@ in {
 
     ./networkd.nix
     ./spectrum.nix
+    ./v4l2loopback.nix
     ./work.nix
   ];
 
