@@ -78,7 +78,6 @@ in {
       extraPackages = with pkgs; [
         intel-compute-runtime
         intel-media-driver
-        intel-media-sdk
         intel-ocl
         ocl-icd
         vaapiVdpau

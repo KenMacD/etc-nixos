@@ -26,7 +26,6 @@ in {
         libvdpau-va-gl
         intel-compute-runtime # OpenCL filter support (hardware tonemapping and subtitle burn-in)
         vpl-gpu-rt
-        intel-media-sdk
       ];
     };
   };
