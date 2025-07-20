@@ -11,6 +11,7 @@
 
   # Getting issues with sway 1.11, so pinning to 1.10 for now
   inputs.nixpkgs-sway-pin.url = "github:NixOS/nixpkgs/96608bd73ec980da6932f056dfe88d02cebaa96f";
+  inputs.nixpkgs-linux-6-14-pin.url = "github:NixOS/nixpkgs/d838e584bbbd0c5bcfe4da8cdccb2bca79b81c18";
 
   inputs.devenv = {
     url = "github:cachix/devenv";
@@ -65,6 +66,7 @@
     nixpkgs-old-stable,
     nixpkgs-stable,
     nixpkgs-sway-pin,
+    nixpkgs-linux-6-14-pin,
     devenv,
     disko,
     lanzaboote,
