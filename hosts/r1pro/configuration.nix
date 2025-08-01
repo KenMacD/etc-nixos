@@ -126,7 +126,10 @@ in {
   systemd.services.nzbget.path = with pkgs; [
     unrar
     p7zip
-    python3
+    (python3.withPackages (python-pkgs: [
+      local.pynzbget
+      python-pkgs.apprise
+    ]))
   ];
   services.mongodb = {
     enable = true;

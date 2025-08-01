@@ -50,6 +50,8 @@ in
 
     playwright-mcp = callPackage ./playwright-mcp.nix {};
 
+    pynzbget = python3Packages.callPackage ./pynzbget.nix {};
+
     souffle-addon = callPackage ./souffle-addon {};
 
     ttok = python3Packages.callPackage ./ttok.nix {};
