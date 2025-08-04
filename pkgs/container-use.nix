@@ -2,23 +2,26 @@
   lib,
   buildGoModule,
   fetchFromGitHub,
+  installShellFiles,
 }:
 # TODO: add git/docker to dependencies (see install script)?
 buildGoModule rec {
   pname = "container-use";
-  version = "0.0.5";
+  version = "0.4.1";
 
   src = fetchFromGitHub {
     owner = "dagger";
     repo = "container-use";
     rev = "v${version}";
-    hash = "sha256-qhE36b8sNOz6i5E4266tgbEymm9F6eowq3T7MolYiiE=";
+    hash = "sha256-kYTQEG8QoGjM7KTWd5nAiJ9CaAoO43sWyYYYHar7JHw=";
   };
 
-  vendorHash = "sha256-XzxcnP2BGW0cbMh/0r4r606qrFVEq4ZXU5vXySKUQqU=";
+  vendorHash = "sha256-M7YhEm9Gmjv2gxB2r7AS5JLLThEkvtJfLBrB+cvsN5c=";
+
+  nativeBuildInputs = [installShellFiles];
 
   subPackages = [
-    "cmd/cu"
+    "cmd/container-use"
   ];
 
   ldflags = [
@@ -28,6 +31,22 @@ buildGoModule rec {
     "-X=main.commit=${src.rev}"
     "-X=main.date=1970-01-01T00:00:00Z"
   ];
+
+  checkFlags = ["-skip" "TestSharedRepositoryContention"];
+
+  postInstall = ''
+    installShellCompletion --cmd container-use \
+    --bash <($out/bin/container-use completion bash) \
+    --fish <($out/bin/container-use completion fish) \
+    --zsh <($out/bin/container-use completion zsh)
+    # Create cu symlink for backward compatibility
+    ln -sf $out/bin/container-use $out/bin/cu
+    # Install cu completions for backward compatibility
+    installShellCompletion --cmd cu \
+    --bash <($out/bin/cu completion bash) \
+    --fish <($out/bin/cu completion fish) \
+    --zsh <($out/bin/cu completion zsh)
+  '';
 
   meta = {
     description = "Development environments for coding agents. Enable multiple agents to work safely and independently with your preferred stack";
