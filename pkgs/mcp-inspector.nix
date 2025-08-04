@@ -10,15 +10,13 @@
 # Modified to set PATH to include node (See https://github.com/andoriyu/flakes/pull/258)
 buildNpmPackage rec {
   pname = "mcp-inspector";
-  version = "0.14.3";
+  version = "0.16.2";
 
   src = fetchFromGitHub {
     owner = "modelcontextprotocol";
     repo = "inspector";
     rev = version;
-    # sha256 = "sha256-Yelijo9YIpZXotXhaxduNaP++8uKUaGnx59KsVeEpNc=";
-    # hash = lib.fakeHash;
-    hash = "sha256-tS3SAgg3BOjEPs+aDK7gQDgwm8aHB4GukqMeUHm+BLQ=";
+    hash = "sha256-Z3e1+MBVOI4pXsKZyvpHMUegR2VW3x57zi0qrgVEyzI=";
   };
 
   postPatch = ''
@@ -38,8 +36,7 @@ buildNpmPackage rec {
     }"
   ];
 
-  # npmDepsHash = "sha256-YV7+QdQwrQslj4Tw6lGEiLiYUe4NdfUotF2UxJGZe4I=";
-  npmDepsHash = "sha256-BmctXkE8jlzWkSbDSl/pKNv8VmqMZ7/rkFeWisoOJg4=";
+  npmDepsHash = "sha256-IgS+if36tDciou5oTLfEUnKvicTDQCnqkkiES4rjI2Y=";
 
   doCheck = false;
 
