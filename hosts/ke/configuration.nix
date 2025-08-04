@@ -113,19 +113,12 @@ in {
     "preempt=full"
     "nmi_watchdog=0"
     "vm.dirty_writeback_centisecs=6000"
-
-    # TODO: move to common? or maybe just desktop?
     "panic=0"
-
-    "i915.force_probe=!a7a1"
-    "xe.force_probe=a7a1"
   ];
-  specialisation.i915.configuration = {
+  specialisation.xe.configuration = {
     boot.kernelParams = [
-      "preempt=full"
-      "nmi_watchdog=0"
-      "vm.dirty_writeback_centisecs=6000"
-      "panic=0"
+      "i915.force_probe=!a7a1"
+      "xe.force_probe=a7a1"
     ];
   };
   boot.kernel.sysctl = {"dev.i915.perf_stream_paranoid" = 0;};
