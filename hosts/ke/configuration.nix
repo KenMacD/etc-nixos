@@ -334,6 +334,22 @@ in {
 
   zramSwap.enable = true;
 
+  systemd.user.timers."uv-cache-prune" = {
+    wantedBy = ["timers.target"];
+    timerConfig = {
+      OnCalendar = "weekly";
+      Persistent = true;
+      Unit = "uv-cache-prune.service";
+    };
+  };
+
+  systemd.user.services."uv-cache-prune" = {
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.uv}/bin/uv cache prune";
+    };
+  };
+
   ########################################
   # Fonts
   ########################################
