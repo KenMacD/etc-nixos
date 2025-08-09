@@ -381,4 +381,7 @@ with lib; {
   # Set RCLONE_FAST_LIST to always reduce costs
   # when sending files to B2.
   environment.variables.RCLONE_FAST_LIST = "1";
+
+  # Set SSL_CERT_FILE to avoid issues, expecially with 'uv run' python code
+  environment.variables.SSL_CERT_FILE = "/etc/ssl/certs/ca-certificates.crt";
 }
