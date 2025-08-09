@@ -54,6 +54,10 @@
     inputs.nixpkgs.follows = "nixpkgs";
     inputs.flake-utils.follows = "flake-utils";
   };
+  inputs.rust-overlay = {
+    url = "github:oxalica/rust-overlay";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
   inputs.sops-nix = {
     url = "github:Mic92/sops-nix";
     inputs.nixpkgs.follows = "nixpkgs";
@@ -72,6 +76,7 @@
     lanzaboote,
     microvm,
     nix-bubblewrap,
+    rust-overlay,
     sops-nix,
     ...
   } @ inputs: let
@@ -298,6 +303,10 @@
               overlay-sway-pin
               # (import ./overlays/sway-dbg.nix)
               overlay-nix-bubblewrap
+
+              # Add pkgs.rust-bin packages
+              rust-overlay.overlays.default
+
               (import ./overlays/testing.nix)
               (import ./overlays/broken.nix)
             ];
