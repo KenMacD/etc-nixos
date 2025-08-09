@@ -155,7 +155,11 @@
     kubeswitch
     minikube
     # Broken 20230202 docker-machine-kvm2  # kvm2 driver for minikube
-    google-cloud-sdk
+    (google-cloud-sdk.withExtraComponents (
+      with pkgs.google-cloud-sdk.components; [
+        config-connector
+      ]
+    ))
     skopeo # inspect information on images
 
     nerdctl
