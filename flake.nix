@@ -9,8 +9,6 @@
   inputs.nixpkgs-stable.follows = "nixpkgs-25_05";
   inputs.nixpkgs-master.url = "github:NixOS/nixpkgs/master";
 
-  # Getting issues with sway 1.11, so pinning to 1.10 for now
-  inputs.nixpkgs-sway-pin.url = "github:NixOS/nixpkgs/96608bd73ec980da6932f056dfe88d02cebaa96f";
   inputs.nixpkgs-linux-6-14-pin.url = "github:NixOS/nixpkgs/d838e584bbbd0c5bcfe4da8cdccb2bca79b81c18";
 
   inputs.devenv = {
@@ -69,7 +67,6 @@
     nixpkgs-master,
     nixpkgs-old-stable,
     nixpkgs-stable,
-    nixpkgs-sway-pin,
     nixpkgs-linux-6-14-pin,
     devenv,
     disko,
@@ -109,13 +106,6 @@
         inherit system;
         config.allowUnfreePredicate = pkg: builtins.elem (super.lib.getName pkg) unfreePackages;
       };
-    };
-    overlay-sway-pin = self: super: {
-      sway =
-        (import nixpkgs-sway-pin {
-          inherit system;
-          config.allowUnfreePredicate = pkg: builtins.elem (super.lib.getName pkg) unfreePackages;
-        }).sway;
     };
   in rec {
     packages.${system} = import ./pkgs {
@@ -300,7 +290,6 @@
               overlay-nix-master
               overlay-old-stable
               overlay-stable
-              overlay-sway-pin
               # (import ./overlays/sway-dbg.nix)
               overlay-nix-bubblewrap
 
