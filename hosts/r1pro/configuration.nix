@@ -10,6 +10,8 @@
 in {
   imports = [
     ./networkd.nix
+
+    ./../../modules/litellm.nix
   ];
 
   systemd.services."systemd-networkd-wait-online".enable = lib.mkForce false;
