@@ -3,6 +3,8 @@
   imports = [
     ./home-wifi.nix # Specific trusted-network config
 
+    ./microvm-config.nix # MicroVM configuration
+
     ./python-packages.nix
 
     ./sccache.nix
