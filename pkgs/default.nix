@@ -44,6 +44,8 @@ in
       extraBuildInputs = [pkgs.xz];
     };
 
+    namespaced-openvpn = callPackage ./namespaced-openvpn.nix {};
+
     ofc = callPackage ./ofc.nix {};
 
     pgvecto-rs = callPackage ./pgvecto-rs.nix {};
