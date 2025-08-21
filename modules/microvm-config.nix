@@ -52,7 +52,7 @@ in {
     networking.nat = {
       enable = true;
       internalIPs = ["10.37.0.0/16"];
-      externalInterface = cfg.externameInterface;
+      externalInterface = cfg.externalInterface;
     };
   };
 }
