@@ -73,6 +73,7 @@ in {
     aider-chat
     claude-code
     local.claude-code-router
+    codex
     local.container-use
     code-cursor
     fabric-ai
@@ -97,6 +98,7 @@ in {
     tgpt # $ tgpt question
     local.ttok
     windsurf
+    qwen-code
 
     # Support tools
     argc
