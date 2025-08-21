@@ -20,6 +20,11 @@
   inputs.flake-utils = {
     url = "github:numtide/flake-utils";
   };
+  # Include QRookie
+  inputs.glaumar_repo = {
+    url = "github:glaumar/nur";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
   inputs.impermanence = {
     url = "github:nix-community/impermanence";
   };
@@ -292,6 +297,10 @@
 
               # Add pkgs.rust-bin packages
               rust-overlay.overlays.default
+
+              (final: prev: {
+                glaumar_repo = inputs.glaumar_repo.packages."${prev.system}";
+              })
 
               (import ./overlays/testing.nix)
               (import ./overlays/broken.nix)
