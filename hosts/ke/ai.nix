@@ -72,6 +72,7 @@ in {
     aichat
     aider-chat
     claude-code
+    local.claude-code-router
     local.container-use
     code-cursor
     fabric-ai

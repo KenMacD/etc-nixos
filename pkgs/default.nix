@@ -12,6 +12,8 @@ in
   // {
     butterfish = callPackage ./butterfish.nix {};
 
+    claude-code-router = callPackage ./claude-code-router.nix {};
+
     container-use = callPackage ./container-use.nix {};
 
     dcc = callPackage ./dcc {};
