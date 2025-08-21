@@ -16,6 +16,7 @@ in {
     ./disko.nix
     ./emacs.nix
     ./firewall.nix
+    ./mitmproxy.nix
     ./re.nix
     ./sboot.nix
     ./virt.nix
