@@ -9,8 +9,6 @@
   inputs.nixpkgs-stable.follows = "nixpkgs-25_05";
   inputs.nixpkgs-master.url = "github:NixOS/nixpkgs/master";
 
-  inputs.nixpkgs-linux-6-14-pin.url = "github:NixOS/nixpkgs/d838e584bbbd0c5bcfe4da8cdccb2bca79b81c18";
-
   inputs.devenv = {
     url = "github:cachix/devenv";
     inputs.nixpkgs.follows = "nixpkgs";
@@ -67,7 +65,6 @@
     nixpkgs-master,
     nixpkgs-old-stable,
     nixpkgs-stable,
-    nixpkgs-linux-6-14-pin,
     devenv,
     disko,
     lanzaboote,
