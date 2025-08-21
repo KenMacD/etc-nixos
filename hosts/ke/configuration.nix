@@ -96,7 +96,15 @@ in {
   };
   services.hardware.bolt.enable = true;
   services.avahi.enable = true; # For Chromecast
-  services.upower.enable = true;
+  services.upower = {
+    enable = true;
+    criticalPowerAction = "PowerOff";
+
+    # First warning, critical warning, and shutdown level
+    percentageLow = 15;
+    percentageCritical = 10;
+    percentageAction = 5;
+  };
   services.power-profiles-daemon.enable = true;
   # TODO: broken 2025-03-24 services.printing.drivers = [pkgs.hplipWithPlugin];
   services.printing = {
