@@ -5,6 +5,8 @@
 
     ./microvm-config.nix # MicroVM configuration
 
+    ./nordvpn-namespaced.nix
+
     ./python-packages.nix
 
     ./sccache.nix
