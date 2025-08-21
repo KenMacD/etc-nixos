@@ -59,4 +59,6 @@ in
     souffle-addon = callPackage ./souffle-addon {};
 
     ttok = python3Packages.callPackage ./ttok.nix {};
+
+    qlty = callPackage ./qlty.nix {};
   }
