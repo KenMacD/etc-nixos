@@ -87,6 +87,7 @@ in {
     local.mcptools
     mods # pipe command output to a question
     n8n
+    local.octofriend
     openai-whisper
     pandoc # Test html -> markdown
     local.playwright-mcp
