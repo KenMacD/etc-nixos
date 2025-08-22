@@ -48,6 +48,8 @@ in
 
     namespaced-openvpn = callPackage ./namespaced-openvpn.nix {};
 
+    octofriend = callPackage ./octofriend.nix {};
+
     ofc = callPackage ./ofc.nix {};
 
     pgvecto-rs = callPackage ./pgvecto-rs.nix {};
