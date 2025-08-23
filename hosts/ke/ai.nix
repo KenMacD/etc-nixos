@@ -71,13 +71,10 @@ in {
   environment.systemPackages = with pkgs; [
     aichat
     aider-chat
-    claude-code
     local.claude-code-router
-    codex
     local.container-use
     code-cursor
     fabric-ai
-    gemini-cli
     goose-cli
     files-to-prompt
     llm.withAllPlugins
@@ -87,7 +84,6 @@ in {
     local.mcptools
     mods # pipe command output to a question
     n8n
-    local.octofriend
     openai-whisper
     pandoc # Test html -> markdown
     local.playwright-mcp
@@ -99,6 +95,12 @@ in {
     tgpt # $ tgpt question
     local.ttok
     windsurf
+
+    # CLI Code Agents
+    claude-code
+    codex
+    gemini-cli
+    local.octofriend
     qwen-code
 
     # Support tools
