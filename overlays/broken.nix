@@ -1,14 +1,15 @@
 self: super: let
   stablePackages = [
-    "nix-alien"
-    "copyq"
-    "jamesdsp"
-
-    "libfprint-2-tod1-goodix"
-    "fprintd-tod"
+    # 2025-08-26
+    "checkov"
+    "gitui"
+    "goose-cli"
+    "mdcat"
   ];
 
   masterPackages = [
+    # 2025-08-26
+    "aider-chat"
   ];
 
   mapToStable = pkgName: super.stable.${pkgName};
