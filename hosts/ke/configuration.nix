@@ -670,7 +670,7 @@ in {
     act # Run your GitHub Actions locally
     amazon-ecs-cli
     android-tools
-    aws-adfs
+    # TODO: broken 2025-08-26 aws-adfs
     awscli2
     aws-azure-login
     bintools
@@ -712,7 +712,7 @@ in {
     yaak # Postman like API tool
     yamllint
     stable.yamlfix # broken 2024-03-29
-    zeal # Offline docs
+    zeal-qt6 # Offline docs
     zed-editor
 
     # Security tools

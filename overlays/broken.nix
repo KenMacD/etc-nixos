@@ -1,15 +1,11 @@
 self: super: let
   stablePackages = [
-    # 2025-08-26
+    # 2025-08-30
     "checkov"
-    "gitui"
     "goose-cli"
-    "mdcat"
   ];
 
   masterPackages = [
-    # 2025-08-26
-    "aider-chat"
   ];
 
   mapToStable = pkgName: super.stable.${pkgName};

@@ -29,6 +29,7 @@
   "obsidian"
   "postman"
   "slack"
+  "spotify"
   "steam"
   "steam-run"
   "steam-unwrapped"

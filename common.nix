@@ -110,7 +110,6 @@ with lib; {
   boot.kernelPackages = mkOverride (lib.modules.defaultOrderPriority - 1) pkgs.linuxPackages_6_16;
   security.unprivilegedUsernsClone = mkDefault config.virtualisation.containers.enable;
 
-
   boot.kernel.sysctl = {};
 
   # Limit previous generations to avoid /boot filling up
