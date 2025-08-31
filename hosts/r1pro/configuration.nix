@@ -40,6 +40,20 @@ in {
   sops.secrets.bigagi = {};
 
   ########################################
+  # Nix
+  ########################################
+  nix.settings = {
+    extra-substituters = [
+      # default priority is 40, lower = checked first
+      # For pre-built n8n and zerotier packages
+      "https://nix-community.cachix.org?priority=50"
+    ];
+    trusted-public-keys = [
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    ];
+  };
+
+  ########################################
   # Boot
   ########################################
   boot.loader.systemd-boot.enable = true;
@@ -61,7 +75,7 @@ in {
     #hostId = "f5a3f353";
   };
   networking.firewall = {
-    enable = true;
+    enable = false;
     allowedTCPPorts = [];
     allowedUDPPorts = [
       5353 # mDNS
@@ -124,9 +138,13 @@ in {
       ];
     };
   };
+  services.n8n = {
+    enable = true;
+  };
   services.nzbget.enable = true;
   systemd.services.nzbget.path = with pkgs; [
     unrar
+    uv
     p7zip
     (python3.withPackages (python-pkgs: [
       local.pynzbget
@@ -180,7 +198,6 @@ in {
   };
   services.postgresql = {
     enable = true;
-    enableTCPIP = false;
     package = pkgs.postgresql_17;
 
     # Vector Extension
@@ -291,6 +308,11 @@ in {
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEJ0iluA6vWgJ0cBfwLLYLozRJ4r7UBxkPYzOWWqYcf/"
     ];
+  };
+
+  security.pam = {
+    rssh.enable = true;
+    services.sudo.rssh = true;
   };
 
   ########################################
