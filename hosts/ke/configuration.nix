@@ -37,7 +37,7 @@ in {
   ########################################
   # Nix
   ########################################
-  # nix.package = pkgs.nixVersions.unstable;
+  nix.package = pkgs.nixVersions.latest;
   nix.settings = {
     sandbox = true;
     extra-substituters = [
