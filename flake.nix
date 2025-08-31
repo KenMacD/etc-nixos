@@ -9,6 +9,10 @@
   inputs.nixpkgs-stable.follows = "nixpkgs-25_05";
   inputs.nixpkgs-master.url = "github:NixOS/nixpkgs/master";
 
+  inputs.crytic = {
+    url = "github:crytic/crytic.nix";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
   inputs.devenv = {
     url = "github:cachix/devenv";
     inputs.nixpkgs.follows = "nixpkgs";
@@ -70,6 +74,7 @@
     nixpkgs-master,
     nixpkgs-old-stable,
     nixpkgs-stable,
+    crytic,
     devenv,
     disko,
     lanzaboote,
@@ -87,6 +92,7 @@
       inherit system;
       config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) unfreePackages;
     };
+    local = self.packages.${system};
     overlay-nix-bubblewrap = final: prev: {
       nix-bubblewrap = nix-bubblewrap.packages.${prev.system}.default;
       wrapPackage = nix-bubblewrap.lib.${prev.system}.wrapPackage;
@@ -137,6 +143,19 @@
             ]))
         ];
       };
+      python313 = pkgs.mkShellNoCC {
+        packages = with pkgs; [
+          (python313.withPackages (ps:
+            with ps; [
+              cython
+              pip
+              pip-tools
+              setuptools
+              tox
+              virtualenv
+            ]))
+        ];
+      };
       rustup = pkgs.mkShellNoCC {
         packages = with pkgs; [
           rustup
@@ -177,6 +196,79 @@
         shellHook = ''
           export RUSTC_WRAPPER="${pkgs.sccache}/bin/sccache"
         '';
+      };
+      solana = pkgs.mkShellNoCC {
+        packages = with pkgs; [
+          anchor
+          solana-cli
+        ];
+        shellHook = ''
+          export RUSTC_WRAPPER="${pkgs.sccache}/bin/sccache"
+        '';
+      };
+      haskell = pkgs.mkShell {
+        # https://haskell4nix.readthedocs.io/nixpkgs-users-guide.html#how-to-create-a-development-environment
+        packages = with pkgs; [
+          haskellPackages.ghc
+          haskellPackages.cabal-install
+          haskellPackages.haskell-language-server
+        ];
+      };
+      ether = pkgs.mkShell {
+        shellHook = ''
+          export SOUFFLE_ADDON="${local.souffle-addon}/lib/"
+          export Z3_LIBRARY_PATH="${pkgs.z3.lib}/lib"
+        '';
+        packages = let
+          crytic-compile = crytic.lib.${system}.mkCryticCompile {
+            commitHash = "7ce1189e7a052c20f77727e55a3d879d078c5829";
+            version = "0.3.8";
+          };
+          slither-compile = crytic.lib.${system}.mkSlither {
+            commitHash = "a77738fe04571a6639ebf82b8c96536ddfcf29b1";
+            version = "0.11.0";
+            crytic-compile = crytic-compile;
+          };
+          medusa-compile = crytic.lib.${system}.mkMedusa {
+            crytic-compile = crytic-compile;
+            slither = slither-compile;
+          };
+        in
+          with pkgs; [
+            nodejs
+            pnpm
+            yarn
+
+            # If want to use nightly, look at foundry input and use foundry.defaultPackage.${system}
+            foundry
+
+            # Decompilers
+            # In Python Packages: pyevmasm
+            evmdis
+            local.heimdall-rs
+            local.souffle-addon
+            souffle
+
+            crytic.packages.${system}.solc-select
+            crytic-compile
+            slither-compile
+            medusa-compile
+            crytic.packages.${system}.echidna
+            #(crytic.lib.${system}.mkVscode {
+            #  extensions = with pkgs.vscode-extensions; [
+            #    vscodevim.vim # Add more vscode extensions like so
+            #  ];
+            #})
+
+            # source packages
+            (pkgs.writeShellScriptBin "halmos" "/home/kenny/src/crypto/halmos/venv/bin/halmos $@")
+
+            # SMT Solvers
+            bitwuzla
+            cvc5
+            yices
+            z3
+          ];
       };
     };
 
