@@ -138,6 +138,9 @@ in {
       ];
     };
   };
+  services.n8n = {
+    enable = true;
+  };
   services.nzbget.enable = true;
   systemd.services.nzbget.path = with pkgs; [
     unrar
