@@ -75,7 +75,7 @@ in {
     #hostId = "f5a3f353";
   };
   networking.firewall = {
-    enable = true;
+    enable = false;
     allowedTCPPorts = [];
     allowedUDPPorts = [
       5353 # mDNS
