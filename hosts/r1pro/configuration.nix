@@ -194,7 +194,6 @@ in {
   };
   services.postgresql = {
     enable = true;
-    enableTCPIP = false;
     package = pkgs.postgresql_17;
 
     # Vector Extension
