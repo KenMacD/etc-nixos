@@ -376,6 +376,9 @@ with lib; {
     config.boot.kernelPackages.cpupower
     kitty.terminfo
   ];
+  system.extraDependencies = [
+    pkgs.nixVersions.stable # Always keep a stable nix version in the store
+  ];
 
   # Set RCLONE_FAST_LIST to always reduce costs
   # when sending files to B2.
