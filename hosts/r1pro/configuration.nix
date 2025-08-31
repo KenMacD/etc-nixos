@@ -144,6 +144,7 @@ in {
   services.nzbget.enable = true;
   systemd.services.nzbget.path = with pkgs; [
     unrar
+    uv
     p7zip
     (python3.withPackages (python-pkgs: [
       local.pynzbget
