@@ -121,8 +121,8 @@ in {
               in {
                 description = "Network namespace ${namespaceName} using OpenVPN";
                 wantedBy = mkIf namespaceConfig.autoStart ["multi-user.target"];
-                requires = ["network-online.target"];
-                after = ["network-online.target"];
+                requires = ["network-online.target" "ensure-netns-dir.service"];
+                after = ["network-online.target" "ensure-netns-dir.service"];
                 serviceConfig = {
                   Type = "simple";
                   ExecStart = "${local.namespaced-openvpn}/bin/namespaced-openvpn --namespace ${namespaceName} --config ${vpnConfigFile}";
@@ -138,7 +138,20 @@ in {
             )
         )
         namespaces;
+
+      # Base services that always exist
+      baseServices = {
+        ensure-netns-dir = {
+          description = "Ensure /etc/netns directory exists";
+          wantedBy = ["multi-user.target"];
+          serviceConfig = {
+            Type = "oneshot";
+            ExecStart = "${pkgs.coreutils}/bin/mkdir -p /etc/netns";
+            RemainAfterExit = true;
+          };
+        };
+      };
     in
-      mkNamespaceServices cfg.namespaces;
+      baseServices // (mkNamespaceServices cfg.namespaces);
   };
 }

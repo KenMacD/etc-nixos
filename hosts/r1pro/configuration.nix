@@ -141,6 +141,15 @@ in {
   services.n8n = {
     enable = true;
   };
+  services.nordvpn-namespaced = {
+    enable = true;
+    namespaces = {
+      romania = {
+        remote = "89.46.103.171";
+        verify-x509-name = "ro67.nordvpn.com";
+      };
+    };
+  };
   services.nzbget.enable = true;
   systemd.services.nzbget.path = with pkgs; [
     unrar
