@@ -19,6 +19,6 @@ buildGoModule rec {
     description = "A shell with AI superpowers";
     homepage = "https://butterfi.sh/";
     license = licenses.mit;
-    maintainers = with maintainers; [];
+    maintainers = [];
   };
 }

@@ -14,7 +14,7 @@
 
   environment.systemPackages = with pkgs; [
     iaito # r2 gui
-    ida-free
+    # Requires manual download, add when needed: ida-free
     radare2
     cutter
     rizin

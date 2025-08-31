@@ -87,6 +87,7 @@ in {
           (with pkgs.vscode-extensions; [
             github.copilot
             github.copilot-chat
+            github.vscode-pull-request-github
             continue.continue
 
             ms-vscode-remote.remote-containers
@@ -125,7 +126,6 @@ in {
             formulahendry.code-runner
             foxundermoon.shell-format
             github.vscode-github-actions
-            github.vscode-pull-request-github
             gitpod.gitpod-desktop
             golang.go
             # Broken: 2024-04-29       hashicorp.terraform

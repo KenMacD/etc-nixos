@@ -70,7 +70,7 @@ in {
 
   environment.systemPackages = with pkgs; [
     aichat
-    aider-chat
+    aider-chat-full
     local.claude-code-router
     local.container-use
     code-cursor
@@ -91,7 +91,7 @@ in {
     local.ofc
     # Not really using, asks for openai key: shell-gpt # $ sgpt ...
     strip-tags
-    task-master-ai
+    # TODO: broken 2025-08-30 task-master-ai
     tgpt # $ tgpt question
     local.ttok
     windsurf
@@ -101,6 +101,7 @@ in {
     codex
     gemini-cli
     local.octofriend
+    opencode
     qwen-code
 
     # Support tools
