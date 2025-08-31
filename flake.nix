@@ -318,6 +318,9 @@
         modules = [
           ({...}: {
             nix.nixPath = let path = toString ./.; in ["repl=${path}/repl.nix" "nixpkgs=${inputs.nixpkgs}"];
+            nixpkgs.overlays = [
+              overlay-nix-master
+            ];
           })
           ./common.nix
           ./hosts/r1pro/configuration.nix
