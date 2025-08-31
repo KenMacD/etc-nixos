@@ -88,7 +88,6 @@ in {
     pandoc # Test html -> markdown
     local.playwright-mcp
     repomix # Testing
-    local.ofc
     # Not really using, asks for openai key: shell-gpt # $ sgpt ...
     strip-tags
     # TODO: broken 2025-08-30 task-master-ai
