@@ -210,6 +210,19 @@ in {
     enable = true;
     binfmt = true;
   };
+  programs.dconf.profiles.user = {
+    databases = [
+      {
+        lockAll = true;
+        settings = {
+          "org/gnome/desktop/interface" = {
+            color-scheme = "prefer-dark";
+            gtk-theme = "Adwaita-dark";
+          };
+        };
+      }
+    ];
+  };
   programs.xwayland.enable = false;
 
   # Use Wayland for Electron apps
