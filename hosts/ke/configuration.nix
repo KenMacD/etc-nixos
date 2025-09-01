@@ -106,6 +106,19 @@ in {
     percentageCritical = 10;
     percentageAction = 5;
   };
+  services.postgresql = {
+    enable = true;
+    package = pkgs.postgresql_17;
+    authentication = ''
+      local all all ident map=mapping
+    '';
+    identMap = ''
+      mapping kenny    postgres
+      mapping root     postgres
+      mapping postgres postgres
+      mapping /^(.*)$  \1
+    '';
+  };
   services.power-profiles-daemon.enable = true;
   # TODO: broken 2025-03-24 services.printing.drivers = [pkgs.hplipWithPlugin];
   services.printing = {
