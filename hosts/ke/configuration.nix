@@ -600,6 +600,7 @@ in {
     kanidm
     killall
     lxqt.lxqt-policykit
+    lynis # security auditing tool
     ncdu # disk usage with file count
     nvme-cli
     pciutils
@@ -663,7 +664,14 @@ in {
     # python3Packages.huggingface-hub
     # ollama
 
+    # Fish Plugins
+    fishPlugins.autopair # TODO: compare with pisces
+    fishPlugins.plugin-sudope
+
     # General/Unsorted
+    bat
+    broot
+    chafa
     ets # Add timestamp to commands
     (pkgs.symlinkJoin {
       name = "gimp";
@@ -674,7 +682,10 @@ in {
           --set GDK_BACKEND x11
       '';
     })
+    local.ferretdb2
+    hexyl
     pinta
+    procs
     spacer # Insert spaces when command stops output
     qalculate-gtk
 
@@ -736,6 +747,7 @@ in {
     pgcli
     ripgrep
     ruff
+    sig # interactive grep
     sqlite-utils
     sqlite
     ssm-session-manager-plugin
@@ -757,6 +769,7 @@ in {
     libsmbios # smbios-thermal-ctl
     modprobed-db
     nushell # odd different shell
+    oniux # Isolate applications in Tor
     phinger-cursors
     tessen # password dmenu
     # bcompare
@@ -800,6 +813,5 @@ in {
         systemctl --user start pipewire pipewire-media-session xdg-desktop-portal xdg-desktop-portal-wlr
       '';
     })
-
   ];
 }
