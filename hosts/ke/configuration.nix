@@ -206,6 +206,10 @@ in {
       };
     };
   };
+  programs.appimage = {
+    enable = true;
+    binfmt = true;
+  };
   programs.xwayland.enable = false;
 
   # Use Wayland for Electron apps
