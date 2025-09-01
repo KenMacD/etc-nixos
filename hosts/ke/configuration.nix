@@ -39,16 +39,17 @@ in {
   ########################################
   nix.package = pkgs.nixVersions.latest;
   nix.settings = {
-    sandbox = true;
+    # default priority is 40, lower = checked first
     extra-substituters = [
-      "https://aseipp-nix-cache.global.ssl.fastly.net"
-      # default priority is 40
       "https://nix.home.macdermid.ca?priority=30"
       # "https://nix.macdermid.ca"
+      "https://aseipp-nix-cache.global.ssl.fastly.net"
+      "https://nix-community.cachix.org?priority=50"
     ];
     trusted-public-keys = [
       "nix.home.macdermid.ca:CQuA65gXW8KuFlk9Ufx5oMsAiTZzQhfluNoaOzypXMo="
       "nix.macdermid.ca:sAlwW/Ph4P8pyrUT7pmWnsFeGVyZ7pyXYjUmo41/hc8="
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     ];
   };
   nix.extraOptions = ''
