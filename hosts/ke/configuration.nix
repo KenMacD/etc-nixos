@@ -755,7 +755,7 @@ in {
     yaak # Postman like API tool
     yamllint
     stable.yamlfix # broken 2024-03-29
-    zeal-qt6 # Offline docs
+    zeal # Offline docs
     zed-editor
 
     # Security tools
