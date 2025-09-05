@@ -232,6 +232,11 @@ in {
       mapping /^(.*)$  \1
     '';
   };
+  services.qbittorrent = {
+    enable = true;
+    group = "media";
+    webuiPort = 59933;
+  };
   services.samba = {
     enable = true;
     openFirewall = true;
