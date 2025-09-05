@@ -16,7 +16,7 @@ with lib; {
   ########################################
   # Nix
   ########################################
-  system.stateVersion = "23.05";
+  system.stateVersion = mkDefault "23.05";
   nix = let
     flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
   in {
