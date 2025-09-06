@@ -311,7 +311,7 @@ in {
               rctl (tap-hold-release 200 200 sldr rctl)
             )
 
-            (defchordsv2-experimental
+            (defchordsv2
               (lsft rsft) caps 200 all-released ())
           '';
         };
