@@ -425,7 +425,6 @@ in {
       "scanner"
       "lp"
 
-      config.programs.ydotool.group
       config.security.wrappers.dumpcap.group
     ];
   };
@@ -509,7 +508,6 @@ in {
   };
 
   programs.sysdig.enable = true;
-  programs.ydotool.enable = true;
 
   python3SystemPackages = with pkgs.python3Packages; [
     uv
