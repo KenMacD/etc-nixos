@@ -268,6 +268,11 @@ in {
       enable = true;
       keyboards = {
         default = {
+          # Testing issue with keyboard disconnect. Disable other inputs for
+          # now. Also try lctrl+space+escape next time
+          devices = [
+            "/dev/input/by-path/platform-i8042-serio-0-event-kbd"
+          ];
           # Test cases: <expected>: <input>
           # Ctrl+c: d:CapsLock t:5 d:KeyC t:5 u:KeyC t:5 u:CapsLock t:9000
           # Escape: d:CapsLock t:5 u:CapsLock t:9000
