@@ -56,9 +56,11 @@ in
 
     pynzbget = python3Packages.callPackage ./pynzbget.nix {};
 
+    qlty = callPackage ./qlty.nix {};
+
+    skeeter-deleter = python3Packages.callPackage ./skeeter-deleter.nix {};
+
     souffle-addon = callPackage ./souffle-addon {};
 
     ttok = python3Packages.callPackage ./ttok.nix {};
-
-    qlty = callPackage ./qlty.nix {};
   }
