@@ -89,6 +89,7 @@ in {
     local.playwright-mcp
     repomix # Testing
     # Not really using, asks for openai key: shell-gpt # $ sgpt ...
+    local.spec-kit
     strip-tags
     # TODO: broken 2025-08-30 task-master-ai
     tgpt # $ tgpt question

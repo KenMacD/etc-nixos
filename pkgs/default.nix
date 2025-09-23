@@ -62,5 +62,7 @@ in
 
     souffle-addon = callPackage ./souffle-addon {};
 
+    spec-kit = python3Packages.callPackage ./spec-kit.nix {};
+
     ttok = python3Packages.callPackage ./ttok.nix {};
   }
