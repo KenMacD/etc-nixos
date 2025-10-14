@@ -280,12 +280,13 @@
         modules = [
           ./common.nix
           sops-nix.nixosModules.sops
-          "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-plasma5-new-kernel.nix"
+          "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-calamares-plasma6.nix"
           ({
             pkgs,
             lib,
             ...
           }: {
+            system.stateVersion = "25.11";  # Force version to match installer
             environment.systemPackages = with pkgs; [
               inputs.disko.packages.${system}.disko
               neovim
