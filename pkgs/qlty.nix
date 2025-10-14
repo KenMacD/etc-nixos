@@ -72,7 +72,7 @@ in
       description = "Qlty CLI: Universal linting, formatting, maintainability, security scanning, and metrics";
       homepage = "https://github.com/qltysh/qlty";
       changelog = "https://github.com/qltysh/qlty/blob/${src.rev}/CHANGELOG.md";
-      license = lib.licenses.bsl11;
+      # license = lib.licenses.bsl11;
       maintainers = [];
       mainProgram = "qlty";
     };
