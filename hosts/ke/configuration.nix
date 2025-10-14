@@ -270,8 +270,14 @@ in {
         default = {
           # Testing issue with keyboard disconnect. Disable other inputs for
           # now. Also try lctrl+space+escape next time
+          # See:
+          #   sudo libinput debug-events
+          #   udevadm info /dev/input/event
+          # Find keys with: sudo libinput debug-events
+          # Add keys to defsrc then deflayermap
           devices = [
             "/dev/input/by-path/platform-i8042-serio-0-event-kbd" # Laptop keyboard
+            "/dev/input/by-path/platform-thinkpad_acpi-event" # Laptop keyboard extra keys
             "/dev/input/by-id/usb-1096_0284-event-kbd" # External keyboard
           ];
           # Test cases: <expected>: <input>
@@ -288,6 +294,29 @@ in {
             process-unmapped-keys yes
           '';
           config = ''
+            ;; Fn Key Combinations:
+            ;; Fn       = (tap or delayed) KEY_WAKEUP (143)
+            ;; Fn+s     = KEY_SYSRQ (99)
+            ;; Fn+b     = KEY_PAUSE (119)
+            ;; Fn+4     = KEY_SLEEP (142)
+            ;; Fn+rsft  = KEY_PROG3 (202)
+            ;; Fn+tab   = KEY_FULL_SCREEN (372)
+            ;; Fn+PrtSc = KEY_SELECTIVE_SCREENSHOT (634)
+            ;; Fn+left  = KEY_HOME (102)
+            ;; Fn+right = KEY_END (107)
+           
+
+            (deflocalkeys-linux
+              display 227
+              airplane 238
+              messenger 444
+              pickup 445
+              hangup 446
+              bookmark 156
+
+              screenshot 634
+            )
+
             (defsrc
               caps lsft rsft rctl)
 
