@@ -188,7 +188,7 @@ in {
   services.kanidm = {
     enableServer = true;
     # Before upgrade test: sudo -u kanidm -g kanidm kanidmd domain upgrade-check
-    package = pkgs.kanidm_1_6;
+    package = pkgs.kanidm_1_7;
     serverSettings = {
       bindaddress = "127.0.0.1:9001";
       ldapbindaddress = "127.0.0.1:636";
