@@ -37,8 +37,8 @@ in
     mcptools = callPackage ./mcptools.nix {};
 
     mongodb-bin_7 = callPackage ./mongodb-bin.nix {
-      version = "7.0.14";
-      hash = "sha256-tM+MquEIeFE17Mi4atjtbfXW77hLm5WlDsui/CRs4IQ=";
+      version = "7.0.24";
+      hash = "sha256-XKFS4FVwRhn9xtxpOwA7QWVwvq06mQ3wmHDjzgCzuYE=";
     };
 
     namespaced-openvpn = callPackage ./namespaced-openvpn.nix {};
