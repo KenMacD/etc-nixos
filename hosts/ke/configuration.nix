@@ -271,7 +271,8 @@ in {
           # Testing issue with keyboard disconnect. Disable other inputs for
           # now. Also try lctrl+space+escape next time
           devices = [
-            "/dev/input/by-path/platform-i8042-serio-0-event-kbd"
+            "/dev/input/by-path/platform-i8042-serio-0-event-kbd" # Laptop keyboard
+            "/dev/input/by-id/usb-1096_0284-event-kbd" # External keyboard
           ];
           # Test cases: <expected>: <input>
           # Ctrl+c: d:CapsLock t:5 d:KeyC t:5 u:KeyC t:5 u:CapsLock t:9000
