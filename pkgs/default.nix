@@ -58,8 +58,6 @@ in
 
     qlty = callPackage ./qlty.nix {};
 
-    qwen-code = callPackage ./qwen-code/package.nix {};
-
     skeeter-deleter = python3Packages.callPackage ./skeeter-deleter.nix {};
 
     souffle-addon = callPackage ./souffle-addon {};
