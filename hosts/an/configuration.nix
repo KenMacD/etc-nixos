@@ -249,7 +249,6 @@
     p7zip
     powertop
     signal-desktop-bin
-    soundkonverter
     vim
     vlc
 
