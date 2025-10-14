@@ -102,7 +102,7 @@ in {
     gemini-cli
     local.octofriend
     opencode
-    local.qwen-code
+    qwen-code
 
     # Support tools
     argc
