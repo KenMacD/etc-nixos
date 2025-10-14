@@ -1,6 +1,5 @@
 {
   stdenv,
-  lib,
   fetchurl,
   autoPatchelfHook,
   curl,
@@ -44,7 +43,7 @@ stdenv.mkDerivation {
     runHook postInstall
   '';
 
-  meta = with lib; {
+  meta = {
     description = "A scalable, high-performance, open source NoSQL database";
     homepage = "http://www.mongodb.org";
     platforms = ["x86_64-linux"];
