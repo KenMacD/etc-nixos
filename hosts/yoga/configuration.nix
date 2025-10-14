@@ -216,7 +216,7 @@ in {
   # Simple Services
   ########################################
   services = {
-    logind.lidSwitch = "ignore";
+    logind.settings.Login.HandleLidSwitch = "ignore";
     openssh = {
       enable = true;
       settings.PasswordAuthentication = true;
