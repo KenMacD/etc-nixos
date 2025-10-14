@@ -16,16 +16,18 @@ let
 in
   buildNpmPackage rec {
     pname = "playwright-mcp";
-    version = "0.0.34";
+    version = "0.0.42";
 
     src = fetchFromGitHub {
       owner = "microsoft";
       repo = "playwright-mcp";
       tag = "v${version}";
-      hash = "sha256-SGSzX41D9nOTsGiU16tRFXgarWgePRsNWIcEnNGH0lQ=";
+      hash = "sha256-AgHjuO/3CfIjrTKtV2PY23ltlFjP1we8tFxpRz0ZRRc=";
     };
 
-    npmDepsHash = "sha256-+6HmuR1Z5cJkoZq/vsFq6wNsYpZeDS42wwmh3hEgJhM=";
+    npmDepsHash = "sha256-q0TgOMX72BqsqXoqDRZQA5nkh1oHrXCtijh4eA+4oLU=";
+
+    dontNpmBuild = true;
 
     postFixup = ''
       wrapProgram $out/bin/mcp-server-playwright \

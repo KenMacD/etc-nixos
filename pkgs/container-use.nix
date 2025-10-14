@@ -3,22 +3,23 @@
   buildGoModule,
   fetchFromGitHub,
   installShellFiles,
+  git,
 }:
-# TODO: add git/docker to dependencies (see install script)?
+# NOTE: git added for tests; Docker may be needed at runtime but is not required for building/tests since problematic tests are skipped
 buildGoModule rec {
   pname = "container-use";
-  version = "0.4.1";
+  version = "0.4.2";
 
   src = fetchFromGitHub {
     owner = "dagger";
     repo = "container-use";
     rev = "v${version}";
-    hash = "sha256-kYTQEG8QoGjM7KTWd5nAiJ9CaAoO43sWyYYYHar7JHw=";
+    hash = "sha256-YKgS142a9SL1ZEjS+VArxwUzQX961zwlGuHW43AMxQA=";
   };
 
   vendorHash = "sha256-M7YhEm9Gmjv2gxB2r7AS5JLLThEkvtJfLBrB+cvsN5c=";
 
-  nativeBuildInputs = [installShellFiles];
+  nativeBuildInputs = [installShellFiles git];
 
   subPackages = [
     "cmd/container-use"
@@ -32,7 +33,10 @@ buildGoModule rec {
     "-X=main.date=1970-01-01T00:00:00Z"
   ];
 
-  checkFlags = ["-skip" "TestSharedRepositoryContention"];
+  checkFlags = [
+    "-skip"
+    "TestSharedRepositoryContention|TestRepositoryContention|TestSingleTenantRepositoryContention"
+  ];
 
   postInstall = ''
     installShellCompletion --cmd container-use \

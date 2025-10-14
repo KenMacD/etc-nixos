@@ -5,13 +5,13 @@
 }:
 buildGoModule rec {
   pname = "goplantuml";
-  version = "1.6.2";
+  version = "1.6.3";
 
   src = fetchFromGitHub {
     owner = "jfeliu007";
     repo = "goplantuml";
     rev = "v${version}";
-    sha256 = "sha256-OnCAqws27e7WsXKmw0clH9Qek+6LNeu2UGD9sKaV4+I=";
+    sha256 = "sha256-+8RvifAYJv6cxIZ9sNKWNVhSNzUotGjjRjGynGqbO6o=";
   };
 
   vendorHash = null;
