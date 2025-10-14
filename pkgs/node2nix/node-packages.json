@@ -1,2 +1,4 @@
 [
+  "@bytebase/dbhub",
+  "chrome-devtools-mcp"
 ]

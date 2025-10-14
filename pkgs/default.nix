@@ -3,7 +3,7 @@
   nixpkgs,
 }: let
   inherit (pkgs) callPackage python3Packages;
-  nodePackages = import ./node2nix {
+  nodePackages = import ./node2nix/override.nix {
     inherit pkgs;
     nodejs = pkgs.nodejs_24;
   };
