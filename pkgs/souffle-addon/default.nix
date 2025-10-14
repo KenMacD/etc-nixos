@@ -9,13 +9,13 @@
 }:
 stdenv.mkDerivation rec {
   pname = "souffle-addon";
-  version = "1439614";
+  version = "992145c";
 
   src = fetchFromGitHub {
     owner = "plast-lab";
     repo = "souffle-addon";
-    rev = "1439614618b4a5b65925bd0d04c2bf371adb4b48";
-    hash = "sha256-5GrWSEqRu731uwazCywhN17Ko/d8QVZ+HH07YpYHIgE=";
+    rev = "992145cd85da891dd28322cd16460f5e23e6dee4";
+    hash = "sha256-XJTecDYcKBnEWG8ZRetBADS0f/m5pa8gne9cTjhm2Z4=";
   };
 
   patches = [
