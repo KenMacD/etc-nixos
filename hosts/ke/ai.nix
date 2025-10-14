@@ -107,5 +107,9 @@ in {
     # Support tools
     argc
     jq
+
+    # MCP
+    local.chrome-devtools-mcp
+    local."@bytebase/dbhub"
   ];
 }
