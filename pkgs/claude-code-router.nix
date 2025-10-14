@@ -8,11 +8,11 @@
 # From https://github.com/numtide/nix-ai-tools/blob/71492902260665ab6a4d4083487215bfc2ca0ad6/packages/claude-code-router/package.nix
 stdenv.mkDerivation rec {
   pname = "claude-code-router";
-  version = "1.0.33";
+  version = "1.0.61";
 
   src = fetchzip {
     url = "https://registry.npmjs.org/@musistudio/claude-code-router/-/claude-code-router-${version}.tgz";
-    hash = "sha256-VrMT/GR4+oHaN2/Wa+uVnsJhNfIKlVHqW989lWYBs/8=";
+    hash = "sha256-eLzSi8bgF64Pwqrd/ftLkVSMBVLEA2A0HxPOP2J1M2Y=";
   };
 
   nativeBuildInputs = [makeWrapper nodejs_24];

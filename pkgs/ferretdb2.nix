@@ -5,21 +5,27 @@
 }:
 buildGoModule rec {
   pname = "ferretdb";
-  version = "2.3.1";
+  version = "2.5.0";
 
   src = fetchFromGitHub {
     owner = "FerretDB";
     repo = "FerretDB";
     rev = "v${version}";
-    sha256 = "sha256-kj2w3s8+KrhDCO2IWH0xO+3lXGtjMWHGj/hoY8V/At0=";
+    sha256 = "sha256-zQT8ALD5qFxrss8h/UO705Wl8uEXn3srTULcAO4YOSc=";
   };
 
   postPatch = ''
     echo v${version} > build/version/version.txt
     echo nixpkgs     > build/version/package.txt
+
+    # Fix for setGOMAXPROCS undefined error
+    # In newer Go versions, runtime.GOMAXPROCS is handled automatically
+    # Remove when version above 2.5.0
+    # (See https://github.com/FerretDB/FerretDB/pull/5508/)
+    sed -i '367s/.*/\/\/ Removed setGOMAXPROCS call due to Go version incompatibility/' cmd/ferretdb/main.go
   '';
 
-  vendorHash = "sha256-m8+lJ14rgp3MFJPnLkC44EEC/CSbzI06yxRDFUvoWRo=";
+  vendorHash = "sha256-4AlbcJOvYvSvT5DoL3+05luBQCatmsFYyd08RJSs7Wg=";
 
   env.CGO_ENABLED = 0;
 
