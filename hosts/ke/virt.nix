@@ -24,8 +24,6 @@
     libvirtd = {
       enable = true;
       qemu = {
-        ovmf.enable = true;
-        ovmf.packages = [pkgs.OVMFFull.fd];
         runAsRoot = false;
         swtpm.enable = true;
       };

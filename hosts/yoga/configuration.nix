@@ -255,9 +255,6 @@ in {
   virtualisation.docker.enable = true;
   virtualisation.libvirtd = {
     enable = true;
-    qemu.ovmf = {
-      enable = true;
-    };
     # Only care about host arch:
     qemu.package = pkgs.qemu_kvm;
   };
