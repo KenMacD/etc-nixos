@@ -371,6 +371,7 @@ in {
       '';
     };
     udisks2.enable = true;
+    voxinput.enable = true;
     ddccontrol.enable = true;
     zerotier-home = {
       enable = true;
