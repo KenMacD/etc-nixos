@@ -20,7 +20,7 @@ in {
     ./re.nix
     ./sboot.nix
     ./virt.nix
-    ./vscode.nix
+    # TODO: rework without inputs ./vscode.nix
 
     ./networkd.nix
     ./spectrum.nix
