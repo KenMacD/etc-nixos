@@ -1,15 +1,12 @@
-self: super: let
+final: prev: let
   stablePackages = [
-    # 2025-08-30
-    "checkov"
-    "goose-cli"
   ];
 
   masterPackages = [
   ];
 
-  mapToStable = pkgName: super.stable.${pkgName};
-  mapToMaster = pkgName: super.master.${pkgName};
+  mapToStable = pkgName: prev.stable.${pkgName};
+  mapToMaster = pkgName: prev.master.${pkgName};
 
   stableOverrides = builtins.listToAttrs (
     map
