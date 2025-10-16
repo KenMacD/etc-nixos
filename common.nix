@@ -17,9 +17,7 @@ with lib; {
   # Nix
   ########################################
   system.stateVersion = mkDefault "25.05";
-  nix = let
-    flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
-  in {
+  nix = {
     settings = {
       auto-allocate-uids = true;
       auto-optimise-store = mkDefault true;
@@ -53,8 +51,6 @@ with lib; {
     channel.enable = mkDefault false;
     daemonCPUSchedPolicy = "idle";
     daemonIOSchedClass = "idle";
-    nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
-    registry = lib.mapAttrs (_: flake: {inherit flake;}) flakeInputs;
   };
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) (import ./unfree.nix);
   systemd.services."nix-daemon".serviceConfig = {
@@ -86,7 +82,7 @@ with lib; {
       fi
 
       echo -e "''${F_BOLD}''${C_LIME}==> Indicate if a reboot is needed or not ''${NO_FORMAT}"
-      ${inputs.nixos-needsreboot.packages.${system}.default}/bin/nixos-needsreboot || true
+      ${pkgs.nixos-needsreboot}/bin/nixos-needsreboot || true
     '';
   };
 

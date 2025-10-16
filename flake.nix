@@ -41,6 +41,9 @@
     inputs.nixpkgs.follows = "nixpkgs";
     inputs.flake-utils.follows = "flake-utils";
   };
+  inputs.nix-ai-tools = {
+    url = "github:numtide/nix-ai-tools";
+  };
   inputs.nix-alien = {
     url = "github:thiagokokada/nix-alien";
     inputs.nixpkgs.follows = "nixpkgs";
@@ -79,7 +82,9 @@
     disko,
     lanzaboote,
     microvm,
+    nix-ai-tools,
     nix-bubblewrap,
+    nixos-needsreboot,
     rust-overlay,
     sops-nix,
     ...
@@ -93,33 +98,39 @@
       config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) unfreePackages;
     };
     local = self.packages.${system};
-    overlay-nix-bubblewrap = final: prev: {
-      nix-bubblewrap = nix-bubblewrap.packages.${prev.system}.default;
-      wrapPackage = nix-bubblewrap.lib.${prev.system}.wrapPackage;
-    };
-    overlay-nix-master = self: super: {
-      master = import nixpkgs-master {
-        inherit system;
-        config.allowUnfreePredicate = pkg: builtins.elem (super.lib.getName pkg) unfreePackages;
-      };
-    };
-    overlay-old-stable = self: super: {
-      old-stable = import nixpkgs-old-stable {
-        inherit system;
-        config.allowUnfreePredicate = pkg: builtins.elem (super.lib.getName pkg) unfreePackages;
-      };
-    };
-    overlay-stable = self: super: {
-      stable = import nixpkgs-stable {
-        inherit system;
-        config.allowUnfreePredicate = pkg: builtins.elem (super.lib.getName pkg) unfreePackages;
-      };
+    common = {
+      imports = [ ./common.nix ];
+      nix.registry = lib.mapAttrs (_: flake: {inherit flake;}) (lib.filterAttrs (_: lib.isType "flake") inputs);
+      nix.nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") (lib.filterAttrs (_: lib.isType "flake") inputs);
+      nixpkgs.overlays = lib.mkBefore [
+        (final: prev: {
+          nix-ai-tools = nix-ai-tools.packages.${prev.system};
+          nix-bubblewrap = nix-bubblewrap.packages.${prev.system}.default;
+          nixos-needsreboot = nixos-needsreboot.packages.${prev.system}.default;
+          wrapPackage = nix-bubblewrap.lib.${prev.system}.wrapPackage;
+
+          master = import nixpkgs-master {
+            inherit system;
+            config.allowUnfreePredicate = pkg: builtins.elem (prev.lib.getName pkg) unfreePackages;
+          };
+          old-stable = import nixpkgs-old-stable {
+            inherit system;
+            config.allowUnfreePredicate = pkg: builtins.elem (prev.lib.getName pkg) unfreePackages;
+          };
+          stable = import nixpkgs-stable {
+            inherit system;
+            config.allowUnfreePredicate = pkg: builtins.elem (prev.lib.getName pkg) unfreePackages;
+          };
+        })
+        rust-overlay.overlays.default
+      ];
     };
   in rec {
-    packages.${system} = import ./pkgs {
-      inherit nixpkgs;
-      pkgs = nixpkgs.legacyPackages.${system};
-    };
+    packages.${system} =
+      (import ./pkgs {
+        inherit nixpkgs;
+        pkgs = nixpkgs.legacyPackages.${system};
+      });
 
     # nix develop local#<shell>
     devShells.${system} = {
@@ -276,9 +287,9 @@
       # nix build path:/home/kenny/src/nixos#nixosConfigurations.iso.config.system.build.isoImage
       iso = nixpkgs.lib.nixosSystem {
         inherit system;
-        specialArgs = {inherit system inputs;};
+        specialArgs = {inherit system;};
         modules = [
-          ./common.nix
+          common
           sops-nix.nixosModules.sops
           "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-calamares-plasma6.nix"
           ({
@@ -315,15 +326,9 @@
 
       r1pro = nixpkgs.lib.nixosSystem {
         inherit system;
-        specialArgs = {inherit self system inputs;};
+        specialArgs = {inherit self system;};
         modules = [
-          ({...}: {
-            nix.nixPath = let path = toString ./.; in ["repl=${path}/repl.nix" "nixpkgs=${inputs.nixpkgs}"];
-            nixpkgs.overlays = [
-              overlay-nix-master
-            ];
-          })
-          ./common.nix
+          common
           ./hosts/r1pro/configuration.nix
           ./hosts/r1pro/hardware.nix
           sops-nix.nixosModules.sops
@@ -332,12 +337,9 @@
 
       yoga = nixpkgs.lib.nixosSystem {
         inherit system;
-        specialArgs = {inherit self system inputs;};
+        specialArgs = {inherit self system;};
         modules = [
-          ({...}: {
-            nix.nixPath = let path = toString ./.; in ["repl=${path}/repl.nix" "nixpkgs=${inputs.nixpkgs}"];
-          })
-          ./common.nix
+          common
           ./hosts/yoga/configuration.nix
           ./hosts/yoga/hardware.nix
           ./modules/hardened.nix
@@ -347,32 +349,15 @@
       };
       an = nixpkgs.lib.nixosSystem {
         inherit system;
-        specialArgs = {inherit system inputs;};
+        specialArgs = {inherit system;};
         modules = [
-          ({...}: {
-            nixpkgs.overlays = [
-              overlay-stable
-            ];
-          })
-          # Add to regsitry so nixpkgs commands use system versions
-          ({...}: {
-            nix.registry.nixpkgs.flake = nixpkgs;
-            nix.registry.nixpkgs-stable.flake = nixpkgs-stable;
-            nix.registry.microvm.flake = microvm;
-            nix.registry.devenv.flake = devenv;
-            nix.registry.local.flake = self;
-          })
+          common
           ({...}: {
             virtualisation.podman.enable = true;
             virtualisation.podman.defaultNetwork.settings.dns_enabled = true;
             networking.firewall.allowedUDPPorts = [53];
           })
-          ({...}: {
-            # Use the flakes' nixpkgs for commands
-            nix.nixPath = let path = toString ./.; in ["repl=${path}/repl.nix" "nixpkgs=${inputs.nixpkgs}"];
-          })
-          ./common.nix
-          ./modules/nix-alien.nix
+#          ./modules/nix-alien.nix
           ./hosts/an/configuration.nix
           ./hosts/an/hardware.nix
           ./modules/hardened.nix
@@ -381,19 +366,12 @@
       };
       ke = nixpkgs.lib.nixosSystem {
         inherit system;
-        specialArgs = {inherit self system inputs;};
+        specialArgs = {inherit self system;};
         modules = [
+          common
           ({...}: {
             nixpkgs.overlays = [
-              overlay-nix-master
-              overlay-old-stable
-              overlay-stable
               # (import ./overlays/sway-dbg.nix)
-              overlay-nix-bubblewrap
-
-              # Add pkgs.rust-bin packages
-              rust-overlay.overlays.default
-
               (final: prev: {
                 glaumar_repo = inputs.glaumar_repo.packages."${prev.system}";
               })
@@ -402,27 +380,12 @@
               (import ./overlays/broken.nix)
             ];
           })
-          # Add to regsitry so nixpkgs commands use system versions
-          ({...}: {
-            nix.registry.nixpkgs.flake = nixpkgs;
-            nix.registry.nixpkgs-old-stable.flake = nixpkgs-old-stable;
-            nix.registry.nixpkgs-stable.flake = nixpkgs-stable;
-            nix.registry.nixpkgs-master.flake = nixpkgs-master;
-            nix.registry.devenv.flake = devenv;
-            nix.registry.local.flake = self;
-            nix.registry.microvm.flake = microvm;
-          })
           ({...}: {
             virtualisation.podman.enable = true;
             virtualisation.podman.defaultNetwork.settings.dns_enabled = true;
             networking.firewall.allowedUDPPorts = [53];
           })
-          ({...}: {
-            # Use the flakes' nixpkgs for commands
-            nix.nixPath = let path = toString ./.; in ["repl=${path}/repl.nix" "nixpkgs=${inputs.nixpkgs}"];
-          })
-          ./common.nix
-          ./modules/nix-alien.nix
+#          ./modules/nix-alien.nix
           ./hosts/ke/configuration.nix
           ./hosts/ke/hardware.nix
           ./modules/hardened.nix
