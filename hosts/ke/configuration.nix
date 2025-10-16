@@ -544,8 +544,10 @@ in {
     uv
   ];
 
-  environment.systemPackages = with pkgs;
-  with config.boot.kernelPackages; [
+  environment.systemPackages = 
+  with config.boot.kernelPackages;
+  with pkgs;
+  [
     # General
     aspell
     aspellDicts.en
@@ -631,7 +633,7 @@ in {
     fwupd
     fwupd-efi
     iotop
-    kanidm
+    kanidm_1_7
     killall
     lxqt.lxqt-policykit
     lynis # security auditing tool
@@ -659,6 +661,7 @@ in {
     alejandra # Nix formatter
     nix-init # Generate Nix packages from URLs with hash prefetching
     nix-tree
+    nix-update
     nixd
     nixpkgs-fmt
     nixpkgs-lint-community
@@ -720,6 +723,7 @@ in {
     hexyl
     pinta
     procs
+    local.skeeter-deleter
     spacer # Insert spaces when command stops output
     qalculate-gtk
 
@@ -746,7 +750,7 @@ in {
     act # Run your GitHub Actions locally
     amazon-ecs-cli
     android-tools
-    # TODO: broken 2025-08-26 aws-adfs
+    aws-adfs
     awscli2
     aws-azure-login
     bintools
