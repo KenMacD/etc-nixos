@@ -82,6 +82,7 @@
     lanzaboote,
     microvm,
     nix-ai-tools,
+    nix-alien,
     nix-bubblewrap,
     nixos-needsreboot,
     rust-overlay,
@@ -121,6 +122,7 @@
             config.allowUnfreePredicate = pkg: builtins.elem (prev.lib.getName pkg) unfreePackages;
           };
         })
+        nix-alien.overlays.default
         rust-overlay.overlays.default
       ];
     };
@@ -356,7 +358,7 @@
             virtualisation.podman.defaultNetwork.settings.dns_enabled = true;
             networking.firewall.allowedUDPPorts = [53];
           })
-#          ./modules/nix-alien.nix
+          ./modules/nix-alien.nix
           ./hosts/an/configuration.nix
           ./hosts/an/hardware.nix
           ./modules/hardened.nix
@@ -384,7 +386,7 @@
             virtualisation.podman.defaultNetwork.settings.dns_enabled = true;
             networking.firewall.allowedUDPPorts = [53];
           })
-#          ./modules/nix-alien.nix
+          ./modules/nix-alien.nix
           ./hosts/ke/configuration.nix
           ./hosts/ke/hardware.nix
           ./modules/hardened.nix
