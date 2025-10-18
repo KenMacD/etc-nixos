@@ -6,18 +6,18 @@
 }:
 buildNpmPackage rec {
   pname = "octofriend";
-  version = "0.0.44";
+  version = "0.0.45";
 
   src = fetchFromGitHub {
     owner = "synthetic-lab";
     repo = "octofriend";
-    rev = "a23e55701ab4b5c47f4e79d4d6350653cd71ca55";
-    hash = "sha256-TJgbW9pM4CtlFZefGdD7OvCQ+VLpK6nhEPXrOC58pyk=";
+    rev = "5070748237d1c8cbf76ead5ad31f24d19550f23f";
+    hash = "sha256-8/GW8f9sm+BJp2632kDZeAz7tOzfND8vxP1WLpGn5qg=";
   };
 
   inherit nodejs;
 
-  npmDepsHash = "sha256-UJ6D5pVLT5D9QiqE24F0wMqPMWpdSVbvGJGZkQk2A6A=";
+  npmDepsHash = "sha256-ZbP9cpRnn7X5uB3yfkeGEy9PhPhEy9lS6NMbDHLoH3o=";
 
   installPhase = ''
     runHook preInstall
