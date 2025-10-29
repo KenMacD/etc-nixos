@@ -15,6 +15,9 @@ in {
     ];
   };
 
+  nix.settings.extra-substituters = [ "https://numtide.cachix.org" ];
+  nix.settings.extra-trusted-public-keys = [ "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE=" ];
+
   networking.extraHosts = ''
     0.0.0.0 telemetry.crewai.com
   '';
@@ -83,7 +86,6 @@ in {
     local.mcp-inspector
     local.mcptools
     mods # pipe command output to a question
-    n8n
     openai-whisper
     pandoc # Test html -> markdown
     local.playwright-mcp
@@ -94,15 +96,17 @@ in {
     # TODO: broken 2025-08-30 task-master-ai
     tgpt # $ tgpt question
     local.ttok
+    voxinput
     windsurf
 
     # CLI Code Agents
     claude-code
     codex
+    nix-ai-tools.crush
     gemini-cli
     local.octofriend
-    opencode
-    qwen-code
+    nix-ai-tools.opencode
+    nix-ai-tools.qwen-code
 
     # Support tools
     argc
