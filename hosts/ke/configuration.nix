@@ -108,7 +108,7 @@ in {
   };
   services.postgresql = {
     enable = true;
-    package = pkgs.postgresql_17;
+    package = pkgs.postgresql_18;
     authentication = ''
       local all all ident map=mapping
     '';
@@ -544,10 +544,8 @@ in {
     uv
   ];
 
-  environment.systemPackages = 
-  with config.boot.kernelPackages;
-  with pkgs;
-  [
+  environment.systemPackages = with config.boot.kernelPackages;
+  with pkgs; [
     # General
     aspell
     aspellDicts.en
