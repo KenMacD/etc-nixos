@@ -21,13 +21,14 @@ in {
       bindsym $mod+t exec voxinput write
     '';
 
+    # podman run --detach --name local-ai -p 8014:8080 -v localai-models:/models-v localai-backends:/backends -v /dev/dri:/dev/dri docker.io/localai/localai:latest-gpu-intel
     systemd.user.services.voxinput = {
       description = "VoxInput - Voice to text service";
       wantedBy = ["default.target"];
       # wantedBy = ["graphical-session.target"];
       # partOf = ["graphical-session.target"];
       environment = {
-        VOXINPUT_BASE_URL = "http://127.1:8080/v1";
+        VOXINPUT_BASE_URL = "http://127.1:8014/v1";
         VOXINPUT_TRANSCRIPTION_MODEL = "whisper-base-en";
       };
       serviceConfig = {
