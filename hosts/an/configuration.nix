@@ -38,7 +38,7 @@
         intel-compute-runtime
         # LIBVA_DRIVER_NAME=iHD (newer)
         intel-media-driver
-        vaapiVdpau
+        libva-vdpau-driver
       ];
     };
     sane.enable = true;

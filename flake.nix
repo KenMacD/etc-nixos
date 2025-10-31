@@ -35,6 +35,7 @@
   inputs.lanzaboote = {
     url = "github:nix-community/lanzaboote/v0.4.2";
     inputs.nixpkgs.follows = "nixpkgs";
+    inputs.rust-overlay.follows = "rust-overlay"; # https://github.com/nix-community/lanzaboote/issues/485
   };
   inputs.microvm = {
     url = "github:astro/microvm.nix";

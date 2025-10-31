@@ -3,7 +3,7 @@
     # TODO: broken 2025-07-17 (azure-cli.withExtensions (with pkgs.azure-cli-extensions; [graphservices]))
     checkov # Static code analysis tool for infrastructure-as-code
     drawio
-    freerdp3
+    freerdp
     granted
     jira-cli-go
     postman

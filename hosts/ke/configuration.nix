@@ -81,8 +81,8 @@ in {
         intel-compute-runtime
         intel-media-driver
         intel-ocl
+        libva-vdpau-driver
         ocl-icd
-        vaapiVdpau
         vpl-gpu-rt
       ];
       extraPackages32 = with pkgs.pkgsi686Linux; [
@@ -620,7 +620,7 @@ in {
     vlc
 
     # Graphics
-    glxinfo
+    mesa-demos
     mesa_glu
 
     # System management
@@ -827,9 +827,9 @@ in {
     sd
 
     # Testing from https://github.com/b3nj5m1n/dotfiles
-    aria # Basically a better wget
+    aria2 # Basically a better wget
     atuin # Save & search shell history
-    du-dust # More intuitive du
+    dust # More intuitive du
     eza # Better ls
     tealdeer # tldr
 

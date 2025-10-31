@@ -33,7 +33,7 @@ in {
         wofi
         xwayland
 
-        glfw-wayland
+        glfw
         glew
         # TODO: needed, and if so, use qt6? qt5.qtwayland
 
