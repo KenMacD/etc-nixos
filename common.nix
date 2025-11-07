@@ -371,6 +371,12 @@ with lib; {
   environment.systemPackages = with pkgs; [
     config.boot.kernelPackages.cpupower
     kitty.terminfo
+
+    # Nix build packages
+    alejandra
+    git
+    gitui
+    just
   ];
   system.extraDependencies = [
     pkgs.nixVersions.stable # Always keep a stable nix version in the store
