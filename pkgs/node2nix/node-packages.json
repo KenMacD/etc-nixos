@@ -1,4 +1,6 @@
 [
   "@bytebase/dbhub",
+  "cclsp",
+  "ccusage",
   "chrome-devtools-mcp"
 ]
