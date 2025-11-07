@@ -15,8 +15,8 @@ in {
     ];
   };
 
-  nix.settings.extra-substituters = [ "https://numtide.cachix.org" ];
-  nix.settings.extra-trusted-public-keys = [ "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE=" ];
+  nix.settings.extra-substituters = ["https://numtide.cachix.org"];
+  nix.settings.extra-trusted-public-keys = ["numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="];
 
   networking.extraHosts = ''
     0.0.0.0 telemetry.crewai.com

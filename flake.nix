@@ -105,7 +105,7 @@
     };
     local = self.packages.${system};
     common = {
-      imports = [ ./common.nix ];
+      imports = [./common.nix];
       nix.registry = lib.mapAttrs (_: flake: {inherit flake;}) (lib.filterAttrs (_: lib.isType "flake") inputs);
       nix.nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") (lib.filterAttrs (_: lib.isType "flake") inputs);
       nixpkgs.overlays = lib.mkBefore [
@@ -303,7 +303,7 @@
             lib,
             ...
           }: {
-            system.stateVersion = "25.11";  # Force version to match installer
+            system.stateVersion = "25.11"; # Force version to match installer
             environment.systemPackages = with pkgs; [
               inputs.disko.packages.${system}.disko
               neovim

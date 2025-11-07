@@ -159,7 +159,7 @@ in {
       # log_level = "debug";
       tls_chain = config.sops.secrets.kanidm-tls-chain.path;
       tls_key = config.sops.secrets.kanidm-tls-key.path;
-      http_client_address_info.x-forward-for = [ "127.0.0.1" ];
+      http_client_address_info.x-forward-for = ["127.0.0.1"];
     };
     enableClient = true;
     clientSettings = {

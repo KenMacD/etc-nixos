@@ -12,7 +12,7 @@ update:
 
 # Format Nix files
 format:
-  alejandra **/*.nix
+  alejandra **/**/*.nix
 
 # Lint the repository
 lint:
