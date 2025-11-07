@@ -29,6 +29,10 @@
     url = "github:glaumar/nur";
     inputs.nixpkgs.follows = "nixpkgs";
   };
+  inputs.home-manager = {
+    url = "github:nix-community/home-manager";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
   inputs.impermanence = {
     url = "github:nix-community/impermanence";
   };
@@ -80,6 +84,7 @@
     crytic,
     devenv,
     disko,
+    home-manager,
     lanzaboote,
     microvm,
     nix-ai-tools,
@@ -396,6 +401,16 @@
           lanzaboote.nixosModules.lanzaboote
           microvm.nixosModules.host
           sops-nix.nixosModules.sops
+
+          # Home Manager configuration:
+          home-manager.nixosModules.home-manager
+          ({...}: {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.kenny = ./home-manager/users/kenny.nix;
+            # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
+          })
+
           # TODO: script this for all devshells?
           ({...}: {
             system.extraDependencies = [
