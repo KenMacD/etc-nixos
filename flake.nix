@@ -133,11 +133,10 @@
       ];
     };
   in rec {
-    packages.${system} =
-      (import ./pkgs {
-        inherit nixpkgs;
-        pkgs = nixpkgs.legacyPackages.${system};
-      });
+    packages.${system} = import ./pkgs {
+      inherit nixpkgs;
+      pkgs = nixpkgs.legacyPackages.${system};
+    };
 
     # nix develop local#<shell>
     devShells.${system} = {
