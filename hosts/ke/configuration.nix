@@ -17,6 +17,7 @@ in {
     ./emacs.nix
     ./firewall.nix
     ./mitmproxy.nix
+    ./opensnitch.nix
     ./re.nix
     ./sboot.nix
     ./virt.nix

@@ -98,7 +98,9 @@
     system = "x86_64-linux";
     unfreePackages = import ./unfree.nix;
 
-    lib = (import nixpkgs {inherit system;}).lib;
+    lib = import ./lib {
+        lib = inputs.nixpkgs.lib;
+    };
     pkgs = import nixpkgs {
       inherit system;
       config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) unfreePackages;
@@ -372,7 +374,7 @@
       };
       ke = nixpkgs.lib.nixosSystem {
         inherit system;
-        specialArgs = {inherit self system;};
+        specialArgs = {inherit lib self system;};
         modules = [
           common
           ({...}: {
