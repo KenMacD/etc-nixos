@@ -110,8 +110,8 @@ in {
   systemd.services.immich-init = {
     enable = true;
     description = "Set up paths";
-    requires = ["postgresql.service"];
-    after = ["postgresql.service"];
+    requires = ["postgresql.target"];
+    after = ["postgresql.target"];
     before = [
       "${ociBackend}-immich-server.service"
       "${ociBackend}-immich-machine-learning.service"
@@ -158,13 +158,13 @@ in {
 
   systemd.services = {
     "${ociBackend}-immich-server" = {
-      requires = ["postgresql.service" "redis-immich.service"];
-      after = ["postgresql.service" "redis-immich.service"];
+      requires = ["postgresql.target" "redis-immich.service"];
+      after = ["postgresql.target" "redis-immich.service"];
     };
 
     "${ociBackend}-immich-machine-learning" = {
-      requires = ["postgresql.service"];
-      after = ["postgresql.service"];
+      requires = ["postgresql.target"];
+      after = ["postgresql.target"];
     };
   };
 }
