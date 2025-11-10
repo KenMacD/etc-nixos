@@ -74,6 +74,7 @@ in {
   environment.systemPackages = with pkgs; [
     aichat
     aider-chat-full
+    local.cclsp
     local.claude-code-router
     local.container-use
     code-cursor
@@ -93,7 +94,7 @@ in {
     # Not really using, asks for openai key: shell-gpt # $ sgpt ...
     local.spec-kit
     strip-tags
-    # TODO: broken 2025-08-30 task-master-ai
+    task-master-ai
     tgpt # $ tgpt question
     local.ttok
     voxinput
@@ -103,6 +104,7 @@ in {
     claude-code
     codex
     nix-ai-tools.crush
+    nix-ai-tools.forge
     gemini-cli
     local.octofriend
     nix-ai-tools.opencode

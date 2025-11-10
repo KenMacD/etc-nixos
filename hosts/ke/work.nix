@@ -1,6 +1,6 @@
 {pkgs, ...}: {
   environment.systemPackages = with pkgs; [
-    # TODO: broken 2025-07-17 (azure-cli.withExtensions (with pkgs.azure-cli-extensions; [graphservices]))
+    (azure-cli.withExtensions (with pkgs.azure-cli-extensions; [graphservices]))
     checkov # Static code analysis tool for infrastructure-as-code
     drawio
     freerdp

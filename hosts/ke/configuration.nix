@@ -21,7 +21,7 @@ in {
     ./re.nix
     ./sboot.nix
     ./virt.nix
-    # TODO: rework without inputs ./vscode.nix
+    ./vscode.nix
 
     ./networkd.nix
     ./spectrum.nix

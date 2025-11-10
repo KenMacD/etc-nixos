@@ -109,15 +109,15 @@
 
   environment.systemPackages = with pkgs; [
     buildah
-    cosign # Container Signing, Verification
+    # TODO: broken 2025-10-25 https://github.com/NixOS/nixpkgs/issues/456842 cosign # Container Signing, Verification
     crane # crane digest <image>
     cri-tools
     diffoci # Diff container images
     distrobox
     dive # A tool for exploring a docker image
     landrun
-    # TODO: 2024-12-18 requires build: guestfs-tools # virt-customize -a ubuntu.img --root-password random
-    # TODO: 2024-12-18 requires build: libguestfs # guestfish / guestmount
+    guestfs-tools # virt-customize -a ubuntu.img --root-password random
+    libguestfs # guestfish / guestmount
     podman-compose
     podman-desktop
     podman-tui
@@ -152,7 +152,7 @@
     # Kubenetes testing:
     kubeswitch
     minikube
-    # Broken 20230202 docker-machine-kvm2  # kvm2 driver for minikube
+    docker-machine-kvm2 # kvm2 driver for minikube
     (google-cloud-sdk.withExtraComponents (
       with pkgs.google-cloud-sdk.components; [
         config-connector

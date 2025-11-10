@@ -66,7 +66,7 @@
   with config.boot.kernelPackages; [
     # Sound Infrastructure
     alsa-utils
-    # TODO: broken 2025-01-03 carla
+    carla
     cmus
     pavucontrol
     pamixer
@@ -78,7 +78,7 @@
     jamesdsp
 
     # Sound Plugins
-    # TODO: broken: distrho
+    distrho-ports
     swh_lv2
 
     # Bluetooth audio

@@ -29,7 +29,7 @@
         amazonwebservices.aws-toolkit-vscode
         apertia.vscode-aider
         arrterian.nix-env-selector
-        # TODO: broken 2025-03-03 asciidoctor.asciidoctor-vscode
+        asciidoctor.asciidoctor-vscode
         asvetliakov.vscode-neovim
         augustocdias.tasks-shell-input
         bierner.markdown-mermaid
@@ -121,7 +121,7 @@
         # AI Extensions
         codeium.codeium
         google.geminicodeassist
-        # TODO: broken 2025-11-02 kilocode.kilo-code # Open-source AI agent. Merged features from Roo Code and Cline.
+        kilocode.kilo-code # Open-source AI agent. Merged features from Roo Code and Cline.
         rooveterinaryinc.roo-cline
         saoudrizwan.claude-dev
       ])
