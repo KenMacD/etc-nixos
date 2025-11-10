@@ -90,6 +90,7 @@
     nix-ai-tools,
     nix-alien,
     nix-bubblewrap,
+    nix-vscode-extensions,
     nixos-needsreboot,
     rust-overlay,
     sops-nix,
@@ -384,6 +385,7 @@
                 glaumar_repo = inputs.glaumar_repo.packages."${prev.system}";
               })
 
+              nix-vscode-extensions.overlays.default
               (import ./overlays/testing.nix)
               (import ./overlays/broken.nix)
             ];
