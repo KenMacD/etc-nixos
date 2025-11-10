@@ -113,10 +113,10 @@
       nix.nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") (lib.filterAttrs (_: lib.isType "flake") inputs);
       nixpkgs.overlays = lib.mkBefore [
         (final: prev: {
-          nix-ai-tools = nix-ai-tools.packages.${prev.system};
-          nix-bubblewrap = nix-bubblewrap.packages.${prev.system}.default;
-          nixos-needsreboot = nixos-needsreboot.packages.${prev.system}.default;
-          wrapPackage = nix-bubblewrap.lib.${prev.system}.wrapPackage;
+          nix-ai-tools = nix-ai-tools.packages.${prev.stdenv.hostPlatform.system};
+          nix-bubblewrap = nix-bubblewrap.packages.${prev.stdenv.hostPlatform.system}.default;
+          nixos-needsreboot = nixos-needsreboot.packages.${prev.stdenv.hostPlatform.system}.default;
+          wrapPackage = nix-bubblewrap.lib.${prev.stdenv.hostPlatform.system}.wrapPackage;
 
           master = import nixpkgs-master {
             inherit system;
