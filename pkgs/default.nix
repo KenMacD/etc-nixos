@@ -59,5 +59,7 @@ in
 
     spec-kit = python3Packages.callPackage ./spec-kit.nix {};
 
+    windmill = callPackage ./windmill {};
+
     ttok = python3Packages.callPackage ./ttok.nix {};
   }
