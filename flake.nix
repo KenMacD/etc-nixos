@@ -5,8 +5,9 @@
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   inputs.nixpkgs-24_11.url = "github:NixOS/nixpkgs/nixos-24.11";
   inputs.nixpkgs-25_05.url = "github:NixOS/nixpkgs/nixos-25.05";
-  inputs.nixpkgs-old-stable.follows = "nixpkgs-24_11";
-  inputs.nixpkgs-stable.follows = "nixpkgs-25_05";
+  inputs.nixpkgs-25_11.url = "github:NixOS/nixpkgs/nixos-25.11";
+  inputs.nixpkgs-old-stable.follows = "nixpkgs-25_05";
+  inputs.nixpkgs-stable.follows = "nixpkgs-25_11";
   inputs.nixpkgs-master.url = "github:NixOS/nixpkgs/master";
 
   inputs.crytic = {
@@ -20,9 +21,6 @@
   inputs.disko = {
     url = "github:nix-community/disko/latest";
     inputs.nixpkgs.follows = "nixpkgs";
-  };
-  inputs.flake-utils = {
-    url = "github:numtide/flake-utils";
   };
   # Include QRookie
   inputs.glaumar_repo = {
@@ -44,7 +42,6 @@
   inputs.microvm = {
     url = "github:astro/microvm.nix";
     inputs.nixpkgs.follows = "nixpkgs";
-    inputs.flake-utils.follows = "flake-utils";
   };
   inputs.nix-ai-tools = {
     url = "github:numtide/nix-ai-tools";
@@ -60,7 +57,6 @@
   inputs.nix-bubblewrap = {
     url = "sourcehut:~fgaz/nix-bubblewrap";
     inputs.nixpkgs.follows = "nixpkgs";
-    inputs.flake-utils.follows = "flake-utils";
   };
   inputs.nix-vscode-extensions = {
     url = "github:nix-community/nix-vscode-extensions";
