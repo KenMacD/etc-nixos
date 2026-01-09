@@ -442,7 +442,7 @@ in {
   systemd.services.nginx.serviceConfig.SupplementaryGroups = "acme";
   services.nginx = {
     enable = true;
-    package = pkgs.nginxQuic;
+    package = pkgs.nginx;
 
     serverTokens = false;
 
