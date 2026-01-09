@@ -149,7 +149,7 @@ in {
   services.kanidm = {
     enableServer = true;
     # Before upgrade test: sudo -u kanidm -g kanidm kanidmd domain upgrade-check
-    package = pkgs.kanidm_1_7;
+    package = pkgs.kanidm_1_8;
     serverSettings = {
       version = "2"; # Required to set x-forward-for
       bindaddress = "127.0.0.1:9001";
