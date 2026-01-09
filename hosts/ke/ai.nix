@@ -74,6 +74,7 @@ in {
   environment.systemPackages = with pkgs; [
     aichat
     aider-chat-full
+    local.cctx
     local.cclsp
     local.claude-code-router
     local.container-use
