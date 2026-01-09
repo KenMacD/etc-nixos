@@ -96,7 +96,7 @@
     unfreePackages = import ./unfree.nix;
 
     lib = import ./lib {
-        lib = inputs.nixpkgs.lib;
+      lib = inputs.nixpkgs.lib;
     };
     pkgs = import nixpkgs {
       inherit system;
@@ -137,156 +137,9 @@
       pkgs = nixpkgs.legacyPackages.${system};
     };
 
-    # nix develop local#<shell>
-    devShells.${system} = {
-      nodejs = pkgs.mkShellNoCC {
-        packages = with pkgs; [
-          nodejs
-          pnpm
-          yarn
-        ];
-      };
-      python = pkgs.mkShellNoCC {
-        packages = with pkgs; [
-          (python3.withPackages (ps:
-            with ps; [
-              cython
-              pip
-              pip-tools
-              setuptools
-              tox
-              virtualenv
-            ]))
-        ];
-      };
-      python313 = pkgs.mkShellNoCC {
-        packages = with pkgs; [
-          (python313.withPackages (ps:
-            with ps; [
-              cython
-              pip
-              pip-tools
-              setuptools
-              tox
-              virtualenv
-            ]))
-        ];
-      };
-      rustup = pkgs.mkShellNoCC {
-        packages = with pkgs; [
-          rustup
-          llvmPackages.bintools
-          llvmPackages.clang
-          llvmPackages.lld
-          pkg-config
-          sccache
-
-          # Very commonly needed by crates
-          openssl
-        ];
-        shellHook = ''
-          export RUSTC_WRAPPER="${pkgs.sccache}/bin/sccache"
-        '';
-      };
-      rust = pkgs.mkShellNoCC {
-        packages = with pkgs; [
-          alejandra
-          cargo
-          cargo-binutils
-          cargo-expand
-          cargo-flamegraph
-          cargo-generate
-          clippy
-          llvmPackages.bintools
-          llvmPackages.clang
-          llvmPackages.lld
-          pkg-config
-          rustc
-          rustup
-          rust-analyzer
-          sccache
-
-          # Very commonly needed by crates
-          openssl
-        ];
-        shellHook = ''
-          export RUSTC_WRAPPER="${pkgs.sccache}/bin/sccache"
-        '';
-      };
-      solana = pkgs.mkShellNoCC {
-        packages = with pkgs; [
-          anchor
-          solana-cli
-        ];
-        shellHook = ''
-          export RUSTC_WRAPPER="${pkgs.sccache}/bin/sccache"
-        '';
-      };
-      haskell = pkgs.mkShell {
-        # https://haskell4nix.readthedocs.io/nixpkgs-users-guide.html#how-to-create-a-development-environment
-        packages = with pkgs; [
-          haskellPackages.ghc
-          haskellPackages.cabal-install
-          haskellPackages.haskell-language-server
-        ];
-      };
-      ether = pkgs.mkShell {
-        shellHook = ''
-          export SOUFFLE_ADDON="${local.souffle-addon}/lib/"
-          export Z3_LIBRARY_PATH="${pkgs.z3.lib}/lib"
-        '';
-        packages = let
-          crytic-compile = crytic.lib.${system}.mkCryticCompile {
-            commitHash = "7ce1189e7a052c20f77727e55a3d879d078c5829";
-            version = "0.3.8";
-          };
-          slither-compile = crytic.lib.${system}.mkSlither {
-            commitHash = "a77738fe04571a6639ebf82b8c96536ddfcf29b1";
-            version = "0.11.0";
-            crytic-compile = crytic-compile;
-          };
-          medusa-compile = crytic.lib.${system}.mkMedusa {
-            crytic-compile = crytic-compile;
-            slither = slither-compile;
-          };
-        in
-          with pkgs; [
-            nodejs
-            pnpm
-            yarn
-
-            # If want to use nightly, look at foundry input and use foundry.defaultPackage.${system}
-            foundry
-
-            # Decompilers
-            # In Python Packages: pyevmasm
-            evmdis
-            local.heimdall-rs
-            local.souffle-addon
-            souffle
-
-            crytic.packages.${system}.solc-select
-            crytic-compile
-            slither-compile
-            medusa-compile
-            crytic.packages.${system}.echidna
-            #(crytic.lib.${system}.mkVscode {
-            #  extensions = with pkgs.vscode-extensions; [
-            #    vscodevim.vim # Add more vscode extensions like so
-            #  ];
-            #})
-
-            # source packages
-            (pkgs.writeShellScriptBin "halmos" "/home/kenny/src/crypto/halmos/venv/bin/halmos $@")
-
-            # SMT Solvers
-            bitwuzla
-            cvc5
-            yices
-            z3
-          ];
-      };
-    };
+    # Dynamic devShells from shells/ directory
+    # dynamicDevShells = import ./shells {inherit lib pkgs;};
+    devShells.${system} = import ./shells {inherit lib pkgs;};
 
     nixosConfigurations = {
       # nix build path:/home/kenny/src/nixos#nixosConfigurations.iso.config.system.build.isoImage
