@@ -5,7 +5,6 @@
   fetchFromGitHub,
   installShellFiles,
 }:
-
 rustPlatform.buildRustPackage rec {
   pname = "cctx";
   version = "0.1.6";
@@ -27,7 +26,7 @@ rustPlatform.buildRustPackage rec {
     description = "Claude Code context manager for switching between multiple settings.json configurations";
     homepage = "https://github.com/nwiizo/cctx";
     license = lib.licenses.mit;
-    maintainers = with lib.maintainers; [ ];
+    maintainers = with lib.maintainers; [];
     mainProgram = "cctx";
   };
 }
