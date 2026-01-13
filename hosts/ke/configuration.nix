@@ -290,6 +290,10 @@ in {
           # concurrent-tap-hold required for chords
           # process-unmapped-keys required to avoid swapping order on quick
           #   shift-letters
+          extraArgs = [
+            "--wait-device-ms"
+            "1000" # Default 200ms
+          ];
           extraDefCfg = ''
             concurrent-tap-hold yes
             process-unmapped-keys yes
