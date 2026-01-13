@@ -159,6 +159,7 @@ with lib; {
     shell = pkgs.fish;
     extraGroups = [
       "wheel"
+      "wpa_supplicant" # For wifi config
       "uinput" # For testing kanata
       "tss" # Testing tpm2
     ];

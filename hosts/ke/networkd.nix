@@ -30,10 +30,7 @@
       p2p_disabled=1
     '';
     enable = true;
-    userControlled = {
-      enable = true;
-      group = "users";
-    };
+    userControlled = true;
     networks = {
     };
   };

@@ -120,10 +120,7 @@
   networking.wireless = {
     allowAuxiliaryImperativeNetworks = true;
     enable = true;
-    userControlled = {
-      enable = true;
-      group = "users";
-    };
+    userControlled = true;
   };
 
   ########################################
@@ -201,6 +198,8 @@
       "dialout"
       "networkmanager"
       "video"
+      "video"
+      "wpa_supplicant"
 
       "scanner"
       "lp"
@@ -214,6 +213,7 @@
       "dialout"
       "networkmanager"
       "video"
+      "wpa_supplicant"
 
       "scanner"
       "lp"
