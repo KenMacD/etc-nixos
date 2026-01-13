@@ -4,8 +4,6 @@
   pkgs,
   ...
 }: {
-  programs.adb.enable = true;
-
   users.users.kenny.extraGroups = ["adbusers"];
 
   environment.systemPackages = with pkgs; [
