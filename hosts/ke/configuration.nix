@@ -386,20 +386,25 @@ in {
     udev = {
       packages = [
         pkgs.yubikey-personalization
+        (pkgs.writeTextFile {
+          name = "70-user-uaccess.rules";
+          destination = "/etc/udev/rules.d/70-user-uaccess.rules";
+          text = ''
+            # Particle Debugger
+            SUBSYSTEM=="usb", ATTRS{idVendor}=="0d28", ATTRS{idProduct}=="0204", TAG+="uaccess"
+            SUBSYSTEM=="tty", ATTRS{idVendor}=="0d28", ATTRS{idProduct}=="0204", TAG+="uaccess"
+            KERNEL=="hidraw*", ATTRS{idVendor}=="0d28", ATTRS{idProduct}=="0204", TAG+="uaccess"
+
+            # Nintendo Switch
+            SUBSYSTEM=="usb", ATTRS{idVendor}=="057e", ATTRS{idProduct}=="3000", TAG+="uaccess"
+            SUBSYSTEM=="usb", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="27e2", TAG+="uaccess"
+            SUBSYSTEMS=="usb", ATTRS{manufacturer}=="NVIDIA Corp.", ATTRS{product}=="APX", TAG+="uaccess"
+          '';
+          checkPhase = ''
+            ${config.systemd.package}/bin/udevadm verify --resolve-names=late $out/etc/udev/rules.d/70-user-uaccess.rules
+          '';
+        })
       ];
-
-      # Amlogic:
-      # particle usb flash dongle
-      # if systemd-logind use uaccess
-      extraRules = ''
-        SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="1b8e", ATTR{idProduct}=="c003", MODE:="0666", SYMLINK+="worldcup", OWNER="kenny", GROUP="users"
-        ATTRS{idVendor}=="0d28", ATTRS{idProduct}=="0204", OWNER="kenny", GROUP="users"
-
-        SUBSYSTEM=="usb", ATTR{idVendor}=="05ed", TEST=="power/control", ATTR{power/control}="on"
-
-        SUBSYSTEM=="usb", ATTRS{idVendor}=="057e", ATTRS{idProduct}=="3000", OWNER="kenny", GROUP="users"
-        SUBSYSTEM=="usb", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="27e2", OWNER="kenny", GROUP="users"
-      '';
     };
     udisks2.enable = true;
     voxinput.enable = true;
