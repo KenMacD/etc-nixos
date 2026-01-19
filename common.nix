@@ -22,7 +22,6 @@ with lib; {
       auto-allocate-uids = true;
       auto-optimise-store = mkDefault true;
       connect-timeout = mkDefault 2;
-      download-buffer-size = 1024 * 1024 * 256; # default: 64M
       experimental-features = [
         "auto-allocate-uids"
         # "ca-derivations"
