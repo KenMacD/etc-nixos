@@ -130,6 +130,9 @@ in {
 
     # MCP
     local.chrome-devtools-mcp
+    local."@upstash/context7-mcp" # context7's mcp (to avoid 'Error: SSE stream disconnected: TypeError: terminated')
+    local."@aqualia/alph-cli" # Manage MCPs
     local."@bytebase/dbhub"
+    local."@z_ai/mcp-server" # ZAI's Vision MCP Server
   ];
 }
