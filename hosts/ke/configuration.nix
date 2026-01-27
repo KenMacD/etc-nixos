@@ -565,8 +565,11 @@ in {
     aspellDicts.en-computers
     bc
     brightnessctl
-    (chromium.override {
-      commandLineArgs = "--no-default-browser-check";
+    (ungoogled-chromium.override {
+      commandLineArgs = [
+        "--no-default-browser-check"
+        "--allowlisted-extension-id=dkggjaoinnlbgbikeihbghknilnodbap" # uBlock Origin
+      ];
     })
     fd
     firefox
