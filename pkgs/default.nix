@@ -14,7 +14,6 @@ in
 
     cctx = callPackage ./cctx.nix {};
 
-    claude-code-router = callPackage ./claude-code-router.nix {};
 
     container-use = callPackage ./container-use.nix {};
 
