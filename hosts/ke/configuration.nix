@@ -833,7 +833,7 @@ in {
     steam-run
     lutris
     mitmproxy
-    glaumar_repo.qrookie
+    # TODO: broken 2026-01-27 glaumar_repo.qrookie
 
     # s0ix-selftest-tool
 
