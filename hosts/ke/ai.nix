@@ -18,6 +18,18 @@ in {
   nix.settings.extra-substituters = ["https://numtide.cachix.org"];
   nix.settings.extra-trusted-public-keys = ["numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="];
 
+  environment.etc."gemini-cli/system-defaults.json" = {
+    text = builtins.toJSON {
+      privacy = {
+        usageStatisticsEnabled = false;
+      };
+      general = {
+        disableAutoUpdate = true;
+      };
+    };
+    mode = "0644";
+  };
+
   networking.extraHosts = ''
     0.0.0.0 telemetry.crewai.com
   '';
@@ -76,8 +88,7 @@ in {
     aider-chat-full
     local.cctx
     local.cclsp
-    local.claude-code-router
-    local.container-use
+    claude-code-router
     code-cursor
     fabric-ai
     goose-cli
@@ -104,6 +115,7 @@ in {
     # CLI Code Agents
     claude-code
     codex
+    happy-coder # Hook claude code to mobile
     nix-ai-tools.crush
     nix-ai-tools.forge
     gemini-cli
@@ -112,6 +124,7 @@ in {
     nix-ai-tools.qwen-code
 
     # Support tools
+    nix-ai-tools.agent-browser
     argc
     jq
 
