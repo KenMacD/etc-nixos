@@ -93,7 +93,7 @@ in {
     };
     sane = {
       enable = true;
-      # TODO: broken 2025-03-25 extraBackends = [pkgs.hplipWithPlugin];
+      extraBackends = [pkgs.hplipWithPlugin];
     };
   };
   services.hardware.bolt.enable = true;
@@ -121,7 +121,6 @@ in {
     '';
   };
   services.power-profiles-daemon.enable = true;
-  # TODO: broken 2025-03-24 services.printing.drivers = [pkgs.hplipWithPlugin];
   services.printing = {
     enable = true;
     drivers = [pkgs.hplipWithPlugin];
