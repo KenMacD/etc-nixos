@@ -218,6 +218,11 @@ with lib; {
   services.timesyncd.enable = mkDefault true;
   networking.timeServers = mkDefault ["time.cloudflare.com"];
 
+  # fwupd disable p2p by default
+  services.fwupd.daemonSettings = {
+    P2pPolicy = mkDefault "nothing";
+  };
+
   ########################################
   # Programs
   ########################################
