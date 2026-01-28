@@ -589,7 +589,7 @@ in {
     pv
     (python3.withPackages (_: config.python3SystemPackages))
     restic
-    # TODO: broken 2025-04 ratarmount # Mount tar/archives with FUSE
+    ratarmount # Mount tar/archives with FUSE
     rlwrap
     rmlint
     tmux
