@@ -17,13 +17,13 @@
 }:
 # Modified from: https://github.com/ourgal/snowfall/blob/main/packages/qlty/default.nix
 let
-  version = "0.581.0";
+  version = "0.606.0";
   src = fetchFromGitHub {
     owner = "qltysh";
     repo = "qlty";
     rev = "v${version}";
     fetchSubmodules = false;
-    sha256 = "sha256-6gAEthjlHs2gF1plxSiUA249qZyrR/p9jOGegOv32Rg=";
+    sha256 = "sha256-2hly/nCSi7NQkImFHb44JXabSvmVyyJAlFE69KQBSKo=";
   };
 in
   rustPlatform.buildRustPackage {
