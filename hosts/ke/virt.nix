@@ -119,6 +119,7 @@
     cosign # Container Signing, Verification
     crane # crane digest <image>
     cri-tools
+    devcontainer
     diffoci # Diff container images
     distrobox
     dive # A tool for exploring a docker image
