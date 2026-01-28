@@ -42,7 +42,7 @@ in {
         gtk-engine-murrine
         gtk_engines
         gsettings-desktop-schemas
-        lxappearance
+        lxappearance # set font sizes
         adwaita-icon-theme
 
         # Display profiles
