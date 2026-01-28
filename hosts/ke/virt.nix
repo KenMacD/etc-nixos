@@ -116,7 +116,7 @@
 
   environment.systemPackages = with pkgs; [
     buildah
-    # TODO: broken 2025-10-25 https://github.com/NixOS/nixpkgs/issues/456842 cosign # Container Signing, Verification
+    cosign # Container Signing, Verification
     crane # crane digest <image>
     cri-tools
     diffoci # Diff container images
