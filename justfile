@@ -19,8 +19,11 @@ lint:
   nixpkgs-lint .
 
 # Attempt a host build to verify it works
-build host=current_host:
-  nix build --no-link .#nixosConfigurations.{{host}}.config.system.build.toplevel
+build host=current_host *args:
+  nix build {{args}} --no-link .#nixosConfigurations.{{host}}.config.system.build.toplevel
+
+build-no-warns host=current_host *args:
+  nix build {{args}} --no-link --option abort-on-warn true --show-trace .#nixosConfigurations.{{host}}.config.system.build.toplevel
 
 # Run a dry-activate to see what will change
 dry-activate:
@@ -28,4 +31,4 @@ dry-activate:
 
 # Switch to a new configuration
 switch:
-  nixos-rebuild switch --no-reexec --flake .#{{current_host}}
+  nixos-rebuild switch --sudo --no-reexec --flake .#{{current_host}}
