@@ -10,7 +10,7 @@ with lib; {
   security.apparmor.enable = mkDefault false;
   security.sudo.execWheelOnly = mkDefault true;
 
-  services.resolved.llmnr = mkForce "false";
+  services.resolved.settings.Resolve.LLMNR = mkForce "false";
 
   # environment.memoryAllocator.provider = mkDefault "scudo";
   # environment.variables.SCUDO_OPTIONS = mkDefault "ZeroContents=1";
