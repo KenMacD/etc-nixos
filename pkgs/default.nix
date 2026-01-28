@@ -36,6 +36,8 @@ in
 
     mcp-inspector = callPackage ./mcp-inspector.nix {};
 
+    mcp-server-tree-sitter = callPackage ./mcp-server-tree-sitter.nix {};
+
     mcptools = callPackage ./mcptools.nix {};
 
     mongodb-bin_7 = callPackage ./mongodb-bin.nix {

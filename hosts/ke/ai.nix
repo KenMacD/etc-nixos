@@ -141,5 +141,6 @@ in {
     local."@aqualia/alph-cli" # Manage MCPs
     local."@bytebase/dbhub"
     local."@z_ai/mcp-server" # ZAI's Vision MCP Server
+    local.mcp-server-tree-sitter
   ];
 }
