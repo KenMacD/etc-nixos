@@ -6,7 +6,8 @@
 }:
 # Re: https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/profiles/hardened.nix
 with lib; {
-  security.apparmor.enable = mkDefault true;
+  # apparmor breaks at least miniflux, wait until more progress on https://discourse.nixos.org/t/apparmor-on-nixos-roadmap/57217
+  security.apparmor.enable = mkDefault false;
   security.sudo.execWheelOnly = mkDefault true;
 
   services.resolved.llmnr = mkForce "false";
