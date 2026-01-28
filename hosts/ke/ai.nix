@@ -83,6 +83,12 @@ in {
     markitdown
   ];
 
+  # For voxinput
+  # https://github.com/richiejp/VoxInput/blob/02a6f03359a45aeaeefd7e43bf1b197c7b6eeff9/README.md?plain=1#L34
+  services.udev.extraRules = ''
+    KERNEL=="uinput", GROUP="input", MODE="0620", OPTIONS+="static_node=uinput"
+  '';
+
   environment.systemPackages = with pkgs; [
     aichat
     aider-chat-full
