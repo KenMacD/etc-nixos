@@ -95,6 +95,7 @@ in {
     local.cctx
     local.cclsp
     claude-code-router
+    local.code-assistant-manager
     code-cursor
     fabric-ai
     goose-cli

@@ -14,6 +14,7 @@ in
 
     cctx = callPackage ./cctx.nix {};
 
+    code-assistant-manager = python3Packages.callPackage ./code-assistant-manager.nix {};
 
     container-use = callPackage ./container-use.nix {};
 
