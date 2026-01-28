@@ -2,22 +2,22 @@
   lib,
   buildNpmPackage,
   fetchFromGitHub,
-  nodejs,
+  nodejs_22,
 }:
 buildNpmPackage rec {
   pname = "octofriend";
-  version = "0.0.45";
+  version = "0.0.52";
 
   src = fetchFromGitHub {
     owner = "synthetic-lab";
     repo = "octofriend";
-    rev = "5070748237d1c8cbf76ead5ad31f24d19550f23f";
-    hash = "sha256-8/GW8f9sm+BJp2632kDZeAz7tOzfND8vxP1WLpGn5qg=";
+    rev = "e5540baa1a940d27400416491e17b42987309351";
+    hash = "sha256-P9eJpIuw8pQpHC/AQTqisiCpbsxRoH2/ER/E5PbnsGQ=";
   };
 
-  inherit nodejs;
+  npmDepsHash = "sha256-FWrDtk8mgpeTSUFe+Ektc5Nbko3OYRzs/yrhLmsfhRE=";
 
-  npmDepsHash = "sha256-ZbP9cpRnn7X5uB3yfkeGEy9PhPhEy9lS6NMbDHLoH3o=";
+  nodejs = nodejs_22;
 
   installPhase = ''
     runHook preInstall
