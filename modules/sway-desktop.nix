@@ -50,9 +50,6 @@ in {
         shikane
         wdisplays
 
-        # Clipboard test
-        copyq
-
         # TODO: needed?
         # TODO: needed, and if so use qt6? libportal-qt5
 
