@@ -160,7 +160,6 @@
     # Kubenetes testing:
     kubeswitch
     minikube
-    docker-machine-kvm2 # kvm2 driver for minikube
     (google-cloud-sdk.withExtraComponents (
       with pkgs.google-cloud-sdk.components; [
         config-connector
