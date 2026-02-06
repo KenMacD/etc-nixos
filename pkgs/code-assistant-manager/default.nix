@@ -61,6 +61,16 @@ python.pkgs.buildPythonApplication rec {
     "code_assistant_manager"
   ];
 
+  patches = [
+    ./remove-remote-repos.patch
+  ];
+
+  postPatch = ''
+    echo "{}" > code_assistant_manager/skill_repos.json
+    echo "{}" > code_assistant_manager/plugin_repos.json
+    echo "{}" > code_assistant_manager/agent_repos.json
+  '';
+
   meta = {
     description = "Code-assitant-manager allows you to manage the code assistants like claude code, codex, gemini on a single interface";
     homepage = "https://github.com/Chat2AnyLLM/code-assistant-manager";

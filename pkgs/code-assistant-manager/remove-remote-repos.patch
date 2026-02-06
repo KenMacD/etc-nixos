@@ -1,0 +1,37 @@
+diff --git a/code_assistant_manager/config.yaml b/code_assistant_manager/config.yaml
+index da656da..7502886 100644
+--- a/code_assistant_manager/config.yaml
++++ b/code_assistant_manager/config.yaml
+@@ -9,10 +9,6 @@ repositories:
+       - type: local
+         path: ~/.config/code-assistant-manager/skill_repos.json
+       
+-      # Remote awesome repository configs
+-      - type: remote
+-        url: https://raw.githubusercontent.com/Chat2AnyLLM/awesome-repo-configs/main/skill_repos.json
+-  
+   # Agent repositories
+   agents:
+     sources:
+@@ -20,10 +16,6 @@ repositories:
+       - type: local
+         path: ~/.config/code-assistant-manager/agent_repos.json
+       
+-      # Remote awesome repository configs
+-      - type: remote
+-        url: https://raw.githubusercontent.com/Chat2AnyLLM/awesome-repo-configs/main/agent_repos.json
+-  
+   # Plugin repositories
+   plugins:
+     sources:
+@@ -31,10 +23,6 @@ repositories:
+       - type: local
+         path: ~/.config/code-assistant-manager/plugin_repos.json
+       
+-      # Remote awesome repository configs
+-      - type: remote
+-        url: https://raw.githubusercontent.com/Chat2AnyLLM/awesome-repo-configs/main/plugin_repos.json
+-
+ # Cache settings for remote sources
+ cache:
+   enabled: true
