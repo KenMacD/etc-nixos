@@ -3,7 +3,6 @@
 
   # https://channels.nixos.org/
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-  inputs.nixpkgs-24_11.url = "github:NixOS/nixpkgs/nixos-24.11";
   inputs.nixpkgs-25_05.url = "github:NixOS/nixpkgs/nixos-25.05";
   inputs.nixpkgs-25_11.url = "github:NixOS/nixpkgs/nixos-25.11";
   inputs.nixpkgs-old-stable.follows = "nixpkgs-25_05";
