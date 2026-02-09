@@ -43,7 +43,7 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
   inputs.nix-ai-tools = {
-    url = "github:numtide/nix-ai-tools";
+    url = "github:numtide/llm-agents.nix";
   };
   inputs.nix-alien = {
     url = "github:thiagokokada/nix-alien";
