@@ -269,7 +269,7 @@ with lib; {
           nvim-cmp
           nvim-treesitter.withAllGrammars
           nvim-lastplace
-          sleuth
+          vim-sleuth
           vim-buffergator # <leader>b to show buffers
           vim-gnupg
 
