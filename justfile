@@ -32,3 +32,6 @@ dry-activate:
 # Switch to a new configuration
 switch:
   nixos-rebuild switch --sudo --no-reexec --flake .#{{current_host}}
+
+check-dups:
+  nix run github:notashelf/flint

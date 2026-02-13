@@ -15,11 +15,19 @@
   };
   inputs.devenv = {
     url = "github:cachix/devenv";
+    inputs.flake-compat.follows = "flake-compat";
+    inputs.flake-parts.follows = "flake-parts";
     inputs.nixpkgs.follows = "nixpkgs";
   };
   inputs.disko = {
     url = "github:nix-community/disko/latest";
     inputs.nixpkgs.follows = "nixpkgs";
+  };
+  inputs.flake-compat = { # Used for follows
+    url = "github:edolstra/flake-compat";
+  };
+  inputs.flake-parts = { # Used for follows
+    url = "github:hercules-ci/flake-parts";
   };
   # Include QRookie
   inputs.glaumar_repo = {
@@ -32,9 +40,12 @@
   };
   inputs.impermanence = {
     url = "github:nix-community/impermanence";
+    inputs.home-manager.follows = "home-manager";
   };
   inputs.lanzaboote = {
     url = "github:nix-community/lanzaboote/v0.4.2";
+    inputs.flake-compat.follows = "flake-compat";
+    inputs.flake-parts.follows = "flake-parts";
     inputs.nixpkgs.follows = "nixpkgs";
     inputs.rust-overlay.follows = "rust-overlay"; # https://github.com/nix-community/lanzaboote/issues/485
   };
@@ -44,9 +55,15 @@
   };
   inputs.nix-ai-tools = {
     url = "github:numtide/llm-agents.nix";
+    inputs.nixpkgs.follows = "nixpkgs";
   };
   inputs.nix-alien = {
     url = "github:thiagokokada/nix-alien";
+    inputs.flake-compat.follows = "flake-compat";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+  inputs.nixos-generators = {
+    url = "github:nix-community/nixos-generators";
     inputs.nixpkgs.follows = "nixpkgs";
   };
   inputs.nixos-needsreboot = {
