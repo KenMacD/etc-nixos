@@ -186,21 +186,25 @@ in {
 
   systemd.services.kanidm.serviceConfig.SupplementaryGroups = "acme";
   services.kanidm = {
-    enableServer = true;
     # Before upgrade test: sudo -u kanidm -g kanidm kanidmd domain upgrade-check
     package = pkgs.kanidm_1_8;
-    serverSettings = {
-      bindaddress = "127.0.0.1:9001";
-      ldapbindaddress = "127.0.0.1:636";
-      origin = "https://auth.home.macdermid.ca";
-      domain = "auth.home.macdermid.ca";
-      # log_level = "debug";
-      tls_chain = "/var/lib/acme/home.macdermid.ca/fullchain.pem";
-      tls_key = "/var/lib/acme/home.macdermid.ca/key.pem";
+    server = {
+      enable = true;
+      settings = {
+        bindaddress = "127.0.0.1:9001";
+        ldapbindaddress = "127.0.0.1:636";
+        origin = "https://auth.home.macdermid.ca";
+        domain = "auth.home.macdermid.ca";
+        # log_level = "debug";
+        tls_chain = "/var/lib/acme/home.macdermid.ca/fullchain.pem";
+        tls_key = "/var/lib/acme/home.macdermid.ca/key.pem";
+      };
     };
-    enableClient = true;
-    clientSettings = {
-      uri = "${config.services.kanidm.serverSettings.origin}";
+    client = {
+      enable = true;
+      settings = {
+        uri = "${config.services.kanidm.server.settings.origin}";
+      };
     };
   };
 

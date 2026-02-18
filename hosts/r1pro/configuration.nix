@@ -147,23 +147,27 @@ in {
     };
   };
   services.kanidm = {
-    enableServer = true;
     # Before upgrade test: sudo -u kanidm -g kanidm kanidmd domain upgrade-check
     package = pkgs.kanidm_1_8;
-    serverSettings = {
-      version = "2"; # Required to set x-forward-for
-      bindaddress = "127.0.0.1:9001";
-      ldapbindaddress = "127.0.0.1:636";
-      origin = "https://auth.macdermid.ca";
-      domain = "auth.macdermid.ca";
-      # log_level = "debug";
-      tls_chain = config.sops.secrets.kanidm-tls-chain.path;
-      tls_key = config.sops.secrets.kanidm-tls-key.path;
-      http_client_address_info.x-forward-for = ["127.0.0.1"];
+    server = {
+      enable = true;
+      settings = {
+        version = "2"; # Required to set x-forward-for
+        bindaddress = "127.0.0.1:9001";
+        ldapbindaddress = "127.0.0.1:636";
+        origin = "https://auth.macdermid.ca";
+        domain = "auth.macdermid.ca";
+        # log_level = "debug";
+        tls_chain = config.sops.secrets.kanidm-tls-chain.path;
+        tls_key = config.sops.secrets.kanidm-tls-key.path;
+        http_client_address_info.x-forward-for = ["127.0.0.1"];
+      };
     };
-    enableClient = true;
-    clientSettings = {
-      uri = "${config.services.kanidm.serverSettings.origin}";
+    client = {
+      enable = true;
+      settings = {
+        uri = "${config.services.kanidm.server.settings.origin}";
+      };
     };
   };
   services.n8n = {
