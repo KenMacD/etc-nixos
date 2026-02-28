@@ -137,7 +137,7 @@
     dive # A tool for exploring a docker image
     landrun
     guestfs-tools # virt-customize -a ubuntu.img --root-password random
-    libguestfs # guestfish / guestmount
+    libguestfs-with-appliance # guestfish / guestmount
     podman-compose
     podman-desktop
     podman-tui
