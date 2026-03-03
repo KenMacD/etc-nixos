@@ -8,6 +8,8 @@
     nodejs = pkgs.nodejs_24;
   };
 in {
+    alph-cli = callPackage ./alph-cli.nix {};
+
     butterfish = callPackage ./butterfish.nix {};
 
     cctx = callPackage ./cctx.nix {};
