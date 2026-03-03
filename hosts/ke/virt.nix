@@ -26,6 +26,7 @@
       qemu = {
         runAsRoot = false;
         swtpm.enable = true;
+        vhostUserPackages = with pkgs; [virtiofsd];
       };
       # Only care about host arch:
       qemu.package = pkgs.qemu_kvm;
