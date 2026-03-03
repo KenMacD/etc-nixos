@@ -129,6 +129,7 @@
   environment.systemPackages = with pkgs; [
     buildah
     cosign # Container Signing, Verification
+    cloud-utils
     crane # crane digest <image>
     cri-tools
     devcontainer
@@ -136,6 +137,7 @@
     distrobox
     dive # A tool for exploring a docker image
     landrun
+    lima # virtual machines with automatic file sharing and port forwarding
     guestfs-tools # virt-customize -a ubuntu.img --root-password random
     libguestfs-with-appliance # guestfish / guestmount
     podman-compose

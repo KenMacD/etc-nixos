@@ -1,9 +1,0 @@
-[
-  "@aqualia/alph-cli",
-  "@bytebase/dbhub",
-  "@upstash/context7-mcp",
-  "@z_ai/mcp-server",
-  "cclsp",
-  "ccusage",
-  "chrome-devtools-mcp"
-]

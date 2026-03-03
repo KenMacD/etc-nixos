@@ -650,6 +650,7 @@ in {
     killall
     lxqt.lxqt-policykit
     lynis # security auditing tool
+    nautilus # file manager
     ncdu # disk usage with file count
     nvme-cli
     pciutils
@@ -803,6 +804,7 @@ in {
     sqlite
     ssm-session-manager-plugin
     tio
+    wrangler
     yaak # Postman like API tool
     yamllint
     stable.yamlfix # broken 2024-03-29
@@ -819,6 +821,7 @@ in {
     seahorse
     libsmbios # smbios-thermal-ctl
     modprobed-db
+    moreutils
     nushell # odd different shell
     oniux # Isolate applications in Tor
     phinger-cursors

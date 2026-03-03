@@ -7,16 +7,18 @@
     inherit pkgs;
     nodejs = pkgs.nodejs_24;
   };
-in
-  nodePackages
-  // {
+in {
     butterfish = callPackage ./butterfish.nix {};
 
     cctx = callPackage ./cctx.nix {};
 
+    chrome-devtools-mcp = callPackage ./chrome-devtools-mcp.nix {};
+
     code-assistant-manager = python3Packages.callPackage ./code-assistant-manager {};
 
     container-use = callPackage ./container-use.nix {};
+
+    dbhub = callPackage ./dbhub.nix {};
 
     dcc = callPackage ./dcc {};
 
