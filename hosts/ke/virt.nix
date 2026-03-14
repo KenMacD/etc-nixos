@@ -74,6 +74,7 @@
       user = "kenny";
     };
   };
+  environment.variables.DOCKER_HOST = "\${XDG_RUNTIME_DIR:-/run/user/\$(id -u)}/podman/podman.sock";
 
   environment.etc = {
     # Add supported upstream shortnames
