@@ -248,7 +248,7 @@
     libreoffice-fresh
     p7zip
     powertop
-    signal-desktop-bin
+    signal-desktop
     vim
     vlc
 

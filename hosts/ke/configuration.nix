@@ -689,7 +689,7 @@ in {
     ayugram-desktop # telegram-desktop alternative
     discord
     irssi
-    signal-desktop-bin
+    signal-desktop
     slack
 
     # Email
