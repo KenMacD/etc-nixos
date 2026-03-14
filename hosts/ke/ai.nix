@@ -23,9 +23,6 @@ in {
       privacy = {
         usageStatisticsEnabled = false;
       };
-      general = {
-        disableAutoUpdate = true;
-      };
     };
     mode = "0644";
   };
