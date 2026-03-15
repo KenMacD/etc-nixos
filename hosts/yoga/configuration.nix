@@ -187,7 +187,7 @@ in {
   systemd.services.kanidm.serviceConfig.SupplementaryGroups = "acme";
   services.kanidm = {
     # Before upgrade test: sudo -u kanidm -g kanidm kanidmd domain upgrade-check
-    package = pkgs.kanidm_1_8;
+    package = pkgs.kanidm_1_9;
     server = {
       enable = true;
       settings = {
