@@ -5,16 +5,16 @@
 }:
 buildGoModule rec {
   pname = "butterfish";
-  version = "0.2.15";
+  version = "0.3.10";
 
   src = fetchFromGitHub {
     owner = "bakks";
     repo = pname;
     rev = "v${version}";
-    sha256 = "sha256-FvXmC88qU1/lY4Az5ReUphuoaYk13I6sKgDZSL+JeMo=";
+    sha256 = "sha256-fHqCD/d3xpJBB5a2nRcSv5t/jZRPtCnPANAslwjBSEo=";
   };
 
-  vendorHash = "sha256-HZNCcNrIl+POna42WaBzuj/OUb+hXW1E9htJG3nOhbI=";
+  vendorHash = "sha256-b3clnCSWgf1Ro4qWUUmOjwpWEMzeff2O0zZV21efLdg=";
   meta = with lib; {
     description = "A shell with AI superpowers";
     homepage = "https://butterfi.sh/";

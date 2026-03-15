@@ -1,0 +1,24 @@
+diff --git a/code_assistant_manager/mcp/registry_manager.py b/code_assistant_manager/mcp/registry_manager.py
+index ad77dd9..10b25ce 100644
+--- a/code_assistant_manager/mcp/registry_manager.py
++++ b/code_assistant_manager/mcp/registry_manager.py
+@@ -84,17 +84,8 @@ class LocalRegistryManager:
+         Returns:
+             Dict mapping server names to schemas
+         """
+-        schemas = {}
+-        for schema_file in self.servers_path.glob("*.json"):
+-            try:
+-                with open(schema_file, "r", encoding="utf-8") as f:
+-                    schema_data = json.load(f)
+-                server_schema = ServerSchema(**schema_data)
+-                schemas[server_schema.name] = server_schema
+-            except Exception as e:
+-                logger.error(f"Error loading server schema from {schema_file}: {e}")
+-                continue
+-        return schemas
++        # Return empty dict to disable all built-in servers
++        return {}
+ 
+     def remove_server_schema(self, server_name: str) -> bool:
+         """Remove a server schema from the local registry.

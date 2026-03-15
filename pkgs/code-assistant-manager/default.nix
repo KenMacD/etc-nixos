@@ -5,14 +5,14 @@
 }:
 python.pkgs.buildPythonApplication rec {
   pname = "code-assistant-manager";
-  version = "1.3.0";
+  version = "1.4.0";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "Chat2AnyLLM";
     repo = "code-assistant-manager";
     rev = version;
-    hash = "sha256-0DRi2UuQrE7X8M31kxH6BMiKpsAjjaRhtZvPV5RfPD8=";
+    hash = "sha256-njrvXZsp39EkJH2QSUcHTAqPmo4Qy6F3TS0kgl8ao8o=";
   };
 
   build-system = with python.pkgs; [
@@ -63,6 +63,7 @@ python.pkgs.buildPythonApplication rec {
 
   patches = [
     ./remove-remote-repos.patch
+    ./override-mcp-registry.patch
   ];
 
   postPatch = ''

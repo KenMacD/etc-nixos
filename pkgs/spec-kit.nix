@@ -9,10 +9,14 @@
   platformdirs,
   readchar,
   truststore,
+  click,
+  pyyaml,
+  packaging,
+  pathspec,
 }:
 # Modified from: https://github.com/BCNelson/nix-config/blob/287d7930ca8a71b1c7c9be5f834d540ded39e591/pkgs/spec-kit.nix
 let
-  version = "0.0.64";
+  version = "0.3.0";
 in
   buildPythonApplication {
     pname = "spec-kit";
@@ -22,7 +26,7 @@ in
       owner = "github";
       repo = "spec-kit";
       rev = "v${version}";
-      sha256 = "sha256-KcAInOxG4pYXPLcE1K+SGzIFEaHiZAi8rzCUwv3gySM=";
+      sha256 = "sha256-eukz0yUXjPItRSt6Tpt7DldTJluJPQvhzg4oObdMSRc=";
     };
 
     format = "pyproject";
@@ -38,6 +42,10 @@ in
       rich
       truststore
       typer
+      click
+      pyyaml
+      packaging
+      pathspec
     ];
 
     pythonImportsCheck = ["specify_cli"];

@@ -5,13 +5,13 @@
 }:
 buildGoModule rec {
   pname = "ferretdb";
-  version = "2.5.0";
+  version = "2.7.0";
 
   src = fetchFromGitHub {
     owner = "FerretDB";
     repo = "FerretDB";
     rev = "v${version}";
-    sha256 = "sha256-zQT8ALD5qFxrss8h/UO705Wl8uEXn3srTULcAO4YOSc=";
+    hash = "sha256-x9NpXHXhsDBc94dcNure1BWLofCTDK3WoF5Dxr7H6ck=";
   };
 
   postPatch = ''
@@ -25,7 +25,7 @@ buildGoModule rec {
     sed -i '367s/.*/\/\/ Removed setGOMAXPROCS call due to Go version incompatibility/' cmd/ferretdb/main.go
   '';
 
-  vendorHash = "sha256-4AlbcJOvYvSvT5DoL3+05luBQCatmsFYyd08RJSs7Wg=";
+  vendorHash = "sha256-SCbs5ikZbAppChlaTGk98zW9KMQdVtquuCUBveBzV/U=";
 
   env.CGO_ENABLED = 0;
 
