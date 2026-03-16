@@ -136,6 +136,7 @@ in {
     local.alph-cli # Manage MCPs
     local.chrome-devtools-mcp
     local.dbhub
+    local.mcp2cli
     local.mcp-server-tree-sitter
   ];
 }

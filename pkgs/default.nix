@@ -38,6 +38,8 @@ in {
 
   magic-cli = callPackage ./magic-cli {};
 
+  mcp2cli = python3Packages.callPackage ./mcp2cli.nix {};
+
   mcp-inspector = callPackage ./mcp-inspector.nix {};
 
   mcp-server-tree-sitter = callPackage ./mcp-server-tree-sitter.nix {};
