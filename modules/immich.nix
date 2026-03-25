@@ -9,7 +9,7 @@
 # TODO: there's a module now... convert
 # Ref: https://github.com/immich-app/immich/blob/main/docker/docker-compose.yml
 let
-  version = "1.131.3";
+  version = "2";
   dataDir = "/mnt/easy/immich";
   dbuser = "immich";
   dbname = "immich";
@@ -147,6 +147,7 @@ in {
         extraOptions = [
           "--uidmap=0:${toString config.ids.uids.immich}:1"
           "--add-host=auth.home.macdermid.ca:host-gateway"
+          "--pull=always"
         ];
       };
 
@@ -160,6 +161,7 @@ in {
           "--device-cgroup-rule"
           "c 189:* rmw"
           "--device=/dev/dri:/dev/dri"
+          "--pull=always"
         ];
       };
   };
