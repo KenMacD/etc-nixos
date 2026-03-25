@@ -17,25 +17,25 @@
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/19453858-b1c4-459d-a09c-6bc96df06442";
     fsType = "btrfs";
-    options = ["subvol=nixos_root" "noatime"];
+    options = ["subvol=nixos_root" "noatime" "space_cache=v2"];
   };
 
   fileSystems."/home" = {
     device = "/dev/disk/by-uuid/19453858-b1c4-459d-a09c-6bc96df06442";
     fsType = "btrfs";
-    options = ["subvol=home" "noatime"];
+    options = ["subvol=home" "noatime" "space_cache=v2"];
   };
 
   fileSystems."/var/lib/docker" = {
     device = "/dev/disk/by-uuid/19453858-b1c4-459d-a09c-6bc96df06442";
     fsType = "btrfs";
-    options = ["subvol=var_lib_docker" "noatime"];
+    options = ["subvol=var_lib_docker" "noatime" "space_cache=v2"];
   };
 
   fileSystems."/nix" = {
     device = "/dev/disk/by-uuid/19453858-b1c4-459d-a09c-6bc96df06442";
     fsType = "btrfs";
-    options = ["subvol=nixos_nix" "noatime"];
+    options = ["subvol=nixos_nix" "noatime" "space_cache=v2"];
   };
 
   fileSystems."/boot" = {
@@ -63,6 +63,7 @@
       "noauto"
       "nofail"
       "subvolid=0"
+      "space_cache=v2"
       "x-systemd.automount"
       "x-systemd.device-timeout=1ms"
       "x-systemd.idle-timout=5m"
@@ -76,6 +77,7 @@
       "noauto"
       "nofail"
       "subvolid=0"
+      "space_cache=v2"
       "x-systemd.automount"
       "x-systemd.device-timeout=1ms"
       "x-systemd.idle-timout=5m"
