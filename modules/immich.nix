@@ -80,8 +80,16 @@ in {
 
     # For 0.91.0:
     # TODO: should be an input
-    extensions = ps: with ps; [pgvecto-rs];
-    settings = {shared_preload_libraries = "vectors";};
+    extensions = ps:
+      with ps; [
+        vectorchord
+        pgvector
+      ];
+    settings = {
+      shared_preload_libraries = [
+        "vchord"
+      ];
+    };
   };
 
   services.redis.servers.immich = {

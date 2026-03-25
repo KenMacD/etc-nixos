@@ -117,7 +117,7 @@ in {
   # To access from dbeaver forward to socket:
   # ssh kenny@yoga -L 35432:/var/run/postgresql/.s.PGSQL.5432
   services.postgresql = {
-    package = pkgs.postgresql_16;
+    package = pkgs.postgresql_18;
     enable = true;
     enableJIT = true;
     authentication = ''
@@ -638,8 +638,15 @@ in {
     (let
       # XXX specify the postgresql package you'd like to upgrade to.
       # Do not forget to list the extensions you need.
-      newPostgres =
-        pkgs.postgresql_15.withPackages (pp: [
+      newPostgres = pkgs.postgresql_18.withPackages (pp:
+        with pp; [
+          vectorchord
+          pgvector
+        ]);
+      oldPostgres = pkgs.postgresql_16.withPackages (pp:
+        with pp; [
+          vectorchord
+          pgvector
         ]);
     in
       pkgs.writeScriptBin "upgrade-pg-cluster" ''
@@ -652,7 +659,7 @@ in {
         export NEWBIN="${newPostgres}/bin"
 
         export OLDDATA="${config.services.postgresql.dataDir}"
-        export OLDBIN="${config.services.postgresql.package}/bin"
+        export OLDBIN="${oldPostgres}/bin"
 
         install -d -m 0700 -o postgres -g postgres "$NEWDATA"
         cd "$NEWDATA"
@@ -661,6 +668,8 @@ in {
         sudo -u postgres $NEWBIN/pg_upgrade \
           --old-datadir "$OLDDATA" --new-datadir "$NEWDATA" \
           --old-bindir $OLDBIN --new-bindir $NEWBIN \
+          -o "-c shared_preload_libraries='vchord'" \
+          -O "-c shared_preload_libraries='vchord'" \
           "$@"
       '')
   ];
