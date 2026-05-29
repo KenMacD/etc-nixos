@@ -616,7 +616,6 @@ in {
     htop
     immich-cli
     immich-go # local
-    jesec-rtorrent
     kitty # for term info only
     libva-utils
     mediainfo
