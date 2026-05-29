@@ -20,4 +20,8 @@
   security.pki.certificateFiles = [
     ./mitmproxy-ca-cert.pem
   ];
+
+  environment.systemPackages = with pkgs; [
+    mitmproxy
+  ];
 }

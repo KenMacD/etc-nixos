@@ -226,6 +226,7 @@ in {
     ];
   };
   programs.xwayland.enable = false;
+  programs.ydotool.enable = true;
 
   # Use Wayland for Electron apps
   environment.variables.NIXOS_OZONE_WL = "1";
@@ -751,6 +752,7 @@ in {
     # Version Control related
     # gitFull
     git-absorb # git commit --fixup, but automatic
+    git-graph
     git
     git-extras
     git-filter-repo
@@ -764,7 +766,7 @@ in {
 
     # Development
     act # Run your GitHub Actions locally
-    amazon-ecs-cli
+    aliyun-cli
     android-tools
     aws-adfs
     awscli2
@@ -836,7 +838,6 @@ in {
     })
     steam-run
     lutris
-    mitmproxy
     # TODO: broken 2026-01-27 glaumar_repo.qrookie
 
     # s0ix-selftest-tool
