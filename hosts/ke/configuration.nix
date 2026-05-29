@@ -818,7 +818,6 @@ in {
     yamllint
     stable.yamlfix # broken 2024-03-29
     zeal # Offline docs
-    zed-editor
 
     # Security tools
     aflplusplus
