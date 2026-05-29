@@ -11,18 +11,6 @@
 in {
   systemd.services."systemd-networkd-wait-online".enable = lib.mkForce false;
 
-  services.rabbitmq = {
-    enable = true;
-    managementPlugin.enable = true;
-    # https://www.rabbitmq.com/mqtt.html
-    plugins = ["rabbitmq_management" "rabbitmq_mqtt"];
-    configItems = {
-      # "ath_backends.abc" = "def;
-      # "mqtt.subscription_ttl" = "10000";
-      # #"log.default.level" = "warning";
-      # "log.connection.level" = "warning";
-    };
-  };
   system.autoUpgrade = {
     enable = true;
     flake = "path:/etc/nixos#yoga";
