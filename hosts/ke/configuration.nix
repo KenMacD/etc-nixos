@@ -522,6 +522,10 @@ in {
         format = "on [$symbol($profile)(\\[$duration\\] )]($style)";
         symbol = "☁️ ";
       };
+      docker_context = {
+        disabled = true;
+        format = "with [$symbol]($style)";
+      };
       gcloud.disabled = true;
       nix_shell.disabled = true;
       git_status = {
