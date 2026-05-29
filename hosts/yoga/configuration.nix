@@ -660,7 +660,7 @@ in {
         export OLDDATA="${config.services.postgresql.dataDir}"
         export OLDBIN="${oldPostgres}/bin"
 
-        install -d -m 0700 -o postgres -g postgres "$NEWDATA"
+        sudo install -d -m 0700 -o postgres -g postgres "$NEWDATA"
         cd "$NEWDATA"
         sudo -u postgres $NEWBIN/initdb -D "$NEWDATA"
 
