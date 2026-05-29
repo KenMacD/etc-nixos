@@ -22,6 +22,8 @@ in {
     ./sboot.nix
     ./virt.nix
 
+    ../../modules/whisper-cpp.nix
+
     ./networkd.nix
     ./spectrum.nix
     ./v4l2loopback.nix
