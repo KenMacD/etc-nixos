@@ -47,7 +47,7 @@ in {
 
         # Display profiles
         kanshi
-        shikane
+        shikane # Allow automatic monitor layout switching
         wdisplays
 
         # TODO: needed?
