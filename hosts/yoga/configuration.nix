@@ -370,6 +370,12 @@ in {
     ];
   };
 
+  services.jellyfin = {
+    enable = true;
+    openFirewall = false;
+  };
+  systemd.services.jellyfin.environment."JELLYFIN_PublishedServerUrl" = "https://jellyfin.home.macdermid.ca";
+
   services.vaultwarden = {
     enable = true;
     config = {
@@ -561,6 +567,7 @@ in {
       "grafana.home.macdermid.ca" = proxywss config.services.grafana.settings.server.http_port;
       "immich.home.macdermid.ca" = proxywss 3550;
       "influxdb.home.macdermid.ca" = proxy 8086;
+      "jellyfin.home.macdermid.ca" = proxywss 8096;
       "miniflux.home.macdermid.ca" = proxy 35001;
       "nginxstatus.home.macdermid.ca" = base {
         # TODO: merge extraConfigs together
