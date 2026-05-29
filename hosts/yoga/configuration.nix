@@ -55,6 +55,20 @@ in {
   sops.secrets.ssh-sftp-yoga = {};
 
   ########################################
+  # Nix
+  ########################################
+  nix.settings = {
+    extra-substituters = [
+      # default priority is 40, lower = checked first
+      # For pre-built mongodb
+      "https://nix-community.cachix.org?priority=50"
+    ];
+    trusted-public-keys = [
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    ];
+  };
+
+  ########################################
   # Boot
   ########################################
   boot.loader.systemd-boot.enable = true;
