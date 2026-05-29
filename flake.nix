@@ -150,7 +150,7 @@
   in rec {
     packages.${system} = import ./pkgs {
       inherit nixpkgs;
-      pkgs = nixpkgs.legacyPackages.${system};
+      inherit pkgs;
     };
 
     # Dynamic devShells from shells/ directory
