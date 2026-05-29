@@ -21,7 +21,6 @@ in {
     ./re.nix
     ./sboot.nix
     ./virt.nix
-    ./vscode.nix
 
     ./networkd.nix
     ./spectrum.nix
