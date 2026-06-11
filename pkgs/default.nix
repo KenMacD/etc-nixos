@@ -69,6 +69,8 @@ in {
 
   spec-kit = python3Packages.callPackage ./spec-kit.nix {};
 
+  tvly = python3Packages.callPackage ./tvly.nix {};
+
   windmill = callPackage ./windmill {};
 
   ttok = python3Packages.callPackage ./ttok.nix {};

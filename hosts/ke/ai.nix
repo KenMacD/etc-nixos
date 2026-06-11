@@ -113,6 +113,7 @@ in {
     task-master-ai
     tgpt # $ tgpt question
     local.ttok
+    local.tvly
     voxinput
     windsurf
 
