@@ -89,6 +89,7 @@ in {
   environment.systemPackages = with pkgs; [
     aichat
     aider-chat-full
+    local.cclimits # Check quota/usage for AI coding CLI tools
     local.cctx
     local.cclsp
     claude-code-router

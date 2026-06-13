@@ -14,6 +14,8 @@ in {
 
   cctx = callPackage ./cctx.nix {};
 
+  cclimits = callPackage ./cclimits.nix {};
+
   chrome-devtools-mcp = callPackage ./chrome-devtools-mcp.nix {};
 
   code-assistant-manager = python3Packages.callPackage ./code-assistant-manager {};
