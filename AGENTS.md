@@ -45,6 +45,49 @@ just --list
 
 **IMPORTANT**: Always use `just` commands instead of raw `nix` commands for consistency.
 
+### NixOS MCP Server
+
+A **NixOS MCP server** is available with two tools for live NixOS ecosystem queries. **Always prefer these over guessing from training data** — nixpkgs moves fast and training data is months behind.
+
+| Tool | Purpose |
+|------|----------|
+| `nixos_nix` | Search/info for packages, NixOS/Home Manager/nixvim/Darwin options, channels, binary cache, wiki, nix.dev, flakes, /nix/store |
+| `nixos_nix_versions` | Package version history with commit hashes and dates from NixHub.io |
+
+**When to use:**
+- Looking up if a package exists in nixpkgs and its current version
+- Searching for NixOS, Home Manager, or nixvim options
+- Checking if a package has a prebuilt binary in the cache
+- Finding which commit introduced a specific package version
+- Looking up NixOS wiki articles or nix.dev documentation
+- Listing available channels and their indexed commits
+- Browsing Home Manager option trees
+
+**Quick reference:**
+
+```
+# Search for a package
+mcp({ server: "nixos", tool: "nixos_nix", args: '{"action":"search","query":"ripgrep"}' })
+
+# Get package info
+mcp({ server: "nixos", tool: "nixos_nix", args: '{"action":"info","query":"git","type":"package"}' })
+
+# Search NixOS options
+mcp({ server: "nixos", tool: "nixos_nix", args: '{"action":"search","query":"services.nginx","type":"options"}' })
+
+# Search Home Manager options
+mcp({ server: "nixos", tool: "nixos_nix", args: '{"action":"search","query":"programs.git","source":"home-manager"}' })
+
+# Check binary cache
+mcp({ server: "nixos", tool: "nixos_nix", args: '{"action":"cache","query":"hello","system":"x86_64-linux"}' })
+
+# List channels
+mcp({ server: "nixos", tool: "nixos_nix", args: '{"action":"channels"}' })
+
+# Package version history
+mcp({ server: "nixos", tool: "nixos_nix_versions", args: '{"package":"nodejs","limit":5}' })
+```
+
 ### Key Technologies Stack
 
 - **Nix Flakes**: Reproducible builds and dependency management
@@ -170,6 +213,7 @@ nix develop .#<shell-name>
 - **Check `unfree.nix`** when adding proprietary packages
 - **Respect the module system** - don't put everything in one file
 - **Consider security** - use sops-nix for sensitive data
+- **Use the NixOS MCP server** for live package/option lookups instead of guessing from training data
 
 ### Getting Help
 

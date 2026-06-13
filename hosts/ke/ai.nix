@@ -138,6 +138,7 @@ in {
     local.chrome-devtools-mcp
     local.dbhub
     local.mcp2cli
+    mcp-nixos
     local.mcp-server-tree-sitter
   ];
 }
