@@ -34,8 +34,12 @@ in {
   ########################################
   # Boot
   ########################################
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  # CX23 is BIOS-only (confirmed via efibootmgr), so use GRUB not systemd-boot.
+  # Must explicitly disable systemd-boot because common.nix sets it as mkDefault true.
+  boot.loader.systemd-boot.enable = lib.mkForce false;
+  boot.loader.efi.canTouchEfiVariables = lib.mkForce false;
+  boot.loader.grub.enable = true;
+  boot.loader.grub.devices = lib.mkForce ["/dev/sda"];
 
   ########################################
   # Networking

@@ -27,6 +27,9 @@
   systemd.services.qemu-guest-agent.path = [pkgs.shadow];
 
   # Disk Setup
+  # CX23 is BIOS-only (confirmed via efibootmgr), so we need:
+  #   - EF02 partition for GRUB BIOS boot core image
+  #   - EF00 ESP partition kept for portability (unused on BIOS)
   disko.devices = {
     disk = {
       main = {
@@ -35,9 +38,13 @@
         content = {
           type = "gpt";
           partitions = {
+            boot = {
+              size = "1M";
+              type = "EF02"; # BIOS boot
+            };
             ESP = {
               size = "512M";
-              type = "EF00";
+              type = "EF00"; # EFI System (unused on BIOS, kept for portability)
               content = {
                 type = "filesystem";
                 format = "vfat";
