@@ -18,6 +18,19 @@ in {
   hardware = {};
 
   ########################################
+  # Secrets
+  ########################################
+  sops.defaultSopsFile = ./secrets.yaml;
+  sops.secrets.kanidm-tls-chain = {
+    owner = "kanidm";
+    group = "kanidm";
+  };
+  sops.secrets.kanidm-tls-key = {
+    owner = "kanidm";
+    group = "kanidm";
+  };
+
+  ########################################
   # Nix
   ########################################
   nix.settings = {
@@ -79,6 +92,26 @@ in {
   services.openssh = {
     enable = true;
     openFirewall = true;
+  };
+
+  services.kanidm = {
+    # Before upgrade test: sudo -u kanidm -g kanidm kanidmd domain upgrade-check
+    package = pkgs.kanidm_1_10;
+    server = {
+      enable = true;
+      settings = {
+        version = "2"; # Required to set x-forward-for
+        bindaddress = "127.0.0.1:9001";
+        ldapbindaddress = "127.0.0.1:636";
+        origin = "https://auth.macdermid.ca";
+        domain = "auth.macdermid.ca";
+        # log_level = "debug";
+        tls_chain = config.sops.secrets.kanidm-tls-chain.path;
+        tls_key = config.sops.secrets.kanidm-tls-key.path;
+        # hz will sit behind a cloudflared tunnel (loopback) like r1pro.
+        http_client_address_info.x-forward-for = ["127.0.0.1"];
+      };
+    };
   };
 
   zramSwap.enable = true;
