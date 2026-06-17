@@ -57,6 +57,7 @@ in {
   # Nix
   ########################################
   nix.settings = {
+    trusted-users = ["root" "@wheel"];
     extra-substituters = [
       # default priority is 40, lower = checked first
       # For pre-built mongodb

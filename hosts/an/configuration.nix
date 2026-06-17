@@ -9,6 +9,7 @@
   ########################################
   # nix.package = pkgs.nixVersions.unstable;
   nix.settings = {
+    trusted-users = ["root" "@wheel"];
     sandbox = true;
     substituters = [
       #      "https://nix.home.macdermid.ca"
