@@ -43,18 +43,18 @@
     fsType = "vfat";
   };
 
-  fileSystems."/run/media/black" = {
-    device = "/dev/disk/by-uuid/779defff-0c31-4144-9cc7-840a17f7bdb6";
-    fsType = "btrfs";
-    options = [
-      "noauto"
-      "nofail"
-      "subvolid=0"
-      "x-systemd.automount"
-      "x-systemd.device-timeout=1ms"
-      "x-systemd.idle-timout=5m"
-    ];
-  };
+  #  fileSystems."/run/media/black" = {
+  #    device = "/dev/disk/by-uuid/779defff-0c31-4144-9cc7-840a17f7bdb6";
+  #    fsType = "btrfs";
+  #    options = [
+  #      "noauto"
+  #      "nofail"
+  #      "subvolid=0"
+  #      "x-systemd.automount"
+  #      "x-systemd.device-timeout=1ms"
+  #      "x-systemd.idle-timout=5m"
+  #    ];
+  #  };
 
   fileSystems."/run/media/silver" = {
     device = "/dev/disk/by-uuid/1a5da77a-2086-4ca8-8f36-836d956b7035";
