@@ -363,6 +363,7 @@ in {
 
   services.vaultwarden = {
     enable = true;
+    backupDir = "/var/backup/vaultwarden";
     config = {
       DOMAIN = "https://bitwarden.home.macdermid.ca";
       SIGNUPS_ALLOWED = true;
