@@ -453,6 +453,12 @@ in {
     };
   };
 
+  services.qbittorrent = {
+    enable = true;
+    group = "media";
+    webuiPort = 59933;
+  };
+
   # nginx
   systemd.services.nginx.serviceConfig.SupplementaryGroups = "acme";
   services.nginx = {
@@ -583,6 +589,7 @@ in {
         '';
       };
       "nix.home.macdermid.ca" = proxy config.services.nix-serve.port;
+      "qbittorrent.home.macdermid.ca" = proxy 59933;
       "unifi.home.macdermid.ca" = proxytls 8443;
     };
   };
