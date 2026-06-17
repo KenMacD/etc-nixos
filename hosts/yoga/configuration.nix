@@ -583,7 +583,6 @@ in {
         '';
       };
       "nix.home.macdermid.ca" = proxy config.services.nix-serve.port;
-      "rabbitmq.home.macdermid.ca" = proxy config.services.rabbitmq.managementPlugin.port;
       "unifi.home.macdermid.ca" = proxytls 8443;
     };
   };
