@@ -115,6 +115,9 @@ in {
     nameservers = ["172.27.0.1"];
   };
 
+  ids.uids.immich = 911;
+  ids.gids.immich = 911;
+
   # To access from dbeaver forward to socket:
   # ssh kenny@yoga -L 35432:/var/run/postgresql/.s.PGSQL.5432
   services.postgresql = {
