@@ -179,6 +179,7 @@ in {
       settings = {
         bindaddress = "127.0.0.1:9001";
         ldapbindaddress = "127.0.0.1:636";
+        online_backup.versions = 7;
         origin = "https://auth.home.macdermid.ca";
         domain = "auth.home.macdermid.ca";
         # log_level = "debug";
