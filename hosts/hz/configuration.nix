@@ -29,6 +29,7 @@ in {
     owner = "kanidm";
     group = "kanidm";
   };
+  sops.secrets.cloudflare-tunnel = {};
 
   ########################################
   # Nix
@@ -111,6 +112,24 @@ in {
         # hz will sit behind a cloudflared tunnel (loopback) like r1pro.
         http_client_address_info.x-forward-for = ["127.0.0.1"];
       };
+    };
+  };
+
+  services.cloudflared = {
+    enable = true;
+    tunnels = {
+      "hz" = {
+        credentialsFile = config.sops.secrets.cloudflare-tunnel.path;
+        default = "http_status:404";
+      };
+    };
+  };
+  systemd.services.cloudflared-tunnel-hz = {
+    unitConfig = {
+      StartLimitIntervalSec = 0;
+    };
+    serviceConfig = {
+      RestartSec = "30s";
     };
   };
 
