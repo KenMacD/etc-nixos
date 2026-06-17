@@ -88,7 +88,8 @@
     device = "/dev/disk/by-uuid/fd308d96-c40d-4eab-b9b4-4440390cb27f";
     fsType = "bcachefs";
     options = [
-      "x-systemd.mount-timeout=45m"
+      "fix_errors"
+      "x-systemd.mount-timeout=55m" # NB: 1h didn't work... odd
     ];
   };
 
