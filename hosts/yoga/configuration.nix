@@ -47,7 +47,6 @@ in {
   sops.secrets.cloudflare = {};
   sops.secrets.cloudflare-tunnel = {};
   sops.secrets.nix-cache-key = {};
-  sops.secrets.miniflux = {};
   sops.secrets.telegraf = {};
   sops.secrets.restic-immich = {};
   sops.secrets.restic-immich-r1pro = {}; # ID: 46300c0d6919712580f906d502ad7eafadf40179c096b9045f7a5ac7edb96a13
@@ -164,21 +163,6 @@ in {
   };
   services.postgresqlBackup.enable = true;
 
-  services.miniflux = {
-    enable = true;
-    adminCredentialsFile = config.sops.secrets.miniflux.path;
-    config = {
-      DEBUG = "off";
-      LISTEN_ADDR = "127.0.0.1:35001";
-      BASE_URL = "https://miniflux.home.macdermid.ca";
-      #      AUTH_PROXY_HEADER = "X-Email";
-      OAUTH2_PROVIDER = "oidc";
-      OAUTH2_CLIENT_ID = "miniflux";
-      OAUTH2_REDIRECT_URL = "https://miniflux.home.macdermid.ca/oauth2/oidc/callback";
-      OAUTH2_OIDC_DISCOVERY_ENDPOINT = "https://auth.home.macdermid.ca/oauth2/openid/miniflux";
-      #      OAUTH2_USER_CREATION=1
-    };
-  };
   services.avahi.publish = {
     enable = true;
     addresses = true;
