@@ -54,15 +54,27 @@ in {
       "ntp3.hetzner.net"
     ];
   };
+  networking.nftables.enable = true;
   networking.firewall = {
     enable = true;
+    # Always allow traffic from your Tailscale network
+    trustedInterfaces = [config.services.tailscale.interfaceName];
+    # Allow the Tailscale UDP port through the firewall
+    allowedUDPPorts = [config.services.tailscale.port];
     allowedTCPPorts = [];
-    allowedUDPPorts = [];
   };
 
   ########################################
   # Services
   ########################################
+  services.tailscale.enable = true;
+
+  # Force tailscaled to use nftables (critical for clean nftables-only systems)
+  # Avoids the "iptables-compat" translation layer issues.
+  systemd.services.tailscaled.serviceConfig.Environment = [
+    "TS_DEBUG_FIREWALL_MODE=nftables"
+  ];
+
   services.openssh = {
     enable = true;
     openFirewall = true;
