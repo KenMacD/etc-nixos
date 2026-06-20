@@ -124,10 +124,8 @@ in {
     happy-coder # Hook claude code to mobile
     nix-ai-tools.crush
     nix-ai-tools.forge
-    gemini-cli
     local.octofriend
     nix-ai-tools.opencode
-    nix-ai-tools.qwen-code
 
     # Support tools
     nix-ai-tools.agent-browser
