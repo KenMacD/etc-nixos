@@ -43,9 +43,7 @@
     inputs.home-manager.follows = "home-manager";
   };
   inputs.lanzaboote = {
-    url = "github:nix-community/lanzaboote/v0.4.2";
-    inputs.flake-compat.follows = "flake-compat";
-    inputs.flake-parts.follows = "flake-parts";
+    url = "github:nix-community/lanzaboote/";
     inputs.nixpkgs.follows = "nixpkgs";
     inputs.rust-overlay.follows = "rust-overlay"; # https://github.com/nix-community/lanzaboote/issues/485
   };
