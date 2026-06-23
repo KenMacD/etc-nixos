@@ -842,7 +842,22 @@ in {
     })
     steam-run
     lutris
-    # TODO: broken 2026-01-27 glaumar_repo.qrookie
+    # QRookie: qcoro 0.12.0 ships a Qml module, but its exported
+    # QCoro6QmlConfig.cmake only does `find_dependency(Qt6Qml)` while its
+    # target links Qt6::QmlPrivate. Qt 6.11 split QmlPrivate into a separate
+    # component that find_package(Qt6 COMPONENTS Qml) no longer auto-loads,
+    # so the configure step fails with "target Qt6::QmlPrivate was not found".
+    # Request the component explicitly to define the target.
+    (glaumar_repo.qrookie.overrideAttrs (oldAttrs: {
+      postPatch =
+        (oldAttrs.postPatch or "")
+        + ''
+          substituteInPlace CMakeLists.txt \
+            --replace-fail \
+              "find_package(Qt6 REQUIRED COMPONENTS Qml QmlWorkerScript)" \
+              "find_package(Qt6 REQUIRED COMPONENTS Qml QmlPrivate QmlWorkerScript)"
+        '';
+    }))
 
     # s0ix-selftest-tool
 
