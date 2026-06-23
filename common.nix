@@ -138,6 +138,45 @@ with lib; {
   networking.useDHCP = false; # deprecated
   networking.usePredictableInterfaceNames = mkDefault false;
 
+  # Refuse container ports that don't specify an explicit bind IP.
+  # Podman/Docker default omitted-IP port specs to 0.0.0.0, binding the PUBLIC
+  # interface and bypassing the NixOS firewall: published-port DNAT lands in
+  # nftables nat/PREROUTING, *before* the input filter ever sees the packet.
+  # Forcing an explicit IP makes accidental exposure impossible. An explicit
+  # "0.0.0.0:..." is still allowed if you genuinely want it public.
+  assertions = let
+    # strip the /protocol suffix, e.g. "127.0.0.1:80:80/tcp" -> "127.0.0.1:80:80"
+    stripProto = p: head (splitString "/" p);
+    # a spec binds an explicit IP iff, after stripping the protocol, it has
+    # >=3 colon-separated parts (i.e. "ip:hostPort:containerPort").
+    # Bare "containerPort" (1 part) and "hostPort:containerPort" (2 parts) are
+    # the unsafe forms. IPv6 specs like "[::1]:h:c" have many parts and pass.
+    hasExplicitIP = p: length (splitString ":" (stripProto p)) >= 3;
+    unsafe = flatten (
+      mapAttrsToList (
+        name: c:
+          map (p: "${name}: ${p}")
+          (filter (p: !(hasExplicitIP p)) c.ports)
+      )
+      config.virtualisation.oci-containers.containers
+    );
+  in [
+    {
+      assertion = unsafe == [];
+      message =
+        ''
+          One or more podman/docker containers publish ports WITHOUT an explicit
+          bind IP. Podman defaults these to 0.0.0.0, exposing them to the public
+          internet in a way that bypasses the NixOS firewall. Prefix each port
+          with an IP:
+            "127.0.0.1:4001:80"      loopback only
+            "0.0.0.0:4001:80"        explicit public bind (if you really want it)
+          Offending ports:
+        ''
+        + concatStringsSep "\n" (map (s: "  ${s}") unsafe);
+    }
+  ];
+
   ########################################
   # User
   ########################################

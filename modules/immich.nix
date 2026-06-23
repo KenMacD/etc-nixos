@@ -139,7 +139,7 @@ in {
       immichBase
       // {
         image = "ghcr.io/immich-app/immich-server:v${version}";
-        ports = ["3550:2283"];
+        ports = ["127.0.0.1:3550:2283"];
         volumes = [
           "${dataDir}:/usr/src/app/upload"
           "/dev/bus/usb:/dev/bus/usb"

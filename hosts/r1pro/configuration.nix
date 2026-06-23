@@ -306,7 +306,7 @@ in {
   virtualisation.oci-containers.containers.bigagi = {
     image = "localhost/bigagi:stable";
     environmentFiles = [config.sops.secrets.bigagi.path];
-    ports = ["3000:3000"];
+    ports = ["127.0.0.1:3000:3000"];
   };
   virtualisation.podman = {
     enable = true;
