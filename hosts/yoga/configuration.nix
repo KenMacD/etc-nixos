@@ -391,6 +391,7 @@ in {
     certs."home.macdermid.ca" = {
       domain = "*.home.macdermid.ca";
       extraDomainNames = ["home.macdermid.ca"];
+      reloadServices = ["nginx" "kanidm"];
     };
   };
   services.matrix-conduit = {
