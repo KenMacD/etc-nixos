@@ -384,7 +384,7 @@ in {
       email = "kenny@macdermid.ca";
       dnsProvider = "cloudflare";
       credentialFiles = {
-        CLOUDFLARE_API_KEY_FILE = config.sops.secrets.cloudflare.path;
+        CLOUDFLARE_DNS_API_TOKEN_FILE = config.sops.secrets.cloudflare.path;
       };
       dnsResolver = "1.1.1.1:53";
     };
