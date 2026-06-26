@@ -205,8 +205,10 @@ in {
   # Users
   ########################################
   users.groups.media.members = with config.systemd.services; [
+    jellyfin.serviceConfig.User
   ];
   users.groups.render.members = with config.systemd.services; [
+    jellyfin.serviceConfig.User
   ];
 
   ########################################
