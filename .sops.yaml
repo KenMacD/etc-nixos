@@ -1,5 +1,7 @@
+# nix-shell -p ssh-to-age --run 'ssh-keyscan HOST | ssh-to-age'
 keys:
   - &admin_kenny CC7C9BE4F442A854E29DF25695981B9FE3FB7465
+  - &home_kenny age183ed4seevg0lwk6hfkzt44vfp6v2ecprxql3weepk629k76yu30qnxtjgk
   - &host_an age1p8fsxr8jd8kplhz7jnutg3memm7vd4hc3mk6w9k3pfmqmat0dgdqeja62n
   - &host_dn age1tzakv84yjzf4zlw2hfrauj7e3p7vrct4j5xvmhuupgq98fhpmyfqvmdmq2
   - &host_hz age16wsxe2r7ej8nka6pddw4c2ldr6hn4hwlnpe5kkw2pskmkasf8gmqxq2c9t
@@ -8,6 +10,19 @@ keys:
   - &host_yoga age1da2yp3vd85556a0eh0t52fgdjkh0f4fayvjddwe90awmj3w2x3csh4pkw6
 
 creation_rules:
+  #########
+  # Users #
+  #########
+  - path_regex: home-manager/users/kenny-secrets.yaml$
+    key_groups:
+    - pgp:
+      - *admin_kenny
+      age:
+      - *home_kenny
+
+  #########
+  # Hosts #
+  #########
   - path_regex: hosts/an/secrets.yaml$
     key_groups:
     - pgp:
@@ -38,6 +53,10 @@ creation_rules:
       - *admin_kenny
       age:
       - *host_yoga
+
+  ###########
+  # Modules #
+  ###########
   - path_regex: modules/nordvpn-secrets.yaml$
     key_groups:
     - pgp:

@@ -1,8 +1,39 @@
 {
   lib,
   pkgs,
+  config,
   ...
-}: {
+}:
+# Also see 'features' and user to host mapping conversation: https://claude.ai/chat/6905ef21-91d0-413d-bd71-06a6ca4e87b7
+let
+  secretNames = [
+    "DEEPSEEK_API_KEY"
+    "ZAI_API_KEY"
+  ];
+  secret = name: "$(cat ${config.sops.secrets.${name}.path})";
+  secretAttrs =
+    builtins.listToAttrs
+    (map (n: {
+        name = n;
+        value = {};
+      })
+      secretNames);
+  secretVars =
+    builtins.listToAttrs
+    (map (n: {
+        name = n;
+        value = secret n;
+      })
+      secretNames);
+in {
+  sops.age.keyFile = "/home/kenny/.home-manager.key";
+  sops.defaultSopsFile = ./kenny-secrets.yaml;
+  sops.secrets = secretAttrs;
+
+  home.sessionVariables.DEEPSEEK_API_KEY = secret "DEEPSEEK_API_KEY";
+  home.sessionVariables.ZAI_API_KEY = secret "ZAI_API_KEY";
+  home.sessionVariables.ZAI_CODING_API_KEY = secret "ZAI_API_KEY";
+
   # Editor
   programs.neovim = {
     enable = true;
