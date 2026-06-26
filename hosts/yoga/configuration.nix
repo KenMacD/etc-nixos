@@ -244,10 +244,10 @@ in {
   ########################################
   virtualisation.podman = {
     enable = true;
-    dockerCompat = false;
+    dockerCompat = true;
     #defaultNetwork.settings.dns_enabled.enable = true;
   };
-  virtualisation.docker.enable = true;
+  virtualisation.docker.enable = false;
   virtualisation.libvirtd = {
     enable = true;
     # Only care about host arch:
