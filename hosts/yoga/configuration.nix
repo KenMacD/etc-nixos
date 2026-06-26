@@ -115,6 +115,7 @@ in {
     ];
     defaultGateway = "172.27.0.1";
     nameservers = ["172.27.0.1"];
+    nftables.enable = true;
   };
 
   ids.uids.immich = 911;
@@ -229,6 +230,10 @@ in {
   };
 
   services.tailscale.enable = true;
+
+  systemd.services.tailscaled.serviceConfig.Environment = [
+    "TS_DEBUG_FIREWALL_MODE=nftables"
+  ];
 
   ########################################
   # User
