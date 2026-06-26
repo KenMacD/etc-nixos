@@ -92,15 +92,18 @@ in {
     domain = "home.macdermid.ca";
     hostId = "f5a3f353";
     firewall = {
+      # Always allow traffic from your Tailscale network
+      trustedInterfaces = [config.services.tailscale.interfaceName];
       # grafana, test, portainer
       allowedTCPPorts = [
         80
         443
       ];
-      # upnp
+      # upnp + tailscale
       allowedUDPPorts = [
         53 # DNS - Todo: make on podman only
         1900 # UPnP
+        config.services.tailscale.port # Tailscale inbound
       ];
     };
     interfaces.wlan0.useDHCP = false;
