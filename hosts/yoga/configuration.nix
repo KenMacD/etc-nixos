@@ -433,6 +433,26 @@ in {
     mongodbPackage = local.mongodb-bin_7;
     openFirewall = true;
   };
+  systemd.services.unifi.serviceConfig.TimeoutStartSec = "10min";
+
+  # UniFi launches mongod with --logRotate reopen, expecting an external
+  # tool to rotate; without this mongod.log grows unbounded (it hit ~12GB).
+  # UniFi's own Java logs (server.log/access.log) self-rotate via logback.
+  services.logrotate = {
+    enable = true;
+    settings.unifi-mongod = {
+      files = "/var/log/unifi/mongod.log";
+      frequency = "daily";
+      rotate = 7;
+      size = "100M";
+      compress = true;
+      delaycompress = true;
+      # SIGUSR1 makes mongod reopen the log file after logrotate renames it
+      postrotate = ''
+        ${pkgs.procps}/bin/pkill -USR1 -x mongod 2>/dev/null || true
+      '';
+    };
+  };
 
   services.cockpit = {
     enable = true;
