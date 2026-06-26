@@ -47,7 +47,6 @@ in {
   sops.secrets.cloudflare = {};
   sops.secrets.cloudflare-tunnel = {};
   sops.secrets.nix-cache-key = {};
-  sops.secrets.telegraf = {};
   sops.secrets.restic-immich = {};
   sops.secrets.restic-immich-r1pro = {}; # ID: 46300c0d6919712580f906d502ad7eafadf40179c096b9045f7a5ac7edb96a13
   sops.secrets.restic-postgresql = {};
@@ -102,7 +101,6 @@ in {
       allowedUDPPorts = [
         53 # DNS - Todo: make on podman only
         1900 # UPnP
-        8089 # telegraf thermostat
       ];
     };
     interfaces.wlan0.useDHCP = false;
@@ -605,28 +603,6 @@ in {
       "nix.home.macdermid.ca" = proxy config.services.nix-serve.port;
       "qbittorrent.home.macdermid.ca" = proxy 59933;
       "unifi.home.macdermid.ca" = proxytls 8443;
-    };
-  };
-
-  services.telegraf = {
-    enable = true;
-    environmentFiles = [
-      config.sops.secrets.telegraf.path
-    ];
-    extraConfig = {
-      outputs.influxdb_v2 = {
-        #        namepass = ["heat" "thermostat" "weather"];
-        urls = ["http://127.0.0.1:8086"];
-        token = "$INFLUX_HVAC_WRITE";
-        #token = secrets.INFLUX_HVAC_WRITE;
-        organization = "macdermid";
-        bucket = "telegraf";
-      };
-      inputs.socket_listener = {
-        service_address = "udp://:8089";
-        data_format = "influx";
-      };
-      inputs.nginx = [{urls = ["https://nginxstatus.home.macdermid.ca/"];}];
     };
   };
 
