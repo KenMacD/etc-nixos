@@ -567,6 +567,7 @@ in {
       proxytls = port:
         base {
           "/".proxyPass = "https://127.0.0.1:${toString port}";
+          "/".proxyWebsockets = true; # TODO: limit to unifi only?
         };
     in {
       "_" =
