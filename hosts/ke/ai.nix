@@ -95,6 +95,7 @@ in {
     claude-code-router
     local.code-assistant-manager
     code-cursor
+    devin-desktop
     fabric-ai
     goose-cli
     files-to-prompt
@@ -116,7 +117,6 @@ in {
     local.ttok
     local.tvly
     voxinput
-    windsurf
 
     # CLI Code Agents
     claude-code

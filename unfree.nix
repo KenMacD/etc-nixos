@@ -6,6 +6,7 @@
   "codeql"
   "cursor"
   "dell-command-configure"
+  "devin-desktop"
   "discord"
   "drawio" # Apache 2 but not with Atlassian
   "exodus"
@@ -49,6 +50,5 @@
   "unrar"
   "vscode"
   "warp-terminal"
-  "windsurf"
   "zerotierone"
 ]
