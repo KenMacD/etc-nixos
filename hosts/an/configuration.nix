@@ -77,6 +77,17 @@
 
   boot.extraModprobeConfig = ''
     options cfg80211 ieee80211_regdom=CA
+    # Push iwlwifi (AX201 / CNVi) into deep device power save so the WiFi
+    # block can power-gate and the SoC can reach deeper s0ix substates (S0i3.0).
+    options iwlwifi power_save=1
+  '';
+
+  # Allow the NVMe controller (and its PCIe root port) to runtime-suspend so
+  # the PCIe fabric/clock can power down during s0ix. The kernel defaults NVMe
+  # runtime PM to "on"; this flips it to "auto". Targeted at NVMe
+  # (PCI class 0x010802) only, leaving the iGPU / host bridge untouched.
+  services.udev.extraRules = ''
+    ACTION=="add", SUBSYSTEM=="pci", ATTR{class}=="0x010802", TEST=="power/control", ATTR{power/control}="auto"
   '';
 
   # reboot + signals + sync
