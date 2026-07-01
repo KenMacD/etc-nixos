@@ -44,10 +44,10 @@
     };
     sane.enable = true;
   };
-  services.hardware.bolt.enable = true;
   services.avahi.enable = true; # For Chromecast
-  services.upower.enable = true;
-  services.power-profiles-daemon.enable = true;
+
+  # Laptop power/battery defaults
+  laptop.enable = true;
 
   # Force intel vulkan driver to prevent software rendering:
   environment.variables.VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json:/run/opengl-driver-32/share/vulkan/icd.d/intel_icd.i686.json";
@@ -195,7 +195,6 @@
     fwupd.enable = true;
     openssh.enable = true;
     pcscd.enable = true;
-    thermald.enable = true;
     udisks2.enable = true;
     printing.enable = true;
     printing.drivers = [pkgs.hplipWithPlugin];

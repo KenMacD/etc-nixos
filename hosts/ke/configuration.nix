@@ -99,17 +99,10 @@ in {
       extraBackends = [pkgs.hplipWithPlugin];
     };
   };
-  services.hardware.bolt.enable = true;
   services.avahi.enable = true; # For Chromecast
-  services.upower = {
-    enable = true;
-    criticalPowerAction = "PowerOff";
 
-    # First warning, critical warning, and shutdown level
-    percentageLow = 15;
-    percentageCritical = 10;
-    percentageAction = 5;
-  };
+  # Laptop power/battery defaults
+  laptop.enable = true;
   services.postgresql = {
     enable = true;
     package = pkgs.postgresql_18;
@@ -123,7 +116,6 @@ in {
       mapping /^(.*)$  \1
     '';
   };
-  services.power-profiles-daemon.enable = true;
   services.printing = {
     enable = true;
     drivers = [pkgs.hplipWithPlugin];
@@ -389,7 +381,6 @@ in {
         TIMELINE_LIMIT_YEARLY = 0;
       };
     };
-    thermald.enable = true;
     udev = {
       packages = [
         pkgs.yubikey-personalization

@@ -3,6 +3,8 @@
   imports = [
     ./home-wifi.nix # Specific trusted-network config
 
+    ./laptop.nix # Opt-in laptop power/battery defaults (upower, PPD, bolt, fwupd)
+
     ./microvm-config.nix # MicroVM configuration
 
     ./nordvpn-namespaced.nix

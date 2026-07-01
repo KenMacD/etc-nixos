@@ -174,7 +174,14 @@ in {
     addresses = true;
     userServices = true;
   };
-  services.fwupd.enable = true;
+  # Laptop power/battery defaults. yoga is Haswell (no HWP, no Thunderbolt),
+  # so opt out of power-profiles-daemon (needs HWP) and bolt (no TBT/USB4 hw).
+  # Keeps its own thermald (below) -- useful on non-HWP CPUs. See modules/laptop.nix.
+  laptop = {
+    enable = true;
+    thunderbolt = false;
+    powerProfiles = false;
+  };
 
   systemd.services.kanidm.serviceConfig.SupplementaryGroups = "acme";
   services.kanidm = {
@@ -220,10 +227,10 @@ in {
       enable = true;
       settings.PasswordAuthentication = true;
     };
-    power-profiles-daemon.enable = true;
+    # thermald retained for Haswell (no HWP). power-profiles-daemon is opted out
+    # (no HWP → PPD can't run) and upower is provided by the laptop module.
     thermald.enable = true;
     udisks2.enable = true;
-    upower.enable = true;
     nix-serve = {
       enable = true;
       bindAddress = "127.0.0.1";
