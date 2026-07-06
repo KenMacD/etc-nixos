@@ -44,7 +44,7 @@ with lib; {
     gc = {
       automatic = true;
       dates = "weekly";
-      options = "--delete-older-than 30d";
+      options = mkDefault "--delete-older-than 30d";
     };
 
     channel.enable = mkDefault false;

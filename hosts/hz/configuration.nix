@@ -46,6 +46,9 @@ in {
     ];
   };
 
+  # More limited disk size so clean up sooner
+  nix.gc.options = "--delete-older-than 10d";
+
   ########################################
   # Boot
   ########################################
@@ -55,6 +58,7 @@ in {
   boot.loader.efi.canTouchEfiVariables = lib.mkForce false;
   boot.loader.grub.enable = true;
   boot.loader.grub.devices = lib.mkForce ["/dev/sda"];
+  boot.loader.grub.configurationLimit = 2;
 
   ########################################
   # Networking
