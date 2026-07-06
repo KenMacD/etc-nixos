@@ -5,14 +5,14 @@
 }:
 python.pkgs.buildPythonApplication (finalAttrs: {
   pname = "mcp2cli";
-  version = "0-unstable-2026-03-15";
+  version = "0-unstable-2026-04-07";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "knowsuchagency";
     repo = "mcp2cli";
-    rev = "7967e769d4c0c25a80878b178144683c791d5886";
-    hash = "sha256-On3WXdan7xRN0MFURmQ7VUK2qej1ZpX4DA9IX8iGBMY=";
+    rev = "266de1a32e670fcb3604d49321c01ddaa6fb19de";
+    hash = "sha256-y9yPQyLxFS6BF7H7HEGDz52U8Wi2ywTiFxYY7QRgEME=";
   };
 
   postPatch = ''
