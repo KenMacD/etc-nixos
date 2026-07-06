@@ -143,12 +143,32 @@ in {
   # Virtualisation
   ########################################
   virtualisation.oci-containers.backend = "podman";
+  virtualisation.oci-containers.containers.agent-zero = {
+    image = "docker.io/agent0ai/agent-zero:v2.2";
+    pull = "always";
+    volumes = ["agent-zero-data:/a0/usr"];
+    extraOptions = [
+      # Static IP for tailscale forwarding
+      "--ip=10.88.0.10"
+    ];
+  };
   virtualisation.podman = {
     enable = true;
     autoPrune.enable = true;
     dockerCompat = true;
     defaultNetwork.settings = {
       dns_enabled = true;
+      subnets = [
+        # Use /24 with 100-200 for dynamic
+        {
+          subnet = "10.88.0.0/24";
+          gateway = "10.88.0.1";
+          lease_range = {
+            start_ip = "10.88.0.100";
+            end_ip = "10.88.0.200";
+          };
+        }
+      ];
     };
   };
 
