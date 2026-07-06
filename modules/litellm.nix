@@ -55,7 +55,7 @@ in {
   virtualisation.oci-containers.containers = {
     litellm = {
       image = "ghcr.io/berriai/litellm-non_root:${version}";
-      ports = ["4000:4000"];
+      ports = ["127.0.0.1:4000:4000"];
       environmentFiles = [
         config.sops.secrets.litellm.path
       ];
