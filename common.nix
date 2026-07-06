@@ -102,7 +102,7 @@ with lib; {
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = mkDefault true;
 
-  boot.kernelPackages = mkOverride (lib.modules.defaultOrderPriority - 1) pkgs.linuxPackages_7_0;
+  boot.kernelPackages = mkOverride (lib.modules.defaultOrderPriority - 1) pkgs.linuxPackages_7_1;
   security.unprivilegedUsernsClone = mkDefault config.virtualisation.containers.enable;
 
   boot.kernel.sysctl = {};
