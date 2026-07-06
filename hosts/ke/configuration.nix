@@ -678,6 +678,7 @@ in {
     nixd
     nixpkgs-fmt
     nixpkgs-lint-community
+    statix # lints and suggests fixes for nix
 
     # Wireless
     aircrack-ng

@@ -17,6 +17,7 @@ format:
 # Lint the repository
 lint:
   nixpkgs-lint .
+  statix check
 
 # Attempt a host build to verify it works
 build host=current_host *args:
