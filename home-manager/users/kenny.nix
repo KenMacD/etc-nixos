@@ -34,6 +34,27 @@ in {
   home.sessionVariables.ZAI_API_KEY = secret "ZAI_API_KEY";
   home.sessionVariables.ZAI_CODING_API_KEY = secret "ZAI_API_KEY";
 
+  programs.atuin = {
+    enable = true;
+    enableFishIntegration = true;
+    flags = ["--disable-up-arrow"];
+    forceOverwriteSettings = true;
+    settings = {
+      ai = {
+        enabled = true;
+      };
+      filter_mode_shell_up_key_binding = "session";
+      history_filter = [
+        "^cd "
+        "^ls "
+        "^z "
+      ];
+      search_mode = "daemon-fuzzy";
+      update_check = false;
+    };
+    daemon.enable = true;
+  };
+
   # Editor
   programs.neovim = {
     enable = true;

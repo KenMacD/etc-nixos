@@ -815,7 +815,6 @@ in {
     bearer
 
     # Testing
-    atuin # shell history in sqlite?
     hashcat
     seahorse
     libsmbios # smbios-thermal-ctl
