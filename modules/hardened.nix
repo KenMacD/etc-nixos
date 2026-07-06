@@ -12,6 +12,12 @@ with lib; {
 
   services.resolved.settings.Resolve.LLMNR = mkForce "false";
 
+  boot.specialFileSystems = {
+    "/dev/shm".options = ["noexec"];
+    "/run".options = ["noexec"];
+    "/dev".options = ["noexec"];
+  };
+
   # environment.memoryAllocator.provider = mkDefault "scudo";
   # environment.variables.SCUDO_OPTIONS = mkDefault "ZeroContents=1";
 
