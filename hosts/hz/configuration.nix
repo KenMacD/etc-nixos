@@ -88,6 +88,11 @@ in {
   ########################################
   services.tailscale.enable = true;
 
+  # Tailscale config current done manually with commands like:
+  # * tailscale login
+  # * tailscale serve --service=svc:agent-zero --https=443 http://10.88.0.10:4000
+  # * tailscale serve --service=svc:agent-zero --tcp=22 tcp://10.88.0.10:22
+
   # Force tailscaled to use nftables (critical for clean nftables-only systems)
   # Avoids the "iptables-compat" translation layer issues.
   systemd.services.tailscaled.serviceConfig.Environment = [
