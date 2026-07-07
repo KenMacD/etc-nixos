@@ -102,7 +102,6 @@ in {
     llm.withAllPlugins
     lmstudio # to try, open-webui-like?
     # Not really used: local.magic-cli
-    local.mcp-inspector
     local.mcptools
     mods # pipe command output to a question
     openai-whisper
