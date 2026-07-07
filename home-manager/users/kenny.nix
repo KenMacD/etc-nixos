@@ -30,6 +30,11 @@ in {
   sops.defaultSopsFile = ./kenny-secrets.yaml;
   sops.secrets = secretAttrs;
 
+  # TODO: migrate fish config
+  programs.fish = {
+    enable = true;
+  };
+
   home.sessionVariables.DEEPSEEK_API_KEY = secret "DEEPSEEK_API_KEY";
   home.sessionVariables.ZAI_API_KEY = secret "ZAI_API_KEY";
   home.sessionVariables.ZAI_CODING_API_KEY = secret "ZAI_API_KEY";
