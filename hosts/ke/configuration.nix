@@ -641,6 +641,7 @@ in {
     acpid
     bcc
     compsize # Show on-disk file size
+    local.depsguard # Check the npm and the like have a cooldown time
     dig
     fwupd
     fwupd-efi

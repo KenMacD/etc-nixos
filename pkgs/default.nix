@@ -26,6 +26,8 @@ in {
 
   dcc = callPackage ./dcc {};
 
+  depsguard = callPackage ./depsguard.nix {};
+
   deptree = callPackage ./deptree.nix {};
 
   ferretdb2 = callPackage ./ferretdb2.nix {};
