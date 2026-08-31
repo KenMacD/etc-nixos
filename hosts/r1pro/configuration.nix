@@ -95,9 +95,10 @@ in {
   ########################################
   # Services
   ########################################
+  # Rebuild from the flake source captured at deploy time (self.outPath)
   system.autoUpgrade = {
-    enable = true;
-    flake = "path:/etc/nixos#r1pro";
+    enable = false;
+    flake = self.outPath;
     flags = [
       "--recreate-lock-file"
       "-L" # print build logs

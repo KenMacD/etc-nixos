@@ -11,9 +11,10 @@
 in {
   systemd.services."systemd-networkd-wait-online".enable = lib.mkForce false;
 
+  # Rebuild from the flake source captured at deploy time (self.outPath)
   system.autoUpgrade = {
     enable = true;
-    flake = "path:/etc/nixos#yoga";
+    flake = self.outPath;
     flags = [
       "--recreate-lock-file"
       "-L" # print build logs
