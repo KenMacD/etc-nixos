@@ -57,8 +57,6 @@ in {
 
   octofriend = callPackage ./octofriend.nix {};
 
-  pgvecto-rs = callPackage ./pgvecto-rs.nix {};
-
   playwright-mcp = callPackage ./playwright-mcp.nix {};
 
   pynzbget = python3Packages.callPackage ./pynzbget.nix {};
