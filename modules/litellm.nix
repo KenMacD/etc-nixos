@@ -3,7 +3,8 @@
   pkgs,
   ...
 }: let
-  version = "main-stable"; # TODO: sha
+  version = "v1.99.1";
+  imageDigest = "sha256:47ade0259462ec54b18bcc44ff52bba4cee878c0267f8b893070bb79b4dcfbee";
   dbuser = "litellm";
   dbname = "litellm";
   ociBackend = config.virtualisation.oci-containers.backend;
@@ -54,14 +55,13 @@ in {
 
   virtualisation.oci-containers.containers = {
     litellm = {
-      image = "ghcr.io/berriai/litellm-non_root:${version}";
+      image = "ghcr.io/berriai/litellm-non_root:${version}@${imageDigest}";
       ports = ["127.0.0.1:4000:4000"];
       environmentFiles = [
         config.sops.secrets.litellm.path
       ];
       volumes = [
-        #        "${./litellm_license.py}:/app/litellm/proxy/auth/litellm_license.py:ro"
-        "${./litellm_license.py}:/usr/lib/python3.13/site-packages/litellm/proxy/auth/litellm_license.py:ro"
+        "${./litellm_license.py}:/app/.venv/lib/python3.13/site-packages/litellm/proxy/auth/litellm_license.py:ro"
       ];
     };
   };
