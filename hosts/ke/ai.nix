@@ -125,6 +125,7 @@ in {
     nix-ai-tools.forge
     local.octofriend
     nix-ai-tools.opencode
+    local.acpx # Headless ACP client to drive agents ($ acpx)
 
     # Support tools
     nix-ai-tools.agent-browser
