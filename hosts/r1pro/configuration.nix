@@ -313,8 +313,20 @@ in {
     enable = true;
     autoPrune.enable = true;
     dockerCompat = true;
+    dockerSocket.enable = true;
     defaultNetwork.settings = {
       dns_enabled = true;
+      # Use /24 with 100-200 for dynamic
+      subnets = [
+        {
+          subnet = "10.88.0.0/24";
+          gateway = "10.88.0.1";
+          lease_range = {
+            start_ip = "10.88.0.100";
+            end_ip = "10.88.0.200";
+          };
+        }
+      ];
     };
   };
   zramSwap.enable = true;
