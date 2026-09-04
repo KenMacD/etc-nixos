@@ -7,6 +7,19 @@
   ...
 }: let
   local = self.packages.${system};
+
+  # tailscaled being "active" only means the daemon started, not that the node
+  # is logged in; tailscale-serve-* units gate on actual connectivity.
+  waitTailscale = pkgs.writeShellScriptBin "wait-tailscale-connected" ''
+    for i in $(seq 1 60); do
+      if ${pkgs.tailscale}/bin/tailscale status >/dev/null 2>&1; then
+        exit 0
+      fi
+      sleep 1
+    done
+    echo "wait-tailscale-connected: tailscale not up after 60s" >&2
+    exit 1
+  '';
 in {
   imports = [
     ./networkd.nix
