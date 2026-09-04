@@ -210,16 +210,6 @@ in {
   };
 
   ########################################
-  # Users
-  ########################################
-  users.groups.media.members = with config.systemd.services; [
-    jellyfin.serviceConfig.User
-  ];
-  users.groups.render.members = with config.systemd.services; [
-    jellyfin.serviceConfig.User
-  ];
-
-  ########################################
   # Simple Services
   ########################################
   services = {
@@ -377,25 +367,6 @@ in {
     ];
   };
 
-  services.jellyfin = {
-    enable = true;
-    openFirewall = false;
-  };
-  systemd.services.jellyfin.environment."JELLYFIN_PublishedServerUrl" = "https://jellyfin.home.macdermid.ca";
-
-  services.vaultwarden = {
-    enable = true;
-    backupDir = "/var/backup/vaultwarden";
-    config = {
-      DOMAIN = "https://bitwarden.home.macdermid.ca";
-      SIGNUPS_ALLOWED = true;
-
-      ROCKET_ADDRESS = "127.0.0.1";
-      ROCKET_PORT = 8222;
-
-      ROCKET_LOG = "critical";
-    };
-  };
   security.acme = {
     acceptTerms = true;
     defaults = {
@@ -605,7 +576,6 @@ in {
       "grafana.home.macdermid.ca" = proxywss config.services.grafana.settings.server.http_port;
       "immich.home.macdermid.ca" = proxywss 3550;
       "influxdb.home.macdermid.ca" = proxy 8086;
-      "jellyfin.home.macdermid.ca" = proxywss 8096;
       "miniflux.home.macdermid.ca" = proxy 35001;
       "nginxstatus.home.macdermid.ca" = base {
         # TODO: merge extraConfigs together
