@@ -84,11 +84,15 @@ in {
     #hostId = "f5a3f353";
   };
   networking.firewall = {
-    enable = false;
-    allowedTCPPorts = [];
+    enable = true;
+    allowedTCPPorts = [443];
     allowedUDPPorts = [
       5353 # mDNS
       5355 # LLMNR (Link-Local Multicast Name Resolution)
+    ];
+    trustedInterfaces = ["tailscale0"];
+    interfaces."tailscale0".allowedTCPPorts = [
+      443 # Serve?
     ];
   };
 
