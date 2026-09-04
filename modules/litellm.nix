@@ -3,8 +3,8 @@
   pkgs,
   ...
 }: let
-  version = "v1.99.1";
-  imageDigest = "sha256:47ade0259462ec54b18bcc44ff52bba4cee878c0267f8b893070bb79b4dcfbee";
+  version = "v1.100.0-rc.1";
+  imageDigest = "sha256:b6660ae36cf351b68dd5e47ef80f40f186095dbd7ae0bff0d3102f6018766aee";
   dbuser = "litellm";
   dbname = "litellm";
   ociBackend = config.virtualisation.oci-containers.backend;
@@ -56,7 +56,7 @@ in {
   virtualisation.oci-containers.containers = {
     litellm = {
       image = "ghcr.io/berriai/litellm-non_root:${version}@${imageDigest}";
-      ports = ["127.0.0.1:4000:4000"];
+      ports = ["127.0.0.1:3005:4000"];
       environmentFiles = [
         config.sops.secrets.litellm.path
       ];
