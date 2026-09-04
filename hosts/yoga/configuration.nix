@@ -492,7 +492,6 @@ in {
           "/".root = "/etc/nixos/hosts/yoga/www/";
         }
         // {serverAliases = ["home.macdermid.ca"];};
-      "bitwarden.home.macdermid.ca" = proxywss config.services.vaultwarden.config.ROCKET_PORT;
       "cockpit.home.macdermid.ca" = proxywss config.services.cockpit.port;
       "focalboard.home.macdermid.ca" = proxywss 18000;
       "grafana.home.macdermid.ca" = proxywss config.services.grafana.settings.server.http_port;
