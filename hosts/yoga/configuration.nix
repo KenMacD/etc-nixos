@@ -48,8 +48,6 @@ in {
   sops.secrets.cloudflare = {};
   sops.secrets.cloudflare-tunnel = {};
   sops.secrets.nix-cache-key = {};
-  sops.secrets.restic-immich = {};
-  sops.secrets.restic-immich-r1pro = {}; # ID: 46300c0d6919712580f906d502ad7eafadf40179c096b9045f7a5ac7edb96a13
   sops.secrets.restic-postgresql = {};
   sops.secrets.ssh-sftp-yoga = {};
 
@@ -118,9 +116,6 @@ in {
     nameservers = ["172.27.0.1"];
     nftables.enable = true;
   };
-
-  ids.uids.immich = 911;
-  ids.gids.immich = 911;
 
   # To access from dbeaver forward to socket:
   # ssh kenny@yoga -L 35432:/var/run/postgresql/.s.PGSQL.5432
@@ -265,21 +260,6 @@ in {
   ########################################
   # Complex Services
   ########################################
-  # Backups
-  services.restic.backups.immich = {
-    repository = "/run/media/red/immich-restic";
-    passwordFile = config.sops.secrets.restic-immich.path;
-    paths = [
-      "library"
-      "upload"
-    ];
-    timerConfig = {
-      OnCalendar = "02:05";
-      RandomizedDelaySec = "1h";
-    };
-  };
-  # TODO: Not need once 0.18 released? See Restic 2092, 4026, 4762.
-  systemd.services.restic-backups-immich.serviceConfig.WorkingDirectory = "/mnt/easy/immich";
 
   programs.ssh.extraConfig = ''
     Host r1pro-sftp
@@ -287,20 +267,6 @@ in {
       User sftp-yoga
       IdentityFile /run/secrets/ssh-sftp-yoga
   '';
-  services.restic.backups.immich-r1pro = {
-    repository = "sftp://r1pro-sftp:/restic-immich";
-    passwordFile = config.sops.secrets.restic-immich-r1pro.path;
-    paths = [
-      "library"
-      "upload"
-    ];
-    timerConfig = {
-      OnCalendar = "03:05";
-      RandomizedDelaySec = "1h";
-    };
-  };
-  # TODO: Not need once 0.18 released? See Restic 2092, 4026, 4762.
-  systemd.services.restic-backups-immich-r1pro.serviceConfig.WorkingDirectory = "/mnt/easy/immich";
 
   services.restic.backups.postgresql = {
     repository = "/run/media/red/restic-postgresql";
@@ -574,7 +540,6 @@ in {
       "cockpit.home.macdermid.ca" = proxywss config.services.cockpit.port;
       "focalboard.home.macdermid.ca" = proxywss 18000;
       "grafana.home.macdermid.ca" = proxywss config.services.grafana.settings.server.http_port;
-      "immich.home.macdermid.ca" = proxywss 3550;
       "influxdb.home.macdermid.ca" = proxy 8086;
       "miniflux.home.macdermid.ca" = proxy 35001;
       "nginxstatus.home.macdermid.ca" = base {

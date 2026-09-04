@@ -271,6 +271,91 @@ in {
       mapping /^(.*)$  \1
     '';
   };
+
+  ########################################
+  # Immich
+  ########################################
+  services.immich = {
+    enable = true;
+    host = "127.0.0.1";
+    port = 2283;
+    mediaLocation = "/srv/immich";
+    accelerationDevices = ["/dev/dri/renderD128"];
+
+    machine-learning.enable = true;
+  };
+  # Pin immich to uid/gid 911 (consistent with yoga) and grant GPU access.
+  users.users.immich = {
+    uid = config.ids.uids.immich;
+    extraGroups = ["render" "video"];
+  };
+  users.groups.immich.gid = config.ids.gids.immich;
+
+  # Expose Immich privately on the tailnet over HTTPS, mirroring r1pro's other
+  # tailscale-serve-* services.
+  systemd.services.tailscale-serve-immich = {
+    description = "Tailscale serve Immich";
+    wantedBy = ["multi-user.target"];
+    after = ["tailscaled.service"];
+    wants = ["tailscaled.service"];
+    serviceConfig = {
+      RestartSec = 10;
+      Restart = "on-failure";
+      ExecStartPre = "${lib.getExe waitTailscale}";
+      ExecStart = "${pkgs.tailscale}/bin/tailscale serve --service=svc:immich --https=443 127.0.0.1:2283";
+    };
+  };
+
+  ########################################
+  # Backups (restic -> /mnt/red USB drive)
+  ########################################
+  # Dump every postgres DB (immich, miniflux, kanidm, ...) to
+  # /var/backup/postgresql/<db>.sql.gz nightly at 01:00 (module default; one
+  # file per DB, overwritten each run -- restic snapshots provide history).
+  services.postgresqlBackup.enable = true;
+
+  # Immich media: originals + encoded-video + thumbs + profiles, all of /srv/immich.
+  # Runs as root so it can read the 0700 immich-owned tree and write to /mnt/red.
+  services.restic.backups.immich = {
+    initialize = false;
+    repository = "/mnt/red/immich-restic";
+    passwordFile = config.sops.secrets.restic-immich.path;
+    paths = ["/srv/immich"];
+    # Going to put the backups on their own subvolume and snapshot so manually
+    # prune when required.
+    # pruneOpts = [
+    #   "--keep-daily 7"
+    #   "--keep-weekly 5"
+    #   "--keep-monthly 12"
+    #   "--keep-yearly 10"
+    # ];
+    timerConfig = {
+      OnCalendar = "04:00";
+      RandomizedDelaySec = "30m";
+      Persistent = true;
+    };
+  };
+
+  # Postgres dumps from services.postgresqlBackup (covers the immich DB + all
+  # others). Runs after the 01:00 dump completes.
+  services.restic.backups.postgresql = {
+    initialize = false;
+    repository = "/mnt/red/restic-postgresql";
+    passwordFile = config.sops.secrets.restic-postgresql.path;
+    paths = ["/var/backup/postgresql"];
+    # pruneOpts = [
+    #   "--keep-daily 7"
+    #   "--keep-weekly 5"
+    #   "--keep-monthly 12"
+    #   "--keep-yearly 10"
+    # ];
+    timerConfig = {
+      OnCalendar = "03:00";
+      RandomizedDelaySec = "30m";
+      Persistent = true;
+    };
+  };
+
   services.qbittorrent = {
     enable = true;
     group = "media";

@@ -188,7 +188,10 @@ with lib; {
     media = 1201;
 
     sftp-yoga = 1301;
+
+    immich = 911;
   };
+  ids.gids.immich = 911;
   users.defaultUserShell = pkgs.fish;
   users.users.kenny = {
     isNormalUser = true;
