@@ -320,6 +320,80 @@ in {
   };
 
   ########################################
+  # nginx reverse proxy (LAN-only) for *.home.macdermid.ca
+  ########################################
+  systemd.services.nginx.serviceConfig.SupplementaryGroups = ["acme"];
+  security.acme = {
+    acceptTerms = true;
+    defaults = {
+      email = "kenny@macdermid.ca";
+      dnsProvider = "cloudflare";
+      credentialFiles.CLOUDFLARE_DNS_API_TOKEN_FILE = config.sops.secrets.cloudflare.path;
+      dnsResolver = "1.1.1.1:53";
+    };
+    certs."home.macdermid.ca" = {
+      domain = "*.home.macdermid.ca";
+      extraDomainNames = ["home.macdermid.ca"];
+      reloadServices = ["nginx"];
+    };
+  };
+  services.nginx = {
+    enable = true;
+    serverTokens = false;
+    recommendedOptimisation = true;
+    recommendedGzipSettings = true;
+    recommendedProxySettings = true;
+    sslProtocols = "TLSv1.3";
+    clientMaxBodySize = "10g"; # immich video uploads
+    commonHttpConfig = ''
+      geo $internal {
+        default no;
+        127.0.0.0/8 yes;
+        172.27.0.0/24 yes; # LAN
+        100.64.0.0/10 yes; # Tailscale CGNAT
+        10.88.0.0/16 yes;  # podman
+      }
+    '';
+    virtualHosts = let
+      # LAN-only TLS vhost behind the *.home.macdermid.ca wildcard cert, gated by
+      # the `internal` geo-map (404 to anyone off the LAN/tailnet). Add a service
+      # with:  "<svc>.home.macdermid.ca" = proxywss <port>;
+      proxywss = port: {
+        onlySSL = true;
+        useACMEHost = "home.macdermid.ca";
+        http2 = true;
+        extraConfig = ''
+          if ($internal != yes) {
+            return 404;
+          }
+        '';
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:${toString port}";
+          proxyWebsockets = true;
+        };
+      };
+      # Same as proxywss but for an https backend (e.g. UniFi on :8443 with a
+      # self-signed cert; nginx trusts the upstream since proxy_ssl_verify is off).
+      proxytls = port: {
+        onlySSL = true;
+        useACMEHost = "home.macdermid.ca";
+        http2 = true;
+        extraConfig = ''
+          if ($internal != yes) {
+            return 404;
+          }
+        '';
+        locations."/" = {
+          proxyPass = "https://127.0.0.1:${toString port}";
+          proxyWebsockets = true;
+        };
+      };
+    in {
+      "jellyfin.home.macdermid.ca" = proxywss 8096;
+    };
+  };
+
+  ########################################
   # Backups (restic -> /mnt/red USB drive)
   ########################################
   # Dump every postgres DB (immich, miniflux, kanidm, ...) to
@@ -502,61 +576,4 @@ in {
     ripgrep
     tmux
   ];
-  ########################################
-  # nginx reverse proxy (LAN-only) for *.home.macdermid.ca
-  ########################################
-  systemd.services.nginx.serviceConfig.SupplementaryGroups = ["acme"];
-  security.acme = {
-    acceptTerms = true;
-    defaults = {
-      email = "kenny@macdermid.ca";
-      dnsProvider = "cloudflare";
-      credentialFiles.CLOUDFLARE_DNS_API_TOKEN_FILE = config.sops.secrets.cloudflare.path;
-      dnsResolver = "1.1.1.1:53";
-    };
-    certs."home.macdermid.ca" = {
-      domain = "*.home.macdermid.ca";
-      extraDomainNames = ["home.macdermid.ca"];
-      reloadServices = ["nginx"];
-    };
-  };
-  services.nginx = {
-    enable = true;
-    serverTokens = false;
-    recommendedOptimisation = true;
-    recommendedGzipSettings = true;
-    recommendedProxySettings = true;
-    sslProtocols = "TLSv1.3";
-    clientMaxBodySize = "10g"; # immich video uploads
-    commonHttpConfig = ''
-      geo $internal {
-        default no;
-        127.0.0.0/8 yes;
-        172.27.0.0/24 yes; # LAN
-        100.64.0.0/10 yes; # Tailscale CGNAT
-        10.88.0.0/16 yes;  # podman
-      }
-    '';
-    virtualHosts = let
-      # LAN-only TLS vhost behind the *.home.macdermid.ca wildcard cert, gated by
-      # the `internal` geo-map (404 to anyone off the LAN/tailnet). Add a service
-      # with:  "<svc>.home.macdermid.ca" = proxywss <port>;
-      proxywss = port: {
-        onlySSL = true;
-        useACMEHost = "home.macdermid.ca";
-        http2 = true;
-        extraConfig = ''
-          if ($internal != yes) {
-            return 404;
-          }
-        '';
-        locations."/" = {
-          proxyPass = "http://127.0.0.1:${toString port}";
-          proxyWebsockets = true;
-        };
-      };
-    in {
-      "jellyfin.home.macdermid.ca" = proxywss 8096;
-    };
-  };
 }
