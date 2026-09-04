@@ -268,18 +268,6 @@ in {
       IdentityFile /run/secrets/ssh-sftp-yoga
   '';
 
-  services.restic.backups.postgresql = {
-    repository = "/run/media/red/restic-postgresql";
-    passwordFile = config.sops.secrets.restic-postgresql.path;
-    paths = [
-      "/var/backup/postgresql/all.sql.gz"
-    ];
-    timerConfig = {
-      OnCalendar = "02:45";
-      RandomizedDelaySec = "1h";
-    };
-  };
-
   # Grafana
   services.grafana = {
     enable = true;
