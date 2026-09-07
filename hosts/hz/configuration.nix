@@ -88,11 +88,6 @@ in {
   ########################################
   services.tailscale.enable = true;
 
-  # Tailscale config current done manually with commands like:
-  # * tailscale login
-  # * tailscale serve --service=svc:agent-zero --https=443 http://10.88.0.10:4000
-  # * tailscale serve --service=svc:agent-zero --tcp=22 tcp://10.88.0.10:22
-
   # Force tailscaled to use nftables (critical for clean nftables-only systems)
   # Avoids the "iptables-compat" translation layer issues.
   systemd.services.tailscaled.serviceConfig.Environment = [
@@ -148,15 +143,6 @@ in {
   # Virtualisation
   ########################################
   virtualisation.oci-containers.backend = "podman";
-  virtualisation.oci-containers.containers.agent-zero = {
-    image = "docker.io/agent0ai/agent-zero:v2.2";
-    pull = "always";
-    volumes = ["agent-zero-data:/a0/usr"];
-    extraOptions = [
-      # Static IP for tailscale forwarding
-      "--ip=10.88.0.10"
-    ];
-  };
   virtualisation.podman = {
     enable = true;
     autoPrune.enable = true;

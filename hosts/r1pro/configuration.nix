@@ -486,6 +486,15 @@ in {
     environmentFiles = [config.sops.secrets.bigagi.path];
     ports = ["127.0.0.1:3000:3000"];
   };
+  virtualisation.oci-containers.containers.agent-zero = {
+    image = "docker.io/agent0ai/agent-zero:v2.11";
+    # ports = ["127.0.0.1:902:80"];
+    volumes = ["agent-zero-data:/a0/usr"];
+    extraOptions = [
+      # Static IP for tailscale forwarding
+      "--ip=10.88.0.10"
+    ];
+  };
   virtualisation.podman = {
     enable = true;
     autoPrune.enable = true;
