@@ -70,20 +70,6 @@
     ];
   };
 
-  fileSystems."/run/media/red" = {
-    device = "/dev/disk/by-uuid/e07ab464-3fe4-448c-891c-f94e96224f96";
-    fsType = "btrfs";
-    options = [
-      "noauto"
-      "nofail"
-      "subvolid=0"
-      "space_cache=v2"
-      "x-systemd.automount"
-      "x-systemd.device-timeout=1ms"
-      "x-systemd.idle-timout=5m"
-    ];
-  };
-
   fileSystems."/mnt/easy" = {
     device = "/dev/disk/by-uuid/fd308d96-c40d-4eab-b9b4-4440390cb27f";
     fsType = "bcachefs";
