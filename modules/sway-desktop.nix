@@ -39,8 +39,6 @@ in {
 
         kdePackages.polkit-kde-agent-1
 
-        gtk-engine-murrine
-        gtk_engines
         gsettings-desktop-schemas
         lxappearance # set font sizes
         adwaita-icon-theme
