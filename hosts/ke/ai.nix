@@ -87,57 +87,76 @@ in {
   '';
 
   environment.systemPackages = with pkgs; [
+    # TODO: broken 2026-02-25 local."@neuralnomads/codenomad"
     aichat
-    aider-chat-full
+    nix-ai-tools.antigravity-cli
+    local.byterover-cli
     local.cclimits # Check quota/usage for AI coding CLI tools
     local.cctx
-    local.cclsp
     claude-code-router
-    local.code-assistant-manager
+    # TODO: creates dmesg noise local.container-use
+    local.code-assistant-manager # TODO: try setting up skills/mcp with
+    nix-ai-tools.codex
     code-cursor
     devin-desktop
     fabric-ai
+    nix-ai-tools.fence
     goose-cli
     files-to-prompt
-    llm.withAllPlugins
+    (llm.withPlugins {
+      llm-deepseek = true;
+    })
     lmstudio # to try, open-webui-like?
     # Not really used: local.magic-cli
     local.mcptools
     mods # pipe command output to a question
-    openai-whisper
+    nix-ai-tools.openspec # To try: spec-first dev
     pandoc # Test html -> markdown
     local.playwright-mcp
     repomix # Testing
     # Not really using, asks for openai key: shell-gpt # $ sgpt ...
     local.spec-kit
     strip-tags
-    task-master-ai
+    # TODO: broken 2026-01-04 task-master-ai
     tgpt # $ tgpt question
     local.ttok
     local.tvly
     voxinput
 
     # CLI Code Agents
-    claude-code
     codex
     happy-coder # Hook claude code to mobile
     nix-ai-tools.crush
-    nix-ai-tools.forge
+    nix-ai-tools.forgecode
+    nix-ai-tools.droid
     local.octofriend
     nix-ai-tools.opencode
+    opencode-desktop
+    nix-ai-tools.pi
     local.acpx # Headless ACP client to drive agents ($ acpx)
+    nix-ai-tools.zcode
 
     # Support tools
     nix-ai-tools.agent-browser
     argc
+    nix-ai-tools.ck # Local first semantic and hybrid BM25 grep / search
     jq
 
     # MCP
     local.alph-cli # Manage MCPs
     local.chrome-devtools-mcp
     local.dbhub
+    local.firefox-devtools-mcp
     local.mcp2cli
+    # TODO: broken 2026-02-25 local."@upstash/context7-mcp" # context7's mcp (to avoid 'Error: SSE stream disconnected: TypeError: terminated')
+    # TODO: broken 2026-02-25 local."@z_ai/mcp-server" # ZAI's Vision MCP Server
     mcp-nixos
     local.mcp-server-tree-sitter
+
+    # Voice
+    whisper-cpp-vulkan
+
+    # Testing
+    nix-ai-tools.agentsview
   ];
 }
