@@ -577,7 +577,7 @@ in {
     httpie
     immich-go
     libnotify
-    libreoffice-fresh
+    libreoffice-stable
     libusb1
     libva-utils
     mongodb-compass

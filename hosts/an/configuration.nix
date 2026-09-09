@@ -275,7 +275,7 @@
     exiftool
     ffmpeg
     firefox
-    libreoffice-fresh
+    libreoffice-stable
     p7zip
     powertop
     signal-desktop
