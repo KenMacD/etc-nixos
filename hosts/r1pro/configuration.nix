@@ -487,7 +487,7 @@ in {
     ports = ["127.0.0.1:3000:3000"];
   };
   virtualisation.oci-containers.containers.agent-zero = {
-    image = "docker.io/agent0ai/agent-zero:v2.11";
+    image = "docker.io/agent0ai/agent-zero:v2.12";
     # ports = ["127.0.0.1:902:80"];
     volumes = ["agent-zero-data:/a0/usr"];
     extraOptions = [
