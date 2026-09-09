@@ -82,6 +82,9 @@ in {
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernel.sysctl."fs.inotify.max_user_watches" = 524288;
+  # Allow full REISUB via nanokvm HID injection for out-of-band recovery:
+  # R=4 (unraw) + S=16 (sync) + U=32 (remount-ro) + E/I=64 (kill) + B=128 (reboot)
+  boot.kernel.sysctl."kernel.sysrq" = 4 + 16 + 32 + 64 + 128;
 
   powerManagement.enable = true;
 
