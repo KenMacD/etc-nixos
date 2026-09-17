@@ -38,7 +38,7 @@ in {
     trusted-users = [ "root" "@wheel" ];
     extra-substituters = [
       # default priority is 40, lower = checked first
-      # For pre-built n8n and zerotier packages
+      # For pre-built zerotier package
       "https://nix-community.cachix.org?priority=50"
     ];
     trusted-public-keys = [

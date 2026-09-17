@@ -24,7 +24,6 @@
   "megasync"
   "mongodb"
   "mongodb-compass"
-  "n8n"
   "nosql-workbench"
   "nrfutil"
   "obsidian"
