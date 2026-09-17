@@ -5,11 +5,11 @@
 }:
 buildNpmPackage rec {
   pname = "acpx";
-  version = "0.13.0";
+  version = "0.15.1";
 
   src = fetchurl {
     url = "https://registry.npmjs.org/acpx/-/acpx-${version}.tgz";
-    hash = "sha256-Np1NHsSfq+KwP8HmJC8hrKh/kHaCNsAk5jDnR9GCcI0=";
+    hash = "sha256-kEr3okZgj4loE/jsoMuveplVW4I0s+BdIjV/LVDVg1c=";
   };
 
   sourceRoot = "package";
@@ -18,7 +18,7 @@ buildNpmPackage rec {
     cp ${./package-lock.json} package-lock.json
   '';
 
-  npmDepsHash = "sha256-wLg5v3H6mtjGgOsf3LfB4HDzVqJEaMAV2iwJQtaIXAY=";
+  npmDepsHash = "sha256-WHqIA5p4V33tb86Kb8LfrMEJKUkx4lvF7Rh3YAWdKKY=";
   npmDepsFetcherVersion = 2;
   dontNpmBuild = true;
 
