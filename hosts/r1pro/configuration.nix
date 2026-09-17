@@ -114,6 +114,106 @@ in {
   };
 
   ########################################
+  # ProtonVPN network namespace (qBittorrent)
+  ########################################
+  # qBittorrent runs inside a dedicated network namespace whose only routes
+  # are the WireGuard tunnel (protonvpn0) plus a /30 veth to the host for
+  # nginx. Fails closed.
+
+  sops.secrets.protonvpn-wg-key = {
+    restartUnits = ["protonvpn.service"];
+  };
+
+  # Resolver for the qBittorrent namespace: Proton's DNS is only reachable
+  # through the tunnel, so lookups also fail closed when it is down.
+  environment.etc."qbittorrent/resolv.conf".text = ''
+    nameserver 10.2.0.1
+  '';
+
+  systemd.services.protonvpn = {
+    description = "ProtonVPN wireguard network namespace for qBittorrent";
+    after = ["network.target" "sops-nix.service"];
+    before = ["qbittorrent.service"];
+    wantedBy = ["multi-user.target"];
+    path = with pkgs; [
+      iproute2
+      wireguard-tools
+    ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = pkgs.writeShellScript "protonvpn-start" ''
+        set -euo pipefail
+        NS=protonvpn
+        IFACE=protonvpn0
+
+        # Idempotent, but only when the namespace is fully configured (tunnel
+        # + veth present). A partial namespace left by an earlier failed start
+        # is torn down and rebuilt instead of being silently reused.
+        if [ -e "/run/netns/$NS" ]; then
+          if ip -n "$NS" link show "$IFACE" >/dev/null 2>&1 \
+            && ip -n "$NS" link show veth-protonvpn0 >/dev/null 2>&1; then
+            exit 0
+          fi
+          ip netns del "$NS"
+        fi
+
+        # Namespace with only loopback up.
+        ip netns add "$NS"
+        ip -n "$NS" link set lo up
+
+        # Create the wireguard interface in the root namespace (its UDP
+        # socket must reach the endpoint via the physical uplink), then
+        # move it into the namespace; the socket stays in the root ns.
+        ip link add "$IFACE" type wireguard
+        wg set "$IFACE" private-key ${config.sops.secrets.protonvpn-wg-key.path}
+        wg set "$IFACE" peer 9E5iMJSAG7GKxLXJ+AmiE66vfxx41V7aknXCHmvbqlk= \
+          endpoint 79.135.104.99:51820 \
+          allowed-ips 0.0.0.0/0,::/0 \
+          persistent-keepalive 25
+        ip link set "$IFACE" netns "$NS"
+
+        # Tunnel addressing. Lower MTU (e.g. 1350) if transfers stall.
+        ip -n "$NS" addr add 10.2.0.2/32 dev "$IFACE"
+        ip -n "$NS" link set "$IFACE" mtu 1420 up
+
+        # /30 veth to the host: the only non-tunnel route inside the
+        # namespace, used by nginx to reach the WebUI.
+        ip link add veth-protonvpn type veth peer name veth-protonvpn0 netns "$NS"
+        ip addr add 192.168.200.1/30 dev veth-protonvpn
+        ip link set veth-protonvpn up
+        ip -n "$NS" addr add 192.168.200.2/30 dev veth-protonvpn0
+        ip -n "$NS" link set veth-protonvpn0 up
+
+        # The namespace's only default route: straight into the tunnel.
+        ip -n "$NS" route add default dev "$IFACE"
+      '';
+      ExecStop = pkgs.writeShellScript "protonvpn-stop" ''
+        set -euo pipefail
+        ip link del veth-protonvpn 2>/dev/null || true
+        ip netns del protonvpn 2>/dev/null || true
+      '';
+    };
+  };
+
+  # Run qBittorrent inside the namespace. The filesystem stays shared, so
+  # the module's profile paths keep working unchanged.
+  systemd.services.qbittorrent = {
+    bindsTo = ["protonvpn.service"];
+    after = ["protonvpn.service"];
+    serviceConfig = {
+      NetworkNamespacePath = "/run/netns/protonvpn";
+      # A user namespace would prevent joining the root-owned network
+      # namespace; every other sandbox option from the module still applies.
+      PrivateUsers = lib.mkForce false;
+      # No systemd-resolved stub inside the namespace; point glibc at
+      # Proton's resolver via the tunnel instead.
+      TemporaryFileSystem = ["/etc/resolv.conf"];
+      BindReadOnlyPaths = ["/etc/qbittorrent/resolv.conf:/etc/resolv.conf"];
+    };
+  };
+
+  ########################################
   # Services
   ########################################
   # Rebuild from the flake source captured at deploy time (self.outPath)
@@ -361,7 +461,9 @@ in {
       # LAN-only TLS vhost behind the *.home.macdermid.ca wildcard cert, gated by
       # the `internal` geo-map (404 to anyone off the LAN/tailnet). Add a service
       # with:  "<svc>.home.macdermid.ca" = proxywss <port>;
-      proxywss = port: {
+      # Backend may be a local address other than loopback, e.g. the
+      # protonvpn netns veth for qBittorrent (192.168.200.2).
+      proxywssAddr = addr: port: {
         onlySSL = true;
         useACMEHost = "home.macdermid.ca";
         http2 = true;
@@ -371,10 +473,11 @@ in {
           }
         '';
         locations."/" = {
-          proxyPass = "http://127.0.0.1:${toString port}";
+          proxyPass = "http://${addr}:${toString port}";
           proxyWebsockets = true;
         };
       };
+      proxywss = proxywssAddr "127.0.0.1";
       # Same as proxywss but for an https backend (e.g. UniFi on :8443 with a
       # self-signed cert; nginx trusts the upstream since proxy_ssl_verify is off).
       proxytls = port: {
@@ -393,6 +496,7 @@ in {
       };
     in {
       "jellyfin.home.macdermid.ca" = proxywss 8096;
+      "qbittorrent.home.macdermid.ca" = proxywssAddr "192.168.200.2" 59933;
     };
   };
 
@@ -447,10 +551,17 @@ in {
   };
 
   services.qbittorrent = {
+    # Runs inside the protonvpn network namespace (see the ProtonVPN section
+    # above); all torrent traffic + DNS goes through the tunnel or fails.
     enable = true;
     group = "media";
     webuiPort = 59933;
   };
+  # The NixOS qbittorrent module hardcodes a 30min shutdown timeout
+  # (TimeoutStopSec=1800), which stalls reboots when the client lingers on
+  # shutdown. Cap it instead. mkForce is required because the module sets
+  # the value at default priority.
+  systemd.services.qbittorrent.serviceConfig.TimeoutStopSec = lib.mkForce "30s";
   services.samba = {
     enable = true;
     openFirewall = true;
@@ -587,5 +698,6 @@ in {
     restic
     ripgrep
     tmux
+    wireguard-tools
   ];
 }
