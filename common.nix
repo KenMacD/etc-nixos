@@ -103,8 +103,6 @@ with lib; {
   boot.loader.systemd-boot.enable = mkDefault true;
 
   boot.kernelPackages = mkOverride (lib.modules.defaultOrderPriority - 1) pkgs.linuxPackages_7_2;
-  security.unprivilegedUsernsClone = mkDefault config.virtualisation.containers.enable;
-
   boot.kernel.sysctl = {};
 
   # Limit previous generations to avoid /boot filling up
