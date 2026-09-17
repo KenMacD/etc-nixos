@@ -16,7 +16,6 @@
 
     # K8 clients
     k9s
-    kdash
     lens
     seabird
   ];
