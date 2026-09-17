@@ -213,6 +213,68 @@ in {
     };
   };
 
+  # NAT-PMP: lease a forwarded port from Proton's gateway and keep
+  # qBittorrent's listening port synced to it so inbound peers work. Runs
+  # inside the namespace: natpmpc reaches 10.2.0.1 through the tunnel and
+  # the WebUI API call stays on the /30 veth (auth-bypassed via
+  # WebUI\AuthSubnetWhitelist). Proton grants a short lease, so the loop
+  # renews every 45s; on failure it retries without touching the port.
+  systemd.services.protonvpn-portfwd = {
+    description = "ProtonVPN NAT-PMP port lease for qBittorrent";
+    bindsTo = ["protonvpn.service"];
+    partOf = ["qbittorrent.service"];
+    after = ["protonvpn.service" "qbittorrent.service"];
+    wantedBy = ["multi-user.target"];
+    path = with pkgs; [
+      curl
+      gawk
+      libnatpmp
+    ];
+    serviceConfig = {
+      Type = "simple";
+      NetworkNamespacePath = "/run/netns/protonvpn";
+      Restart = "on-failure";
+      RestartSec = "15s";
+      NoNewPrivileges = true;
+      DynamicUser = true;
+      ProtectSystem = "strict";
+      ProtectHome = true;
+      PrivateTmp = true;
+      RestrictAddressFamilies = [
+        "AF_INET"
+        "AF_INET6"
+      ];
+      ExecStart = pkgs.writeShellScript "protonvpn-portfwd" ''
+        set -euo pipefail
+        GW=10.2.0.1
+        WEBUI=http://192.168.200.2:59933
+        last=""
+
+        while true; do
+          port=""
+          if port=$(natpmpc -a 1 0 udp 120 -g "$GW" \
+                    | awk '/Mapped public port/ {print $4; exit}') \
+            && [ -n "$port" ] \
+            && natpmpc -a 1 0 tcp 120 -g "$GW" >/dev/null; then
+            if [ "$port" != "$last" ]; then
+              echo "protonvpn: forwarded port $port"
+              if curl -fsS -o /dev/null \
+                --data-urlencode "json={\"listen_port\":$port}" \
+                "$WEBUI/api/v2/app/setPreferences"; then
+                last="$port"
+              else
+                echo "protonvpn: could not update qBittorrent; will retry" >&2
+              fi
+            fi
+          else
+            echo "protonvpn: NAT-PMP renewal failed; retrying" >&2
+          fi
+          sleep 45
+        done
+      '';
+    };
+  };
+
   ########################################
   # Services
   ########################################
