@@ -357,6 +357,40 @@ in {
   };
   services.n8n = {
     enable = true;
+    environment = {
+      N8N_LICENSE_AUTO_RENEW_ENABLED = "false";
+      N8N_ENTERPRISE_ENABLED = "true";
+
+      N8N_DIAGNOSTICS_ENABLED = "false";
+      N8N_VERSION_NOTIFICATIONS_ENABLED = "false";
+      N8N_EDITOR_BASE_URL = "https://n8n.macdermid.ca";
+
+      EXTERNAL_FRONTEND_HOOKS_URLS = "";
+      N8N_DIAGNOSTICS_CONFIG_FRONTEND = "";
+      N8N_DIAGNOSTICS_CONFIG_BACKEND = "";
+
+      # Allow larger payloads for merging RSS data
+      N8N_PAYLOAD_SIZE_MAX = "64";
+
+      # Testing:
+      # N8N_RUNNERS_ENABLED = "true";
+      # N8N_RUNNERS_MODE = "internal";
+
+      N8N_LOG_LEVEL = "debug";
+      # N8N_RUNNERS_TASK_REQUEST_TIMEOUT = "300";
+      N8N_RUNNERS_LAUNCHER_LOG_LEVEL = "debug";
+      CODE_ENABLE_STDOUT = "true";
+      # N8N_RUNNERS_MODE = "internal";
+      # N8N_RUNNERS_CHILD_PROCESS = "true";
+      # N8N_CONCURRENCY_PRODUCTION_LIMIT = "1";
+      # Force PATH so it overrides the default
+      # PATH = lib.mkForce "${pkgs.nodejs}/bin:${pkgs.n8n}/bin:/run/wrappers/bin:/usr/bin";
+
+      # TMP https://github.com/NixOS/nixpkgs/pull/494127
+      N8N_RUNNERS_AUTH_TOKEN_FILE = lib.mkForce null;
+
+      N8N_RUNNERS_ENABLED = "true";
+      N8N_RUNNERS_MODE = "internal";
   };
   services.nordvpn-namespaced = {
     enable = true;
