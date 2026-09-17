@@ -60,6 +60,8 @@ in {
     owner = "kanidm";
     group = "kanidm";
   };
+  sops.secrets.restic-immich = {};
+  sops.secrets.restic-postgresql = {};
 
   ########################################
   # Nix
