@@ -64,9 +64,15 @@ in {
       environmentFiles = [
         config.sops.secrets.litellm.path
       ];
-#      volumes = [
-#        "${./litellm_license.py}:/app/.venv/lib/python3.13/site-packages/litellm/proxy/auth/litellm_license.py:ro"
-#      ];
+      # Overlay the zai transformer so reasoning_effort works on DB-added
+      # GLM models (native reasoning_effort + none → thinking.disabled bridge).
+      # Upstream support: https://github.com/BerriAI/litellm/pull/40954
+      volumes = [
+        "${./zai-transformation.py}:/app/.venv/lib/python3.13/site-packages/litellm/llms/zai/chat/transformation.py:ro"
+      ];
+      #      volumes = [
+      #        "${./litellm_license.py}:/app/.venv/lib/python3.13/site-packages/litellm/proxy/auth/litellm_license.py:ro"
+      #      ];
     };
   };
 
