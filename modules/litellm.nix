@@ -3,8 +3,12 @@
   pkgs,
   ...
 }: let
-  version = "v1.100.0-rc.1";
-  imageDigest = "sha256:b6660ae36cf351b68dd5e47ef80f40f186095dbd7ae0bff0d3102f6018766aee";
+  # >= 1.103.0-rc.1 loads every general_settings key from LiteLLM_Config
+  # (the SettingsStore apply); 1.102.x whitelists a few keys and ignores
+  # disable_env_credential_login set via the UI/API
+  version = "v1.103.0-rc.1";
+  # crane digest 'ghcr.io/berriai/litellm-non_root:v1.103.0-rc.1'
+  imageDigest = "sha256:e6f99146fb78d1a7a478e04d14b5432d911705a00392f2c3f21f9c450dbffa21";
   dbuser = "litellm";
   dbname = "litellm";
   ociBackend = config.virtualisation.oci-containers.backend;
@@ -60,9 +64,9 @@ in {
       environmentFiles = [
         config.sops.secrets.litellm.path
       ];
-      volumes = [
-        "${./litellm_license.py}:/app/.venv/lib/python3.13/site-packages/litellm/proxy/auth/litellm_license.py:ro"
-      ];
+#      volumes = [
+#        "${./litellm_license.py}:/app/.venv/lib/python3.13/site-packages/litellm/proxy/auth/litellm_license.py:ro"
+#      ];
     };
   };
 
