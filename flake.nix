@@ -235,17 +235,6 @@
           sops-nix.nixosModules.sops
         ];
       };
-      hz = nixpkgs.lib.nixosSystem {
-        inherit system;
-        specialArgs = {inherit lib self system;};
-        modules = [
-          common
-          ./hosts/hz/configuration.nix
-          ./hosts/hz/hardware.nix
-          disko.nixosModules.disko
-          sops-nix.nixosModules.sops
-        ];
-      };
       ke = nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = {inherit lib self system;};
