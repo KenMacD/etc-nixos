@@ -10,7 +10,7 @@ kenny). The config lives in `hosts/r1pro/configuration.nix` — search for
 ## Architecture
 
 ```
-internet ──► Proton server (79.135.104.99:51820)
+internet ──► Proton server (79.135.104.98:51820)
                  │ NAT-PMP: forwards public port → tunnel
                  ▼
       root namespace                protonvpn namespace
@@ -61,7 +61,7 @@ structural and survives any routing-table changes outside the namespace.
 | Thing | Value |
 |---|---|
 | Namespace / interfaces | ns `protonvpn`; wg `protonvpn0`; veth `veth-protonvpn` (host .1) / `veth-protonvpn0` (ns .2) |
-| Tunnel | Proton wg endpoint 79.135.104.99:51820, address 10.2.0.2/32, gateway/DNS 10.2.0.1 |
+| Tunnel | Proton wg endpoint 79.135.104.98:51820, address 10.2.0.2/32, gateway/DNS 10.2.0.1 |
 | Private key | sops secret `protonvpn-wg-key` in `hosts/r1pro/secrets.yaml` (sops-nix fails the **build** if the key is missing) |
 | WebUI | qBittorrent binds 192.168.200.2:59933 (NOT loopback); nginx vhost `qbittorrent.home.macdermid.ca` proxies to it |
 | App-managed config | `/var/lib/qBittorrent/qBittorrent/config/qBittorrent.conf` — qBittorrent rewrites it on exit; **stop the service before editing** |
@@ -181,6 +181,34 @@ on r1pro).
 | protonvpn.service fails with "add netns: file exists" | Stale namespace — `sudo ip netns del protonvpn` and restart; the start script also self-heals this |
 | Handshakes OK but transfers stall | Lower MTU (e.g. 1420 → 1350) in the `protonvpn-start` script |
 | Forwarded port changed | Proton re-assigns per tunnel session; the updater syncs qBittorrent within ~45s |
+
+## Rotating the WireGuard key (protonvpn-wg-key)
+
+The secret is only the client private key; the server peer pubkey and
+endpoint are hardcoded in `protonvpn-start`. Each ProtonVPN dashboard
+"WireGuard configuration" is one keypair bound to one server.
+
+1. <https://account.protonvpn.com> → Downloads → WireGuard configuration →
+   **Create**, platform GNU/Linux, **same server** as the current config
+   the same server as the current config (endpoint as set in
+   `protonvpn-start`) → download the `.conf`.
+   - Different server instead? Also update `endpoint` and the peer
+     `PublicKey` in `protonvpn-start` from the new `.conf` (tunnel address
+     `10.2.0.2/32` and DNS `10.2.0.1` are Proton defaults, unchanged).
+2. From the `.conf`, copy `PrivateKey` into the secret:
+   `sops hosts/r1pro/secrets.yaml` → replace the `protonvpn-wg-key:` value
+   (raw base64, single line).
+3. **Delete the old configuration** in the Proton dashboard — that is what
+   revokes the burned key.
+4. `just deploy r1pro`. The secret has `restartUnits = ["protonvpn.service"]`,
+   so sops-nix restarts it; ExecStop tears the netns down, so ExecStart
+   re-reads the new key (the idempotency early-exit only triggers when the
+   netns is intact). `qbittorrent.service` + `protonvpn-portfwd.service`
+   `bindsTo` protonvpn and do NOT auto-restart:
+   `sudo systemctl start qbittorrent protonvpn-portfwd`
+5. Verify: `sudo ip netns exec protonvpn wg show protonvpn0` (handshake +
+   new public key), `sudo ip netns exec protonvpn curl -s https://api.ipify.org`
+   (VPN exit IP), forwarded port re-leased in protonvpn-portfwd logs.
 
 ## Related files
 
