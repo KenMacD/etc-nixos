@@ -25,6 +25,7 @@ in {
     ./networkd.nix
 
     ./../../modules/litellm.nix
+    ./../../modules/paperclip.nix
   ];
 
   systemd.services."systemd-networkd-wait-online".enable = lib.mkForce false;
@@ -480,6 +481,20 @@ in {
       Restart = "on-failure";
       ExecStartPre = "${lib.getExe waitTailscale}";
       ExecStart = "${pkgs.tailscale}/bin/tailscale serve --service=svc:immich --https=443 127.0.0.1:2283";
+    };
+  };
+  # Paperclip (podman container from modules/paperclip.nix, bound to
+  # 127.0.0.1:3100), served on the tailnet via tailscale serve.
+  systemd.services.tailscale-serve-paperclip = {
+    description = "Tailscale serve Paperclip";
+    wantedBy = ["multi-user.target"];
+    after = ["tailscaled.service" "podman-paperclip.service"];
+    wants = ["tailscaled.service"];
+    serviceConfig = {
+      RestartSec = 10;
+      Restart = "on-failure";
+      ExecStartPre = "${lib.getExe waitTailscale}";
+      ExecStart = "${pkgs.tailscale}/bin/tailscale serve --service=svc:paperclip --https=443 127.0.0.1:3100";
     };
   };
 

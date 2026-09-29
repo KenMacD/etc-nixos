@@ -60,10 +60,21 @@ in {
   virtualisation.oci-containers.containers = {
     litellm = {
       image = "ghcr.io/berriai/litellm-non_root:${version}@${imageDigest}";
-      ports = ["127.0.0.1:3005:4000"];
+      # 127.0.0.1 for host + tailscale-serve; 10.88.0.1 (podman0 gateway) so
+      # other containers (e.g. paperclip via host.containers.internal) can
+      # reach the API — loopback-only bindings are unreachable from the bridge.
+      ports = [
+        "127.0.0.1:3005:4000"
+        "10.88.0.1:3005:4000"
+      ];
       environmentFiles = [
         config.sops.secrets.litellm.path
       ];
+      environment = {
+        # Harnesses (pi/opencode) send OpenAI-style params (max_completion_tokens,
+        # store) that non-OpenAI upstreams reject; let the gateway drop them.
+        LITELLM_DROP_PARAMS = "True";
+      };
       # Overlay the zai transformer so reasoning_effort works on DB-added
       # GLM models (native reasoning_effort + none → thinking.disabled bridge).
       # Upstream support: https://github.com/BerriAI/litellm/pull/40954
