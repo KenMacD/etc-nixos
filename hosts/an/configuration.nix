@@ -269,7 +269,6 @@
     # General
     aspell
     aspellDicts.en
-    aspellDicts.en-computers
     chromium
     digikam
     exiftool

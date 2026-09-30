@@ -560,7 +560,6 @@ in {
     # General
     aspell
     aspellDicts.en
-    aspellDicts.en-computers
     bc
     brightnessctl
     (ungoogled-chromium.override {

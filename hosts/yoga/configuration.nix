@@ -518,7 +518,6 @@ in {
   environment.systemPackages = with pkgs; [
     aspell
     aspellDicts.en
-    aspellDicts.en-computers
     bcachefs-tools
     btrfs-progs
     dhcpcd
