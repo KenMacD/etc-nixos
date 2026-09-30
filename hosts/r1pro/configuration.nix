@@ -368,6 +368,33 @@ in {
     };
   };
   services.nzbget.enable = true;
+  systemd.services.nzbget.serviceConfig = {
+    RestrictNamespaces = true;
+    RestrictRealtime = true;
+    RestrictAddressFamilies = ["AF_INET"]; # "AF_INET" "AF_INET6" "AF_NETLINK" "AF_UNIX"];
+    RestrictSUIDSGID = true;
+    LockPersonality = true;
+    MemoryDenyWriteExecute = true;
+    ProtectClock = true;
+    ProtectHostname = true;
+    RemoveIPC = true;
+    #    ProtectProc = "invisible";
+    #    ProcSubset = "pid";
+
+    PrivateTmp = true;
+    PrivateDevices = true;
+    CapabilityBoundingSet = [""];
+    #    ProtectHome = true;
+
+    #    ProtectSystem = "strict"; issues: reads /proc cpuinfo
+    #    ReadWritePaths = [ "/mnt/media/" ];
+
+    SystemCallArchitectures = "native";
+    SystemCallFilter = [
+      "@system-service"
+      "~@privileged"
+    ];
+  };
   systemd.services.nzbget.path = with pkgs; [
     unrar
     uv
@@ -572,6 +599,7 @@ in {
       };
     in {
       "jellyfin.home.macdermid.ca" = proxywss 8096;
+      "nzbget.home.macdermid.ca" = proxywss 6789;
       "qbittorrent.home.macdermid.ca" = proxywssAddr "192.168.200.2" 59933;
     };
   };
