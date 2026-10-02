@@ -697,7 +697,6 @@ in {
     enable = true;
     openFirewall = true;
   };
-  services.zerotier-home.enable = true;
   virtualisation.oci-containers.backend = "podman";
   virtualisation.oci-containers.containers.bigagi = {
     image = "localhost/bigagi:stable";

@@ -18,7 +18,5 @@
     ./sway-desktop.nix # My sway desktop configuration
 
     ./voxinput.nix # Voice to text service
-
-    ./zerotier.nix
   ];
 }

@@ -350,8 +350,6 @@ in {
     };
   };
 
-  services.zerotier-home.enable = true;
-
   services.cloudflared = {
     enable = true;
     tunnels = {
