@@ -108,6 +108,7 @@ in {
     enable = true;
     package = pkgs.postgresql_18;
     authentication = ''
+      local all dbhub_user md5
       local all all ident map=mapping
     '';
     identMap = ''
@@ -116,6 +117,15 @@ in {
       mapping postgres postgres
       mapping /^(.*)$  \1
     '';
+    # Role exists so the dbhub MCP server can connect locally; the password
+    # is intentionally not managed here. Set it manually once:
+    #   sudo -u postgres psql -c "ALTER ROLE dbhub_user PASSWORD '...'"
+    ensureUsers = [
+      {
+        name = "dbhub_user";
+        ensureClauses = { login = true; };
+      }
+    ];
   };
   services.printing = {
     enable = true;
