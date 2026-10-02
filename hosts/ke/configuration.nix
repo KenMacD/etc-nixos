@@ -34,6 +34,7 @@ in {
   # Secrets
   ########################################
   sops.defaultSopsFile = ./secrets.yaml;
+  sops.secrets.aurora-env = {};
   sops.secrets.restic-efi = {};
 
   ########################################
@@ -444,6 +445,58 @@ in {
     serviceConfig = {
       Type = "oneshot";
       ExecStart = "${pkgs.uv}/bin/uv cache prune";
+    };
+  };
+
+  # Systemd service and timer for aurora-notify to run every 15 minutes
+  systemd.timers."aurora-notify" = {
+    wantedBy = ["timers.target"];
+    timerConfig = {
+      OnCalendar = "*:0/15"; # Every 15 minutes
+      Persistent = true;
+    };
+  };
+
+  systemd.services."aurora-notify" = {
+    description = "Aurora Notify Service";
+    wantedBy = ["multi-user.target"];
+    serviceConfig = let
+      aurora = (builtins.getFlake "github:KenMacD/aurora-notify/851d4eafe88c0c07d969e92ed4935559ff45ecb8").packages.${pkgs.stdenv.hostPlatform.system}.default;
+    in {
+      Type = "oneshot";
+      ExecStart = "${aurora}/bin/aurora";
+      TimeoutStartSec = "2m";
+      EnvironmentFile = [
+        config.sops.secrets.aurora-env.path
+      ];
+      CacheDirectory = "aurora";
+      WorkingDirectory = "%C/aurora";
+
+      # Protections
+      CapabilityBoundingSet = [""];
+      DevicePolicy = "closed";
+      DynamicUser = true;
+      LockPersonality = true;
+      MemoryDenyWriteExecute = true;
+      PrivateDevices = true;
+      PrivateTmp = true;
+      PrivateUsers = true;
+      ProcSubset = "pid";
+      ProtectClock = true;
+      ProtectControlGroups = true;
+      ProtectHome = true;
+      ProtectHostname = true;
+      ProtectKernelLogs = true;
+      ProtectKernelModules = true;
+      ProtectKernelTunables = true;
+      ProtectProc = "invisible";
+      ProtectSystem = "strict";
+      RestrictAddressFamilies = ["AF_INET" "AF_INET6"];
+      RestrictNamespaces = true;
+      RestrictRealtime = true;
+      SystemCallArchitectures = "native";
+      SystemCallFilter = ["~@privileged"];
+      UMask = "0077";
     };
   };
 
