@@ -168,6 +168,7 @@ in {
   services.resolved = {
     enable = true;
   };
+  services.tailscale.enable = true;
 
   # Make resolv.conf a direct symlink
   # Workaround https://github.com/NixOS/nixpkgs/issues/231191
