@@ -17,7 +17,7 @@ in {
     ./emacs.nix
     ./firewall.nix
     ./mitmproxy.nix
-    ./opensnitch.nix
+    # TODO: testing nftables for r1pro ./opensnitch.nix
     ./re.nix
     ./sboot.nix
     ./virt.nix
@@ -167,8 +167,24 @@ in {
 
   services.resolved = {
     enable = true;
+    # multicastDNS defaults to 'yes', so set on link if needed
   };
   services.tailscale.enable = true;
+
+  networking.nftables.enable = true;
+  networking.firewall.filterForward = true;
+  # podman0 -> podman* work?
+  # Test DNS in rootless podman networks fix
+  networking.firewall.extraForwardRules = ''
+    tcp dport 53 accept
+    udp dport 53 accept
+    iifname "virbr0" ip daddr 192.168.2.0/24 reject
+    iifname "openclaw-bridge" ip daddr 192.168.2.0/24 reject
+    iifname "podman*" accept
+  '';
+  systemd.services.tailscaled.serviceConfig.Environment = [
+    "TS_DEBUG_FIREWALL_MODE=auto" # nftables correctly identified
+  ];
 
   # Make resolv.conf a direct symlink
   # Workaround https://github.com/NixOS/nixpkgs/issues/231191
