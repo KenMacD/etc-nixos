@@ -29,11 +29,6 @@
   inputs.flake-parts = { # Used for follows
     url = "github:hercules-ci/flake-parts";
   };
-  # Include QRookie
-  inputs.glaumar_repo = {
-    url = "github:glaumar/nur";
-    inputs.nixpkgs.follows = "nixpkgs";
-  };
   inputs.home-manager = {
     url = "github:nix-community/home-manager";
     inputs.nixpkgs.follows = "nixpkgs";
@@ -243,10 +238,6 @@
           ({...}: {
             nixpkgs.overlays = [
               # (import ./overlays/sway-dbg.nix)
-              (final: prev: {
-                glaumar_repo = inputs.glaumar_repo.packages."${prev.system}";
-              })
-
               nix-vscode-extensions.overlays.default
               (import ./overlays/testing.nix)
               (import ./overlays/broken.nix)
