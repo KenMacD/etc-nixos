@@ -255,6 +255,22 @@ in {
     enable = true;
     package = pkgs.wireshark; # Install gui pkg
   };
+  programs.firejail = {
+    enable = true;
+    #    wrappedBinaries = {
+    #      vscode = {
+    #
+    #        # TODO: map exe to code-with-entension, how?
+    #        # Map profile to chromium
+    #        executable = "${lib.getBin pkgs.vscode}/bin/code";
+    #        profile = "${pkgs.firejail}/etc/firejail/code.profile";
+    #    };
+    #    };
+  };
+
+  environment.etc."firejail/code.local".text = ''
+    include electron-common-hardened.inc.profile
+  '';
   gtk.iconCache.enable = true;
   xdg.icons.enable = true;
   xdg.portal = {
