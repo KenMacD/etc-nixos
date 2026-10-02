@@ -500,6 +500,27 @@ in {
     };
   };
 
+  # Workaround: rootless podman can latch a broken default userns idmap
+  # (identity-only, no subuid range) if it starts before /etc/subuid is
+  # readable. Every new container inherits it until `podman system migrate`
+  # recomputes it. Run migrate at login, before anything can create containers
+  # (podman-restart.service, podman-desktop); it's disruptive to running
+  # containers but harmless when none exist yet.
+  # Check: `podman unshare cat /proc/self/uid_map` should show a subuid range.
+  # Candidate for removal if that holds on a fresh boot without this unit.
+  systemd.user.services."podman-migrate-idmap" = {
+    description = "Recompute podman userns idmap from /etc/subuid (startup-race workaround)";
+    after = ["podman.socket"];
+    before = ["podman-restart.service"];
+    wants = ["podman.socket"];
+    wantedBy = ["default.target"];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.podman}/bin/podman system migrate";
+      RemainAfterExit = true;
+    };
+  };
+
   ########################################
   # Fonts
   ########################################
