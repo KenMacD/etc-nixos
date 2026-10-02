@@ -269,6 +269,7 @@ in {
   # Services
   ########################################
   services = {
+    angrr.enable = true;
     flatpak.enable = true;
     fprintd = {
       enable = true;
