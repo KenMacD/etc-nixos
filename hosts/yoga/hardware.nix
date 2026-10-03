@@ -43,51 +43,6 @@
     fsType = "vfat";
   };
 
-  #  fileSystems."/run/media/black" = {
-  #    device = "/dev/disk/by-uuid/779defff-0c31-4144-9cc7-840a17f7bdb6";
-  #    fsType = "btrfs";
-  #    options = [
-  #      "noauto"
-  #      "nofail"
-  #      "subvolid=0"
-  #      "x-systemd.automount"
-  #      "x-systemd.device-timeout=1ms"
-  #      "x-systemd.idle-timout=5m"
-  #    ];
-  #  };
-
-  fileSystems."/run/media/silver" = {
-    device = "/dev/disk/by-uuid/1a5da77a-2086-4ca8-8f36-836d956b7035";
-    fsType = "btrfs";
-    options = [
-      "noauto"
-      "nofail"
-      "subvolid=0"
-      "space_cache=v2"
-      "x-systemd.automount"
-      "x-systemd.device-timeout=1ms"
-      "x-systemd.idle-timout=5m"
-    ];
-  };
-
-  fileSystems."/mnt/easy" = {
-    device = "/dev/disk/by-uuid/fd308d96-c40d-4eab-b9b4-4440390cb27f";
-    fsType = "bcachefs";
-    options = [
-      "fix_errors"
-      "x-systemd.mount-timeout=55m" # NB: 1h didn't work... odd
-    ];
-  };
-
-  fileSystems."/mnt/multimedia" = {
-    depends = [
-      "/mnt/easy"
-    ];
-    device = "/mnt/easy/multimedia";
-    fsType = "none";
-    options = ["bind"];
-  };
-
   swapDevices = [
     {device = "/dev/disk/by-uuid/d32bc8af-e3e6-4779-b084-eddb41415b8a";}
   ];
