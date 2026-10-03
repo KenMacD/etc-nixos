@@ -97,6 +97,10 @@ in {
     '';
 
     programs.waybar.enable = true;
+    # The waybar user unit starts before the login shell env is imported, so
+    # its PATH lacks system bins; custom modules that shell out (jq,
+    # cclimits, ...) fail with "command not found".
+    systemd.user.services.waybar.environment.PATH = lib.mkForce "/run/wrappers/bin:/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin";
     programs.uwsm.enable = true; # sets graphical-session.target
     programs.uwsm.waylandCompositors = {};
     services.blueman.enable = true;
