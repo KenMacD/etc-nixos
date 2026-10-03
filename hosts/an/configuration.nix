@@ -269,6 +269,7 @@
     # General
     aspell
     aspellDicts.en
+    censor
     chromium
     digikam
     exiftool
