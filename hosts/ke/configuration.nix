@@ -261,6 +261,54 @@ in {
     "ta" = "task add rc.context=none";
   };
   programs.sway-desktop.enable = true;
+
+  # Set shikane config for office Lenovo 40AY dock (2x Dell P2418D).
+  home-manager.users.kenny = {
+    xdg.configFile."shikane/config.toml".text = ''
+      [[profile]]
+      name = "office"
+
+      [[profile.output]]
+      enable = true
+      search = ["m=DELL P2418D", "s=29J0P92D0CCT", "v=Dell Inc."]
+      mode = "2560x1440@59.951Hz"
+      position = "2560,0"
+      scale = 1.0
+      transform = "normal"
+      adaptive_sync = false
+
+      [[profile.output]]
+      enable = true
+      search = ["m=DELL P2418D", "s=29J0P92D0XYT", "v=Dell Inc."]
+      mode = "2560x1440@59.951Hz"
+      position = "0,0"
+      scale = 1.0
+      transform = "normal"
+      adaptive_sync = false
+
+      [[profile.output]]
+      enable = true
+      search = "n=eDP-1"
+      mode = "1920x1200@60.003Hz"
+      position = "1600,1440"
+      scale = 1.0
+      transform = "normal"
+      adaptive_sync = false
+
+      [[profile]]
+      name = "laptop"
+
+      [[profile.output]]
+      enable = true
+      search = "n=eDP-1"
+      mode = "1920x1200@60.003Hz"
+      position = "0,0"
+      scale = 1.0
+      transform = "normal"
+      adaptive_sync = false
+    '';
+  };
+
   programs.wireshark = {
     enable = true;
     package = pkgs.wireshark; # Install gui pkg
