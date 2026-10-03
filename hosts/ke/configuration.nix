@@ -802,6 +802,7 @@ in {
     # Video
     dash-mpd-cli
     ffmpeg
+    freetube
     intel-gpu-tools
     mpv
     v4l-utils
@@ -847,6 +848,7 @@ in {
 
     # Nix
     alejandra # Nix formatter
+    nix-auth.default
     nix-init # Generate Nix packages from URLs with hash prefetching
     nix-tree
     nix-update
@@ -959,6 +961,7 @@ in {
     gh
     gnumake
     hotspot
+    jsongrep # jq alternative
     jq
     just
     llvm

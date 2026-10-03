@@ -56,6 +56,7 @@
     inputs.flake-compat.follows = "flake-compat";
     inputs.nixpkgs.follows = "nixpkgs";
   };
+  inputs.nix-auth.url = "github:numtide/nix-auth";
   inputs.nixos-generators = {
     url = "github:nix-community/nixos-generators";
     inputs.nixpkgs.follows = "nixpkgs";
@@ -95,6 +96,7 @@
     microvm,
     nix-ai-tools,
     nix-ai-tools-3_11,
+    nix-auth,
     nix-alien,
     nix-bubblewrap,
     nix-vscode-extensions,
@@ -121,6 +123,7 @@
       nixpkgs.overlays = lib.mkBefore [
         (final: prev: {
           nix-ai-tools = nix-ai-tools.packages.${prev.stdenv.hostPlatform.system};
+          nix-auth = nix-auth.packages.${prev.stdenv.hostPlatform.system};
           nix-bubblewrap = nix-bubblewrap.packages.${prev.stdenv.hostPlatform.system}.default;
           nixos-needsreboot = nixos-needsreboot.packages.${prev.stdenv.hostPlatform.system}.default;
           wrapPackage = nix-bubblewrap.lib.${prev.stdenv.hostPlatform.system}.wrapPackage;
