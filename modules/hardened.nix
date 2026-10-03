@@ -5,6 +5,8 @@
   ...
 }:
 # Re: https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/profiles/hardened.nix
+# Re: https://github.com/xddxdd/nixos-config/blob/1569d12ba1e0eae19e2f3767cb50106c8a619d82/nixos/minimal-components/hardening.nix
+# TODO: add more from ^
 with lib; {
   # apparmor breaks at least miniflux, wait until more progress on https://discourse.nixos.org/t/apparmor-on-nixos-roadmap/57217
   security.apparmor.enable = mkDefault false;
