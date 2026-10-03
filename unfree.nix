@@ -18,7 +18,6 @@
   "ida-free"
   "intel-ocl"
   "j-link"
-  "lens-desktop"
   "libfprint-2-tod1-goodix"
   "lmstudio"
   "megasync"
