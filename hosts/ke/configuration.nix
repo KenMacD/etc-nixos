@@ -263,6 +263,7 @@ in {
   programs.sway-desktop.enable = true;
 
   # Set shikane config for office Lenovo 40AY dock (2x Dell P2418D).
+  # See hosts/ke/docs/displays-and-lid.md for the full story.
   home-manager.users.kenny = {
     xdg.configFile."shikane/config.toml".text = ''
       [[profile]]
