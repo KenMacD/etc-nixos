@@ -84,6 +84,13 @@ in {
 
   tvly = python3Packages.callPackage ./tvly.nix {};
 
+  vast-cli = let
+    # borb 3.0.4 in nixpkgs ships a stale disabledTestPaths glob
+    # ("tests/pdf/" no longer exists) that aborts its test phase; skip it.
+    borb = python3Packages.borb.overridePythonAttrs (_: {doCheck = false;});
+  in
+    python3Packages.callPackage ./vast-cli.nix {inherit borb;};
+
   windmill = callPackage ./windmill {};
 
   zcode-acp = callPackage ./zcode-acp.nix {

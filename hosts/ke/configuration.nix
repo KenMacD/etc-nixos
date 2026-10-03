@@ -1027,6 +1027,7 @@ in {
     tealdeer # tldr
 
     local.deptree
+    local.vast-cli # Vast.ai GPU cloud CLI
 
     xdg-desktop-portal-wlr
     imhex
