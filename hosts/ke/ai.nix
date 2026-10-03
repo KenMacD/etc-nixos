@@ -129,11 +129,14 @@ in {
     nix-ai-tools.crush
     nix-ai-tools.forgecode
     nix-ai-tools.droid
+    nix-ai-tools.dsh # Deepseek harness
     local.octofriend
     nix-ai-tools.opencode
     opencode-desktop
     nix-ai-tools.pi
     local.acpx # Headless ACP client to drive agents ($ acpx)
+    local.pi-acp # ACP adapter for pi, used by acpx's `pi` agent (~/.acpx/config.json)
+    local.zcode-acp
     nix-ai-tools.zcode
 
     # Support tools
@@ -141,6 +144,8 @@ in {
     argc
     nix-ai-tools.ck # Local first semantic and hybrid BM25 grep / search
     jq
+    nix-ai-tools.semble
+    skills
 
     # MCP
     local.alph-cli # Manage MCPs
@@ -157,6 +162,13 @@ in {
     whisper-cpp-vulkan
 
     # Testing
+    local.packnplay
+    (builtins.getFlake "github:mbailey/voicemode/99fac04667559a7f68dd32fd11cc63e3ff084a2d").packages.${pkgs.stdenv.hostPlatform.system}.default
+    nix-ai-tools.qmd # to try, mini-cli search engine
+    nix-ai-tools.localgpt # open-claw-like in rust
     nix-ai-tools.agentsview
+    nix-ai-tools.paseo-desktop
+    repomix # Testing - pack repo to a single ai file
+    warp-terminal
   ];
 }

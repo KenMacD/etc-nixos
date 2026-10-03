@@ -1,6 +1,9 @@
 {
   pkgs,
   nixpkgs,
+  nix-ai-tools,
+  nix-ai-tools-3_11,
+  system,
 }: let
   inherit (pkgs) callPackage python3Packages;
   nodePackages = import ./node2nix/override.nix {
@@ -63,6 +66,10 @@ in {
 
   octofriend = callPackage ./octofriend.nix {};
 
+  packnplay = callPackage ./packnplay.nix {};
+
+  pi-acp = callPackage ./pi-acp {};
+
   playwright-mcp = callPackage ./playwright-mcp.nix {};
 
   pynzbget = python3Packages.callPackage ./pynzbget.nix {};
@@ -79,5 +86,10 @@ in {
 
   windmill = callPackage ./windmill {};
 
+  zcode-acp = callPackage ./zcode-acp.nix {
+    # zcode-acp v0.3.2 pins ZCode 3.11.2 via an embedded artifact hash that
+    # doctor re-verifies at runtime; move this pin up alongside that package.
+    zcode = nix-ai-tools-3_11.packages.${system}.zcode;
+  };
   ttok = python3Packages.callPackage ./ttok.nix {};
 }
