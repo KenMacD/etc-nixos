@@ -597,6 +597,7 @@ in {
     # ln -s /run/current-system/sw/share/X11/fonts ~/.local/share/fonts
     fontDir.enable = true;
     packages = with pkgs; [
+      departure-mono # Nice old-style
       dosis
       fira-code
       fira-code-symbols

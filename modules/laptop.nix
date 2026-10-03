@@ -27,6 +27,9 @@ in {
   };
 
   config = mkIf cfg.enable {
+    # Emoji, CJK + unicode fallback coverage for graphical hosts
+    fonts.enableDefaultPackages = true;
+
     # Battery protection: warn the user, then perform a clean poweroff at low
     # state-of-charge to protect the cells from deep-discharge degradation.
     # (percentageAction is the level at which criticalPowerAction is taken.)
