@@ -41,10 +41,6 @@
     # Make podman-compose the default compose provider
     containers = {
       enable = true;
-      storage.settings = {
-        storage.driver = "overlay";
-        storage.options.overlay.mount_program = "${pkgs.fuse-overlayfs}/bin/fuse-overlayfs";
-      };
       containersConf.settings = {
         containers = {
           pids_limit = 4096;
