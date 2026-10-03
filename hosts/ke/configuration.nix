@@ -36,6 +36,10 @@ in {
   sops.defaultSopsFile = ./secrets.yaml;
   sops.secrets.aurora-env = {};
   sops.secrets.restic-efi = {};
+  # Transcription vocabulary for the voxinput user service (ie VOXINPUT_PROMPT)
+  sops.secrets."voxinput-env" = {
+    owner = "kenny";
+  };
 
   ########################################
   # Nix
@@ -491,6 +495,11 @@ in {
   };
 
   zramSwap.enable = true;
+
+  # VOXINPUT_PROMPT comes from the sops-rendered voxinput-env file (see
+  # sops.secrets above); the vocab is kept out of the public repo.
+  systemd.user.services.voxinput.serviceConfig.EnvironmentFile =
+    config.sops.secrets."voxinput-env".path;
 
   systemd.user.timers."uv-cache-prune" = {
     wantedBy = ["timers.target"];
