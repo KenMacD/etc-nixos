@@ -40,6 +40,20 @@ in {
   sops.secrets."voxinput-env" = {
     owner = "kenny";
   };
+  # tailnet domain for the kanata rctl+ts shortcut
+  sops.secrets.tailscale-keys = {
+    sopsFile = ../../common.yaml;
+  };
+  sops.templates.kanata-tailscale = {
+    group = "input";
+    mode = "0440";
+    restartUnits = ["kanata-default.service"];
+    content = ''
+      (defseq tailscale (t s))
+      (deffakekeys
+        tailscale (macro ${config.sops.placeholder.tailscale-keys}))
+    '';
+  };
 
   ########################################
   # Nix
@@ -398,6 +412,9 @@ in {
 
               screenshot 634
             )
+
+            ;; The rctl+ts "type my tailnet domain"
+            (include "${config.sops.templates.kanata-tailscale.path}")
 
             (defsrc
               caps lsft rsft rctl)
