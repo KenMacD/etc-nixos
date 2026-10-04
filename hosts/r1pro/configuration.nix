@@ -788,6 +788,11 @@ in {
     services.sudo.rssh = true;
   };
 
+  # Passwordless sudo for the wheel group (kenny) so the pi SSH agent can run
+  # privileged diagnostics (e.g. reading PCI config space for ASPM state)
+  # without an interactive password.
+  security.sudo.wheelNeedsPassword = false;
+
   ########################################
   # Packages
   ########################################

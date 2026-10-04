@@ -650,6 +650,11 @@ in {
     Defaults  env_keep += "RESTIC_PASSWORD_FILE"
     Defaults  env_keep += "RESTIC_REPOSITORY"
   '';
+
+  # TODO(agents): passwordless sudo for automation (agents/scripts/automation).
+  # Chosen pattern (2026-10-03): wheelNeedsPassword = false everywhere.
+  # Consider a scoped allowlist or run0+polkit later.
+  security.sudo.wheelNeedsPassword = false;
   #  security.pam.services = {
   #    # login.u2fAuth = true;
   #    sudo.u2fAuth = true;

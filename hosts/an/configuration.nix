@@ -255,6 +255,9 @@
   ########################################
   # Security
   ########################################
+  # Passwordless sudo for wheel users (admin / agent access)
+  security.sudo.wheelNeedsPassword = false;
+
   security.tpm2 = {
     pkcs11.enable = true;
     tctiEnvironment.enable = true;

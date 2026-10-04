@@ -368,6 +368,8 @@ in {
     };
   };
 
+  # Passwordless sudo for wheel users (admin / agent access)
+  security.sudo.wheelNeedsPassword = false;
 
   services.cockpit = {
     enable = true;
