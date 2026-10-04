@@ -633,6 +633,7 @@ in {
     extraGroups = [
       "dialout"
       "networkmanager"
+      "wpa_supplicant"
       "video"
 
       "scanner"
