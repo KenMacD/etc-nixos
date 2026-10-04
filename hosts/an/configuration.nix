@@ -151,6 +151,13 @@
   };
 
   services.desktopManager.plasma6.enable = true;
+  # plasma6 enables programs.xwayland, whose package defaults to
+  # pkgs.xwayland.override { defaultFontPath = ... } when fonts.fontDir is
+  # enabled. That override is never in any binary cache, forcing a local
+  # xwayland rebuild on every nixpkgs bump. Use the stock cached build
+  # instead; modern apps resolve fonts via fontconfig, not the X core font
+  # path, so nothing in practice loses out.
+  programs.xwayland.package = pkgs.xwayland;
   services.displayManager.sddm.wayland.enable = true;
   services.displayManager.sddm.enable = true;
   services.libinput = {
