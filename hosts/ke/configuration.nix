@@ -611,7 +611,9 @@ in {
   # Fonts
   ########################################
   fonts = {
-    # ln -s /run/current-system/sw/share/X11/fonts ~/.local/share/fonts
+    # Verified empirically: flatpak remaps this farm into sandboxes
+    # (/run/host/font-dirs.xml). System apps read fonts.packages via
+    # fontconfig instead.
     fontDir.enable = true;
     packages = with pkgs; [
       departure-mono # Nice old-style
