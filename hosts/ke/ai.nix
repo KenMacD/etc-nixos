@@ -135,7 +135,7 @@ in {
     opencode-desktop
     nix-ai-tools.pi
     local.acpx # Headless ACP client to drive agents ($ acpx)
-    local.pi-acp # ACP adapter for pi, used by acpx's `pi` agent (~/.acpx/config.json)
+    nix-ai-tools.pi-acp # ACP adapter for pi, used by acpx's `pi` agent (~/.acpx/config.json)
     local.zcode-acp
     nix-ai-tools.zcode
 
@@ -168,6 +168,7 @@ in {
     nix-ai-tools.localgpt # open-claw-like in rust
     nix-ai-tools.agentsview
     nix-ai-tools.paseo-desktop
+    nix-ai-tools.maki
     repomix # Testing - pack repo to a single ai file
     warp-terminal
   ];

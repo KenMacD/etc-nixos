@@ -68,8 +68,6 @@ in {
 
   packnplay = callPackage ./packnplay.nix {};
 
-  pi-acp = callPackage ./pi-acp {};
-
   playwright-mcp = callPackage ./playwright-mcp.nix {};
 
   pynzbget = python3Packages.callPackage ./pynzbget.nix {};
