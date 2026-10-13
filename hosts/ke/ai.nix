@@ -112,10 +112,10 @@ in {
     mods # pipe command output to a question
     nix-ai-tools.openspec # To try: spec-first dev
     pandoc # Test html -> markdown
-    local.playwright-mcp
+    playwright-mcp
     repomix # Testing
     # Not really using, asks for openai key: shell-gpt # $ sgpt ...
-    local.spec-kit
+    nix-ai-tools.spec-kit
     strip-tags
     # TODO: broken 2026-01-04 task-master-ai
     tgpt # $ tgpt question

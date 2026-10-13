@@ -68,8 +68,6 @@ in {
 
   packnplay = callPackage ./packnplay.nix {};
 
-  playwright-mcp = callPackage ./playwright-mcp.nix {};
-
   pynzbget = python3Packages.callPackage ./pynzbget.nix {};
 
   qlty = callPackage ./qlty.nix {};
@@ -77,8 +75,6 @@ in {
   skeeter-deleter = python3Packages.callPackage ./skeeter-deleter.nix {};
 
   souffle-addon = callPackage ./souffle-addon {};
-
-  spec-kit = python3Packages.callPackage ./spec-kit.nix {};
 
   tvly = python3Packages.callPackage ./tvly.nix {};
 
