@@ -42,7 +42,10 @@
         libva-vdpau-driver
       ];
     };
-    sane.enable = true;
+    sane = {
+      enable = true;
+      extraBackends = [pkgs.hplip];
+    };
   };
   services.avahi.enable = true; # For Chromecast
 
@@ -293,6 +296,7 @@
     libreoffice-stable
     p7zip
     powertop
+    kdePackages.skanpage
     signal-desktop
     vim
     vlc
