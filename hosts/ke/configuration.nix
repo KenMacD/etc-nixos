@@ -874,6 +874,7 @@ in {
     # Communication
     ayugram-desktop # telegram-desktop alternative
     discord
+    element-desktop # Matrix client
     irssi
     signal-desktop
     slack

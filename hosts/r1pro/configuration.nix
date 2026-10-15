@@ -361,6 +361,57 @@ in {
       };
     };
   };
+
+  ########################################
+  # Matrix homeserver (tuwunel) for agent chat. Public ingress: r1pro's
+  # cloudflared tunnel, remote-managed in the Cloudflare dashboard
+  # (matrix.macdermid.ca -> HTTP -> localhost:6167). Not behind Cloudflare
+  # Access: clients authenticate with Bearer tokens, not browser SSO — the
+  # registration token is the access-control layer. Agent-only: federation
+  # off (never open 8448), E2EE off so plain HTTP client libraries work.
+  ########################################
+  services.matrix-tuwunel = {
+    enable = true;
+    settings.global = {
+      address = ["127.0.0.1"];
+      port = [6167];
+      server_name = "matrix.macdermid.ca";
+      allow_federation = false;
+      allow_encryption = false;
+      # Required for token-gated registration; false closes it entirely.
+      allow_registration = true;
+      registration_token_file = config.sops.secrets.matrix-registration-token.path;
+      # Stay under Cloudflare's 100 MB free-tier upload cap.
+      max_request_size = 50 * 1024 * 1024;
+      # Exact-match CORS allowlist; only browser clients preflight. Add a
+      # new web client here or its requests fail with no ACAO header.
+      access_control_allow_origin = [
+        "vector://vector" # Element Desktop
+        "https://app.element.io" # Element Web
+      ];
+      # tuwunel enables RocksDB O_DIRECT by default, but bcachefs only allows
+      # 4K-aligned DIO, so RocksDB's 512B SST pwrites fail with EINVAL
+      # (cf. upstream tuwunel#195). Buffered I/O costs page-cache RAM — fine
+      # at this scale.
+      rocksdb_direct_io = false;
+    };
+  };
+  sops.secrets.matrix-registration-token = {
+    owner = "tuwunel";
+    group = "tuwunel";
+    restartUnits = ["tuwunel.service"];
+  };
+  # Defense-in-depth on top of the module's sandbox. The matrix.org egress
+  # exception is required: Element X registers its HTTP pusher there, and
+  # denying it silently kills background notifications. Relax if an
+  # appservice or federation is ever enabled.
+  systemd.services.tuwunel.serviceConfig = {
+    CapabilityBoundingSet = "";
+    IPAddressAllow = ["localhost" "matrix.org"];
+    IPAddressDeny = ["any"];
+    UMask = "0077";
+  };
+
   services.nordvpn-namespaced = {
     enable = true;
     namespaces = {
