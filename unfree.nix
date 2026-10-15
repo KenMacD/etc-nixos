@@ -14,7 +14,6 @@
   "gitbutler"
   "goland"
   "goland-with-plugins"
-  "hplip"
   "ida-free"
   "intel-ocl"
   "j-link"

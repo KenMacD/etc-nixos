@@ -115,7 +115,7 @@ in {
     };
     sane = {
       enable = true;
-      extraBackends = [pkgs.hplipWithPlugin];
+      extraBackends = [pkgs.hplip];
     };
   };
   services.avahi.enable = true; # For Chromecast
@@ -147,7 +147,7 @@ in {
   };
   services.printing = {
     enable = true;
-    drivers = [pkgs.hplipWithPlugin];
+    drivers = [pkgs.hplip];
   };
 
   # Force intel vulkan driver to prevent software rendering:

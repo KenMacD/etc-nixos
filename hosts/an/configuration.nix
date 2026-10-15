@@ -207,7 +207,7 @@
     pcscd.enable = true;
     udisks2.enable = true;
     printing.enable = true;
-    printing.drivers = [pkgs.hplipWithPlugin];
+    printing.drivers = [pkgs.hplip];
   };
   zramSwap.enable = true;
 
