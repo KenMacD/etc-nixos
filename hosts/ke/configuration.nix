@@ -832,7 +832,7 @@ in {
     fwupd
     fwupd-efi
     iotop
-    kanidm_1_10
+    kanidm_1_11
     killall
     lxqt.lxqt-policykit
     lynis # security auditing tool
