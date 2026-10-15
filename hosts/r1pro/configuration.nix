@@ -63,6 +63,10 @@ in {
   };
   sops.secrets.restic-immich = {};
   sops.secrets.restic-postgresql = {};
+  # EnvironmentFile (systemd.exec(5) format) with AWS_ACCESS_KEY_ID,
+  # AWS_SECRET_ACCESS_KEY, RESTIC_PASSWORD and RESTIC_REPOSITORY for the
+  # offsite immich-remote S3 backup below.
+  sops.secrets.restic-remote-immich-env = {};
 
   ########################################
   # Nix
@@ -658,9 +662,9 @@ in {
     };
   };
 
-  ########################################
-  # Backups (restic -> /mnt/red USB drive)
-  ########################################
+  ################################################################
+  # Backups (restic -> /mnt/red USB drive + S3 offsite)
+  ################################################################
   # Dump every postgres DB (immich, miniflux, kanidm, ...) to
   # /var/backup/postgresql/<db>.sql.gz nightly at 01:00 (module default; one
   # file per DB, overwritten each run -- restic snapshots provide history).
@@ -703,6 +707,31 @@ in {
     # ];
     timerConfig = {
       OnCalendar = "03:00";
+      RandomizedDelaySec = "30m";
+      Persistent = true;
+    };
+  };
+
+  # Offsite weekly copy to S3 (DEEP_ARCHIVE); repository, credentials and
+  # password all come from the restic-remote-immich-env secret, so
+  # `repository` is intentionally unset. Excludes thumbs/ and encoded-video/
+  # (covered by the local /mnt/red backup) and immich's backups/ staging.
+  services.restic.backups.immich-remote = {
+    initialize = false;
+    environmentFile = config.sops.secrets.restic-remote-immich-env.path;
+    paths = ["/srv/immich"];
+    exclude = [
+      "/srv/immich/thumbs"
+      "/srv/immich/encoded-video"
+      "/srv/immich/backups"
+    ];
+    extraBackupArgs = [
+      "--tag=immich"
+      "--limit-upload=400"
+    ];
+    extraOptions = ["s3.storage-class=DEEP_ARCHIVE"];
+    timerConfig = {
+      OnCalendar = "Sun 02:00";
       RandomizedDelaySec = "30m";
       Persistent = true;
     };
