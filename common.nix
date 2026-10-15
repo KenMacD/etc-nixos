@@ -31,7 +31,9 @@ with lib; {
       ];
       flake-registry = mkDefault ""; # instead of https://channels.nixos.org/flake-registry.json
       keep-going = mkDefault true;
-      trusted-users = mkDefault ["root" "@wheel"];
+      # One step stronger than plain: beats nix.nix's trusted-users =
+      # ["root"] while still yielding to a host-level mkForce.
+      trusted-users = mkOverride (lib.modules.defaultOverridePriority - 1) ["root" "@wheel"];
       use-cgroups = mkDefault true;
       use-xdg-base-directories = true;
       # warn-dirty = mkDefault false;
