@@ -189,6 +189,9 @@ in {
     hostId = "65350c54";
     useNetworkd = true;
     networkmanager.enable = false;
+
+    # BBR congestion control + TCP MTU probing
+    performance.enable = true;
   };
   home-wifi.enable = true;
 

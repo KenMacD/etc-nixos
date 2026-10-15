@@ -7,6 +7,8 @@
 
     ./microvm-config.nix # MicroVM configuration
 
+    ./net-performance.nix # Opt-in network tuning: BBR congestion control + TCP MTU probing
+
     ./nordvpn-namespaced.nix
 
     ./python-packages.nix

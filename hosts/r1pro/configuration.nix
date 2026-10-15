@@ -99,6 +99,9 @@ in {
     useNetworkd = true;
     # wireless.enable = false;
     networkmanager.enable = false;
+
+    # BBR congestion control + TCP MTU probing
+    performance.enable = true;
     #domain = "home.macdermid.ca";
     # TODO: set?
     #hostId = "f5a3f353";

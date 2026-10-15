@@ -113,6 +113,9 @@
     useNetworkd = true;
     usePredictableInterfaceNames = false;
     networkmanager.enable = false;
+
+    # BBR congestion control + TCP MTU probing
+    performance.enable = true;
   };
   home-wifi.enable = true;
 
