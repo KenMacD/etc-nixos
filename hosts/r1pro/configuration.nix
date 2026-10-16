@@ -725,6 +725,20 @@ in {
     };
   };
 
+  # picoclaw web console; proxies the gateway, so the only port to expose.
+  systemd.services.tailscale-serve-picoclaw = {
+    description = "Tailscale serve picoclaw";
+    wantedBy = ["multi-user.target"];
+    after = ["tailscaled.service" "podman-picoclaw.service"];
+    wants = ["tailscaled.service"];
+    serviceConfig = {
+      RestartSec = 10;
+      Restart = "on-failure";
+      ExecStartPre = "${lib.getExe waitTailscale}";
+      ExecStart = "${pkgs.tailscale}/bin/tailscale serve --service=svc:picoclaw --https=443 127.0.0.1:18811";
+    };
+  };
+
   # Space Agent (podman container bound to 127.0.0.1:903), served on the
   # tailnet via tailscale serve.
   systemd.services.tailscale-serve-space-agent = {
@@ -1018,6 +1032,20 @@ in {
       # Static IP for tailscale forwarding
       "--ip=10.88.0.10"
     ];
+  };
+  # Only the launcher port is published — the frontend talks to it
+  # exclusively, so the gateway needs no inbound route. Native pico apps
+  # connect to the gateway directly: publish 18790 if ever needed.
+  virtualisation.oci-containers.containers.picoclaw = {
+    image = "docker.io/sipeed/picoclaw:v0.3.1-launcher";
+    environment = {
+      # Gateway loopback-only; masks the 0.0.0.0 the console UI writes to
+      # config.json. (Launcher binds 18800 beyond loopback so the port map
+      # can reach it.)
+      PICOCLAW_GATEWAY_HOST = "127.0.0.1";
+    };
+    ports = ["127.0.0.1:18811:18800"];
+    volumes = ["picoclaw_picoclaw-data:/root/.picoclaw"];
   };
   virtualisation.oci-containers.containers.space-agent = {
     image = "localhost/space-agent";
