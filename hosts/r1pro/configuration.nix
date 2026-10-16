@@ -1200,5 +1200,41 @@ in {
     ripgrep
     tmux
     wireguard-tools
+
+    (
+      let
+        newPostgres = pkgs.postgresql_18.withPackages (pp:
+          with pp; [
+            pgvector
+            vectorchord
+          ]);
+        cfg = config.services.postgresql;
+      in
+        pkgs.writeScriptBin "upgrade-pg-cluster" ''
+          set -eux
+
+          systemctl stop postgresql
+
+          export NEWDATA="/var/lib/postgresql/${newPostgres.psqlSchema}"
+          export NEWBIN="${newPostgres}/bin"
+
+          export OLDDATA="${cfg.dataDir}"
+          export OLDBIN="${cfg.finalPackage}/bin"
+
+          # For version 18 upgrade
+          sudo -u postgres pg_checksums --pgdata "$OLDDATA" --enable --progress
+
+          install -d -m 0700 -o postgres -g postgres "$NEWDATA"
+          cd "$NEWDATA"
+          sudo -u postgres "$NEWBIN/initdb" -D "$NEWDATA" ${lib.escapeShellArgs cfg.initdbArgs}
+
+          # Use --clone for faster upgrades
+          sudo -u postgres "$NEWBIN/pg_upgrade" \
+            --old-datadir "$OLDDATA" --new-datadir "$NEWDATA" \
+            --old-bindir "$OLDBIN" --new-bindir "$NEWBIN" \
+            "--clone" \
+            "$@"
+        ''
+    )
   ];
 }
