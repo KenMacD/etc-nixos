@@ -769,6 +769,23 @@ in {
   };
 
   ########################################
+  # vaultwarden
+  ########################################
+  services.vaultwarden = {
+    enable = true;
+    backupDir = "/var/backup/vaultwarden";
+    config = {
+      DOMAIN = "https://bitwarden.home.macdermid.ca";
+      SIGNUPS_ALLOWED = false;
+
+      ROCKET_ADDRESS = "127.0.0.1";
+      ROCKET_PORT = 8222;
+
+      ROCKET_LOG = "critical";
+    };
+  };
+
+  ########################################
   # nginx reverse proxy (LAN-only) for *.home.macdermid.ca
   ########################################
   systemd.services.nginx.serviceConfig.SupplementaryGroups = ["acme"];
@@ -851,6 +868,7 @@ in {
         http2 = true;
         extraConfig = "return 404;";
       };
+      "bitwarden.home.macdermid.ca" = proxywss 8222;
       "forgejo.home.macdermid.ca" = proxywss 3101;
       "jellyfin.home.macdermid.ca" = proxywss 8096;
       "nzbget.home.macdermid.ca" = proxywss 6789;
@@ -894,7 +912,7 @@ in {
     initialize = false;
     repository = "/mnt/red/restic-postgresql";
     passwordFile = config.sops.secrets.restic-postgresql.path;
-    paths = ["/var/backup/postgresql"];
+    paths = ["/var/backup/postgresql" "/var/backup/vaultwarden"];
     # pruneOpts = [
     #   "--keep-daily 7"
     #   "--keep-weekly 5"
