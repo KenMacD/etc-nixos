@@ -160,6 +160,8 @@ in {
     ];
   };
 
+  services.tailscale.enable = true;
+
   ########################################
   # ProtonVPN network namespace (qBittorrent)
   ########################################
