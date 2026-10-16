@@ -109,13 +109,12 @@ in {
   # Nix
   ########################################
   nix.settings = {
-    trusted-users = ["root" "@wheel"];
     extra-substituters = [
       # default priority is 40, lower = checked first
       # For pre-built zerotier package
       "https://nix-community.cachix.org?priority=50"
     ];
-    trusted-public-keys = [
+    extra-trusted-public-keys = [
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     ];
   };
