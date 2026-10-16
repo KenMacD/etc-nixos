@@ -258,7 +258,10 @@ with lib; {
   ########################################
   # NTP
   services.timesyncd.enable = mkDefault true;
-  networking.timeServers = mkDefault ["time.cloudflare.com"];
+  networking.timeServers = mkDefault [
+    "time.nrc.ca"
+    "time.chu.nrc.ca"
+  ];
 
   # fwupd disable p2p by default
   services.fwupd.daemonSettings = {
