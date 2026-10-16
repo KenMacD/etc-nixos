@@ -841,6 +841,16 @@ in {
         };
       };
     in {
+      # Catch-all: nginx falls back to the default server for unmatched Host
+      # headers (the wildcard DNS + cert make any *.home.macdermid.ca resolve),
+      # so explicitly 404 them instead of serving whatever vhost sorts first.
+      "default.home.macdermid.ca" = {
+        default = true;
+        onlySSL = true;
+        useACMEHost = "home.macdermid.ca";
+        http2 = true;
+        extraConfig = "return 404;";
+      };
       "forgejo.home.macdermid.ca" = proxywss 3101;
       "jellyfin.home.macdermid.ca" = proxywss 8096;
       "nzbget.home.macdermid.ca" = proxywss 6789;
