@@ -586,6 +586,7 @@ in {
 
       Match User media
         ChrootDirectory /srv/media
+        PasswordAuthentication yes
 
         AllowAgentForwarding no
         AllowTcpForwarding no
@@ -593,7 +594,7 @@ in {
 
         ForceCommand internal-sftp
     '';
-    settings.PasswordAuthentication = true;
+    settings.PasswordAuthentication = false;
   };
   services.postgresql = {
     enable = true;
