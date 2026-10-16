@@ -77,6 +77,22 @@ in {
     sopsFile = ../../common.yaml;
   };
 
+  # Canonical DOMAIN/ROOT_URL (tailnet name), injected into app.ini at
+  # runtime via services.forgejo.secrets so tailnet-domain stays out of the
+  # world-readable store.
+  sops.templates.forgejo-domain = {
+    owner = config.services.forgejo.user;
+    group = config.services.forgejo.group;
+    mode = "0400";
+    content = "forgejo.${config.sops.placeholder.tailnet-domain}";
+  };
+  sops.templates.forgejo-root-url = {
+    owner = config.services.forgejo.user;
+    group = config.services.forgejo.group;
+    mode = "0400";
+    content = "https://forgejo.${config.sops.placeholder.tailnet-domain}";
+  };
+
   # Hister kanidm OIDC client secret + tailnet base URL, injected into the
   # service as HISTER__* env vars (which override `settings`) so they never
   # land in the world-readable Nix store (see the Hister section below).
@@ -384,6 +400,55 @@ in {
       settings = {
         uri = "${config.services.kanidm.server.settings.origin}";
       };
+    };
+  };
+
+  ########################################
+  # Forgejo (git forge)
+  ########################################
+  services.forgejo = {
+    enable = true;
+    # Host postgres over its unix socket (peer auth, no password); the DB then
+    # lands in the nightly postgresqlBackup for free.
+    database.type = "postgres";
+    settings = {
+      server = {
+        HTTP_ADDR = "127.0.0.1";
+        HTTP_PORT = 3101; # 3000-3006 + 3100 already taken on loopback
+        # Built-in SSH server (not the host sshd): accounts/keys are managed
+        # in the web UI, no host unix users needed for git access.
+        START_SSH_SERVER = true;
+        SSH_LISTEN_HOST = "127.0.0.1";
+        SSH_LISTEN_PORT = 3122; # 22 is taken by the host's openssh
+        # Shown in clone URLs; tailscale serve --tcp=22 forwards the tailnet's
+        # 22 to SSH_LISTEN_PORT.
+        SSH_PORT = 22;
+      };
+      session.COOKIE_SECURE = true;
+    };
+    # Overrides settings.server.* at runtime; see forgejo-domain templates above.
+    secrets.server = {
+      DOMAIN = config.sops.templates.forgejo-domain.path;
+      ROOT_URL = config.sops.templates.forgejo-root-url.path;
+    };
+  };
+
+  # Serve forgejo on the tailnet as forgejo.<tailnet>.ts.net.
+  systemd.services.tailscale-serve-forgejo = {
+    description = "Tailscale serve Forgejo";
+    wantedBy = ["multi-user.target"];
+    after = ["tailscaled.service" "forgejo.service"];
+    wants = ["tailscaled.service"];
+    serviceConfig = {
+      # oneshot so ExecStartPost waits for ExecStart: the two serve calls are
+      # racing read-modify-writes of the svc:forgejo config ("etag mismatch").
+      Type = "oneshot";
+      RestartSec = 10;
+      Restart = "on-failure";
+      ExecStartPre = "${lib.getExe waitTailscale}";
+      # 443 = web UI; tcp:22 = git over SSH via Forgejo's built-in sshd.
+      ExecStart = "${pkgs.tailscale}/bin/tailscale serve --service=svc:forgejo --https=443 127.0.0.1:3101";
+      ExecStartPost = "${pkgs.tailscale}/bin/tailscale serve --service=svc:forgejo --tcp=22 tcp://127.0.0.1:3122";
     };
   };
 
@@ -747,6 +812,7 @@ in {
         };
       };
     in {
+      "forgejo.home.macdermid.ca" = proxywss 3101;
       "jellyfin.home.macdermid.ca" = proxywss 8096;
       "nzbget.home.macdermid.ca" = proxywss 6789;
       "qbittorrent.home.macdermid.ca" = proxywssAddr "192.168.200.2" 59933;
@@ -975,6 +1041,7 @@ in {
     bcachefs-tools
     btrfs-progs
     dhcpcd
+    forgejo # for forgejo admin tasks
     git
     gitui
     gnumake
