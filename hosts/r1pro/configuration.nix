@@ -1105,6 +1105,17 @@ in {
       "--ip=10.88.0.10"
     ];
   };
+  # Container dashboard on 127.0.0.1:3002 only — it holds the podman
+  # socket (root-equivalent), so no vhost/serve unit on purpose.
+  virtualisation.oci-containers.containers.dockhand = {
+    image = "docker.io/fnsys/dockhand:v1.0.12";
+    ports = ["127.0.0.1:3002:3000"];
+    volumes = [
+      "/run/podman/podman.sock:/run/podman/podman.sock"
+      "/run/podman/podman.sock:/var/run/docker.sock"
+      "dockhand_data:/app/data"
+    ];
+  };
   # Hermes agent gateway. No published ports: controlled over its unix
   # socket, channels (Telegram) are outbound-only; secrets live in the
   # hermes-data volume (.env + auth.json), not sops. Digest-pinned: prefer
