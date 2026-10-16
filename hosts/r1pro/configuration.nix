@@ -954,6 +954,7 @@ in {
       };
       "bitwarden.home.macdermid.ca" = proxywss 8222;
       "forgejo.home.macdermid.ca" = proxywss 3101;
+      "immich.home.macdermid.ca" = proxywss 2283;
       "jellyfin.home.macdermid.ca" = proxywss 8096;
       "nzbget.home.macdermid.ca" = proxywss 6789;
       "qbittorrent.home.macdermid.ca" = proxywssAddr "192.168.200.2" 59933;
