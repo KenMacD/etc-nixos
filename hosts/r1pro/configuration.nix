@@ -68,6 +68,9 @@ in {
   # offsite immich-remote S3 backup below.
   sops.secrets.restic-remote-immich-env = {};
 
+  # Miniflux admin credentials (feeds into adminCredentialsFile below).
+  sops.secrets.miniflux = {};
+
   # Consumed by modules/paperclip.nix (PAPERCLIP_PUBLIC_URL); value lives in
   # common.yaml.
   sops.secrets.tailnet-domain = {
@@ -640,6 +643,24 @@ in {
       Restart = "on-failure";
       ExecStartPre = "${lib.getExe waitTailscale}";
       ExecStart = "${pkgs.tailscale}/bin/tailscale serve --service=svc:hister --https=443 127.0.0.1:3004";
+    };
+  };
+
+  ########################################
+  # Miniflux (feed reader behind kanidm OIDC)
+  ########################################
+  services.miniflux = {
+    enable = true;
+    adminCredentialsFile = config.sops.secrets.miniflux.path;
+    config = {
+      DEBUG = "off";
+      LISTEN_ADDR = "127.0.0.1:35001";
+      BASE_URL = "https://miniflux.macdermid.ca";
+      OAUTH2_PROVIDER = "oidc";
+      OAUTH2_CLIENT_ID = "miniflux";
+      OAUTH2_REDIRECT_URL = "https://miniflux.macdermid.ca/oauth2/oidc/callback";
+      OAUTH2_OIDC_DISCOVERY_ENDPOINT = "https://auth.macdermid.ca/oauth2/openid/miniflux";
+      OAUTH2_USER_CREATION = "1";
     };
   };
 
