@@ -783,6 +783,37 @@ in {
   };
 
   ########################################
+  # UniFi controller
+  ########################################
+  services.unifi = {
+    enable = true;
+    unifiPackage = pkgs.unifi;
+    mongodbPackage = local.mongodb-bin_7; # mongo 7, same as the shared mongod
+    openFirewall = true; # 8080/3478/10001/… on the LAN for device inform
+  };
+  systemd.services.unifi.serviceConfig.TimeoutStartSec = "10min";
+  # Not started at boot (WiFi changes only: systemctl start unifi); its bundled
+  # mongod (27117) stays down too — the shared mongod (27017) is separate.
+  systemd.services.unifi.wantedBy = lib.mkForce [];
+
+  # mongod needs an external rotator (--logRotate reopen) or mongod.log grows
+  # unbounded; the USR1 is scoped by --dbpath so the shared mongod is untouched.
+  services.logrotate = {
+    enable = true;
+    settings.unifi-mongod = {
+      files = "/var/log/unifi/mongod.log";
+      frequency = "daily";
+      rotate = 7;
+      size = "100M";
+      compress = true;
+      delaycompress = true;
+      postrotate = ''
+        ${pkgs.procps}/bin/pkill -USR1 -f '/var/lib/unifi/data/db' 2>/dev/null || true
+      '';
+    };
+  };
+
+  ########################################
   # vaultwarden
   ########################################
   services.vaultwarden = {
@@ -887,6 +918,7 @@ in {
       "jellyfin.home.macdermid.ca" = proxywss 8096;
       "nzbget.home.macdermid.ca" = proxywss 6789;
       "qbittorrent.home.macdermid.ca" = proxywssAddr "192.168.200.2" 59933;
+      "unifi.home.macdermid.ca" = proxytls 8443;
     };
   };
 
