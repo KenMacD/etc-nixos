@@ -68,6 +68,12 @@ in {
   # offsite immich-remote S3 backup below.
   sops.secrets.restic-remote-immich-env = {};
 
+  # Consumed by modules/paperclip.nix (PAPERCLIP_PUBLIC_URL); value lives in
+  # common.yaml.
+  sops.secrets.tailnet-domain = {
+    sopsFile = ../../common.yaml;
+  };
+
   ########################################
   # Nix
   ########################################
