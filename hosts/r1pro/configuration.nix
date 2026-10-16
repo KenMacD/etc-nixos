@@ -74,6 +74,18 @@ in {
     sopsFile = ../../common.yaml;
   };
 
+  # Hister kanidm OIDC client secret + tailnet base URL, injected into the
+  # service as HISTER__* env vars (which override `settings`) so they never
+  # land in the world-readable Nix store (see the Hister section below).
+  sops.secrets.hister-oidc-secret = {};
+  sops.templates.hister-env = {
+    mode = "0400";
+    content = ''
+      HISTER__SERVER__OAUTH__OIDC__CLIENT_SECRET=${config.sops.placeholder.hister-oidc-secret}
+      HISTER__SERVER__BASE_URL=https://hister.${config.sops.placeholder.tailnet-domain}
+    '';
+  };
+
   ########################################
   # Nix
   ########################################
@@ -586,6 +598,48 @@ in {
       Restart = "on-failure";
       ExecStartPre = "${lib.getExe waitTailscale}";
       ExecStart = "${pkgs.tailscale}/bin/tailscale serve --service=svc:paperclip --https=443 127.0.0.1:3100";
+    };
+  };
+
+  ########################################
+  # Hister (self-hosted web-history search, https://github.com/asciimoo/hister)
+  ########################################
+  # Multi-user instance behind kanidm OIDC, exposed on the tailnet via
+  # tailscale serve (host domain from the tailnet-domain sops secret)
+  services.hister = {
+    enable = true;
+
+    port = 3004;
+    environmentFile = config.sops.templates.hister-env.path;
+    settings = {
+      app = {
+        user_handling = true;
+        # log_level = "debug";
+      };
+      server = {
+        # base_url comes from the hister-env sops template as
+        # HISTER__SERVER__BASE_URL (env overrides settings, viper precedence)
+        oauth_only = true; # Disable password logins
+        oauth.oidc = {
+          client_id = "hister";
+          configuration_url = "https://auth.macdermid.ca/oauth2/openid/hister/.well-known/openid-configuration";
+        };
+      };
+    };
+  };
+
+  # TODO: cover /var/lib/hister (sqlite db + indexes) with a restic backup like
+  # immich/postgresql above.
+  systemd.services.tailscale-serve-hister = {
+    description = "Tailscale serve Hister";
+    wantedBy = ["multi-user.target"];
+    after = ["tailscaled.service"];
+    wants = ["tailscaled.service"];
+    serviceConfig = {
+      RestartSec = 10;
+      Restart = "on-failure";
+      ExecStartPre = "${lib.getExe waitTailscale}";
+      ExecStart = "${pkgs.tailscale}/bin/tailscale serve --service=svc:hister --https=443 127.0.0.1:3004";
     };
   };
 
