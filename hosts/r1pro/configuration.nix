@@ -711,6 +711,20 @@ in {
     };
   };
 
+  # LiteLLM (litellm.nix container, 127.0.0.1:3005), served on the tailnet.
+  systemd.services.tailscale-serve-litellm = {
+    description = "Tailscale serve LiteLLM";
+    wantedBy = ["multi-user.target"];
+    after = ["tailscaled.service"];
+    wants = ["tailscaled.service"];
+    serviceConfig = {
+      RestartSec = 10;
+      Restart = "on-failure";
+      ExecStartPre = "${lib.getExe waitTailscale}";
+      ExecStart = "${pkgs.tailscale}/bin/tailscale serve --service=svc:litellm --https=443 127.0.0.1:3005";
+    };
+  };
+
   # Space Agent (podman container bound to 127.0.0.1:903), served on the
   # tailnet via tailscale serve.
   systemd.services.tailscale-serve-space-agent = {
