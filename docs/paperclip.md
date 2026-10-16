@@ -8,8 +8,10 @@ nightly `postgresqlBackup` dump.
   `tailscale serve --service=svc:paperclip`)
 - Module: `modules/paperclip.nix` (imported by `hosts/r1pro/configuration.nix`,
   which also has the `tailscale-serve-paperclip` unit)
-- Image: `ghcr.io/paperclipai/paperclip:sha-7e0f051@sha256:ebec76c2...`
-  (digest-pinned; update = bump `version`/`imageDigest` in the module. The
+- Image: `ghcr.io/paperclipai/paperclip:2026.1005.0@sha256:04733696...`
+  (digest-pinned; update = bump `version`/`imageDigest` in the module. Pin the
+  point-release tag (e.g. `2026.1005.0`), never `latest`/minor tags — those
+  move. The
   other `ghcr.io/paperclipai/agent-runtime-*` images are sandbox images for
   agent harnesses, not the server.)
 - Port: `127.0.0.1:3100:3100`
