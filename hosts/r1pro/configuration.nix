@@ -711,6 +711,21 @@ in {
     };
   };
 
+  # Space Agent (podman container bound to 127.0.0.1:903), served on the
+  # tailnet via tailscale serve.
+  systemd.services.tailscale-serve-space-agent = {
+    description = "Tailscale serve Space Agent";
+    wantedBy = ["multi-user.target"];
+    after = ["tailscaled.service"];
+    wants = ["tailscaled.service"];
+    serviceConfig = {
+      RestartSec = 10;
+      Restart = "on-failure";
+      ExecStartPre = "${lib.getExe waitTailscale}";
+      ExecStart = "${pkgs.tailscale}/bin/tailscale serve --service=svc:space-agent --https=443 127.0.0.1:903";
+    };
+  };
+
   ########################################
   # Miniflux (feed reader behind kanidm OIDC)
   ########################################
@@ -961,6 +976,11 @@ in {
       # Static IP for tailscale forwarding
       "--ip=10.88.0.10"
     ];
+  };
+  virtualisation.oci-containers.containers.space-agent = {
+    image = "localhost/space-agent";
+    ports = ["127.0.0.1:903:3000"];
+    volumes = ["space-agent-data:/data"];
   };
   virtualisation.podman = {
     enable = true;
