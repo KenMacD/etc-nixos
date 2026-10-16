@@ -135,6 +135,8 @@ in {
   ########################################
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  # For flashrom (internal SPI reads of backup.rom).
+  boot.kernelParams = ["iomem=relaxed"];
   boot.kernel.sysctl."fs.inotify.max_user_watches" = 524288;
   # Allow full REISUB via nanokvm HID injection for out-of-band recovery:
   # R=4 (unraw) + S=16 (sync) + U=32 (remount-ro) + E/I=64 (kill) + B=128 (reboot)
