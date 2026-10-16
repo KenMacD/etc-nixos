@@ -36,6 +36,25 @@
     };
   });
 
+  # Hermes lane: providers come from $HERMES_HOME/config.yaml; `key_env`
+  # points at the container env, so the file carries no secret and needs no
+  # generation service (unlike pi's template above).
+  hermesHome = pkgs.writeTextDir "config.yaml" ''
+    custom_providers:
+      - name: litellm
+        base_url: http://host.containers.internal:3005/v1
+        key_env: LITELLM_API_KEY
+        models:
+          - glm
+          - glm-flash
+          - qwen
+          - qwen-flash
+          - deepseek-flash
+    model:
+      provider: zai
+      default: glm-5.3-flash
+  '';
+
   # pi quirks (all verified empirically): `models` must be an ARRAY (a map
   # gets the provider silently dropped → "Configured Pi model is unavailable"
   # at run time — applies to PAPERCLIP_PI_PROVIDERS in sops too), and custom
@@ -104,8 +123,10 @@ in {
       # opencode, gemini, kimi — not pi).
       OPENCODE_CONFIG = "/etc/paperclip-opencode.json";
       PI_CODING_AGENT_DIR = "/etc/pi-agent";
+      HERMES_HOME = "/etc/hermes-home";
       PAPERCLIP_PI_COMMAND = "/paperclip/.npm-global/bin/pi";
-      PATH = "/paperclip/.npm-global/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin";
+      # .local/bin: hermes-agent (uv tool install, like the npm pi below)
+      PATH = "/paperclip/.local/bin:/paperclip/.npm-global/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin";
     };
     environmentFiles = [
       config.sops.templates.paperclip-env.path
@@ -117,6 +138,7 @@ in {
       "paperclip-data:/paperclip"
       "${opencodeConfig}:/etc/paperclip-opencode.json:ro"
       "/run/paperclip-pi/models.json:/etc/pi-agent/models.json:ro"
+      "/run/paperclip-hermes:/etc/hermes-home"
     ];
   };
 
@@ -140,7 +162,10 @@ in {
       wantedBy = ["${ociBackend}-paperclip.service"];
       serviceConfig = {
         Type = "oneshot";
-        RuntimeDirectory = "paperclip-pi";
+        RuntimeDirectory = [
+          "paperclip-pi"
+          "paperclip-hermes"
+        ];
         RuntimeDirectoryMode = "0755";
         RemainAfterExit = true;
       };
@@ -155,6 +180,13 @@ in {
         sed "s|__LITELLM_API_KEY__|$key|g" "${piModelsTemplate}" \
           > /run/paperclip-pi/models.json
         chmod 0644 /run/paperclip-pi/models.json
+        # Hermes writes state into HERMES_HOME; the sandboxed task runner
+        # is uid 1000 (bwrap spawns inherit the server uid), so the home
+        # must stay 1000-owned — the re-own also cleans root leftovers.
+        cp "${hermesHome}/config.yaml" /run/paperclip-hermes/config.yaml
+        chown -R 1000:1000 /run/paperclip-hermes
+        chmod 0700 /run/paperclip-hermes
+        chmod 0644 /run/paperclip-hermes/config.yaml
       '';
     };
   };
