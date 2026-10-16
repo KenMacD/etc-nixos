@@ -1086,6 +1086,24 @@ in {
     ports = ["127.0.0.1:903:3000"];
     volumes = ["space-agent-data:/data"];
   };
+  # KVM. Guest shutdown is bounded: upstream defaults (suspend, serial, unit
+  # TimeoutStopSec=infinity) let one hung VM stall a host reboot forever —
+  # use parallel ACPI shutdowns with a hard 3min cap.
+  virtualisation.libvirtd = {
+    enable = true;
+    qemu = {
+      runAsRoot = false;
+      swtpm.enable = true;
+      package = pkgs.qemu_kvm; # host arch only
+    };
+    onShutdown = "shutdown"; # ACPI shutdown instead of managedsave
+    parallelShutdown = 4;
+    shutdownTimeout = 120; # 2min cap per batch
+  };
+  users.groups.libvirtd.members = with config.users.users; [
+    kenny.name
+  ];
+  systemd.services.libvirt-guests.serviceConfig.TimeoutStopSec = lib.mkForce "3min";
   virtualisation.podman = {
     enable = true;
     autoPrune.enable = true;
