@@ -5,10 +5,10 @@
   pkgs,
   ...
 }: let
-  # sha-* tags move on every upstream build; pin by digest for reproducibility.
-  version = "sha-7e0f051";
-  # Digest of 'ghcr.io/paperclipai/paperclip:sha-7e0f051' (linux/amd64).
-  imageDigest = "sha256:ebec76c2a480cc9b88cae950a047a2051bdefeb234e61a6dbfb2b78ef696b6d5";
+  # Pin a release tag plus the digest
+  version = "2026.1005.0";
+  # Digest of 'ghcr.io/paperclipai/paperclip:2026.1005.0' (linux/amd64).
+  imageDigest = "sha256:047336965a43b33989634706af87c69f8ef93da2fffd4b1c364e2a93d50b8a44";
   dbuser = "paperclip";
   dbname = "paperclip";
   ociBackend = config.virtualisation.oci-containers.backend;
