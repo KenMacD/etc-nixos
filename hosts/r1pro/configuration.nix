@@ -861,6 +861,15 @@ in {
   };
 
   ########################################
+  # Windmill (workflow automation)
+  ########################################
+  services.windmill = {
+    enable = true;
+    baseUrl = "https://windmill.macdermid.ca";
+    logLevel = "debug";
+  };
+
+  ########################################
   # nginx reverse proxy (LAN-only) for *.home.macdermid.ca
   ########################################
   systemd.services.nginx.serviceConfig.SupplementaryGroups = ["acme"];
