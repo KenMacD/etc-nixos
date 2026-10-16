@@ -105,6 +105,17 @@ in {
     '';
   };
 
+  # Hermes dashboard basic auth; templated so the tailnet URL stays out of
+  # the store.
+  sops.secrets.hermes-dashboard = {};
+  sops.templates.hermes-env = {
+    mode = "0400";
+    content = ''
+      ${config.sops.placeholder.hermes-dashboard}
+      HERMES_DASHBOARD_PUBLIC_URL=https://hermes.${config.sops.placeholder.tailnet-domain}
+    '';
+  };
+
   ########################################
   # Nix
   ########################################
@@ -713,6 +724,21 @@ in {
     };
   };
 
+  # Hermes dashboard (127.0.0.1:3006) on the tailnet; basic auth via the
+  # hermes-dashboard secret (the dashboard gate fails closed otherwise).
+  systemd.services.tailscale-serve-hermes = {
+    description = "Tailscale serve Hermes dashboard";
+    wantedBy = ["multi-user.target"];
+    after = ["tailscaled.service" "podman-hermes.service"];
+    wants = ["tailscaled.service"];
+    serviceConfig = {
+      RestartSec = 10;
+      Restart = "on-failure";
+      ExecStartPre = "${lib.getExe waitTailscale}";
+      ExecStart = "${pkgs.tailscale}/bin/tailscale serve --service=svc:hermes --https=443 127.0.0.1:3006";
+    };
+  };
+
   # LiteLLM (litellm.nix container, 127.0.0.1:3005), served on the tailnet.
   systemd.services.tailscale-serve-litellm = {
     description = "Tailscale serve LiteLLM";
@@ -1066,6 +1092,25 @@ in {
       # Static IP for tailscale forwarding
       "--ip=10.88.0.10"
     ];
+  };
+  # Hermes agent gateway. No published ports: controlled over its unix
+  # socket, channels (Telegram) are outbound-only; secrets live in the
+  # hermes-data volume (.env + auth.json), not sops. Digest-pinned: prefer
+  # vX.Y.Z@<digest> when upgrading, and don't downgrade below this build
+  # (the volume's schema is newer).
+  virtualisation.oci-containers.containers.hermes = {
+    image = "docker.io/nousresearch/hermes-agent:latest@sha256:d4da4a40cd7a28aba983775d9fd31d94cbf153eeb0cb9e844d6d0f612b7c24db";
+    cmd = ["hermes" "gateway" "run"];
+    # Dashboard on 9119, published on 3006; the auth gate fails closed on
+    # non-loopback binds — basic auth comes from the hermes-env secret.
+    environment = {
+      HERMES_DASHBOARD = "true";
+    };
+    ports = ["127.0.0.1:3006:9119"];
+    environmentFiles = [
+      config.sops.templates.hermes-env.path
+    ];
+    volumes = ["hermes-data:/opt/data"];
   };
   # Only the launcher port is published — the frontend talks to it
   # exclusively, so the gateway needs no inbound route. Native pico apps
