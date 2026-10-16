@@ -1,5 +1,7 @@
 final: prev: let
   stablePackages = [
+    # Broken: 2026-10-16
+    "dash-mpd-cli"
   ];
 
   masterPackages = [
