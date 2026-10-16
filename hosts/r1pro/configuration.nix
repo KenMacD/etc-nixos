@@ -644,6 +644,16 @@ in {
   };
 
   ########################################
+  # Navidrome (self-hosted music streaming)
+  ########################################
+  services.navidrome = {
+    enable = true;
+    settings = {
+      MusicFolder = "/srv/media/music";
+    };
+  };
+
+  ########################################
   # nginx reverse proxy (LAN-only) for *.home.macdermid.ca
   ########################################
   systemd.services.nginx.serviceConfig.SupplementaryGroups = ["acme"];
