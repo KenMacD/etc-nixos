@@ -228,8 +228,8 @@ in {
         # move it into the namespace; the socket stays in the root ns.
         ip link add "$IFACE" type wireguard
         wg set "$IFACE" private-key ${config.sops.secrets.protonvpn-wg-key.path}
-        wg set "$IFACE" peer 9E5iMJSAG7GKxLXJ+AmiE66vfxx41V7aknXCHmvbqlk= \
-          endpoint 79.135.104.99:51820 \
+        wg set "$IFACE" peer OJv7H1H34Og2BqBwrUdTQPXZPD0oG1rh7wkMWAgGUAQ= \
+          endpoint 79.135.104.98:51820 \
           allowed-ips 0.0.0.0/0,::/0 \
           persistent-keepalive 25
         ip link set "$IFACE" netns "$NS"
