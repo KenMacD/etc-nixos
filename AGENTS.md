@@ -6,6 +6,8 @@ This is a NixOS system configuration managed with Nix flakes. When working on th
 
 ## Critical Information for Agents
 
+* DO NOT do a sops decrypt. There's to much risk of exposing the secrets. Instead ask me to make any edits to the secrets.
+
 ### Repository Structure
 
 ```text
