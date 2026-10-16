@@ -1250,12 +1250,27 @@ in {
     libva-utils
     mongosh
     ncdu
+    podman-compose
     powertop
     pstree
     restic
     ripgrep
+    rmlint
     tmux
+    # ~/.weechat carries matrix state from an old install; the plugin script
+    # is not installed — add weechatScripts.weechat-matrix to reactivate.
+    (weechat.override {
+      configure = {availablePlugins, ...}: {
+        plugins = with availablePlugins; [python];
+      };
+    })
     wireguard-tools
+
+    # System Management
+    hdparm
+    nvme-cli
+    pciutils # lspci/setpci diagnostics
+    smartmontools
 
     (
       let
