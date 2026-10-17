@@ -49,10 +49,11 @@ in {
     # Set host to 0.0.0.0 so it can be accessed by openhands in podman
     host = "0.0.0.0";
     enable = true;
+    # Vulkan backend for GPU acceleration on the Intel Iris Xe
+    package = pkgs.ollama-vulkan;
     environmentVariables = {
-      OLLAMA_INTEL_GPU = "1";
+      OLLAMA_IGPU_ENABLE = "1";
       OLLAMA_FLASH_ATTENTION = "1";
-      OLLAMA_NEW_ENGINE = "1";
     };
   };
 
