@@ -9,14 +9,10 @@
   ########################################
   # nix.package = pkgs.nixVersions.unstable;
   nix.settings = {
-    trusted-users = ["root" "@wheel"];
     sandbox = true;
-    substituters = [
-      #      "https://nix.home.macdermid.ca"
-      #      "https://nix.macdermid.ca"
-      "https://aseipp-nix-cache.global.ssl.fastly.net"
+    extra-substituters = [
     ];
-    trusted-public-keys = [
+    extra-trusted-public-keys = [
       "nix.home.macdermid.ca:CQuA65gXW8KuFlk9Ufx5oMsAiTZzQhfluNoaOzypXMo="
       "nix.macdermid.ca:sAlwW/Ph4P8pyrUT7pmWnsFeGVyZ7pyXYjUmo41/hc8="
     ];
