@@ -139,6 +139,7 @@ in {
     nix-ai-tools.pi-acp # ACP adapter for pi, used by acpx's `pi` agent (~/.acpx/config.json)
     local.zcode-acp
     nix-ai-tools.zcode
+    local.bailian-cli-bin # Alibaba Cloud Model Studio CLI ($ bl / $ bailian)
 
     # Support tools
     nix-ai-tools.agent-browser

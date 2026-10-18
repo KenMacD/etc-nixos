@@ -15,6 +15,11 @@ in {
 
   alph-cli = callPackage ./alph-cli.nix {};
 
+  bailian-cli-bin = callPackage ./bailian-cli-bin.nix {};
+
+  # Source-built sibling of bailian-cli-bin; not installed on any host.
+  bailian-cli = callPackage ./bailian-cli.nix {};
+
   butterfish = callPackage ./butterfish.nix {};
 
   byterover-cli = callPackage ./byterover-cli {};
