@@ -46,7 +46,6 @@ in {
   ########################################
   sops.defaultSopsFile = ./secrets.yaml;
   sops.secrets.cloudflare = {};
-  sops.secrets.cloudflare-tunnel = {};
   sops.secrets.nix-cache-key = {};
   sops.secrets.restic-postgresql = {};
   sops.secrets.ssh-sftp-yoga = {};
@@ -346,24 +345,6 @@ in {
         allow_federation = false;
         cleanup_second_interval = 60 * 60;
       };
-    };
-  };
-
-  services.cloudflared = {
-    enable = true;
-    tunnels = {
-      "yoga" = {
-        credentialsFile = config.sops.secrets.cloudflare-tunnel.path;
-        default = "http_status:404";
-      };
-    };
-  };
-  systemd.services.cloudflared-tunnel-yoga = {
-    unitConfig = {
-      StartLimitIntervalSec = 0;
-    };
-    serviceConfig = {
-      RestartSec = "30s";
     };
   };
 
