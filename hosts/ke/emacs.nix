@@ -14,7 +14,7 @@
     #    emacs30-pgtk
     #    TODO: something like:
     # tree-sitter.withPlugins (_: allGrammars)
-    ((emacsPackagesFor (pkgs.emacs30-pgtk.override {
+    ((emacsPackagesFor (pkgs.emacs-pgtk.override {
         withTreeSitter = true;
         #      tree-sitter = (pkgs.tree-sitter.withPlugins (_: tree-sitter.allGrammars));
       }))
