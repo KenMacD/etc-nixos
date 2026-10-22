@@ -3,10 +3,8 @@
 
   # https://channels.nixos.org/
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-  inputs.nixpkgs-25_05.url = "github:NixOS/nixpkgs/nixos-25.05";
-  inputs.nixpkgs-25_11.url = "github:NixOS/nixpkgs/nixos-25.11";
-  inputs.nixpkgs-old-stable.follows = "nixpkgs-25_05";
-  inputs.nixpkgs-stable.follows = "nixpkgs-25_11";
+  inputs.nixpkgs-26_05.url = "github:NixOS/nixpkgs/nixos-26.05";
+  inputs.nixpkgs-stable.follows = "nixpkgs-26_05";
   inputs.nixpkgs-master.url = "github:NixOS/nixpkgs/master";
 
   inputs.crytic = {
@@ -86,7 +84,6 @@
     self,
     nixpkgs,
     nixpkgs-master,
-    nixpkgs-old-stable,
     nixpkgs-stable,
     crytic,
     devenv,
@@ -129,10 +126,6 @@
           wrapPackage = nix-bubblewrap.lib.${prev.stdenv.hostPlatform.system}.wrapPackage;
 
           master = import nixpkgs-master {
-            inherit system;
-            config.allowUnfreePredicate = pkg: builtins.elem (prev.lib.getName pkg) unfreePackages;
-          };
-          old-stable = import nixpkgs-old-stable {
             inherit system;
             config.allowUnfreePredicate = pkg: builtins.elem (prev.lib.getName pkg) unfreePackages;
           };
