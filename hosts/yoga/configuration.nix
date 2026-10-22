@@ -177,31 +177,6 @@ in {
     powerProfiles = false;
   };
 
-  systemd.services.kanidm.serviceConfig.SupplementaryGroups = "acme";
-  services.kanidm = {
-    # Before upgrade test: sudo -u kanidm -g kanidm kanidmd domain upgrade-check
-    package = pkgs.kanidm_1_10;
-    server = {
-      enable = true;
-      settings = {
-        bindaddress = "127.0.0.1:9001";
-        ldapbindaddress = "127.0.0.1:636";
-        online_backup.versions = 7;
-        origin = "https://auth.home.macdermid.ca";
-        domain = "auth.home.macdermid.ca";
-        # log_level = "debug";
-        tls_chain = "/var/lib/acme/home.macdermid.ca/fullchain.pem";
-        tls_key = "/var/lib/acme/home.macdermid.ca/key.pem";
-      };
-    };
-    client = {
-      enable = true;
-      settings = {
-        uri = "${config.services.kanidm.server.settings.origin}";
-      };
-    };
-  };
-
   ########################################
   # Simple Services
   ########################################
