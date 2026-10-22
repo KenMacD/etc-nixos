@@ -10,6 +10,19 @@
 }: let
   local = self.packages.${system};
 in {
+  # llama.cpp HTTP server (llama-server). Port 8081 to avoid the 8080
+  # commonly used in development; ollama is on 11434, this on 11435
+  # to keep local-LLM ports together
+  services.llama-cpp = {
+    enable = true;
+    package = pkgs.llama-cpp-vulkan;
+    settings.port = 11435;
+  };
+
+  # Read by pi's built-in llama.cpp provider (docs/llama-cpp.md), so the
+  # router is picked up without a per-machine `/login llama.cpp`
+  environment.sessionVariables.LLAMA_BASE_URL = "http://127.0.0.1:11435";
+
   programs.neovim.configure.packages.myPlugins = with pkgs.vimPlugins; {
     opt = [
     ];
@@ -146,6 +159,7 @@ in {
     argc
     nix-ai-tools.ck # Local first semantic and hybrid BM25 grep / search
     jq
+    llmfit
     nix-ai-tools.semble
     skills
 
@@ -160,18 +174,37 @@ in {
     mcp-nixos
     local.mcp-server-tree-sitter
 
-    # Voice
+    # Local inference (Vulkan backend for Intel Iris Xe)
+    llama-cpp-vulkan # $ llama-cli -m model.gguf -ngl 99
+    vllm
     whisper-cpp-vulkan
 
     # Testing
     local.packnplay
     (builtins.getFlake "github:mbailey/voicemode/99fac04667559a7f68dd32fd11cc63e3ff084a2d").packages.${pkgs.stdenv.hostPlatform.system}.default
+    (builtins.getFlake "github:akitaonrails/ai-usagebar/902e9750a8c8d0ac74297f6f562e389474e02eea").packages.${pkgs.stdenv.hostPlatform.system}.default # 1.39.0
     nix-ai-tools.qmd # to try, mini-cli search engine
     nix-ai-tools.localgpt # open-claw-like in rust
     nix-ai-tools.agentsview
+    nix-ai-tools.hol-guard # Testing blocking commands in pi
     nix-ai-tools.paseo-desktop
     nix-ai-tools.maki
     repomix # Testing - pack repo to a single ai file
     warp-terminal
   ];
+
+  # Testing
+  #
+  # HOL Guard's dashboard/approvals need its local daemon on 127.0.0.1:4781.
+  # The CLI's own daemon spawn runs python isolated (-I -P -S) and can't see
+  # the nix store's split python deps.
+  systemd.user.services.hol-guard-daemon = {
+    description = "HOL Guard local dashboard daemon";
+    wantedBy = ["default.target"];
+    serviceConfig = {
+      ExecStart = "${pkgs.nix-ai-tools.hol-guard}/bin/hol-guard daemon --serve --guard-home %h/.hol-guard --home %h --port 4781";
+      Restart = "always";
+      RestartSec = "5s";
+    };
+  };
 }
