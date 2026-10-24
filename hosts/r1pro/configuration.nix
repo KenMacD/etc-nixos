@@ -170,9 +170,60 @@ in {
     interfaces."tailscale0".allowedTCPPorts = [
       443 # Serve?
     ];
+    # aardvark-dns on the container network: under the nftables backend,
+    # netavark's iptables INPUT accepts don't pre-empt the input policy,
+    # so DNS must be opened here (litellm.nix opens 5432 the same way).
+    interfaces.podman0.allowedTCPPorts = [53];
+    interfaces.podman0.allowedUDPPorts = [53];
+    # libvirt guests use host dnsmasq on virbr0 for DHCP/DNS; same
+    # reasoning. Matches even when virbr0 is down.
+    interfaces.virbr0.allowedTCPPorts = [53];
+    interfaces.virbr0.allowedUDPPorts = [53 67];
+    # Default-deny forwarding: anything not accepted in extraForwardRules
+    # hits the drop policy. Successor to a hand-run `iptables -I FORWARD
+    # -i podman0 -d <lan> -j REJECT` that lived only in a shell and
+    # silently vanished on reboots. New forwarding consumer: add
+    # "iifname <iface> accept" below; to relax temporarily set
+    # filterForward = false (old accept-all behaviour).
+    filterForward = true;
+    extraForwardRules = ''
+      # Keep containers off the LAN and other private/tailnet ranges.
+      # NEW-only: return traffic (established/related vmap, dnat rule) is
+      # accepted before this. The 10.88.0.0/24 exemption keeps container
+      # <-> container working via the host; if dual-stack is ever enabled,
+      # add matching ip6 daddr drops for the ULA range.
+
+      # svc:litellm has its own service IP (100.127.21.27), unlike this
+      # node's tailnet IP, so container traffic to it is forwarded via
+      # tailscale0 and would otherwise hit the 100.64.0.0/10 drop. If
+      # Tailscale ever reassigns that IP this becomes a dead rule —
+      # containers just lose litellm until it's updated (resolve the
+      # hostname or `tailscale serve status` for the current IP).
+      iifname "podman0" oifname "tailscale0" ip daddr 100.127.21.27 tcp dport 443 ct state new accept comment "containers -> svc:litellm (tailscale serve)"
+
+      iifname "podman0" ip daddr { 172.16.0.0/12, 192.168.0.0/16, 100.64.0.0/10 } ct state new drop comment "containers -> private nets"
+      iifname "podman0" ip daddr 10.0.0.0/8 ip daddr != 10.88.0.0/24 ct state new drop comment "containers -> private 10/8 (podman net exempt)"
+
+      # Container egress (internet) and container <-> container forwarding.
+      iifname "podman0" accept
+
+      # libvirt guests on NAT networks, if/when used.
+      iifname "virbr*" accept
+
+      # qBittorrent netns egress to the wireguard tunnel (protonvpn0).
+      iifname "veth-protonvpn" accept
+    '';
   };
 
+  # nftables backend. Unset, tailscaled still defaults to iptables mode;
+  # auto detects the system's firewall and prefers nftables (as on ke).
+  networking.nftables.enable = true;
+
   services.tailscale.enable = true;
+
+  systemd.services.tailscaled.serviceConfig.Environment = [
+    "TS_DEBUG_FIREWALL_MODE=auto"
+  ];
 
   ########################################
   # ProtonVPN network namespace (qBittorrent)
