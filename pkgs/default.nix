@@ -52,6 +52,8 @@ in {
 
   goplantuml = callPackage ./goplantuml.nix {};
 
+  grev = callPackage ./grev.nix {};
+
   heimdall-rs = callPackage ./heimdall-rs.nix {};
 
   magic-cli = callPackage ./magic-cli {};

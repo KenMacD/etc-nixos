@@ -159,6 +159,7 @@ in {
     argc
     nix-ai-tools.ck # Local first semantic and hybrid BM25 grep / search
     jq
+    local.grev # Thinking coreutils
     llmfit
     nix-ai-tools.semble
     skills
