@@ -445,7 +445,7 @@ in {
   };
   services.kanidm = {
     # Before upgrade test: sudo -u kanidm -g kanidm kanidmd domain upgrade-check
-    package = pkgs.kanidm_1_11;
+    package = pkgs.kanidm_1_12;
     server = {
       enable = true;
       settings = {
