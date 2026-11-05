@@ -7,13 +7,13 @@
 }:
 stdenv.mkDerivation rec {
   pname = "cclimits";
-  version = "1.7.0-unstable-2026-09-29";
+  version = "1.7.2";
 
   src = fetchFromGitHub {
     owner = "cruzanstx";
     repo = "cclimits";
-    rev = "830848bf57c1e17a7baad0d10f6a4cb962166ba3";
-    hash = "sha256-aNsyS/8jl1UeHUD9gnp7Eaj36nzRul5FaVcMlmAs0p4=";
+    rev = "v${version}";
+    hash = "sha256-kiFOL+2vue1rAP25ONKgxx7qFohQ3z4fRZqqZXa0uqc=";
   };
 
   nativeBuildInputs = [makeWrapper];

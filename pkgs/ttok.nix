@@ -2,11 +2,11 @@
   lib,
   fetchFromGitHub,
   buildPythonApplication,
-  setuptools,
+  uv-build,
   click,
   tiktoken,
 }: let
-  version = "0.3";
+  version = "1.0";
 in
   buildPythonApplication {
     pname = "llm-ttok";
@@ -17,10 +17,17 @@ in
       owner = "simonw";
       repo = "ttok";
       rev = version;
-      hash = "sha256-I6EPE6GDAiDM+FbxYzRW4Pml0wDA2wNP1y3pD3dg7Gg=";
+      hash = "sha256-VnslA5tYcrKLZJOXJi3ze/zhPyghBUlbuf6xpCDezgM=";
     };
 
-    build-system = [setuptools];
+    # 1.0 switched from setuptools to the uv_build backend; relax its version
+    # pin so nixpkgs' uv-build satisfies it (same pattern as mcp2cli).
+    postPatch = ''
+      substituteInPlace pyproject.toml \
+        --replace-fail "uv_build>=0.11.0,<0.12.0" "uv_build"
+    '';
+
+    build-system = [uv-build];
 
     propagatedBuildInputs = [
       click

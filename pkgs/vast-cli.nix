@@ -28,7 +28,7 @@
 }:
 buildPythonApplication (finalAttrs: {
   pname = "vast-cli";
-  version = "1.5.2";
+  version = "1.11.0";
   pyproject = true;
   __structuredAttrs = true;
 
@@ -43,7 +43,7 @@ buildPythonApplication (finalAttrs: {
     owner = "vast-ai";
     repo = "vast-cli";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-7kcx0JUVkscOTtii8pP+5JgGjCwJ/LLr6imlveniLPk=";
+    hash = "sha256-5zarO9QleOiW4OzOt8s09j3lz7k1q27GlyeuLXSy2f0=";
   };
 
   build-system = [

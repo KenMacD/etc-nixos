@@ -5,11 +5,11 @@
 }:
 buildNpmPackage rec {
   pname = "acpx";
-  version = "0.15.1";
+  version = "0.21.1";
 
   src = fetchurl {
     url = "https://registry.npmjs.org/acpx/-/acpx-${version}.tgz";
-    hash = "sha256-kEr3okZgj4loE/jsoMuveplVW4I0s+BdIjV/LVDVg1c=";
+    hash = "sha256-0WbDI9x38CxhCnnjTBmJ5PaIDA1h6e2ozc9cXSb8zdo=";
   };
 
   sourceRoot = "package";

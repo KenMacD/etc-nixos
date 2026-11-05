@@ -5,13 +5,13 @@
 }:
 buildGoModule rec {
   pname = "deptree";
-  version = "a8afffff4b0610bb7a480a086cc27c3dde54afb7";
+  version = "8984b09e9e5b9adf8ba5eac818ea10c51d2244f4";
 
   src = fetchFromGitHub {
     owner = "vc60er";
     repo = "deptree";
     rev = "${version}";
-    sha256 = "sha256-xjM4VnWoqea3KppsAy1MkGgELT94fXSfuw6/ASxDdHE=";
+    sha256 = "sha256-FXleBbuC89nUkNij1TqIcQlQo44Uz6KKxt/URgDStTw=";
   };
 
   vendorHash = "sha256-k2TXOedsF4dDUqltq9CGLdMd303I7AHRvODA88U3xw0=";

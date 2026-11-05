@@ -7,16 +7,16 @@
 }:
 rustPlatform.buildRustPackage rec {
   pname = "cctx";
-  version = "0.1.6";
+  version = "0.2.0";
 
   src = fetchFromGitHub {
     owner = "nwiizo";
     repo = "cctx";
     rev = "v${version}";
-    hash = "sha256-Al+k0UQdUQg4i/j+EkebKcIbtS8adBWSzplHk0imLxU=";
+    hash = "sha256-pk8OMJYSeXegvUq+aV61yTmiVux5F8R+/ETpY6mbn3g=";
   };
 
-  cargoHash = "sha256-tVRwPxAvcNJDtAmU+NZ1bBvB04wtrRLElchoY4jgxMA=";
+  cargoHash = "sha256-lvpwpJ53HV2Akx1fzK06b+Rq7h4tcq0VOM2KKnxyMPA=";
 
   nativeBuildInputs = [installShellFiles];
 

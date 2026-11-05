@@ -9,13 +9,13 @@
 }:
 buildPythonPackage rec {
   pname = "pynzbget";
-  version = "0.6.4";
+  version = "0.7.0";
 
   src = fetchFromGitHub {
     owner = "caronc";
     repo = "pynzbget";
     rev = "v${version}";
-    sha256 = "sha256-LFLrBiQV0MKM81zHS+OGNk2XD53DUZ6pmGUJnjQglEs=";
+    sha256 = "sha256-gImojVa4eTqmCaX06HxWxt9GsI8BJdECfR5mnnoVboI=";
   };
 
   postPatch = ''

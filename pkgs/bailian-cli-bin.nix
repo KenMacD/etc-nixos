@@ -15,11 +15,11 @@
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "bailian-cli-bin";
-  version = "2.3.1";
+  version = "2.8.2";
 
   src = fetchurl {
     url = "https://bailian-wiki.oss-cn-hangzhou.aliyuncs.com/release/v${finalAttrs.version}/bl-${finalAttrs.version}-linux-x64.zip";
-    hash = "sha256-rsLsWmFUDLBN7syfatqMkoyG3Tf4x48NDkstlpgDUCU=";
+    hash = "sha256-pYeBfe1+klRQ+6XHYeuejHE8bN4wn5n7W+B7esBigxc=";
   };
 
   nativeBuildInputs = [

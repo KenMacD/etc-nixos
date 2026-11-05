@@ -3,20 +3,21 @@
   fetchFromGitHub,
 }:
 # https://github.com/vdesjardins/nix-config/blob/cab7b9ce80b4488cc643506f2d4738a58686eed0/packages/mcp-server-tree-sitter.nix#L10
-python3Packages.buildPythonApplication {
+python3Packages.buildPythonApplication rec {
   pname = "mcp-server-tree-sitter";
-  version = "main";
+  version = "0.7.0";
 
   src = fetchFromGitHub {
     owner = "wrale";
     repo = "mcp-server-tree-sitter";
-    rev = "a10571771f509d60ffff33752d97689bf18dd893";
-    hash = "sha256-g1DWaUk4842YzZ4VldowNcRatcFCuuc8VTpxgTbEUQ8=";
+    rev = "v${version}";
+    hash = "sha256-GF7UxhcDUOGHaxqKZ5GPAHfrCBNEi6P6FCFwa52Gjsw=";
   };
 
   dependencies = with python3Packages; [
     mcp
     pydantic
+    pygments
     pyyaml
     types-pyyaml
     tree-sitter

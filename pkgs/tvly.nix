@@ -11,15 +11,15 @@
 let
   tavily-python = buildPythonPackage (finalAttrs': {
     pname = "tavily-python";
-    version = "0-unstable-2026-06-10";
+    version = "0-unstable-2026-11-05";
     pyproject = true;
     __structuredAttrs = true;
 
     src = fetchFromGitHub {
       owner = "tavily-ai";
       repo = "tavily-python";
-      rev = "bf176448a0d773871e01e88320669c9cfbb1cb82";
-      hash = "sha256-P/AIYH58ubk4Ucmm/2JTaBR+xsS1Come3m0RLF4pu7A=";
+      rev = "46505f119e6ac0f30d63a4dce0ed9f923705ad97";
+      hash = "sha256-JKrKHFWcJtNCF9Q6vwmsIyX6myrlTxd7Ti7/x2/9Mi0=";
     };
 
     build-system = [
@@ -47,15 +47,15 @@ let
 in
   buildPythonApplication (finalAttrs: {
     pname = "tavily-cli";
-    version = "0-unstable-2026-06-03";
+    version = "0-unstable-2026-11-05";
     pyproject = true;
     __structuredAttrs = true;
 
     src = fetchFromGitHub {
       owner = "tavily-ai";
       repo = "tavily-cli";
-      rev = "798fe2f6bfde66e6383a8d4fdc95e923f2603163";
-      hash = "sha256-+9MEUuFgVL/G3BRvke0n25kWiQAm6b8n78AviDRnL0k=";
+      rev = "a673275091860c8f5b77683cef545a9154da52f5";
+      hash = "sha256-ToaUFis7Ofp1pvT3NK9G0ZeKVj2QmKX+QrTj6Jt8wH0=";
     };
 
     build-system = [
@@ -66,6 +66,8 @@ in
       certifi
       click
       httpx
+      packaging
+      psutil
       requests
       rich
       tavily-python # uses the in-tree let binding above

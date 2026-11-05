@@ -11,13 +11,13 @@
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "dbhub";
-  version = "0.17.0";
+  version = "1.5.1";
 
   src = fetchFromGitHub {
     owner = "bytebase";
     repo = "dbhub";
-    rev = "e2ba067178a6f9043acf103dd92d40e9cf2a8016";
-    hash = "sha256-UA3IwOk8C6X9PFAOOGjbSCFvgE+iMiJoBFHyNMTjGeQ=";
+    rev = "v${finalAttrs.version}";
+    hash = "sha256-U77WuLsTL1XKbuucq3azhnU+WHxXQ5jaI1C00Z1NXyc=";
   };
 
   nativeBuildInputs = [
@@ -32,7 +32,7 @@ stdenv.mkDerivation (finalAttrs: {
     inherit (finalAttrs) pname version src;
     pnpm = pnpm_10;
     fetcherVersion = 3;
-    hash = "sha256-NzmqPuJ9kHnJTG6a4JCjTYkq50t74vhnUuLrvk4s3fM=";
+    hash = "sha256-nyQPTw0Ids1aN3vXO9ZjDWYkbXJOw+YlScBL+ssXQ1k=";
     pnpmWorkspaces = ["." "frontend"];
   };
 
@@ -43,15 +43,6 @@ stdenv.mkDerivation (finalAttrs: {
     # Patch shebangs in all node_modules scripts
     patchShebangs node_modules
     patchShebangs frontend/node_modules
-
-    # Build better-sqlite3 native bindings
-    cd node_modules/better-sqlite3
-    npm run build-release --offline --nodedir="${nodejs}"
-    rm -rf build/Release/{.deps,obj,obj.target,test_extension.node}
-    find build -type f -exec \
-      ${binutils-unwrapped}/bin/remove-references-to \
-      -t "${nodejs}" {} \;
-    cd ../..
 
     # Build backend and frontend
     pnpm run build
