@@ -1,12 +1,15 @@
 # PATCHED FILE — do not edit upstream-style; regenerate from the image tag instead.
-# Base: https://github.com/agent0ai/agent-zero git tag v2.13,
-#       path plugins/_memory/helpers/memory_consolidation.py (byte-identical in v2.12 and v2.13).
+# Base: https://github.com/agent0ai/agent-zero git tag v2.15,
+#       path plugins/_memory/helpers/memory_consolidation.py.
+# Upstream v2.15 change vs v2.13: DEFAULT_THRESHOLD import moved from
+#   plugins._memory.tools.memory_load to plugins._memory.tools.memory
+#   (memory_load.py became an alias module and no longer exports it).
 # Change: ConsolidationConfig.processing_timeout_seconds 60 -> 300.
 #   Why: consolidation wraps the whole pipeline (keyword extraction + LLM analysis +
 #   insert) in asyncio.wait_for; on timeout the memory is silently DROPPED, not saved
 #   (upstream issue #1416, fix attempt PR #1469 was closed unmerged).
 #   300s matches the value proposed in PR #1469 for slow/utility models.
-# Maintenance: this mount pins v2.13 code. When bumping the agent-zero image version,
+# Maintenance: this mount pins v2.15 code. When bumping the agent-zero image version,
 #   diff this file against the new tag and regenerate if upstream changed it:
 #   git show <tag>:plugins/_memory/helpers/memory_consolidation.py
 import asyncio
@@ -23,7 +26,7 @@ from helpers.localization import Localization
 from helpers.log import LogItem
 from helpers.print_style import PrintStyle
 from agent import Agent
-from plugins._memory.tools.memory_load import DEFAULT_THRESHOLD as DEFAULT_MEMORY_THRESHOLD
+from plugins._memory.tools.memory import DEFAULT_THRESHOLD as DEFAULT_MEMORY_THRESHOLD
 
 
 class ConsolidationAction(Enum):

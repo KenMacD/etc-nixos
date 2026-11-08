@@ -1138,14 +1138,14 @@ in {
     ports = ["127.0.0.1:3000:3000"];
   };
   virtualisation.oci-containers.containers.agent-zero = {
-    image = "docker.io/agent0ai/agent-zero:v2.14";
+    image = "docker.io/agent0ai/agent-zero:v2.15";
     # ports = ["127.0.0.1:902:80"];
     volumes = [
       "agent-zero-data:/a0/usr"
       # One-file patch: memory consolidation timeout 60s -> 300s. Consolidation
       # silently DROPS the memory when it exceeds the timeout (upstream issue
       # #1416; the 300s fix PR #1469 was closed unmerged), so slow utility
-      # models lose memories. Patched against image tag v2.13 — when bumping
+      # models lose memories. Patched against image tag v2.15 — when bumping
       # the image version, re-diff hosts/r1pro/agent-zero/
       # memory_consolidation.py against the new tag and regenerate if needed
       # (see its header comment).
