@@ -6,9 +6,9 @@
   ...
 }: let
   # Pin a release tag plus the digest
-  version = "2026.1005.0";
-  # Digest of 'ghcr.io/paperclipai/paperclip:2026.1005.0' (linux/amd64).
-  imageDigest = "sha256:047336965a43b33989634706af87c69f8ef93da2fffd4b1c364e2a93d50b8a44";
+  version = "2026.1106.0";
+  # crane digest 'ghcr.io/paperclipai/paperclip:2026.1106.0'
+  imageDigest = "sha256:d6584f05cf57a4b26c117eb083725f18c1fe69ddafa7d16c9f8cce83f6fa17da";
   dbuser = "paperclip";
   dbname = "paperclip";
   ociBackend = config.virtualisation.oci-containers.backend;
