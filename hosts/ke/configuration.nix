@@ -922,7 +922,6 @@ in {
           --set GDK_BACKEND x11
       '';
     })
-    local.ferretdb2
     hexyl
     pinta
     procs

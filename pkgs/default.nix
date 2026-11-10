@@ -42,8 +42,6 @@ in {
 
   deptree = callPackage ./deptree.nix {};
 
-  ferretdb2 = callPackage ./ferretdb2.nix {};
-
   firefox-devtools-mcp = callPackage ./firefox-devtools-mcp.nix {};
 
   fwdctrl = python3Packages.callPackage ./fwdctrl.nix {};
