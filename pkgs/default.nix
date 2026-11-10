@@ -90,8 +90,6 @@ in {
   in
     python3Packages.callPackage ./vast-cli.nix {inherit borb;};
 
-  windmill = callPackage ./windmill {};
-
   zcode-acp = callPackage ./zcode-acp.nix {
     # zcode-acp v0.3.2 pins ZCode 3.11.2 via an embedded artifact hash that
     # doctor re-verifies at runtime; move this pin up alongside that package.
