@@ -187,8 +187,6 @@ with lib; {
 
     media = 1201;
 
-    sftp-yoga = 1301;
-
     immich = 911;
   };
   ids.gids.immich = 911;

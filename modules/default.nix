@@ -15,8 +15,6 @@
 
     ./sccache.nix
 
-    ./sftp-users.nix # add an 'sftpOnly' option on users
-
     ./sway-desktop.nix # My sway desktop configuration
 
     ./voxinput.nix # Voice to text service
