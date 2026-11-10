@@ -24,6 +24,8 @@ in {
   imports = [
     ./networkd.nix
 
+    ./bcachefs-file-options.nix
+
     ./../../modules/litellm.nix
     ./../../modules/paperclip.nix
   ];

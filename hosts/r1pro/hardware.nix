@@ -14,6 +14,11 @@
   boot.kernelModules = ["kvm-intel"];
   boot.extraModulePackages = [];
 
+  # bcachefs on 3 devices (nvme0n1p3 + 2x18T HDD). Formatted with the
+  # defaults: data_replicas=2 and metadata_replicas=2.
+  #
+  # Per-directory overrides (bcachefs file options, stored as on-disk
+  # xattrs; re-asserted declaratively in ./bcachefs-file-options.nix).
   fileSystems."/" = {
     device = "UUID=1e8a0c0b-7f51-4074-90d7-3cae56d527c5";
     fsType = "bcachefs";
