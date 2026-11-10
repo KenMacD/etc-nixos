@@ -104,7 +104,7 @@ with lib; {
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = mkDefault true;
 
-  boot.kernelPackages = mkOverride (lib.modules.defaultOrderPriority - 1) pkgs.linuxPackages_7_2;
+  boot.kernelPackages = mkOverride (lib.modules.defaultOrderPriority - 1) pkgs.linuxPackages_7_3;
   boot.kernel.sysctl = {};
 
   # Limit previous generations to avoid /boot filling up
