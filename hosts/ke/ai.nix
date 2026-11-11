@@ -168,7 +168,7 @@ in {
     local.alph-cli # Manage MCPs
     local.chrome-devtools-mcp
     local.dbhub
-    local.firefox-devtools-mcp
+    firefox-devtools-mcp
     local.mcp2cli
     # TODO: broken 2026-02-25 local."@upstash/context7-mcp" # context7's mcp (to avoid 'Error: SSE stream disconnected: TypeError: terminated')
     # TODO: broken 2026-02-25 local."@z_ai/mcp-server" # ZAI's Vision MCP Server

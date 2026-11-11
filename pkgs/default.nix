@@ -42,8 +42,6 @@ in {
 
   deptree = callPackage ./deptree.nix {};
 
-  firefox-devtools-mcp = callPackage ./firefox-devtools-mcp.nix {};
-
   fwdctrl = python3Packages.callPackage ./fwdctrl.nix {};
 
   git-no-hooks = callPackage ./git-no-hooks {};
