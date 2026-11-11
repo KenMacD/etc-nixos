@@ -558,14 +558,12 @@ in {
     group = "tuwunel";
     restartUnits = ["tuwunel.service"];
   };
-  # Defense-in-depth on top of the module's sandbox. The matrix.org egress
-  # exception is required: Element X registers its HTTP pusher there, and
-  # denying it silently kills background notifications. Relax if an
-  # appservice or federation is ever enabled.
+  # Defense-in-depth on top of the module's sandbox. No IPAddressAllow/Deny:
+  # systemd only accepts IPs/CIDRs there, and a Deny=any allowlist would block
+  # the matrix.org egress Element X pushers need. Egress confinement, if ever
+  # wanted, belongs in nftables (low priority — the service is tailscale-only).
   systemd.services.tuwunel.serviceConfig = {
     CapabilityBoundingSet = "";
-    IPAddressAllow = ["localhost" "matrix.org"];
-    IPAddressDeny = ["any"];
     UMask = "0077";
   };
 
