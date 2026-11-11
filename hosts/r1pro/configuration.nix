@@ -604,6 +604,11 @@ in {
       python-pkgs.apprise
     ]))
   ];
+  # Z: enforce the shared-group model tree-wide — dirs 2770 (SGID), files
+  # 660; masked mode only tightens, so exec/read-only bits survive.
+  systemd.tmpfiles.rules = [
+    "Z /srv/media ~2770 - media - -"
+  ];
   services.mongodb = {
     enable = true;
     package = local.mongodb-bin_7;
