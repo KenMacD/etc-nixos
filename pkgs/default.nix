@@ -48,8 +48,6 @@ in {
 
   git-no-hooks = callPackage ./git-no-hooks {};
 
-  goplantuml = callPackage ./goplantuml.nix {};
-
   grev = callPackage ./grev.nix {};
 
   heimdall-rs = callPackage ./heimdall-rs.nix {};
