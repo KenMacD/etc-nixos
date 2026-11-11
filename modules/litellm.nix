@@ -6,9 +6,9 @@
   # >= 1.103.0-rc.1 loads every general_settings key from LiteLLM_Config
   # (the SettingsStore apply); 1.102.x whitelists a few keys and ignores
   # disable_env_credential_login set via the UI/API
-  version = "v1.106.6";
-  # crane digest 'ghcr.io/berriai/litellm-non_root:v1.106.6'
-  imageDigest = "sha256:6363e53f135dafbf4a68fac25f77aec3f2b99be37665e8c5f623a952637c220b";
+  version = "v1.109.0";
+  # crane digest 'ghcr.io/berriai/litellm-non_root:v1.109.0'
+  imageDigest = "sha256:17b1e5041fbf95ad96cea1750ebbfb4e42e96b2c7d7a19f1016f25636c00e92a";
   dbuser = "litellm";
   dbname = "litellm";
   ociBackend = config.virtualisation.oci-containers.backend;
