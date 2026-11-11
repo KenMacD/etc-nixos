@@ -403,7 +403,6 @@ in {
             ;; Fn+PrtSc = KEY_SELECTIVE_SCREENSHOT (634)
             ;; Fn+left  = KEY_HOME (102)
             ;; Fn+right = KEY_END (107)
-           
 
             (deflocalkeys-linux
               display 227
