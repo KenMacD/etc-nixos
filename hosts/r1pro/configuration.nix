@@ -855,6 +855,9 @@ in {
   ########################################
   # Navidrome (self-hosted music streaming)
   ########################################
+  users.users.navidrome.extraGroups = [
+    "media"
+  ];
   services.navidrome = {
     enable = true;
     settings = {
