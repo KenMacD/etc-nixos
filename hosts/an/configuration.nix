@@ -193,10 +193,8 @@
 
   services.tailscale.enable = true;
 
-  # Force tailscaled to use nftables (critical for clean nftables-only systems)
-  # Avoids the "iptables-compat" translation layer issues.
   systemd.services.tailscaled.serviceConfig.Environment = [
-    "TS_DEBUG_FIREWALL_MODE=nftables"
+    "TS_DEBUG_FIREWALL_MODE=auto" # prefer nftables over iptables-compat
   ];
 
   services = {
