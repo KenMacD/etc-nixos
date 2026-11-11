@@ -96,6 +96,19 @@ in {
       # exec ${pkgs.uwsm}/bin/uwsm finalize
     '';
 
+    # Logitech M500 (046d:c069) pointer tuning; no-op on machines without
+    # this mouse. The accel below is calibrated against the MOUSE_DPI the
+    # hwdb declares, so keep the two in sync.
+    services.udev.extraHwdb = ''
+      mouse:usb:v046dpc069:name:Logitech USB Laser Mouse:*
+       MOUSE_DPI=400@125
+    '';
+    environment.etc."sway/config.d/mouse.conf".source = pkgs.writeText "mouse.conf" ''
+      input "1133:49257:Logitech_USB_Laser_Mouse" {
+        pointer_accel -0.3
+      }
+    '';
+
     programs.waybar.enable = true;
     # The waybar user unit starts before the login shell env is imported, so
     # its PATH lacks system bins; custom modules that shell out (jq,
