@@ -22,6 +22,9 @@ buildGoModule (finalAttrs: {
   # harness with no buildable files; exclude it from the build/test loops.
   excludedPackages = ["eval"];
 
+  # This test asserts wall-clock timing and fails when under load.
+  checkFlags = ["-skip=^TestJmaxConverges$"];
+
   ldflags = [
     "-s"
     "-w"
