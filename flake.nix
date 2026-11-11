@@ -122,7 +122,11 @@
           nix-ai-tools = nix-ai-tools.packages.${prev.stdenv.hostPlatform.system};
           nix-auth = nix-auth.packages.${prev.stdenv.hostPlatform.system};
           nix-bubblewrap = nix-bubblewrap.packages.${prev.stdenv.hostPlatform.system}.default;
-          nixos-needsreboot = nixos-needsreboot.packages.${prev.stdenv.hostPlatform.system}.default;
+          nixos-needsreboot =
+            nixos-needsreboot.packages.${prev.stdenv.hostPlatform.system}.default.overrideAttrs
+            (oldAttrs: {
+              patches = (oldAttrs.patches or []) ++ [./overlays/nixos-needsreboot-kernel-modules.patch];
+            });
           wrapPackage = nix-bubblewrap.lib.${prev.stdenv.hostPlatform.system}.wrapPackage;
 
           master = import nixpkgs-master {
