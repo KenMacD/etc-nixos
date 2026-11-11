@@ -606,7 +606,10 @@ in {
   ];
   # Z: enforce the shared-group model tree-wide — dirs 2770 (SGID), files
   # 660; masked mode only tightens, so exec/read-only bits survive.
+  # d: purge stale NZBGet partials after 14d (mtime-based, so atime-refreshing
+  # readers can't keep them alive).
   systemd.tmpfiles.rules = [
+    "d /srv/media/incoming/nzbget/incomplete 2770 kenny media mM:14d"
     "Z /srv/media ~2770 - media - -"
   ];
   services.mongodb = {
