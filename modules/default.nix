@@ -9,8 +9,6 @@
 
     ./net-performance.nix # Opt-in network tuning: BBR congestion control + TCP MTU probing
 
-    ./nordvpn-namespaced.nix
-
     ./python-packages.nix
 
     ./sccache.nix

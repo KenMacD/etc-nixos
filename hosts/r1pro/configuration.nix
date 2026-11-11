@@ -567,15 +567,6 @@ in {
     UMask = "0077";
   };
 
-  services.nordvpn-namespaced = {
-    enable = true;
-    namespaces = {
-      romania = {
-        remote = "89.46.103.171";
-        verify-x509-name = "ro67.nordvpn.com";
-      };
-    };
-  };
   services.nzbget.enable = true;
   systemd.services.nzbget.serviceConfig = {
     RestrictNamespaces = true;

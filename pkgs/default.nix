@@ -67,8 +67,6 @@ in {
     hash = "sha256-wu7B5Krulng4QwrFf8fUbCL1ZscY7aYDPjKt2A1Qb4s=";
   };
 
-  namespaced-openvpn = callPackage ./namespaced-openvpn.nix {};
-
   octofriend = callPackage ./octofriend.nix {};
 
   packnplay = callPackage ./packnplay.nix {};
