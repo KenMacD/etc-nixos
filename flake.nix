@@ -203,17 +203,6 @@
         ];
       };
 
-      yoga = nixpkgs.lib.nixosSystem {
-        inherit system;
-        specialArgs = {inherit self system;};
-        modules = [
-          common
-          ./hosts/yoga/configuration.nix
-          ./hosts/yoga/hardware.nix
-          ./modules/hardened.nix
-          sops-nix.nixosModules.sops
-        ];
-      };
       an = nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = {inherit system;};

@@ -698,7 +698,7 @@ in {
 
     machine-learning.enable = true;
   };
-  # Pin immich to uid/gid 911 (consistent with yoga) and grant GPU access.
+  # Pin immich to uid/gid 911 and grant GPU access.
   users.users.immich = {
     uid = config.ids.uids.immich;
     extraGroups = ["render" "video"];
