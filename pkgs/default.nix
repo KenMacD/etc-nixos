@@ -52,6 +52,8 @@ in {
 
   hty = callPackage ./hty {};
 
+  kibernetyk-mono = callPackage ./kibernetyk-mono.nix {};
+
   magic-cli = callPackage ./magic-cli {};
 
   mcp2cli = python3Packages.callPackage ./mcp2cli.nix {};

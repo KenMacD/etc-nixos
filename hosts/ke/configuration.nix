@@ -623,6 +623,7 @@ in {
       fira-code
       fira-code-symbols
       font-awesome # Used by waybar
+      local.kibernetyk-mono
       nerd-fonts.symbols-only
       roboto
       roboto-mono
