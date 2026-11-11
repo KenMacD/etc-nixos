@@ -50,6 +50,8 @@ in {
 
   heimdall-rs = callPackage ./heimdall-rs.nix {};
 
+  hty = callPackage ./hty {};
+
   magic-cli = callPackage ./magic-cli {};
 
   mcp2cli = python3Packages.callPackage ./mcp2cli.nix {};

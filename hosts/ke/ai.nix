@@ -184,6 +184,7 @@ in {
     local.packnplay
     (builtins.getFlake "github:mbailey/voicemode/99fac04667559a7f68dd32fd11cc63e3ff084a2d").packages.${pkgs.stdenv.hostPlatform.system}.default
     (builtins.getFlake "github:akitaonrails/ai-usagebar/902e9750a8c8d0ac74297f6f562e389474e02eea").packages.${pkgs.stdenv.hostPlatform.system}.default # 1.39.0
+    local.hty
     nix-ai-tools.qmd # to try, mini-cli search engine
     nix-ai-tools.localgpt # open-claw-like in rust
     nix-ai-tools.agentsview
