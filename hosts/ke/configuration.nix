@@ -67,12 +67,14 @@ in {
       "https://aseipp-nix-cache.global.ssl.fastly.net"
       "https://nix-community.cachix.org?priority=50"
       "https://cache.numtide.com"
+      "https://microvm.cachix.org"
     ];
     extra-trusted-public-keys = [
       "nix.home.macdermid.ca:CQuA65gXW8KuFlk9Ufx5oMsAiTZzQhfluNoaOzypXMo="
       "nix.macdermid.ca:sAlwW/Ph4P8pyrUT7pmWnsFeGVyZ7pyXYjUmo41/hc8="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
+      "microvm.cachix.org-1:oXnBc6hRE3eX5rSYdRyMYXnfzcCxC7yKPTbZXALsqys="
     ];
   };
   nix.extraOptions = ''
