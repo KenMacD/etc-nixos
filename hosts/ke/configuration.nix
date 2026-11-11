@@ -606,7 +606,8 @@ in {
     wantedBy = ["default.target"];
     serviceConfig = {
       Type = "oneshot";
-      ExecStart = "${pkgs.podman}/bin/podman system migrate";
+      # Module package, not pkgs.podman (wrapper PATH has setuid newuidmap/newgidmap).
+      ExecStart = "${config.virtualisation.podman.package}/bin/podman system migrate";
       RemainAfterExit = true;
     };
   };
