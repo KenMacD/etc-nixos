@@ -865,6 +865,21 @@ in {
     };
   };
 
+  # Navidrome (127.0.0.1:4533) on the tailnet; the public
+  # navidrome.macdermid.ca route was retired in favour of this.
+  systemd.services.tailscale-serve-navidrome = {
+    description = "Tailscale serve Navidrome";
+    wantedBy = ["multi-user.target"];
+    after = ["tailscaled.service" "navidrome.service"];
+    wants = ["tailscaled.service"];
+    serviceConfig = {
+      RestartSec = 10;
+      Restart = "on-failure";
+      ExecStartPre = "${lib.getExe waitTailscale}";
+      ExecStart = "${pkgs.tailscale}/bin/tailscale serve --service=svc:navidrome --https=443 127.0.0.1:4533";
+    };
+  };
+
   ########################################
   # UniFi controller
   ########################################
