@@ -11,13 +11,13 @@
 # From https://github.com/nix-community/ethereum.nix/blob/13a4fbb48aa10a2269a74820b6d835c3cd23c976/pkgs/by-name/he/heimdall/default.nix#L19
 rustPlatform.buildRustPackage rec {
   pname = "heimdall";
-  version = "0.9.1";
+  version = "0.9.3";
 
   src = fetchFromGitHub {
     owner = "jon-becker";
     repo = "${pname}-rs";
     rev = version;
-    hash = "sha256-xDplFw/IMfe2S6fxdG/uNlMCZ2KOisTyNG4482UefOA=";
+    hash = "sha256-xdcCo8hmrnXExZhwc3GwnSxDqmArrwbnIvNmN+N+/tY=";
   };
 
   cargoLock = {
