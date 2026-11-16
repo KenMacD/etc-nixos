@@ -76,9 +76,6 @@
 
   boot.extraModprobeConfig = ''
     options cfg80211 ieee80211_regdom=CA
-    # Push iwlwifi (AX201 / CNVi) into deep device power save so the WiFi
-    # block can power-gate and the SoC can reach deeper s0ix substates (S0i3.0).
-    options iwlwifi power_save=1
   '';
 
   # Allow the NVMe controller (and its PCIe root port) to runtime-suspend so
