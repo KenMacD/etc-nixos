@@ -16,7 +16,7 @@
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "modelstudioai-cli";
-  version = "2.3.1";
+  version = "2.10.1";
   __structuredAttrs = true;
   strictDeps = true;
 
@@ -24,7 +24,7 @@ stdenv.mkDerivation (finalAttrs: {
     owner = "modelstudioai";
     repo = "cli";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-wZ0TlV96cf07oKcTOOj1N5x8WRbBiRlfvDKcIt9MgSs=";
+    hash = "sha256-eMYsTAy8iebCowsHBFrCL2EJ58D+GwBL3y+iuh/xskI=";
   };
 
   nativeBuildInputs = [
@@ -38,8 +38,17 @@ stdenv.mkDerivation (finalAttrs: {
     inherit (finalAttrs) pname version src;
     pnpm = pnpm_10;
     fetcherVersion = 4;
-    hash = "sha256-s+UlYj4uZ6p3pb82c0aSjkFsPv/VU5eDMRrK3cwhKoA=";
+    hash = "sha256-jNa9eK893s/6Et/uvw2nP03okxWRCJG5+ImGqR2Jg3k=";
   };
+
+  # Updates happen via NixOS, not the CLI: permanently no-op the runtime's
+  # versionCheckStage (same as NO_UPDATE_NOTIFIER=1) so the built CLI never
+  # auto-updates over the store path. --replace-fail fails the build if
+  # upstream reshapes the guard, forcing a conscious look at the new code.
+  postPatch = ''
+    substituteInPlace packages/runtime/src/middleware.ts \
+      --replace-fail 'process.env.NO_UPDATE_NOTIFIER === "1"' 'true'
+  '';
 
   nativeInstallCheckInputs = [versionCheckHook];
   doInstallCheck = true;

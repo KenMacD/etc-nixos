@@ -12,19 +12,21 @@
   fetchurl,
   unzip,
   autoPatchelfHook,
+  makeWrapper,
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "bailian-cli-bin";
-  version = "2.8.2";
+  version = "2.10.1";
 
   src = fetchurl {
     url = "https://bailian-wiki.oss-cn-hangzhou.aliyuncs.com/release/v${finalAttrs.version}/bl-${finalAttrs.version}-linux-x64.zip";
-    hash = "sha256-pYeBfe1+klRQ+6XHYeuejHE8bN4wn5n7W+B7esBigxc=";
+    hash = "sha256-BjNJ+leCbLOVTvVvJAR7DO0ANK3UOO4dX41ZNxkCFX8=";
   };
 
   nativeBuildInputs = [
     unzip
     autoPatchelfHook
+    makeWrapper
   ];
 
   buildInputs = [stdenv.cc.libc];
@@ -44,9 +46,17 @@ stdenv.mkDerivation (finalAttrs: {
     runHook postInstall
   '';
 
-  # Footgun: `bl update` self-updates by downloading into ~/.local/share/bailian-cli.
-  # The store path is read-only so it can't corrupt the package, but a copy it drops
-  # in $HOME would shadow this one on PATH. Don't run it; bump `version` instead.
+  # Updates happen via NixOS, not the CLI: silence the built-in update
+  # notifier (NO_UPDATE_NOTIFIER=1 is the only kill switch it honours;
+  # --set-default keeps it overridable). `bailian` symlinks to `bl` and
+  # inherits the wrapper.
+  postFixup = ''
+    wrapProgram $out/bin/bl --set-default NO_UPDATE_NOTIFIER 1
+  '';
+
+  # Footgun: an explicit `bl update` bypasses the wrapper and downloads into
+  # ~/.local/share/bailian-cli, which shadows this package on PATH. Don't
+  # run it; bump `version` instead.
 
   meta = {
     # Upstream package.json and the GitHub repo LICENSE both say Apache-2.0.
