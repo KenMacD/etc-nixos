@@ -1,145 +1,66 @@
 {
   lib,
   stdenv,
-  stdenvNoCC,
   fetchFromGitHub,
-  bun,
+  fetchPnpmDeps,
+  pnpm,
+  pnpmConfigHook,
   nodejs,
-  nix-update-script,
-  writableTmpDirAsHomeHook,
-  makeBinaryWrapper,
-  zcode,
+  makeWrapper,
 }:
-# zcode-acp pins the ZCode artifact by sha256 (CURRENT_ZCODE_ARTIFACT in the
-# compiled bundle); doctor re-verifies the hash at runtime.
-assert zcode.version == "3.11.2";
-  stdenv.mkDerivation (finalAttrs: {
-    pname = "zcode-acp";
-    version = "0.3.2";
-    __structuredAttrs = true;
-    strictDeps = true;
+# Modified from: https://github.com/scotttrinh/dotfiles/blob/799bcba509b27b9f074e41e4957f723a5968c5db/packages/zcode-acp.nix
+stdenv.mkDerivation (finalAttrs: {
+  pname = "zcode-acp";
+  version = "0.88.0";
 
-    src = fetchFromGitHub {
-      owner = "supermomonga";
-      repo = "zcode-acp";
-      tag = "v${finalAttrs.version}";
-      hash = "sha256-iFdCVJIx+gKmplyAlus96CD29+prEneYhS+4j8YdqPc=";
-    };
+  src = fetchFromGitHub {
+    owner = "william0wang";
+    repo = "zcode-acp";
+    tag = "v${finalAttrs.version}";
+    hash = "sha256-iDxgaqpLjI3OZOBCsxP8OHbrbKENSPosnJbzjGX6QUk=";
+  };
 
-    node_modules = stdenvNoCC.mkDerivation {
-      pname = "${finalAttrs.pname}-node_modules";
-      inherit (finalAttrs) version src;
+  pnpmDeps = fetchPnpmDeps {
+    inherit (finalAttrs) pname version src;
+    fetcherVersion = 5;
+    hash = "sha256-XX7yI7Qkcqn7x/lLPm26t16k6828EE4csmhQTl18myA=";
+  };
 
-      impureEnvVars =
-        lib.fetchers.proxyImpureEnvVars
-        ++ [
-          "GIT_PROXY_COMMAND"
-          "SOCKS_SERVER"
-        ];
+  nativeBuildInputs = [
+    nodejs
+    pnpm
+    pnpmConfigHook
+    makeWrapper
+  ];
 
-      nativeBuildInputs = [
-        bun
-        writableTmpDirAsHomeHook
-      ];
+  buildPhase = ''
+    runHook preBuild
+    pnpm run build
+    runHook postBuild
+  '';
 
-      dontConfigure = true;
+  installPhase = ''
+    runHook preInstall
+    mkdir -p $out/lib/zcode-acp $out/bin
+    cp -r dist node_modules package.json $out/lib/zcode-acp/
 
-      buildPhase = ''
-        runHook preBuild
+    makeWrapper ${nodejs}/bin/node $out/bin/zcode-acp \
+      --add-flags $out/lib/zcode-acp/dist/cli.js \
+      --prefix PATH : ${lib.makeBinPath [nodejs]} \
+      --set-default ZCODE_ACP_SHOW_COMPLETION_STATUS 0
+    makeWrapper ${nodejs}/bin/node $out/bin/zcode-acp-server \
+      --add-flags $out/lib/zcode-acp/dist/cli.js \
+      --add-flags server \
+      --prefix PATH : ${lib.makeBinPath [nodejs]} \
+      --set-default ZCODE_ACP_SHOW_COMPLETION_STATUS 0
+    runHook postInstall
+  '';
 
-        export BUN_INSTALL_CACHE_DIR=$(mktemp -d)
-
-        bun install \
-          --backend=copyfile \
-          --cpu="*" \
-          --frozen-lockfile \
-          --ignore-scripts \
-          --no-progress \
-          --os="*"
-
-        runHook postBuild
-      '';
-
-      installPhase = ''
-        runHook preInstall
-
-        mkdir -p $out
-        find . -type d -name node_modules -exec cp -R --parents {} $out \;
-
-        runHook postInstall
-      '';
-
-      dontFixup = true;
-
-      outputHash = "sha256-mScgLBr3/ssLT4Q73RS2LGFlh+j0VAS3JJkHLiu0J/0=";
-      outputHashMode = "recursive";
-    };
-
-    nativeBuildInputs = [
-      bun
-      nodejs
-      writableTmpDirAsHomeHook
-      makeBinaryWrapper
-    ];
-
-    # bun build --compile appends the JS bundle to the bun binary; strip would
-    # remove it and the executable would fall back to plain bun CLI behaviour.
-    dontStrip = true;
-
-    configurePhase = ''
-      runHook preConfigure
-
-      cp -R ${finalAttrs.node_modules}/. .
-      patchShebangs node_modules
-
-      runHook postConfigure
-    '';
-
-    buildPhase = ''
-      runHook preBuild
-
-      bun run build
-
-      runHook postBuild
-    '';
-
-    doCheck = true;
-
-    checkPhase = ''
-      runHook preCheck
-
-      bun run typecheck
-      bun test
-
-      runHook postCheck
-    '';
-
-    installPhase = ''
-      runHook preInstall
-
-      install -Dm755 dist/zcode-acp $out/bin/zcode-acp
-
-      runHook postInstall
-    '';
-
-    # Point discovery at the pinned zcode derivation; --set-default keeps the
-    # env var overridable by callers.
-    postInstall = ''
-      wrapProgram "$out/bin/zcode-acp" \
-        --set-default ZCODE_ACP_ZCODE_INSTALL "${zcode}/lib/ZCode"
-    '';
-
-    passthru.updateScript = nix-update-script {};
-
-    meta = {
-      description = "An ACP Agent wrapper for ZCode";
-      homepage = "https://github.com/supermomonga/zcode-acp";
-      changelog = "https://github.com/supermomonga/zcode-acp/releases/tag/${finalAttrs.src.tag}";
-      # TODO: placeholder until the project publishes a LICENSE file (none in
-      # the repo as of v0.3.2, see docs/07-security-licensing.md)
-      license = lib.licenses.mit;
-      maintainers = with lib.maintainers; [];
-      mainProgram = "zcode-acp";
-      platforms = lib.platforms.all;
-    };
-  })
+  meta = {
+    description = "ACP (Agent Client Protocol) adapter for ZCode / GLM";
+    homepage = "https://github.com/william0wang/zcode-acp";
+    license = lib.licenses.mit;
+    mainProgram = "zcode-acp";
+    platforms = lib.platforms.all;
+  };
+})

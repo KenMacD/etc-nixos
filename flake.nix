@@ -44,7 +44,6 @@
     url = "github:astro/microvm.nix";
     inputs.nixpkgs.follows = "nixpkgs";
   };
-  inputs.nix-ai-tools-3_11.url = "github:numtide/llm-agents.nix/a387da93d1c102e85b39630e71da8c104c699884";
   inputs.nix-ai-tools = {
     url = "github:numtide/llm-agents.nix";
     inputs.nixpkgs.follows = "nixpkgs";
@@ -92,7 +91,6 @@
     lanzaboote,
     microvm,
     nix-ai-tools,
-    nix-ai-tools-3_11,
     nix-auth,
     nix-alien,
     nix-bubblewrap,
@@ -144,7 +142,7 @@
     };
   in rec {
     packages.${system} = import ./pkgs {
-      inherit nixpkgs pkgs nix-ai-tools nix-ai-tools-3_11 system;
+      inherit nixpkgs pkgs nix-ai-tools system;
     };
 
     # Dynamic devShells from shells/ directory
